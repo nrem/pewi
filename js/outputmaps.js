@@ -135,6 +135,33 @@ var OutputMap = function () {
   }
 }
 var Maps = function () {
+  var miniMapState = {
+    topo: false,
+    flood: false,
+    sub: false,
+    wetland: false,
+    drainage: false
+  }, miniMapSlots = [{
+    vacant: true,
+    left: 0,
+    bottom:20
+  },{
+    vacant: true,
+    left: 0,
+    bottom:0
+  },{
+    vacant: true,
+    left: 20,
+    bottom: 0
+  },{
+    vacant: true,
+    left: 40,
+    bottom: 0
+  },{
+    vacant: true,
+    left: 60,
+    bottom: 0
+  }];
   this.watershed = function (options) {
     console.log(options);
     var svg = d3.select(options.parent)
@@ -291,14 +318,8 @@ var Maps = function () {
 
   }
   this.minimap = function (options) {
-    var miniMapState = {
-      topo: false,
-      flood: false,
-      sub: false,
-      wetland: false,
-      drainage: false
-    },
-      rowData = global.data[global.year].row.data,
+    if(miniMapState[options.id]) return;
+    var rowData = global.data[global.year].row.data,
       columnData = global.data[global.year].column.data,
       SCALE = 3;
     console.log(options);
@@ -311,13 +332,21 @@ var Maps = function () {
     console.log(options);
     var container = d3.select("#workspace")
       .append("div")
+      .attr("id",options.id + "-minimap-container")
       .attr("class","physical-feature-map");
-    $("#workspace>div").draggable();
-    /*var container = $("#workspace").append($("div")).attr("class","physical-feature-map").attr("id",options.id + "-minimap");
-    var title = $("#" + options.id + "-minimap").append($("div"));
-    title.append($("img")).attr("class","close").attr("id","topo").attr("src","images/icons/cross.png");
-    title.append($("a")).text("Topographic Relief");
-    */
+    for(var i=0; i<miniMapSlots.length; i++) {
+      if(miniMapSlots[i].vacant) {
+        $("#" + options.id + "-minimap-container").css("marginLeft", miniMapSlots[i].left + "%").css("marginBottom",miniMapSlots[i].bottom + "%");
+        miniMapSlots[i].vacant = false;
+        options.slot = i;
+        break;
+      }
+    }
+    $("#" + options.id + "-minimap-container").draggable().click(function() {
+      $(this).remove();
+      miniMapState[options.id] = false;
+      miniMapSlots[options.slot].vacant = true;
+    });
     var title = container.append("div");
     title.append("img")
       .attr("class","close")
@@ -329,9 +358,10 @@ var Maps = function () {
       .attr("class","minimap-svg")
       .attr("width",options.width*global.data[global.year].rows)
       .attr("height",options.height*2*global.data[global.year].columns);
+    miniMapState[options.id] = true;
     switch (options.id) {
       case "topo":
-        $("#workspace div  div>a").text("Topographic Relief");
+        $("#" + options.id + "-minimap-container div>a").text("Topographic Relief");
         var topography = global.data[global.year].topography.data,
             colors = colorbrewer.YlGnBu[6];
         for(var i=0; i<topography.length; i++) {
@@ -341,17 +371,17 @@ var Maps = function () {
         }
         break;
       case "flood":
-        $("#workspace div  div>a").text("Flood Frequency");
+        $("#" + options.id + "-minimap-container div>a").text("Flood Frequency");
         var flood = global.data[global.year].floodfrequency.data,
-          colors = colorbrewer.BrBG[8];
+          colors = colorbrewer.YlGnBu[6];
         for(var i=0; i<flood.length; i++) {
-          if(flood[i] != undefined && !isNaN(flood[i])) {
-            appendRectHelper(flood[i], colors);
+          if(flood[i] != undefined && !isNaN(flood[i] / 10)) {
+            appendRectHelper(flood[i] / 10, colors);
           }
         }
         break;
       case "sub":
-        $("#workspace div  div>a").text("Subwatershed Boundaries");
+        $("#" + options.id + "-minimap-container div>a").text("Subwatershed Boundaries");
         var subwatershed = global.data[global.year].subwatershed.data,
           colors = boundaryColors;
         for(var i=0; i<subwatershed.length; i++) {
@@ -361,7 +391,7 @@ var Maps = function () {
         }
         break;
       case "wetland":
-        $("#workspace div  div>a").text("Strategic Wetland Areas");
+        $("#" + options.id + "-minimap-container div>a").text("Strategic Wetland Areas");
         var wetland = global.data[global.year].wetland.data,
           colors = colorbrewer.PuBuGn[3];
         for(var i=0; i<wetland.length; i++) {
@@ -371,12 +401,32 @@ var Maps = function () {
         }
         break;
       case "drainage":
-        $("#workspace div  div>a").text("Drainage Class");
+        $("#" + options.id + "-minimap-container div>a").text("Drainage Class");
         var drainage = global.data[global.year].drainageclass.data,
           colors = colorbrewer.BrBG[8];
         for(var i=0; i<drainage.length; i++) {
           if(drainage[i] != undefined && !isNaN(drainage[i])) {
-            appendRectHelper(drainage[i], colors);
+            svg.append("rect")
+              .attr("x", function() {
+                return columnData[i] * options.width;
+              })
+              .attr("y", function() {
+                return rowData[i] * options.height;
+              })
+              .attr("width", options.width)
+              .attr("height", options.height)
+              .style("fill", function() {
+                d = drainage[i] / 10;
+                if (d === 4.5) {
+                  return colors[4];
+                } else if (d < 4.5) {
+                  return colors[d - 1];
+                } else {
+                  return colors[d];
+                }
+              })
+              .attr("id", options.id + "-rect-" + i)
+              .attr("class", "minimap-rect");
           }
         }
         break;

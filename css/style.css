@@ -82,8 +82,6 @@ h1
  */
 #divcontainer
 {
-	max-width:3000px;
-	max-height:2000px;
 	position:relative;
 }
 
@@ -871,7 +869,7 @@ h1
 .physical-feature-map
 {
 	position:absolute;
-    left: 175px;
+    left: 10px;
 	bottom:45px;
 	opacity:0.8;
 	/*background: rgba(0, 0, 0, 0.6);*/
