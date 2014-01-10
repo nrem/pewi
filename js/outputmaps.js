@@ -163,7 +163,6 @@ var Maps = function () {
     bottom: 0
   }];
   this.watershed = function (options) {
-    console.log(options);
     var svg = d3.select(options.parent)
         .append("svg")
         .attr("id", "watershed1")
@@ -322,14 +321,12 @@ var Maps = function () {
     var rowData = global.data[global.year].row.data,
       columnData = global.data[global.year].column.data,
       SCALE = 3;
-    console.log(options);
     if(options.width == undefined) {
       options.width = global.mapCellWidth;
     } if(options.height == undefined) {
       options.height = global.mapCellHeight;
     }
     options.width *= SCALE; options.height *= SCALE;
-    console.log(options);
     var container = d3.select("#workspace")
       .append("div")
       .attr("id",options.id + "-minimap-container")
@@ -385,6 +382,7 @@ var Maps = function () {
         var subwatershed = global.data[global.year].subwatershed.data,
           colors = boundaryColors;
         for(var i=0; i<subwatershed.length; i++) {
+          if(subwatershed[i] == "NaN")console.log("it is");
           if(subwatershed[i] != undefined && !isNaN(subwatershed[i])) {
             appendRectHelper(subwatershed[i], colors);
           }
@@ -433,6 +431,7 @@ var Maps = function () {
     }
 
     function appendRectHelper(datapoint, colors) {
+      if(isNaN(columnData[i]) || isNaN(rowData[i])) return;
       svg.append("rect")
         .attr("x", function() {
           return columnData[i] * options.width;
