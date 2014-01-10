@@ -382,7 +382,6 @@ var Maps = function () {
         var subwatershed = global.data[global.year].subwatershed.data,
           colors = boundaryColors;
         for(var i=0; i<subwatershed.length; i++) {
-          if(subwatershed[i] == "NaN")console.log("it is");
           if(subwatershed[i] != undefined && !isNaN(subwatershed[i])) {
             appendRectHelper(subwatershed[i], colors);
           }
