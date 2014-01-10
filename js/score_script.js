@@ -48,12 +48,12 @@ var Plot = function()
 	    .range([0, h*.7]);
 
 	this.update = function() {
-		d3.select("svg").remove();
-		
 		plot = d3.select("#bubble.plot")
 			.append("svg")
 			.attr("width", "100%")
-			.attr("height", "100%")    
+			.attr("height", "100%")
+      .attr("id", "output-score-svg")
+      .attr("class","removable-displays")
 			.append("g")
 			.attr("transform", "translate(100,30)");
 		

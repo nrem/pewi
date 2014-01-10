@@ -27,7 +27,8 @@ function togglePuk(type, coords) {
             .append("svg")
             .attr("width", "100%")
             .attr("height", "100%")
-            .attr("id", "pfeature");
+            .attr("id", "pfeature")
+            .attr("class","removable-displays");
 
         var center = centerOfElement($("#pfeature"));
 
@@ -114,7 +115,8 @@ function togglePuk(type, coords) {
                     .attr("x2", mouse.x - 2)
                     .attr("y2", mouse.y)
                     .style("stroke", "#cccc00")
-                    .style("stroke-width", "3");
+                    .style("stroke-width", "3")
+                  .attr("id","pfeature-indicator-line");
             })/*.mouseout(function(){puck.select("line").remove();})*/;
 
         $(".selectable-feature")
@@ -122,8 +124,8 @@ function togglePuk(type, coords) {
                 var id = $(this).attr("id");
                 displayMiniMap(id);
                 $("#layer-puck-container").hide();
-                puck.select("line").remove();
-                d3.select("svg").remove();
+                puck.select("#pfeature-indicator-line").remove();
+                d3.select("#pfeature").remove();
             });
             //*/
 
@@ -287,6 +289,8 @@ function togglePuk(type, coords) {
                 .attr("patternUnits", "userSpaceOnUse")
                 .attr("height", "40")
                 .attr("width", "40")
+                .attr("x", function() {return features[key].x + 20;})
+                .attr("y", function() {return features[key].y + 20;})
                 .append("svg:image")
                 .attr("x", "0")
                 .attr("y", "0")
@@ -333,13 +337,14 @@ function togglePuk(type, coords) {
             };
             //console.log(e.pageX, e.pageY);
             //console.log(offset.left, offset.top);
-            puck.append("line")
+            /*puck.append("line")
                 .attr("x1", coords.x - offset.left)
                 .attr("y1", coords.y - offset.top)
                 .attr("x2", mouse.x - 5)
                 .attr("y2", mouse.y)
                 .style("stroke", "#cccc00")
                 .style("stroke-width", "3");
+                */
         });
 
         $(".selectable-feature")

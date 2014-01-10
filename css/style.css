@@ -23,8 +23,8 @@ body
 
 #workspace
 {
-    width:2400px;
-    height:1600px;
+    width:100%;
+    height:100%;
 	position:absolute;
 }
 
@@ -80,22 +80,22 @@ h1
 /*--------------------------------
  * Map styling
  */
-#watershed
+#divcontainer
 {
-	border-collapse:collapse;
 	max-width:3000px;
 	max-height:2000px;
 	position:relative;
 }
 
-#watershed td
+#watershed1 rect
 {
 	cursor:pointer;
 }
 
-#watershed td:hover
+.watershed-rect:hover
 {
-    opacity: 0.8;
+    stroke-width: 1;
+    stroke: #333;
 }
 
 @media only all and (max-height:499px)
@@ -873,9 +873,9 @@ h1
 	position:absolute;
     left: 175px;
 	bottom:45px;
-	display:none;
 	opacity:0.8;
-	background: rgba(0, 0, 0, 0.6);
+	/*background: rgba(0, 0, 0, 0.6);*/
+    background: black;
 	-moz-border-radius:5px;
 	-webkit-border-radius:5px;
 	border-radius:5px;
@@ -883,6 +883,7 @@ h1
 	-webkit-box-shadow:0px 0px 10px;
 	-moz-box-shadow:0px 0px 10px;
 	border:2px solid #cccc00;
+    z-index: 1000;
 }
 
 .physical-feature-map table
@@ -1065,7 +1066,6 @@ iframe
     display:none;
     width: 500px;
     height: 500px;
-    background: #333;
 }
 
 #rclick-puck-container text
@@ -1148,3 +1148,12 @@ iframe
 }
 
 /*--------- Tooltip -------------*/
+
+
+/*------ Stream Overlay -----------*/
+#stream-overlay
+{
+    position: absolute;
+    left: 500px;
+    top: 300px;
+}
