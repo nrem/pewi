@@ -85,13 +85,9 @@ h1
 	position:relative;
 }
 
-#watershed1 rect
-{
-	cursor:pointer;
-}
-
 .watershed-rect:hover
 {
+    cursor: pointer;
     stroke-width: 1;
     stroke: #333;
 }
