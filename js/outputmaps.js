@@ -189,7 +189,6 @@ var Maps = function () {
      .attr("width", options.width)
      .attr("height", options.height)
      .style("fill", "url(#watershed-pattern)");//*/
-
     centerElement($(window), $("#watershed1"));
 
     var w = 30, h = 20;
