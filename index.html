@@ -3,13 +3,11 @@
 <head>
     <meta http-equiv=”X-UA-Compatible” content=”chrome=1;IE=edge”>
     <title>PE/WI 2 Work Space Index</title>
-    <!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />-->
     <link rel="stylesheet" href="css/style.css" />
     <script src="js/jquery-1.10.2.min.js"></script>
     <script src="js/jquery-ui.js"></script>
     <script src="d3/d3.v3.min.js"></script>
     <script src="js/script.js"></script>
-    <!--<script src="js/interaction.js"></script>-->
     <script src="js/data.js"></script>
     <script src="js/calculations.js"></script>
     <script src="js/puck.js"></script>
@@ -115,7 +113,7 @@
                     <li class="rotated" id="layer"><div><div><a>Physical&nbsp;Features</a></div><img src="images/icons/puk-icon-white.png" alt="" title="" width="20px"></div></li>
                 </ul>
 
-                <section id="layer-puck-container"></section>
+                <section id="layer-puck-container" class="removable-displays-container"></section>
 			</section>
 			<section id="sidebar-right" class="sidebar">
 				<ul class="list-vertical">
@@ -138,13 +136,27 @@
 					<p>Identifying Areas for Improvement</p>
 					<img src="images/icons/cross.png" alt="Close" value="4" class="close-button">
 				</section>
-				<section>
+				<section class="output-map-container">
                     <div><a>Nitrate Watershed Percent Contribution</a></div>
                     <div id="nitrate-output-map" class="output-map"></div>
-                    <div id="nitrate-stat-table" class="output-map-stat-table">
+                    <!--<div id="nitrate-stat-table" class="output-map-stat-table">
                         <div id="watershed-percent-stat"><a></a></div>
-                    </div>
+                    </div>-->
 				</section>
+                <section class="output-map-container">
+                    <div><a>Gross Erosion</a></div>
+                    <div id="erosion-output-map" class="output-map"></div>
+                    <!--<div id="erosion-stat-table" class="output-map-stat-table">
+                        <div id="erosion-stat"><a></a></div>
+                    </div>-->
+                </section>
+                <section class="output-map-container">
+                    <div><a>Phosphorus Index Risk Assessment</a></div>
+                    <div id="risk-assessment-output-map" class="output-map"></div>
+                    <!--<div id="risk-assessment-stat-table" class="output-map-stat-table">
+                        <div id="risk-assessment-stat"><a></a></div>
+                    </div>-->
+                </section>
 			</section>
         <section id="fact-sheet" class="print-view">
             <div><img src="images/icons/cross.png" id="close" alt="close" class="close-button"></div>

@@ -840,8 +840,8 @@ h1
 
 #improveBox
 {
-    width:50%;
-    height: 500px;
+    width:75%;
+    height: 700px;
 }
 
 .index-map
@@ -1121,18 +1121,31 @@ iframe
 }
 
 /* ------- Output Map -------- */
+.output-map-container {
+    width: 49%;
+    float: left;
+}
+
+.output-map {
+    width: 350px;
+    height: 250px;
+    float: left;
+}
+
+.output-map-stat-table {
+    width: 200px;
+    height: 250px;
+    float:left;
+}
+
 #nitrate-output-map
 {
-    width: 350px;
-    height: 300px;
-    float: left;
+
 }
 
 #nitrate-stat-table
 {
-    width: 200px;
-    height: 300px;
-    float:left;
+
 }
 
 .output-map-rect:hover

@@ -7,29 +7,48 @@ var OutputMap = function () {
     subwatershed = global.data[global.year].subwatershed.data,
     wp = global.watershedPercent,
     SCALE = 3,
+    cellWidth = SCALE * 3,
+    cellHeight = SCALE * 2,
     basedata = global.data[global.year].baselandcover.data,
-    LEN = basedata.length;
+    LEN = basedata.length,
+    grossErosionData = global.grossErosion,
+    riskAssessmentData = global.riskAssessment,
+    svgWidth = 350, svgHeight = 250;
 
   var nitrates = d3.select("#nitrate-output-map")
     .append("svg")
     .attr("id", "nitrate-svg")
-    .attr("width", 350)
-    .attr("height", 300);
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
+
+  var erosion = d3.select("#erosion-output-map")
+    .append("svg")
+    .attr("id", "erosion-svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
+
+  var riskAssessment = d3.select("#risk-assessment-output-map")
+    .append("svg")
+    .attr("id", "risk-assessment-svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
 
   var colors = {
-    nitrates: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"]
+    nitrates: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"],
+    erosion: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"],
+    risk: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"]
   };
 
-  function DrawNitrateCell(i) {
+  function drawNitrateCell(i) {
     nitrates.append("rect")
       .attr("x", function () {
-        return coldata[i] * 3 * SCALE;
+        return coldata[i] * cellWidth;
       })
       .attr("y", function () {
-        return rowdata[i] * 2 * SCALE;
+        return rowdata[i] * cellHeight;
       })
-      .attr("width", 3 * SCALE)
-      .attr("height", 2 * SCALE)
+      .attr("width", cellWidth)
+      .attr("height", cellHeight)
       .style("fill", function () {
         return retColor(i);
       })
@@ -50,41 +69,147 @@ var OutputMap = function () {
     }
   }
 
-  function DrawNitrateKey() {
+  function drawErosionCell(i) {
+    erosion.append("rect")
+      .attr("x", function() {
+        return coldata[i] * cellWidth;
+      })
+      .attr("y", function() {
+        return rowdata[i] * cellHeight;
+      })
+      .attr("width", cellWidth)
+      .attr("height", cellHeight)
+      .style("fill", function() {
+        return retColor(i);
+      })
+      .attr("id", function() {
+        return grossErosionData[i];
+      })
+      .attr("class", "output-map-rect");
+
+    function retColor(i) {
+      return colors.erosion[grossErosionData[i]];
+    }
+  }
+
+  function drawRiskAssessmentCell(i) {
+    riskAssessment.append("rect")
+      .attr("x", function() {
+        return coldata[i] * cellWidth;
+      })
+      .attr("y", function() {
+        return rowdata[i] * cellHeight;
+      })
+      .attr("width", cellWidth)
+      .attr("height", cellHeight)
+      .style("fill", function() {
+        return retColor(i);
+      })
+      .attr("id", function() {
+        return riskAssessmentData[i];
+      })
+      .attr("class", "output-map-rect");
+
+    function retColor(i) {
+      if(riskAssessmentData[i] === "Very Low") return colors.risk[0];
+      else if(riskAssessmentData[i] === "Low") return colors.risk[1];
+      else if(riskAssessmentData[i] === "Medium") return colors.risk[2];
+      else if(riskAssessmentData[i] === "High") return colors.risk[3];
+      else if(riskAssessmentData[i] === "Very High") return colors.risk[4];
+    }
+  }
+
+  function drawKeys() {
     var key = {
-      0: {
-        x: 250,
-        y: 100,
-        text: "0 - 5%"
+      nitrates: {
+        0: {
+          x: 250,
+          y: 100,
+          text: "0 - 5%"
+        },
+        1: {
+          x: 250,
+          y: 125,
+          text: "5 - 10%"
+        },
+        2: {
+          x: 250,
+          y: 150,
+          text: "10 - 20%"
+        },
+        3: {
+          x: 250,
+          y: 175,
+          text: "20 - 15%"
+        },
+        4: {
+          x: 250,
+          y: 200,
+          text: "> 25%"
+        }
       },
-      1: {
-        x: 250,
-        y: 125,
-        text: "5 - 10%"
+      erosion: {
+        0: {
+          x: 250,
+          y: 100,
+          text: "> 2"
+        },
+        1: {
+          x: 250,
+          y: 125,
+          text: "0.1 - 2"
+        },
+        2: {
+          x: 250,
+          y: 150,
+          text: "0.1 - 0.025"
+        },
+        3: {
+          x: 250,
+          y: 175,
+          text: "0.025 - 0.001"
+        },
+        4: {
+          x: 250,
+          y: 200,
+          text: "< 0.001"
+        }
       },
-      2: {
-        x: 250,
-        y: 150,
-        text: "10 - 20%"
-      },
-      3: {
-        x: 250,
-        y: 175,
-        text: "20 - 15%"
-      },
-      4: {
-        x: 250,
-        y: 200,
-        text: "> 25%"
+      risk: {
+        0: {
+          x: 250,
+          y: 100,
+          text: "Very Low"
+        },
+        1: {
+          x: 250,
+          y: 125,
+          text: "Low"
+        },
+        2: {
+          x: 250,
+          y: 150,
+          text: "Medium"
+        },
+        3: {
+          x: 250,
+          y: 175,
+          text: "High"
+        },
+        4: {
+          x: 250,
+          y: 200,
+          text: "Very High"
+        }
       }
     };
     for (var i = 0; i < colors.nitrates.length; i++) {
       nitrates.append("rect")
         .attr("x", function () {
-          return key[i].x;
+          return key.nitrates[i].x;
         })
         .attr("y", function () {
-          return key[i].y;
+          return key.nitrates[i].y;
         })
         .attr("width", 10)
         .attr("height", 10)
@@ -93,29 +218,77 @@ var OutputMap = function () {
         });
       nitrates.append("text")
         .attr("x", function () {
-          return key[i].x + 15;
+          return key.nitrates[i].x + 15;
         })
         .attr("y", function () {
-          return key[i].y + 10;
+          return key.nitrates[i].y + 10;
         })
         .attr("text-anchor", "start")
         .text(function () {
-          return key[i].text;
+          return key.nitrates[i].text;
+        });
+
+      erosion.append("rect")
+        .attr("x", function () {
+          return key.erosion[i].x;
+        })
+        .attr("y", function () {
+          return key.erosion[i].y;
+        })
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("fill", function () {
+          return colors.erosion[i];
+        });
+      erosion.append("text")
+        .attr("x", function () {
+          return key.erosion[i].x + 15;
+        })
+        .attr("y", function () {
+          return key.erosion[i].y + 10;
+        })
+        .attr("text-anchor", "start")
+        .text(function () {
+          return key.erosion[i].text;
+        });
+
+      riskAssessment.append("rect")
+        .attr("x", function () {
+          return key.risk[i].x;
+        })
+        .attr("y", function () {
+          return key.risk[i].y;
+        })
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("fill", function () {
+          return colors.risk[i];
+        });
+      riskAssessment.append("text")
+        .attr("x", function () {
+          return key.risk[i].x + 15;
+        })
+        .attr("y", function () {
+          return key.risk[i].y + 10;
+        })
+        .attr("text-anchor", "start")
+        .text(function () {
+          return key.risk[i].text;
         });
     }
   }
 
-  function init() {
-    console.log(LEN);
+  this.draw = function() {
+
     for (var i = 0; i < LEN; i++) {
       if (basedata[i] != undefined) {
-        DrawNitrateCell(i);
+        drawNitrateCell(i);
+        drawErosionCell(i);
+        drawRiskAssessmentCell(i);
       }
     }
-    DrawNitrateKey();
+    drawKeys();
   }
-
-  init();
 
   $("#nitrate-svg rect").hover(function () {
       var i = $("#nitrate-svg rect").index(this);
@@ -132,6 +305,8 @@ var OutputMap = function () {
 
   this.dealloc = function () {
     nitrates.remove();
+    erosion.remove();
+    riskAssessment.remove();
   }
 }
 var Maps = function () {
