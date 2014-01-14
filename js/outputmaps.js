@@ -88,7 +88,7 @@ var OutputMap = function () {
       .attr("class", "output-map-rect");
 
     function retColor(i) {
-      return colors.erosion[grossErosionData[i]];
+      return colors.erosion[grossErosionData[i] - 1];
     }
   }
 
@@ -152,12 +152,12 @@ var OutputMap = function () {
         0: {
           x: 250,
           y: 100,
-          text: "> 2"
+          text: "< 0.001"
         },
         1: {
           x: 250,
           y: 125,
-          text: "0.1 - 2"
+          text: "0.025 - 0.001"
         },
         2: {
           x: 250,
@@ -167,12 +167,12 @@ var OutputMap = function () {
         3: {
           x: 250,
           y: 175,
-          text: "0.025 - 0.001"
+          text: "0.1 - 2"
         },
         4: {
           x: 250,
           y: 200,
-          text: "< 0.001"
+          text: "> 2"
         }
       },
       risk: {

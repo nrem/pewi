@@ -1214,7 +1214,7 @@ var Erosion = function () {
       streamnetwork = getSubdataValueWithName("streamnetwork", global.year),
       subwatershed = getSubdataValueWithName("subwatershed", global.year),
       wetland = getSubdataValueWithName("wetland", global.year),
-      distanceToStream = 1000000,
+      distanceToStream = [],
       cols = 23,
       rows = 36,
       subwatersheds = [],
@@ -1223,14 +1223,15 @@ var Erosion = function () {
       subwatershedErosionComponent = 0,
       pIndex = [],
       risk = [], grossErosion = [], sedimentDelivered, phosBufferedStreamMultiplier = [],
-      phosphorusWetlandMultiplier = [];
+      phosphorusWetlandMultiplier = [], phosphorusLoad = 0;
 
     for (var i = 0; i < subwatershedArea.length; i++) {
       var arr = {
         erosion: 0,
         runoff: 0,
         drainage: 0,
-        pindex: 0
+        pindex: 0,
+        streamMultiplier: 0
       };
       subwatersheds.push(arr);
     }
@@ -1242,10 +1243,11 @@ var Erosion = function () {
       subwatersheds[subwatershed[i]].runoff += runoffComponent(i);
       subwatersheds[subwatershed[i]].drainage += subsurfaceDrainageComponent(i);
       grossErosion[i] = calculateGrossErosion(grossErosionIndex(i));
-      subwatersheds[subwatershed[i]].pindex += subwatersheds[subwatershed[i]].erosion + subwatersheds[subwatershed[i]].runoff + subwatersheds[subwatershed[i]].drainage;
       phosphorusWetlandMultiplier[subwatershed[i]] += pWetlandMultiplier(i);
       pIndex[i] = phosphorusIndex(i);
+      subwatersheds[subwatershed[i]].pindex += pIndex[i];
       risk[i] = pIndexRiskAssessment(pIndex[i]);
+      subwatersheds[subwatershed[i]].streamMultiplier += pBufferedStreamMultiplier(i);
     };
 
     this.calculateStepOne = function () {
@@ -1256,15 +1258,24 @@ var Erosion = function () {
       subwatershedRunoffComponent += (subwatersheds[j].runoff*subwatershedArea[j])/area;
       subwatershedErosionComponent += (subwatersheds[j].erosion*subwatershedArea[j])/area;
       pIndex += subwatershedSubsurfaceDrainageComponent+subwatershedRunoffComponent+subwatershedErosionComponent;
+      phosphorusLoad += subwatershedPhosphorusLoad(j);
     };
     this.calculateStepThree = function() {
       global.grossErosion = grossErosion;
       global.riskAssessment = risk;
-      //console.log(pIndex);
-      //console.log(risk);
-      //console.log(grossErosion);
+      global.phosphorusLoad = phosphorusLoad;
+      console.log("P-index: ", pIndex);
+      console.log("Risk assessment: ",risk);
+      console.log("Gross erosion: ",grossErosion);
+      console.log("Phosphorus load: ",phosphorusLoad);
     };
 
+    function subwatershedSedimentDelivered(j) {
+
+    }
+    function subwatershedPhosphorusLoad(j) {
+      return phosBufferedStreamMultiplier[j] * phosphorusWetlandMultiplier[j] * subwatersheds[j].pindex * area;
+    }
     function calculateGrossErosion(erosion) {
       if(erosion >= 2) return 5;
       else if(erosion < 2 && erosion >= 0.1) return 4;
@@ -1293,28 +1304,28 @@ var Erosion = function () {
     }
     function pBufferedStreamMultiplier(j) {
       if(streamnetwork[j - cols - 1] != undefined && isNaN(streamnetwork[j - cols - 1]) && streamnetwork[j - cols - 1] > 0) {
-        phosBufferedStreamMultiplier[j] += (checkIfPassesLandcoverTest(streamnetwork[j - cols - 1]) ? 1 : 0);
+        return (checkIfPassesLandcoverTest(streamnetwork[j - cols - 1]) ? 1 : 0);
       }
       if(streamnetwork[j - cols] != undefined && isNaN(streamnetwork[j - cols]) && streamnetwork[j - cols] > 0) {
-        phosBufferedStreamMultiplier[j] += (checkIfPassesLandcoverTest(streamnetwork[j - cols]) ? 1 : 0);
+        return (checkIfPassesLandcoverTest(streamnetwork[j - cols]) ? 1 : 0);
       }
       if(streamnetwork[j - cols + 1] != undefined && isNaN(streamnetwork[j - cols + 1]) && streamnetwork[j - cols + 1] > 0) {
-        phosBufferedStreamMultiplier[j] += (checkIfPassesLandcoverTest(streamnetwork[j - cols + 1]) ? 1 : 0);
+        return (checkIfPassesLandcoverTest(streamnetwork[j - cols + 1]) ? 1 : 0);
       }
       if(streamnetwork[j - 1] != undefined && isNaN(streamnetwork[j - 1]) && streamnetwork[j - 1] > 0) {
-        phosBufferedStreamMultiplier[j] += (checkIfPassesLandcoverTest(streamnetwork[j - 1]) ? 1 : 0);
+        return (checkIfPassesLandcoverTest(streamnetwork[j - 1]) ? 1 : 0);
       }
       if(streamnetwork[j + 1] != undefined && isNaN(streamnetwork[j + 1]) && streamnetwork[j + 1] > 0) {
-        phosBufferedStreamMultiplier[j] += (checkIfPassesLandcoverTest(streamnetwork[j + 1]) ? 1 : 0);
+        return (checkIfPassesLandcoverTest(streamnetwork[j + 1]) ? 1 : 0);
       }
       if(streamnetwork[j + cols - 1] != undefined && isNaN(streamnetwork[j + cols - 1]) && streamnetwork[j + cols - 1] > 0) {
-        phosBufferedStreamMultiplier[j] += (checkIfPassesLandcoverTest(streamnetwork[j + cols - 1]) ? 1 : 0);
+        return (checkIfPassesLandcoverTest(streamnetwork[j + cols - 1]) ? 1 : 0);
       }
       if(streamnetwork[j + cols] != undefined && isNaN(streamnetwork[j + cols]) && streamnetwork[j + cols] > 0) {
-        phosBufferedStreamMultiplier[j] += (checkIfPassesLandcoverTest(streamnetwork[j + cols]) ? 1 : 0);
+        return (checkIfPassesLandcoverTest(streamnetwork[j + cols]) ? 1 : 0);
       }
       if(streamnetwork[j + cols + 1] != undefined && isNaN(streamnetwork[j + cols + 1]) && streamnetwork[j + cols + 1] > 0) {
-        phosBufferedStreamMultiplier[j] += (checkIfPassesLandcoverTest(streamnetwork[j + cols + 1]) ? 1 : 0);
+        return (checkIfPassesLandcoverTest(streamnetwork[j + cols + 1]) ? 1 : 0);
       }
 
       function checkIfPassesLandcoverTest(dataPoint) {
@@ -1519,7 +1530,8 @@ var Erosion = function () {
       for(var j=0; j<global.streamIndices[global.year].count; j++) {
         temp = ((Math.sqrt(43600*(10/6))*2*(row(global.streamIndices[global.year][j])-row(i))) ^ 2) +
           ((Math.sqrt(43600*(10/6))*3*(column(global.streamIndices[global.year][j])-column(i))) ^ 2);
-        distanceToStream = Math.min(temp, distanceToStream);
+        if(distanceToStream[i] != undefined) distanceToStream[i] = Math.min(temp, distanceToStream[i]);
+        else distanceToStream[i] = temp;
       }
     }
     function row(x) {
@@ -1534,19 +1546,19 @@ var Erosion = function () {
         else if(landcover[i] >= 8 && landcover[i] <= 15) return 0.5;
       }
       return 1;
-    }
+    } // For every land cover point
     function enrichmentFactor(i) {
       if(landcover[i] == 1 || landcover[i] == 3 || landcover[i] == 15) return 1.1;
       return 1.3;
-    }
+    } // For every land cover point
     function soilTestPErosionFactor(i) {
       if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 0.83;
       else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 0.82;
-    }
+    } // For every land cover point
     function runoffFactor(i) {
       var temp = runoffCurveNumber(i);
       return (0.000000799 * (temp ^ 3)) - (0.0000484 * (temp ^ 2)) + (0.00265 * temp - 0.085)
-    }
+    } // For every land cover point
     function runoffCurveNumber(i) {
       if(landcover[i] == 1 || landcover[i] == 3 || landcover[i] == 15) {
         if(topography[i] == 0 || topography[i] == 1) {
@@ -1606,15 +1618,15 @@ var Erosion = function () {
         else if(soiltype[i] == 'C') return 70;
         else if(soiltype[i] == 'D') return 77;
       } return 1;
-    }
-    function precipitationFactor(i) {
+    } // For every land cover point
+    function precipitationFactor() {
       if(global.year == 1) {
         return ((global.precipitation[global.year] + global.precipitation[global.year] + 34.7 * 28) / 30) / 4.415;
       }
-    }
+    } // Once
     function pApplicationFactor(i) {
       return pApplicationRate(i) * 0.6 * 0.005;
-    }
+    } // For every land cover point
     function pApplicationRate(i) {
       if (landcover[i] == 1) {
         if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 59;
@@ -1705,7 +1717,7 @@ var Erosion = function () {
         return 1.95;
       }
       return 1;
-    }
+    } // For every land cover point
     function flowFactor(i) {
       if (topoSlopeRangeHigh[i] <= 5 && drainageclass[i] >= 60) {
         if (subsoilGroup[i] == 1 || subsoilGroup[i] == 2) {
@@ -1716,5 +1728,5 @@ var Erosion = function () {
       } else {
         return 0;
       }
-    }
+    } // For every land cover point
   };
