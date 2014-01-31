@@ -14,6 +14,8 @@ var OutputMap = function () {
     grossErosionData = global.grossErosion,
     riskAssessmentData = global.riskAssessment,
     svgWidth = 350, svgHeight = 250;
+    
+  
 
   var nitrates = d3.select("#nitrate-output-map")
     .append("svg")
@@ -365,8 +367,7 @@ var Maps = function () {
      .attr("height", options.height)
      .style("fill", "url(#watershed-pattern)");//*/
     centerElement($(window), $("#watershed1"));
-
-    var w = 30, h = 20;
+    var w = options.rectWidth, h = options.rectHeight;
     initCalcs();
     for (var i = 0; i < options.landcover.length; i++) {
       if (options.landcover[i] != undefined) {

@@ -1179,3 +1179,21 @@ iframe
     left: 500px;
     top: 300px;
 }
+
+/*------ Credits -----------*/
+.credits-button-img {
+    opacity: 0.5;
+    width: 2.5em;
+    height: 2.5em;
+    position: absolute;
+    right: 0.5em;
+    top: 0.5em;
+    cursor: pointer;
+    display: none;
+}
+
+.credits-button-img:hover {
+    opacity: 1;
+    width: 3em;
+    height: 3em;
+}

@@ -9,17 +9,17 @@ var ModalView = function(options) {
     var close_button_url = "images/icons/navigation/close_black.png",
             $container, $body;
     $("#main").append('<div id="popup-container" class="popup-window"></div>');
-        $("#popup-container").width(this.width).height(this.height);
-        $container = $("#popup-container");
-        $container.append('<div id="popup-container-head" class="popup-window-head"></div>');
-        $("#popup-container-head").append("<a>" + this.title + "</a>");
-        $("#popup-container-head").append('<img src="' + close_button_url + '" class="popup-window-close-button" id="popup-container-head-close-button">');
-        $container.append('<div id="popup-container-body" class="popup-window-body"></div>');
-        $body = $("#popup-container-body");
+    $("#popup-container").width(this.width).height(this.height);
+    $container = $("#popup-container");
+    $container.append('<div id="popup-container-head" class="popup-window-head"></div>');
+    $("#popup-container-head").append("<a>" + this.title + "</a>");
+    $("#popup-container-head").append('<img src="' + close_button_url + '" class="popup-window-close-button" id="popup-container-head-close-button">');
+    $container.append('<div id="popup-container-body" class="popup-window-body"></div>');
+    $body = $("#popup-container-body");
     
     this.display = function() {
         centerize();
-        $container.show("slide", {direction: "right"}, 500);
+        $container.show("slide", {direction: "right"}, 500);        
     };
     this.dispose = function() {
         console.log("Here");
