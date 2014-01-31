@@ -20,10 +20,10 @@ var ModalView = function (options) {
 
     this.display = function () {
         centerize();
-        $container.show("slide", {direction: "right"}, 500);
+//        $container.show("slide", {direction: "right"}, 500);
+        $container.fadeIn();
     };
     this.dispose = function () {
-        console.log("Here");
         $("#main").remove("#popup-container");
     }
     this.append = function ($element) {
@@ -36,7 +36,6 @@ var ModalView = function (options) {
     }
 
     $(".popup-window-close-button").click(function () {
-        console.log("here");
         var id = $(this).attr("id");
         var parent = $("#" + id + "-mini-map");
         $("#popup-container").remove();
