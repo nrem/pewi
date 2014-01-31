@@ -3,6 +3,7 @@
 <head>
     <meta http-equiv=”X-UA-Compatible” content=”chrome=1;IE=edge”>
     <title>PE/WI 2 Work Space Index</title>
+    <meta name="descript" content="A dynamic watershed.">
     <link rel="stylesheet" href="css/style.css" />
     <script src="js/jquery-1.10.2.min.js"></script>
     <script src="js/jquery-ui.js"></script>
@@ -14,6 +15,8 @@
     <script src="js/colorbrewer.js"></script>
     <script src="js/factsheet.js"></script>
     <script src="js/outputmaps.js"></script>
+    <script src="js/score_script.js"></script>
+    <script src="js/views.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
 			go();
@@ -33,13 +36,13 @@
 	<section id="main" style="display:none">
 		<div id="popup-overlay"></div>
 			
-			<section id="optionsBox" class="popup-window">
+<!--			<section id="optionsBox" class="popup-window">
 				<ul id="option-options">
 					<li><img src="images/icons/buttons_New.svg"></li>
 					<li><img src="images/icons/buttons_Copy.svg"></li>
 					<li><img src="images/icons/buttons_Restart.svg"></li>
 				</ul>
-			</section>
+			</section>-->
 			<section id="workspace">
             <div id="divcontainer"></div>
                 <!--<img src="images/border/Animation_Watershed_Border.png">-->
@@ -122,41 +125,41 @@
                     <li id="results-tab" class="rotated"><!--<article id="improve-selection-helper" class="helper-box">Spatially displayed<br />output maps</article>--><div><div><a id="facts">Results</a></div></div></li>
 				</ul>
 			</section>
-			<section id="scoreBox" class="popup-window">
+<!--			<section id="scoreBox" class="popup-window">
 				<section id="improve-head">
 					<p>Land Use Outputs</p>
-					<img src="images/icons/cross.png" alt="Close" value="3" class="close-button">
+					<img src="images/icons/navigation/close_black.png" alt="Close" value="3" class="close-button">
 				</section>
 				<div id="bubble" class="plot"></div>
-				<!--<div id="summary-help" class="tooltip" style="display:none">LKNADF"LKANFNADFKNADFLKnL"</div>-->
+				<div id="summary-help" class="tooltip" style="display:none">LKNADF"LKANFNADFKNADFLKnL"</div>
 				<script src="js/score_script.js"></script>
-			</section>
-			<section id="improveBox" class="popup-window">
+			</section>-->
+<!--			<section id="improveBox" class="popup-window">
 				<section id="improve-head">
 					<p>Identifying Areas for Improvement</p>
-					<img src="images/icons/cross.png" alt="Close" value="4" class="close-button">
+					<img src="images/icons/navigation/close_black.png" alt="Close" value="4" class="close-button">
 				</section>
 				<section class="output-map-container">
                     <div><a>Nitrate Watershed Percent Contribution</a></div>
                     <div id="nitrate-output-map" class="output-map"></div>
-                    <!--<div id="nitrate-stat-table" class="output-map-stat-table">
+                    <div id="nitrate-stat-table" class="output-map-stat-table">
                         <div id="watershed-percent-stat"><a></a></div>
-                    </div>-->
+                    </div>
 				</section>
                 <section class="output-map-container">
                     <div><a>Gross Erosion</a></div>
                     <div id="erosion-output-map" class="output-map"></div>
-                    <!--<div id="erosion-stat-table" class="output-map-stat-table">
+                    <div id="erosion-stat-table" class="output-map-stat-table">
                         <div id="erosion-stat"><a></a></div>
-                    </div>-->
+                    </div>
                 </section>
                 <section class="output-map-container">
                     <div><a>Phosphorus Index Risk Assessment</a></div>
                     <div id="risk-assessment-output-map" class="output-map"></div>
-                    <!--<div id="risk-assessment-stat-table" class="output-map-stat-table">
+                    <div id="risk-assessment-stat-table" class="output-map-stat-table">
                         <div id="risk-assessment-stat"><a></a></div>
-                    </div>-->
-                </section>
+                    </div>
+                </section>-->
 			</section>
         <section id="fact-sheet" class="print-view">
             <div><img src="images/icons/cross.png" id="close" alt="close" class="close-button"></div>
