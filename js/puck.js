@@ -3,8 +3,8 @@
  */
 
 function togglePuk(type, coords) {
-    if(type == "layer") {
-        if(!$("#layer-puck-container").is(":visible")) {
+    if (type == "layer") {
+        if (!$("#layer-puck-container").is(":visible")) {
             $("#layer-puck-container").show();
             initLayerPuk();
         } else {
@@ -12,8 +12,8 @@ function togglePuk(type, coords) {
             d3.select("#pfeature").remove();
         }
     }
-    else if(type == "rclick") {
-        if(!$("#rclick-puk-container").is(":visible")) {
+    else if (type == "rclick") {
+        if (!$("#rclick-puk-container").is(":visible")) {
             $("#rclick-puk-container").show();
             initRclickPuk();
         } else {
@@ -28,7 +28,7 @@ function togglePuk(type, coords) {
             .attr("width", "100%")
             .attr("height", "100%")
             .attr("id", "pfeature")
-            .attr("class","removable-displays");
+            .attr("class", "removable-displays");
 
         var center = centerOfElement($("#pfeature"));
 
@@ -72,21 +72,29 @@ function togglePuk(type, coords) {
             };
 
         /*puck.append("circle")
-            .style("fill", "#333")
-            .attr("cx", center.x)
-            .attr("cy", center.y)
-            .attr("r", 20)
-            .attr("id", "puck-center")
-            .attr("class", "puck-center-empty");
-        */
+         .style("fill", "#333")
+         .attr("cx", center.x)
+         .attr("cy", center.y)
+         .attr("r", 20)
+         .attr("id", "puck-center")
+         .attr("class", "puck-center-empty");
+         */
 
-        for(var key in features) {
+        for (var key in features) {
             var node = puck.append("rect")
-                .attr("x", function() {return features[key].x})
-                .attr("y", function() {return features[key].y})
-                .attr("width", function() {return features[key].width})
+                .attr("x", function () {
+                    return features[key].x
+                })
+                .attr("y", function () {
+                    return features[key].y
+                })
+                .attr("width", function () {
+                    return features[key].width
+                })
                 .attr("height", 20)
-                .attr("id", function() {return features[key].name + "-rect"})
+                .attr("id", function () {
+                    return features[key].name + "-rect"
+                })
                 .attr("class", "puk-rect")
                 .style("fill", "#333")
                 .style("opacity", "0.8")
@@ -94,43 +102,52 @@ function togglePuk(type, coords) {
 
             puck.append("text")
                 .style("fill", "white")
-                .attr("id", function() {return features[key].id})
-                .attr("x", function() {return features[key].x})
-                .attr("y", function() {return features[key].y + 16})
+                .attr("id", function () {
+                    return features[key].id
+                })
+                .attr("x", function () {
+                    return features[key].x
+                })
+                .attr("y", function () {
+                    return features[key].y + 16
+                })
                 .attr("text-anchor", "start")
-                .text(function() {return features[key].name})
+                .text(function () {
+                    return features[key].name
+                })
                 .attr("class", "selectable-feature");
         }
 
-        $("#pfeature").mousemove(function(e) {
-                puck.select("line").remove();
-                var offset = $("#pfeature").offset();
-                var mouse = {
-                    x: e.pageX - offset.left,
-                    y: e.pageY - offset.top
-                };
-                puck.append("line")
-                    .attr("x1", coords.x)
-                    .attr("y1", coords.y)
-                    .attr("x2", mouse.x - 2)
-                    .attr("y2", mouse.y)
-                    .style("stroke", "#cccc00")
-                    .style("stroke-width", "3")
-                  .attr("id","pfeature-indicator-line");
-            })/*.mouseout(function(){puck.select("line").remove();})*/;
+        $("#pfeature").mousemove(function (e) {
+            puck.select("line").remove();
+            var offset = $("#pfeature").offset();
+            var mouse = {
+                x: e.pageX - offset.left,
+                y: e.pageY - offset.top
+            };
+            puck.append("line")
+                .attr("x1", coords.x)
+                .attr("y1", coords.y)
+                .attr("x2", mouse.x - 2)
+                .attr("y2", mouse.y)
+                .style("stroke", "#cccc00")
+                .style("stroke-width", "3")
+                .attr("id", "pfeature-indicator-line");
+        })/*.mouseout(function(){puck.select("line").remove();})*/;
 
         $(".selectable-feature")
-            .click(function() {
+            .click(function () {
                 var id = $(this).attr("id");
                 displayMiniMap(id);
                 $("#layer-puck-container").hide();
                 puck.select("#pfeature-indicator-line").remove();
                 d3.select("#pfeature").remove();
             });
-            //*/
+        //*/
 
 
     }
+
     function initRclickPuk() {
         var puck = d3.select("#rclick-puk-container")
             .append("svg")
@@ -244,7 +261,7 @@ function togglePuk(type, coords) {
                 prairie: {
                     name: "Prairie",
                     x: center.x + 115,
-                    y: center.y +15,
+                    y: center.y + 15,
                     width: 150,
                     id: "prairie-landcover",
                     url: "images/toolbar_icons_bitmaps/Icon_Prairie.png",
@@ -279,7 +296,7 @@ function togglePuk(type, coords) {
                 }//*/
             };
 
-        for(var key in features) {
+        for (var key in features) {
             //console.log(features[key].name);
             var g = puck.append("g");
 
@@ -289,46 +306,58 @@ function togglePuk(type, coords) {
                 .attr("patternUnits", "userSpaceOnUse")
                 .attr("height", "40")
                 .attr("width", "40")
-                .attr("x", function() {return features[key].x + 20;})
-                .attr("y", function() {return features[key].y + 20;})
+                .attr("x", function () {
+                    return features[key].x + 20;
+                })
+                .attr("y", function () {
+                    return features[key].y + 20;
+                })
                 .append("svg:image")
                 .attr("x", "0")
                 .attr("y", "0")
-                .attr("xlink:href", function() {return features[key].url;})
+                .attr("xlink:href", function () {
+                    return features[key].url;
+                })
                 .attr("width", "40")
                 .attr("height", "40");
 
             g.append("circle")
                 .attr("id", "quick-puk-circle")
-                .attr("cx", function() {return features[key].x;})
-                .attr("cy", function() {return features[key].y;})
+                .attr("cx", function () {
+                    return features[key].x;
+                })
+                .attr("cy", function () {
+                    return features[key].y;
+                })
                 .attr("r", "20")
                 .attr("fill", "url(#landcover-image)")
-                .attr("data",function() {return features[key].val;});
+                .attr("data", function () {
+                    return features[key].val;
+                });
 
             /*var node = puck.append("rect")
-                .attr("x", function() {return features[key].x})
-                .attr("y", function() {return features[key].y})
-                .attr("width", function() {return features[key].width})
-                .attr("height", 20)
-                .attr("id", function() {return features[key].name + "-rect"})
-                .attr("class", "puk-rect")
-                .style("fill", "#333")
-                .style("opacity", "0.8")
-                .style("border", "2px solid #cccc00");
+             .attr("x", function() {return features[key].x})
+             .attr("y", function() {return features[key].y})
+             .attr("width", function() {return features[key].width})
+             .attr("height", 20)
+             .attr("id", function() {return features[key].name + "-rect"})
+             .attr("class", "puk-rect")
+             .style("fill", "#333")
+             .style("opacity", "0.8")
+             .style("border", "2px solid #cccc00");
 
-            puck.append("text")
-                .style("fill", "white")
-                .attr("id", function() {return features[key].id})
-                .attr("x", function() {return features[key].x})
-                .attr("y", function() {return features[key].y + 16})
-                .attr("text-anchor", "start")
-                .text(function() {return features[key].name})
-                .attr("class", "selectable-feature");
-                */
+             puck.append("text")
+             .style("fill", "white")
+             .attr("id", function() {return features[key].id})
+             .attr("x", function() {return features[key].x})
+             .attr("y", function() {return features[key].y + 16})
+             .attr("text-anchor", "start")
+             .text(function() {return features[key].name})
+             .attr("class", "selectable-feature");
+             */
         }
 
-        $("#rclick").mousemove(function(e) {
+        $("#rclick").mousemove(function (e) {
             puck.select("line").remove();
             var offset = $("#rclick").offset();
             var mouse = {
@@ -338,17 +367,17 @@ function togglePuk(type, coords) {
             //console.log(e.pageX, e.pageY);
             //console.log(offset.left, offset.top);
             /*puck.append("line")
-                .attr("x1", coords.x - offset.left)
-                .attr("y1", coords.y - offset.top)
-                .attr("x2", mouse.x - 5)
-                .attr("y2", mouse.y)
-                .style("stroke", "#cccc00")
-                .style("stroke-width", "3");
-                */
+             .attr("x1", coords.x - offset.left)
+             .attr("y1", coords.y - offset.top)
+             .attr("x2", mouse.x - 5)
+             .attr("y2", mouse.y)
+             .style("stroke", "#cccc00")
+             .style("stroke-width", "3");
+             */
         });
 
         $(".selectable-feature")
-            .click(function() {
+            .click(function () {
                 var id = $(this).attr("id");
                 displayPuk(id);
                 $("#rclick-puk-container").hide();
@@ -357,8 +386,8 @@ function togglePuk(type, coords) {
             });
 
         var quickpuk = -1;
-        $("#quick-puk-circle").click( function(e){
-            if(e.which == 3) {
+        $("#quick-puk-circle").click(function (e) {
+            if (e.which == 3) {
                 //$(this).toggleClass("highlighted");
                 var i = $("#quick-puk-circle").index(this);
                 //console.log(this);
@@ -367,15 +396,16 @@ function togglePuk(type, coords) {
                 global.selectedPaint = selectedPaint;
                 updatePaintSelection();
             }
-        }).mouseenter(function(){
+        }).mouseenter(function () {
                 console.log("lkjansd");
                 var i = $("#quick-puk-circle").index(this);
                 quickpuk = parseInt($("#quick-puk-circle").eq(i).attr("value"));
                 console.log(quickpuk);
-            }).mouseleave(function(){
+            }).mouseleave(function () {
                 quickpuk = -1;
             });
     }
+
     function centerOfElement(element) {
         var $this = element;
         var offset = $this.offset();
@@ -387,6 +417,7 @@ function togglePuk(type, coords) {
         };
         return arr;
     }
+
     function displayPuk(id) {
         alert("Display" + id);
     }
