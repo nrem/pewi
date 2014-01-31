@@ -6,10 +6,11 @@ var ModalView = function (options) {
     this.width = (options.width !== undefined) ? options.width : $(window).width() / 2;
     this.height = (options.height !== undefined) ? options.height : $(window).height() / 2;
     this.title = (options.title !== undefined) ? options.title : "Default";
+    this.scrollable = (options.scrollable !== undefined) ? options.scrollable : true;
     var close_button_url = "images/icons/navigation/close_black.png",
         $container, $body;
     $("#main").append('<div id="popup-container" class="popup-window"></div>');
-    $("#popup-container").width(this.width).height(this.height);
+    $("#popup-container").width(this.width).height(this.height).css("overflow", this.scrollable);
     $container = $("#popup-container");
     $container.append('<div id="popup-container-head" class="popup-window-head"></div>');
     $("#popup-container-head").append("<a>" + this.title + "</a>");
@@ -55,13 +56,10 @@ var PrintView = function () {
             height: SCREEN.height,
             title: "Results"
         },
-        modal = new ModalView(options),
-        landcover = d3.select("#percent-landcover")
-            .append("div")
-            .attr("width", "400px");
-
+        modal = new ModalView(options);
     modal.append('<section class="output-map-container"><div><a>Nitrate Watershed Percent Contribution</a></div><div id="nitrate-output-map" class="output-map"><div id="watershed-percent-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Gross Erosion</a></div><div id="erosion-output-map" class="output-map"><div id="erosion-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Phosphorus Index Risk Assessment</a></div><div id="risk-assessment-output-map" class="output-map"><div id="risk-assessment-stat"><a></a></div></div></section>');
-    modal.append('<section id="left-col"><section id="landcover-minimaps"></section><section id=""><div id="percent-landcover"></div><br /><div id="precipitation-placeholder"></div></section></section><section id="right-col"><section id="landuse-outputs"></section><br /><div id="stats"></div></section>');
+    modal.append('<section id="left-col"><section id=""><div id="precipitation-placeholder"></div></section><section id="landuse-outputs"></section><br /><div id="stats">Stats</div></section>');
+    modal.append('<section id="right-col"><div id="landcover-values"><div id="percent-landcover"></div></div></section>');
     modal.display();
 
     var scale = 2,
@@ -70,15 +68,41 @@ var PrintView = function () {
             width: scale * 3 * 23 * 2,
             height: scale * 2 * 36
         },
+        landcover = d3.select("#percent-landcover")
+                        .append("div")
+                        .attr("min-width", "400px")
+            .text("Landuse Outputs"),
         outputmap = new OutputMap(opts);
     outputmap.draw();
 
+    var head = landcover.append("div")
+        .attr("class", "row")
+        .style("min-width", "600px")
+        .style("height", "30px");
+    head.append("div")
+        .style("width", "100px")
+        .style("float", "left")
+        .style("height", "100%");
+    head.append("div")
+        .style("min-width", "9em")
+        .text("Year 1")
+        .style("float", "left");
+    head.append("div")
+        .style("min-width", "9em")
+        .text("Year 2")
+        .style("float", "left");
+    head.append("div")
+        .style("min-width", "9em")
+        .text("Year 3")
+        .style("float", "left");
+
     for (var i = 0; i < landCoverArea.length; i++) {
+        console.log(i);
         var a = 100 * (landCoverArea[i] / area);
 
         var row = landcover.append("div")
             .attr("class", "row")
-            .style("width", "400px")
+            .style("min-width", "600px")
             .style("height", "30px");
         row.append("div")
             .attr("class", "landcover-facts-header")
@@ -88,43 +112,47 @@ var PrintView = function () {
             .style("font-size", ".8em")
             .style("float", "left")
             .style("width", "100px");
-        row.append("div")
-            .attr("id", "percent-landcover-value")
-            .text(function () {
-                var b = Math.round(a);
-                if (b > 0) {
-                    return b + "%";
-                } else {
-                    return b;
-                }
-            })
-            .style("float", "left")
-            .style("width", "100px");
-        row.append("div")
-            .attr("id", "acres-landcover-value")
-            .text(function () {
-                if (landCoverArea[i] > 0) {
-                    return landCoverArea[i] + " acres";
-                } else {
-                    return landCoverArea[i];
-                }
-            })
-            .style("float", "left")
-            .style("width", "100px");
-        row.append("div")
-            .attr("id", "hectares-landcover-value")
-            .text(function () {
-                var h = Math.round(0.404686 * landCoverArea[i]);
-                if (h > 0) {
-                    return h + " hectares";
-                } else {
-                    return h;
-                }
-            })
-            .style("float", "left")
-            .style("width", "100px");
-        //$("#percent-landcover #" + i).text(Math.round(a));
-        //$("#acres #" + i).text(landCoverArea[i]);
+        for(var j=1; j < 4; j++) {
+            if(global.data[j] === 0) break;
+            var cell = row.append("div");
+            cell.append("div")
+                .attr("id", "year-" + j + "percent-landcover-value")
+                .text(function () {
+                    var b = Math.round(a);
+                    if (b > 0) {
+                        return b + "%";
+                    } else {
+                        return b;
+                    }
+                })
+                .style("float", "left")
+                .style("min-width", "3em");
+            cell.append("div")
+                .attr("id", "year-" + j + "acres-landcover-value")
+                .text(function () {
+                    if (global.landuse[j][i] > 0) {
+                        return global.landuse[j][i];// + " acres";
+                    } else {
+                        return global.landuse[j][i];
+                    }
+                })
+                .style("float", "left")
+                .style("min-width", "3em");
+            cell.append("div")
+                .attr("id", "year-" + j + "hectares-landcover-value")
+                .text(function () {
+                    var h = Math.round(0.404686 * global.landuse[j][i]);
+                    if (h > 0) {
+                        return h;// + " hectares";
+                    } else {
+                        return h;
+                    }
+                })
+                .style("float", "left")
+                .style("min-width", "3em");
+            //$("#percent-landcover #" + i).text(Math.round(a));
+            //$("#acres #" + i).text(landCoverArea[i]);
+        }
     }
 
     var stats = d3.select("#stats")
@@ -149,12 +177,15 @@ var PrintView = function () {
         .append("div")
         .style("width", "400px")
         .attr("class", "precip-table")
+        .text("Precipitation Values");
 
     for (var i = 0; i < 4; i++) {
         var row = precip.append("div")
             .attr("class", "row")
             .style("width", "400px")
-            .style("height", "30px");
+            .style("height", "30px"),
+            precip_inches = global.precipitation[i],
+            precip_cm = precip_inches * 2.54;
 
         row.append("div")
             .attr("class", "col")
@@ -167,7 +198,15 @@ var PrintView = function () {
             .style("width", "100px")
             .style("float", "left")
             .text(function () {
-                return global.precipitation[i];
+                return precip_inches.toFixed(1) + " in";
+            });
+
+        row.append("div")
+            .attr("class", "col")
+            .style("width", "100px")
+            .style("float", "left")
+            .text(function () {
+                return precip_cm.toFixed(1) + " cm";
             });
 
         row.append("div")
@@ -181,7 +220,8 @@ var PrintView = function () {
 
     var landuse = d3.select("#landuse-outputs")
         .append("div")
-        .style("width", "455px");
+        .style("width", "455px")
+        .text("Index Values");
 
     var r = landuse.append("div")
         .attr("class", "row")
@@ -219,6 +259,15 @@ var PrintView = function () {
             .attr("class", "row")
             .style("width", "450px")
             .style("height", "30px");
+
+//        row.append("div")
+//            .attr("class", "col")
+//            .style("width", "150px")
+//            .style("float", "left")
+//            .style("font-size", ".8em")
+//            .text(function() {
+//                return 0;
+//            });
 
         row.append("div")
             .attr("class", "col")

@@ -884,7 +884,7 @@ circle {
     overflow: visible;
 }
 
-#fact-sheet .row {
+#popup-container .row {
     background: #F7FCF0;
     border: solid 1px #555;
     border-radius: 3px;
