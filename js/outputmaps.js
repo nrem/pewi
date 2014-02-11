@@ -501,7 +501,11 @@ var Maps = function () {
          pathStr = pathStr + x + " " + y + "L";
          }
          }*/
-
+        var opts = {
+            parent: "#watershed1"
+        };
+        global.stream = new Stream();
+        global.stream.draw(opts);
     }
 
     this.setIcon = function(landcover) {
