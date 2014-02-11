@@ -1,0 +1,49 @@
+/**
+ * Created by rlfrahm on 2/3/14.
+ */
+function changeBaselandcoverDataPoint(value, i, firstpass) {
+    if(global.data[global.year].baselandcover.data[i] !== 0 && !firstpass) {
+        console.log(global.data[global.year].baselandcover.data[i]);
+        setLandCoverArea(value, global.data[global.year].baselandcover.data[i]);
+    } else {
+        setLandCoverArea(value);
+    }
+    global.data[global.year].baselandcover.data[i] = value;
+    global.update = true;
+}
+
+function setLandCoverArea(newIdx, oldIdx) {
+    if (landCoverArea[newIdx] == undefined) {
+        landCoverArea[newIdx] = 0;
+    } else {
+        landCoverArea[newIdx] += unitArea;
+        if(oldIdx) {
+            // We need to subtract this area from it's respective landcover
+            landCoverArea[oldIdx] -= unitArea;
+            console.log(landCoverArea);
+        } else {
+            // We haven't accounted for this area yet
+            area += unitArea;
+//            console.log("Area");
+        }
+
+    }
+}
+
+// Compliments of: http://webdevwonders.com/deep-copy-javascript-objects/
+function copy(obj) {
+    console.log(obj.baselandcover.data[0]);
+    var returnObj = {};
+    for (var property in obj) {
+        var data = {name: "", data: []};
+        if (obj[property].data != undefined) {
+            for (var i = 0; i < obj[property].data.length; i++) {
+                data.data[i] = obj[property].data[i];
+            }
+            data.name = obj[property].name;
+            returnObj[property] = data;
+        }
+    }
+    //console.log(returnObj);
+    return returnObj;
+}

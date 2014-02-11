@@ -379,45 +379,48 @@ var Maps = function () {
             if (options.landcover[i] != undefined) {
                 setStrategicWetland(i);
                 setStreamNetworkArea(i);
-                setLandCoverArea(options.landcover[i]);
+                changeBaselandcoverDataPoint(options.landcover[i], i, true);
+                //setLandCoverArea(options.landcover[i]);
                 setSubwatershedArea(i);
                 setSoiltypeFactors(i);
                 setTopographyFactors(i);
                 if (options.landcover[i] != 0) {
                     var g = svg.append("g");
 
-                    if (options.landcover[i] > 5 && options.landcover[i] < 9) {
-                        var r = Math.floor(Math.random() * 2);
-                        g.append("svg:defs")
-                            .append("svg:pattern")
-                            .attr("id", "pattern" + i)
-                            .attr("patternUnits", "userSpaceOnUse")
-                            .attr("height", h)
-                            .attr("width", w)
-                            .attr("x", options.x[i] * w)
-                            .attr("y", options.y[i] * h)
-                            .append("svg:image")
-                            .attr("id", "image" + i)
-                            .attr("xlink:href", "images/cell_images_bitmaps/" + picsForLandCoverGrid[options.landcover[i]][r])
-                            .attr("width", w)
-                            .attr("height", h);
-                    } else {
-                        g.append("svg:defs")
-                            .append("svg:pattern")
-                            .attr("id", "pattern" + i)
-                            .attr("patternUnits", "userSpaceOnUse")
-                            .attr("height", h)
-                            .attr("width", w)
-                            .attr("x", options.x[i] * w)
-                            .attr("y", options.y[i] * h)
-                            .append("svg:image")
-                            .attr("x", "0")
-                            .attr("y", "0")
-                            .attr("id", "image" + i)
-                            .attr("xlink:href", "images/cell_images_bitmaps/" + picsForLandCoverGrid[options.landcover[i]])
-                            .attr("width", w)
-                            .attr("height", h);
-                    }
+                    g.append("svg:defs")
+                        .append("svg:pattern")
+                        .attr("id", "pattern" + i)
+                        .attr("patternUnits", "userSpaceOnUse")
+                        .attr("height", h)
+                        .attr("width", w)
+                        .attr("x", options.x[i] * w)
+                        .attr("y", options.y[i] * h)
+                        .append("svg:image")
+                        .attr("id", "image" + i)
+                        .attr("xlink:href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover[i]))
+                        .attr("width", w)
+                        .attr("height", h);
+//
+//                    if (options.landcover[i] > 5 && options.landcover[i] < 9) {
+//
+//
+//                    } else {
+//                        g.append("svg:defs")
+//                            .append("svg:pattern")
+//                            .attr("id", "pattern" + i)
+//                            .attr("patternUnits", "userSpaceOnUse")
+//                            .attr("height", h)
+//                            .attr("width", w)
+//                            .attr("x", options.x[i] * w)
+//                            .attr("y", options.y[i] * h)
+//                            .append("svg:image")
+//                            .attr("x", "0")
+//                            .attr("y", "0")
+//                            .attr("id", "image" + i)
+//                            .attr("xlink:href", "images/cell_images_bitmaps/" + )
+//                            .attr("width", w)
+//                            .attr("height", h);
+//                    }
 
 
                     g.append("rect")
@@ -440,7 +443,10 @@ var Maps = function () {
                     global.streamIndices[global.year].push(i);
                 }
             }
+
         }
+
+//        console.log(landCoverArea);
 
         /*if(data[i-1]===undefined && data[i-24]===undefined && data[i-23]===undefined) {
          roundTopLeft();
@@ -497,6 +503,16 @@ var Maps = function () {
          }*/
 
     }
+
+    this.setIcon = function(landcover) {
+        if(landcover > 5 && landcover < 9) {
+            var r = Math.floor(Math.random() * 2);
+            return picsForLandCoverGrid[landcover][r];
+        } else {
+            return picsForLandCoverGrid[landcover];
+        }
+    }
+
     this.minimap = function (options) {
         if (miniMapState[options.id]) return;
         var rowData = global.data[global.year].row.data,

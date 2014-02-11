@@ -10,14 +10,6 @@ function initCalcs() {
     permeabilityCode = [];
 }
 
-function setLandCoverArea(i) {
-    if (landCoverArea[i] == undefined) {
-        landCoverArea[i] = 0;
-    } else {
-        landCoverArea[i] += unitArea;
-        area += unitArea;
-    }
-}
 function setStrategicWetland(i) {
     if (global.data[global.year].wetland.data[i] == 1) {
         strategicArea++;
@@ -1238,7 +1230,7 @@ var Erosion = function () {
     }
 
     this.update = function (i) {
-        setDistanceToStream(i);
+//        setDistanceToStream(i);
         subwatersheds[subwatershed[i]].erosion += erosionComponent(i);
         //console.log(subwatersheds[subwatershed[i]].erosion);
         subwatersheds[subwatershed[i]].runoff += runoffComponent(i);
@@ -1436,18 +1428,30 @@ var Erosion = function () {
         var temp = getSubdataValueWithName("baselandcover", global.year - 1);
         if (temp != undefined) {
             if (temp[i] == 1) {
-                if (landcover[i] == 3) return 0.2;
-                else if (landcover[i] == 1) return 0.15;
-            } else if (temp[i] == 3 || temp[i] == 15) {
-                if (landcover[i] == 3 || landcover[i] == 15) return 0.3;
-                else if (landcover[i] == 1) return 0.26;
-            } else if (temp[i] == 15) {
-                if (landcover[i] == 3) return 0.2;
-                else if (landcover[i] == 1) return 0.26;
-            } else if (temp[i] != 1 || temp[i] != 3 || temp[i] != 15) {
-                if (landcover[i] == 1) return 0.26;
+                if (landcover[i] == 1) return 0.15;
+                else if (landcover[i] == 2) return 0.085;
                 else if (landcover[i] == 3 || landcover[i] == 15) return 0.2;
-            }
+                else if (landcover[i] == 4) return 0.116;
+            } else if (temp[i] == 3 || temp[i] == 15) {
+                if (landcover[i] == 1) return 0.085;
+                else if (landcover[i] == 2) return 0.02;
+                else if (landcover[i] == 3 || landcover[i] == 15) return 0.116;
+                else if (landcover[i] == 4) return 0.031;
+            } else if (temp[i] == 15) {
+                if (landcover[i] == 1) return 0.26;
+                else if (landcover[i] == 2) return 0.156;
+                else if (landcover[i] == 3 || landcover[i] == 15) return 0.3;
+                else if (landcover[i] == 4) return 0.178;
+            } else if (temp[i] != 1 || temp[i] != 3 || temp[i] != 15) {
+                if (landcover[i] == 1) return 0.156;
+                else if (landcover[i] == 2) return 0.052;
+                else if (landcover[i] == 3 || landcover[i] == 15) return 0.178;
+                else if (landcover[i] == 4) return 0.055;
+            } else if (temp[i] == 5 || temp[i] == 8 || temp[i] == 14) return 0.005;
+            else if (temp[i] == 6) return 0.03;
+            else if (temp[i] == 7) return 0.02;
+            else if (temp[i] == 9 || temp[i] == 12) return 0.001;
+            else if (temp[i] == 10 || temp[i] == 11 || temp[i] == 13) return 0.004;
         }
         return 0.1;
     }
@@ -1532,39 +1536,41 @@ var Erosion = function () {
     }
 
     function sedimentDeliveryRatio(i) {
-        if (distanceToStream < 58.528) return 1;
-        return (distanceToStream ^ sedimentDeliveryRatioSlope(i)) * (10 ^ sedimentDeliveryRatioIntercept(i));
+        if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 0.06;
+        else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 0.35;
+//        if (distanceToStream < 58.528) return 1;
+//        return (distanceToStream ^ sedimentDeliveryRatioSlope(i)) * (10 ^ sedimentDeliveryRatioIntercept(i));
     }
 
-    function sedimentDeliveryRatioSlope(i) {
-        if (distanceToStream <= 928.393) {
-            if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return -0.83308;
-            else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return -0.2905;
-        } else {
-            if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return -0.25078;
-            else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return -0.22108;
-        }
-    }
-
-    function sedimentDeliveryRatioIntercept(i) {
-        if (distanceToStream <= 928.393) {
-            if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 1.472351;
-            else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return -0.13786;
-        } else {
-            if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 0.443222;
-            else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 0.355086;
-        }
-    }
-
-    function setDistanceToStream(i) {
-        var temp;
-        for (var j = 0; j < global.streamIndices[global.year].count; j++) {
-            temp = ((Math.sqrt(43600 * (10 / 6)) * 2 * (row(global.streamIndices[global.year][j]) - row(i))) ^ 2) +
-                ((Math.sqrt(43600 * (10 / 6)) * 3 * (column(global.streamIndices[global.year][j]) - column(i))) ^ 2);
-            if (distanceToStream[i] != undefined) distanceToStream[i] = Math.min(temp, distanceToStream[i]);
-            else distanceToStream[i] = temp;
-        }
-    }
+//    function sedimentDeliveryRatioSlope(i) {
+//        if (distanceToStream <= 928.393) {
+//            if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return -0.83308;
+//            else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return -0.2905;
+//        } else {
+//            if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return -0.25078;
+//            else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return -0.22108;
+//        }
+//    }
+//
+//    function sedimentDeliveryRatioIntercept(i) {
+//        if (distanceToStream <= 928.393) {
+//            if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 1.472351;
+//            else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return -0.13786;
+//        } else {
+//            if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 0.443222;
+//            else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 0.355086;
+//        }
+//    }
+//
+//    function setDistanceToStream(i) {
+//        var temp;
+//        for (var j = 0; j < global.streamIndices[global.year].count; j++) {
+//            temp = ((Math.sqrt(43600 * (10 / 6)) * 2 * (row(global.streamIndices[global.year][j]) - row(i))) ^ 2) +
+//                ((Math.sqrt(43600 * (10 / 6)) * 3 * (column(global.streamIndices[global.year][j]) - column(i))) ^ 2);
+//            if (distanceToStream[i] != undefined) distanceToStream[i] = Math.min(temp, distanceToStream[i]);
+//            else distanceToStream[i] = temp;
+//        }
+//    }
 
     function row(x) {
         return x % rows;
