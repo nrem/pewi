@@ -1,10 +1,17 @@
+@font-face {
+    font-family: 'Junction';
+    src: local('Junction'), url("../fonts/Junction-webfont.woff") format('woff');
+    font-style: normal;
+    font-weight: normal;
+}
+
 body {
     overflow: hidden;
     /*background:#f2efe5;*/
     height: 100%;
     width: 100%;
 
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'Junction', sans-serif;
     -webkit-user-select: none;
     -khtml-user-select: none;
     -moz-user-select: none;
@@ -619,8 +626,8 @@ h1 {
 /*----------Info Box Styling---------*/
 #infobox {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 10px;
+    right: 50px;
 }
 
 #infobox #info {
@@ -849,8 +856,8 @@ circle {
 }
 
 #hud a {
-    font-size: .8em;
-    color: #999;
+    font-size: 1.1em;
+    color: #fff;
     text-shadow: 0px 1px 1px #333;
     text-transform: uppercase;
 }

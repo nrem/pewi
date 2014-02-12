@@ -1,6 +1,13 @@
 /**
  * Created by rlfrahm on 2/3/14.
  */
+
+/**
+ *
+ * @param value - landcover type
+ * @param i - index that the landcover occurs
+ * @param firstpass - true if we are building the watershed from scratch, false if we are simply updating data points
+ */
 function changeBaselandcoverDataPoint(value, i, firstpass) {
     if(global.data[global.year].baselandcover.data[i] !== 0 && !firstpass) {
         console.log(global.data[global.year].baselandcover.data[i]);
@@ -12,6 +19,12 @@ function changeBaselandcoverDataPoint(value, i, firstpass) {
     global.update = true;
 }
 
+
+/**
+ *
+ * @param newIdx - the old landcover type
+ * @param oldIdx - the new landcover type
+ */
 function setLandCoverArea(newIdx, oldIdx) {
     if (landCoverArea[newIdx] == undefined) {
         landCoverArea[newIdx] = 0;
@@ -30,9 +43,14 @@ function setLandCoverArea(newIdx, oldIdx) {
     }
 }
 
-// Compliments of: http://webdevwonders.com/deep-copy-javascript-objects/
+/**
+ * Removes pointers
+ * Compliments of: http://webdevwonders.com/deep-copy-javascript-objects/
+ * @param obj
+ * @returns {{}}
+ */
 function copy(obj) {
-    console.log(obj.baselandcover.data[0]);
+//    console.log(obj.baselandcover.data[0]);
     var returnObj = {};
     for (var property in obj) {
         var data = {name: "", data: []};

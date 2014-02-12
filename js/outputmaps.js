@@ -353,25 +353,6 @@ var Maps = function () {
                 .attr("height", options.height + 20),
             border = false;
 
-        /*svg.append("svg:defs")
-         .append("svg:pattern")
-         .attr("id", "watershed-pattern")
-         .attr("patternUnits", "userSpaceOnUse")
-         .attr("height", options.width)
-         .attr("width", options.height + 20)
-         .attr("x", 0)
-         .attr("y", 0)
-         .append("svg:image")
-         .attr("id", "watershed-image")
-         .attr("xlink:href", "images/border/Animation_Watershed_Border.png")
-         .attr("preserveAspectRatio", "defer")
-         .attr("width", options.width + 100)
-         .attr("height", options.height + 100);
-
-         svg.append("rect")
-         .attr("width", options.width)
-         .attr("height", options.height)
-         .style("fill", "url(#watershed-pattern)");//*/
         centerElement($(window), $("#watershed1"));
         var w = options.rectWidth, h = options.rectHeight;
         initCalcs();
@@ -400,28 +381,6 @@ var Maps = function () {
                         .attr("xlink:href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover[i]))
                         .attr("width", w)
                         .attr("height", h);
-//
-//                    if (options.landcover[i] > 5 && options.landcover[i] < 9) {
-//
-//
-//                    } else {
-//                        g.append("svg:defs")
-//                            .append("svg:pattern")
-//                            .attr("id", "pattern" + i)
-//                            .attr("patternUnits", "userSpaceOnUse")
-//                            .attr("height", h)
-//                            .attr("width", w)
-//                            .attr("x", options.x[i] * w)
-//                            .attr("y", options.y[i] * h)
-//                            .append("svg:image")
-//                            .attr("x", "0")
-//                            .attr("y", "0")
-//                            .attr("id", "image" + i)
-//                            .attr("xlink:href", "images/cell_images_bitmaps/" + )
-//                            .attr("width", w)
-//                            .attr("height", h);
-//                    }
-
 
                     g.append("rect")
                         .attr("id", i)
@@ -443,70 +402,31 @@ var Maps = function () {
                     global.streamIndices[global.year].push(i);
                 }
             }
-
         }
-
-//        console.log(landCoverArea);
-
-        /*if(data[i-1]===undefined && data[i-24]===undefined && data[i-23]===undefined) {
-         roundTopLeft();
-         }
-         if(data[i+1]===undefined && data[i-22]===undefined && data[i-23]===undefined) {
-         roundTopRight();
-         }
-         if(data[i-1]===undefined && data[i+22]===undefined && data[i+23]===undefined) {
-         roundBottomLeft();
-         }
-         if(data[i+1]===undefined && data[i+24]===undefined && data[i+23]===undefined) {
-         roundBottomRight();
-         }
-         if(data[i-1]===undefined && data[i-24]>0 && data[i-23]===undefined && data[i-22]>0) {
-         roundTopLeft();
-         }
-         if(data[i+1]===undefined && data[i+24]>0 && data[i+23]===undefined && data[i+22]>0) {
-         roundBottomRight();
-         }
-         if(i===1) {
-         roundTopLeft();
-         }
-
-         function roundTopLeft(x, y, width, height, radius) {
-         //http://stackoverflow.com/questions/12115691/svg-d3-js-rounded-corner-on-one-corner-of-a-rectangle?answertab=active#tab-top
-         }
-         function roundTopRight() {
-
-         }
-         function roundBottomLeft() {
-
-         }
-         function roundBottomRight() {
-
-         }//*/
-
-        /*var pathStr = "M";
-         function constructPath(data, i) {
-         if(data.landcover[i - 23] == undefined) {
-         if(data.landcover[i - 24] == undefined) {
-         addStr(data.x[i] * 30,data.y[i] * 20);
-         addStr(data.x[i] * 30 + 30,data.y[i] * 20);
-         } else {
-         addStr(data.x[i] * 30 + 30,data.y[i] * 20);
-         }
-
-         }
-         if(data.landcover[i + 1] == undefined) {}
-         if(data.landcover[i ])
-
-         function addStr(x, y) {
-         pathStr = pathStr + x + " " + y + "L";
-         }
-         }*/
         var opts = {
             parent: "#watershed1",
             scale:  Math.round(SCREEN.height / 36 / 2 - 2) / 13
         };
         global.stream = new Stream();
         global.stream.draw(opts);
+    }
+
+    this.updateWatershed = function(options) {
+        for(var i=0; i< options.landcover.length; i++) {
+            if(options.landcover[i] != undefined) {
+                setStrategicWetland(i);
+                setStreamNetworkArea(i);
+                changeBaselandcoverDataPoint(options.landcover[i], i, true);
+                //setLandCoverArea(options.landcover[i]);
+                setSubwatershedArea(i);
+                setSoiltypeFactors(i);
+                setTopographyFactors(i);
+
+                if(options.landcover[i] != 0) {
+                    $("#image" + i).attr("href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover[i]));
+                }
+            }
+        }
     }
 
     this.setIcon = function(landcover) {

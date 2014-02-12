@@ -116,7 +116,7 @@ var Score = function () {
         erosion = new Erosion(),
         landcover = global.data[global.year].baselandcover.data;
     this.update = function () {
-        console.log("Updating...");
+       // console.log("Updating...");
         // Update
         for (var i = 0; i <= landcover.length; i++) {
             if (landcover[i] > 0) {
@@ -1030,44 +1030,51 @@ var Biodiversity = function () {
     }
 
     function setAdjacencyGroup(i) {
-        // Calculates for each point in the watershed
-        if (i > cols + 1 + 1 && data[i - (cols + 1)] != undefined) {
-            //console.log(i);
-            //console.log(global.data[global.year].group.data[i]);
-            //console.log(global.data[global.year].group.data[i-(cols+1)]);
-            //console.log(((global.data[global.year].group.data[i]*10) + global.data[global.year].group.data[i-1]));
-            adjacencyGroup[((data[i] * 11) + data[i - (cols + 1)])][1]++;
-            adjSubtotal[data[i - (cols + 1)]]++;
-        }
-        //global.data[global.year].group.data[i-(cols)] != undefined && parseInt(global.data[global.year].group.data[i-(cols)]) >= 0
-        if (i > cols + 1 && data[i - (cols)] != undefined) {
-            adjacencyGroup[((data[i] * 11) + data[i - (cols)])][1]++;
-            adjSubtotal[data[i - (cols)]]++;
-        }
-        if (i > cols && data[i - (cols - 1)] != undefined) {
-            adjacencyGroup[((data[i] * 11) + data[i - (cols - 1)])][1]++;
-            adjSubtotal[data[i - (cols - 1)]]++;
-        }
-        if (i > 1 && data[i - 1] != undefined) {
-            adjacencyGroup[((data[i] * 11) + data[i - 1])][1]++;
-            adjSubtotal[data[i - 1]]++;
-        }
-        if (data[i + 1] != undefined) {
-            adjacencyGroup[((data[i] * 11) + data[i + 1])][1]++;
-            adjSubtotal[data[i + 1]]++;
-        }
-        if (data[i + (cols - 1)] != undefined) {
-            //console.log(global.data[global.year].group.data[i+(cols-1)]);
-            adjacencyGroup[((data[i] * 11) + data[i + (cols - 1)])][1]++;
-            adjSubtotal[data[i + (cols - 1)]]++;
-        }
-        if (data[i + (cols)] != undefined) {
-            adjacencyGroup[((data[i] * 11) + data[i + (cols)])][1]++;
-            adjSubtotal[data[i + (cols)]]++;
-        }
-        if (data[i + (cols + 1)] != undefined) {
-            adjacencyGroup[((data[i] * 11) + data[i + (cols + 1)])][1]++;
-            adjSubtotal[data[i + (cols + 1)]]++;
+        try {
+            // Calculates for each point in the watershed
+            if (i > cols + 1 + 1 && data[i - (cols + 1)] != undefined) {
+                //console.log(i);
+                //console.log(global.data[global.year].group.data[i]);
+                //console.log(global.data[global.year].group.data[i-(cols+1)]);
+                //console.log(((global.data[global.year].group.data[i]*10) + global.data[global.year].group.data[i-1]));
+
+                adjacencyGroup[((data[i] * 11) + data[i - (cols + 1)])][1]++;
+                adjSubtotal[data[i - (cols + 1)]]++;
+
+//            console.assert(data[i] == undefined, adjacencyGroup);
+            }
+            //global.data[global.year].group.data[i-(cols)] != undefined && parseInt(global.data[global.year].group.data[i-(cols)]) >= 0
+            if (i > cols + 1 && data[i - (cols)] != undefined) {
+                adjacencyGroup[((data[i] * 11) + data[i - (cols)])][1]++;
+                adjSubtotal[data[i - (cols)]]++;
+            }
+            if (i > cols && data[i - (cols - 1)] != undefined) {
+                adjacencyGroup[((data[i] * 11) + data[i - (cols - 1)])][1]++;
+                adjSubtotal[data[i - (cols - 1)]]++;
+            }
+            if (i > 1 && data[i - 1] != undefined) {
+                adjacencyGroup[((data[i] * 11) + data[i - 1])][1]++;
+                adjSubtotal[data[i - 1]]++;
+            }
+            if (data[i + 1] != undefined) {
+                adjacencyGroup[((data[i] * 11) + data[i + 1])][1]++;
+                adjSubtotal[data[i + 1]]++;
+            }
+            if (data[i + (cols - 1)] != undefined) {
+                //console.log(global.data[global.year].group.data[i+(cols-1)]);
+                adjacencyGroup[((data[i] * 11) + data[i + (cols - 1)])][1]++;
+                adjSubtotal[data[i + (cols - 1)]]++;
+            }
+            if (data[i + (cols)] != undefined) {
+                adjacencyGroup[((data[i] * 11) + data[i + (cols)])][1]++;
+                adjSubtotal[data[i + (cols)]]++;
+            }
+            if (data[i + (cols + 1)] != undefined) {
+                adjacencyGroup[((data[i] * 11) + data[i + (cols + 1)])][1]++;
+                adjSubtotal[data[i + (cols + 1)]]++;
+            }
+        } catch(error) {
+            console.warn(error + " in setAdjacencyGroup");
         }
     }
 
@@ -1257,10 +1264,10 @@ var Erosion = function () {
         global.grossErosion = grossErosion;
         global.riskAssessment = risk;
         global.phosphorusLoad = phosphorusLoad;
-        console.log("P-index: ", pIndex);
-        console.log("Risk assessment: ", risk);
-        console.log("Gross erosion: ", grossErosion);
-        console.log("Phosphorus load: ", phosphorusLoad);
+       // console.log("P-index: ", pIndex);
+       // console.log("Risk assessment: ", risk);
+       // console.log("Gross erosion: ", grossErosion);
+       // console.log("Phosphorus load: ", phosphorusLoad);
     };
 
     function subwatershedSedimentDelivered(j) {
