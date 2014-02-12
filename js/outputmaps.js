@@ -502,7 +502,8 @@ var Maps = function () {
          }
          }*/
         var opts = {
-            parent: "#watershed1"
+            parent: "#watershed1",
+            scale:  Math.round(SCREEN.height / 36 / 2 - 2) / 13
         };
         global.stream = new Stream();
         global.stream.draw(opts);
