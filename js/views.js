@@ -1,7 +1,8 @@
 /**
  *
+ * @param options
+ * @constructor
  */
-
 var ModalView = function (options) {
     this.width = (options.width !== undefined) ? options.width : $(window).width() / 2;
     this.height = (options.height !== undefined) ? options.height : $(window).height() / 2;
@@ -51,6 +52,10 @@ var ModalView = function (options) {
     this.$element = $("#popup-container");
 };
 
+/**
+ *
+ * @constructor
+ */
 var PrintView = function () {
     var options = {
             width: "8.5in",
