@@ -786,8 +786,11 @@ h1 {
     margin-left: 4px;
 }
 
-.physical-feature-map .close {
+.physical-feature-map-close-button {
     margin: 2px;
+    cursor: pointer;
+    position: relative;
+    right: 0;
 }
 
 .selectable-feature {
@@ -856,7 +859,7 @@ circle {
 }
 
 #hud a {
-    font-size: 1.1em;
+    font-size: 0.9em;
     color: #fff;
     text-shadow: 0px 1px 1px #333;
     text-transform: uppercase;

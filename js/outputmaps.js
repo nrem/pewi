@@ -470,9 +470,11 @@ var Maps = function () {
         });
         var title = container.append("div");
         title.append("img")
-            .attr("class", "close")
+            .attr("class", "physical-feature-map-close-button")
             .attr("id", "topo")
-            .attr("src", "images/icons/cross.png");
+            .style("width", "1.5em")
+            .style("+filter", "grayscale(1%)")
+            .attr("src", "images/icons/navigation/close_mini_light-gray.svg");
         title.append("a");
 
         var svg = container.append("svg")

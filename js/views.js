@@ -7,7 +7,7 @@ var ModalView = function (options) {
     this.height = (options.height !== undefined) ? options.height : $(window).height() / 2;
     this.title = (options.title !== undefined) ? options.title : "Default";
     this.scrollable = (options.scrollable !== undefined) ? options.scrollable : true;
-    var close_button_url = "images/icons/navigation/close_black.png",
+    var close_button_url = "images/icons/navigation/close_mini_dark-gray.svg",
         $container, $body;
     $("#main").append('<div id="popup-container" class="popup-window"></div>');
     $("#popup-container").width(this.width).height(this.height).css("overflow", this.scrollable);
