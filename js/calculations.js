@@ -151,7 +151,7 @@ var Score = function () {
         //	console.log(dataset[i]);
         //}
         global.update = false;
-    };
+    }
 
     this.calculateOutputMapValues = function () {
         // Update

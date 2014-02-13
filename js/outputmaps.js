@@ -454,7 +454,9 @@ var Maps = function () {
         var container = d3.select("#workspace")
             .append("div")
             .attr("id", options.id + "-minimap-container")
-            .attr("class", "physical-feature-map");
+            .attr("class", "physical-feature-map")
+            .style("width", options.width * global.data[global.year].rows + "px")
+            .style("height", options.height * 2 * global.data[global.year].columns + "px");
         for (var i = 0; i < miniMapSlots.length; i++) {
             if (miniMapSlots[i].vacant) {
                 $("#" + options.id + "-minimap-container").css("marginLeft", miniMapSlots[i].left + "%").css("marginBottom", miniMapSlots[i].bottom + "%");
@@ -463,11 +465,8 @@ var Maps = function () {
                 break;
             }
         }
-        $("#" + options.id + "-minimap-container").draggable().click(function () {
-            $(this).remove();
-            miniMapState[options.id] = false;
-            miniMapSlots[options.slot].vacant = true;
-        });
+        $("#" + options.id + "-minimap-container").draggable();
+        
         var title = container.append("div");
         title.append("img")
             .attr("class", "physical-feature-map-close-button")
@@ -476,6 +475,12 @@ var Maps = function () {
             .style("+filter", "grayscale(1%)")
             .attr("src", "images/icons/navigation/close_mini_light-gray.svg");
         title.append("a");
+        
+        $("#" + options.id + "-minimap-container img").click(function() {
+            $(this).parent().parent().remove();
+            miniMapState[options.id] = false;
+            miniMapSlots[options.slot].vacant = true;
+        });
 
         var svg = container.append("svg")
             .attr("class", "minimap-svg")
@@ -559,7 +564,7 @@ var Maps = function () {
             if (isNaN(columnData[i]) || isNaN(rowData[i])) return;
             svg.append("rect")
                 .attr("x", function () {
-                    return columnData[i] * options.width;
+                    return columnData[i] * options.width + 100;
                 })
                 .attr("y", function () {
                     return rowData[i] * options.height;
