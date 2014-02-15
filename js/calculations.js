@@ -68,8 +68,8 @@ var ScoreDirector = function () {
  * @constructor
  */
 var Yield = function () {
-    var data = global.data[global.year].baselandcover.data,
-        soil = global.data[global.year].soiltype.data,
+    var landcover = global.data[global.year].baselandcover.data,
+        soilType = getSubdataValueWithName("soiltype", global.year),
         soilTypeId = ["A", "B", "C", "D", "G", "K", "L", "M", "N", "O", "Q", "T", "Y"],
         yieldMultiplier = [0.5, 0.3333, 1, 0.7],
         unitYield = [
@@ -118,8 +118,37 @@ var Yield = function () {
                 val: 0
             }
         },
-        cornmax = 0, soymax = 0,
         soiltype;
+
+    global.results[global.year]["yield"] = {
+        corn_percent: 0,
+        corn_area: 0,
+        conservation_corn_percent: 0,
+        conservation_corn_area: 0,
+        soybean_percent: 0,
+        soybean_area: 0,
+        conservation_soybean_percent: 0,
+        conservation_soybean_area: 0,
+        alfalfa_percent: 0,
+        alfalfa_area: 0,
+        grasshay_percent: 0,
+        grasshay_area: 0,
+        forest_percent: 0,
+        forest_area: 0,
+        conservation_forest_percent: 0,
+        conservation_forest_area: 0,
+        permanent_pasture_percent: 0,
+        permanent_pasture_area: 0,
+        rotational_grazing_percent: 0,
+        rotational_grazing_area: 0,
+        herbaceous_bioenergy_percent: 0,
+        herbaceous_bioenergy_area: 0,
+        woody_bioenergy_percent: 0,
+        woody_boienergy_area: 0,
+        wetland_area: 0,
+        mixed_fruit_veggie_percent: 0,
+        mixed_fruit_veggie_area: 0
+    };
 
     this.update = function (i) {
         //landCoverType(i);
@@ -131,6 +160,9 @@ var Yield = function () {
         setTimberYield(i);
         setCattleYield(i);
         setFruitVeggieYield(i);
+
+        // Results calculations
+//        global.results[global.year].yield.corn_percent += (data[i] === 1) ? area
     };
     this.calculate = function () {
         yieldVals.corn.index = 100 * (yieldVals.corn.val / yieldVals.corn.max);
@@ -150,13 +182,13 @@ var Yield = function () {
     };
 
     //----------Corn Yield-------------------
-    function setCornyieldValsVals(i) {
+    function setCornYield(i) {
         yieldVals.corn.val += getBaseCornYield(i) * getConservationYieldFactor(i);
         setCornMax(i);
     }
 
     function getBaseCornYield(i) {
-        if (data[i] === 1 || data[i] === 2) {
+        if (landcover[i] === 1 || landcover[i] === 2) {
             return unitYield[0][soiltype];
         } else {
             return 0;
@@ -164,9 +196,9 @@ var Yield = function () {
     }
 
     function getConservationYieldFactor(i) {
-        if (data[i] === 1 || data[i] === 3) {
+        if (landcover[i] === 1 || landcover[i] === 3) {
             return 1;
-        } else if (data[i] === 2 || data[i] === 4) {
+        } else if (landcover[i] === 2 || landcover[i] === 4) {
             return conservationYieldFactor[soiltype];
         } else {
             return 0;
@@ -177,6 +209,10 @@ var Yield = function () {
         yieldVals.corn.max += unitYield[0][soiltype];
     }
 
+    function getCornPercent(i) {
+//        return (landcover[i] === 1) ? area /
+    }
+
     //----------Soy Yield--------------------
     function setSoyYield(i) {
         yieldVals.soybean.val += getBaseSoyYield(i) * getConservationYieldFactor(i);
@@ -184,7 +220,7 @@ var Yield = function () {
     }
 
     function getBaseSoyYield(i) {
-        if (data[i] === 3 || data[i] === 4) {
+        if (landcover[i] === 3 || landcover[i] === 4) {
             return unitYield[1][soiltype];
         } else {
             return 0;
@@ -202,7 +238,7 @@ var Yield = function () {
     }
 
     function getAlfalfaYield(i) {
-        if (data[i] === 5) return unitYield[2][soiltype];
+        if (landcover[i] === 5) return unitYield[2][soiltype];
         else return 0;
     }
 
@@ -217,7 +253,7 @@ var Yield = function () {
     }
 
     function getGrassHayYield(i) {
-        if (data[i] === 8) return unitYield[2][soiltype];
+        if (landcover[i] === 8) return unitYield[2][soiltype];
         else return 0;
     }
 
@@ -232,7 +268,7 @@ var Yield = function () {
     }
 
     function getTimberYield(i) {
-        if (data[i] === 10 || data[i] === 11) return (unitYield[3][soiltype] * watershedArea);
+        if (landcover[i] === 10 || landcover[i] === 11) return (unitYield[3][soiltype] * watershedArea);
         else return 0;
     }
 
@@ -248,8 +284,8 @@ var Yield = function () {
 
     function getCattleYield(i) {
         var returnVar = 0;
-        if (data[i] === 6) returnVar += unitYield[4][soiltype] * watershedArea;
-        if (data[i] === 7) returnVar += unitYield[4][soiltype] * 1.67 * 1.25 * watershedArea;
+        if (landcover[i] === 6) returnVar += unitYield[4][soiltype] * watershedArea;
+        if (landcover[i] === 7) returnVar += unitYield[4][soiltype] * 1.67 * 1.25 * watershedArea;
         return returnVar;
     }
 
@@ -264,17 +300,78 @@ var Yield = function () {
     }
 
     function getFruitVeggieYield(i) {
-        if (data[i] === 15) return unitYield[5][soiltype] * 32.88 * watershedArea;
+        if (landcover[i] === 15) return getYieldPrecipitationMultiplier(i) * 7.34 * area * getSoilTypeMultiplier(i);
         else return 0;
     }
 
     function setFruitVeggieMax(i) {
-        yieldVals.fruitveggie.max += unitYield[5][soiltype] * 32.88 * watershedArea;
+        yieldVals.fruitveggie.max += 7.34 * area * getSoilTypeMultiplier(i);
+    }
+
+    function getYieldPrecipitationMultiplier(i) {
+        if(landcover[i] > 0 && landcover[i] < 5) {
+            if(global.precipitation[global.year] === 24.58 || global.precipitation[global.year] === 45.10) return 0.75;
+            else if(global.precipitation[global.year] === 28.18 || global.precipitation[global.year] === 36.47) return 0.9;
+            else if(global.precipitation[global.year] === 30.39 || global.precipitation[global.year] === 32.16 || global.precipitation[global.year] === 34.34) return 1;
+        }
+    }
+
+    function getSoilTypeMultiplier(i) {
+        var soiltexture = getSoilTexture(i);
+        if(soiltexture == "FSL") return 1;
+        else if(soiltexture == "SL") return 0.9;
+        else if(soiltexture == "L") return 0.85;
+        else return 0.4;
+    }
+
+    function getSoilTexture(i) {
+        switch (soilType[i]) {
+            case soilTypeId[0]:
+                return "L";
+                break;
+            case soilTypeId[1]:
+                return "FSL";
+                break;
+            case soilTypeId[2]:
+                return "SICL";
+                break;
+            case soilTypeId[3]:
+                return "SIL";
+                break;
+            case soilTypeId[4]:
+                return "L";
+                break;
+            case soilTypeId[5]:
+                return "SIL";
+                break;
+            case soilTypeId[6]:
+                return "CL";
+                break;
+            case soilTypeId[7]:
+                return "SICL";
+                break;
+            case soilTypeId[8]:
+                return "L";
+                break;
+            case soilTypeId[9]:
+                return "MK-SIL";
+                break;
+            case soilTypeId[10]:
+                return "SICL";
+                break;
+            case soilTypeId[11]:
+                return "SICL";
+                break;
+            case soilTypeId[12]:
+                return "SIL";
+                break;
+        }
+        return;
     }
 
     function getSoilType(i) {
         var y = 0;
-        switch (soil[i]) {
+        switch (soilType[i]) {
             case soilTypeId[0]:
                 return y = 0;
                 break;
@@ -325,18 +422,6 @@ var Yield = function () {
  */
 var Nitrates = function () {
     var nitratesPPM = 0,
-        rowCropMultiplier = 0,
-        wetlandMultiplier = 0,
-        conservationMultiplier = 0,
-        precipitationMultiplier = 0,
-        precipitation = ["24.58",
-            "28.18",
-            "30.39",
-            "32.16",
-            "34.34",
-            "36.47",
-            "45.10"
-        ],
         subwatershedData = global.data[global.year].subwatershed.data,
     // Holds the multiplier accumulators for each subwatershed
         subwatershed = [],
