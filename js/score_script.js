@@ -12,7 +12,9 @@ var dataset = [
     {    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Sediment Control', Year1: 0, Year2: 0, Year3: 0},//check
-    {    Metric: 'Erosion Control', Year1: 0, Year2: 0, Year3: 0}//check
+    {    Metric: 'Erosion Control', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Herbaceous Bioenergy', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Woody Bioenergy', Year1: 0, Year2: 0, Year3: 0}//check
 ];
 var Plot = function () {
     //setup plot

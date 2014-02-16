@@ -70,15 +70,21 @@ var ScoreDirector = function () {
 var Yield = function () {
     var landcover = global.data[global.year].baselandcover.data,
         soilType = getSubdataValueWithName("soiltype", global.year),
+        dataPointArea = getSubdataValueWithName("area", global.year),
         soilTypeId = ["A", "B", "C", "D", "G", "K", "L", "M", "N", "O", "Q", "T", "Y"],
         yieldMultiplier = [0.5, 0.3333, 1, 0.7],
+        yieldPrecipitationMultiplier,
+        CATTLE_BODY_WEIGHT = 1200,
+        GRAZING_SEASON_LENGTH = 200,
+        cattleAverageDailyIntake = 0.03 * CATTLE_BODY_WEIGHT,
         unitYield = [
             [223, 0, 214, 206, 0, 200, 210, 221, 228, 179, 235, 240, 209], //corn
             [65, 0, 62, 60, 0, 58, 61, 64, 66, 52, 68, 70, 61], //soybean
             [6.3, 0, 4.3, 5.6, 0, 4.1, 4.2, 6.5, 6.4, 3.6, 6.9, 6.7, 6.3], //alfalfa, grass/hay
             [275, 125, 85, 275, 245, 105, 85, 275, 175, 85, 275, 175, 275], //timber
             [6.3, 0, 4.3, 5.6, 0, 4.1, 4.2, 6.5, 6.4, 3.6, 6.9, 6.7, 6.3], //cattle
-            [1.04, 0, 1, 0.96, 0, 0.93, 0.98, 1.03, 1.06, 0.83, 1.09, 1.12, 0.97]
+            [1.04, 0, 1, 0.96, 0, 0.93, 0.98, 1.03, 1.06, 0.83, 1.09, 1.12, 0.97],
+            [2.4426229508,0,2.1475409836,1.8852459016,0,1.6885245902,2.0163934426,2.3770491803,2.606557377,1,2.8360655738,3,1.9836065574] //herb
         ],
         conservationYieldFactor = [0.945, 0.975, 0.975, 0.975, 0.9, 0.9, 0.9, 0.975, 0.9, 0.975, 0.975, 0.9, 0.9, 0.9],
         yieldVals = {
@@ -113,6 +119,16 @@ var Yield = function () {
                 val: 0
             },
             fruitveggie: {
+                index: 0,
+                max: 0,
+                val: 0
+            },
+            herb: {
+                index: 0,
+                max: 0,
+                val: 0
+            },
+            woody: {
                 index: 0,
                 max: 0,
                 val: 0
@@ -153,53 +169,110 @@ var Yield = function () {
     this.update = function (i) {
         //landCoverType(i);
         soiltype = getSoilType(i);
+        yieldPrecipitationMultiplier = getYieldPrecipitationMultiplier(i);
+        // Corn Yield
         setCornYield(i);
+        global.results[global.year].yield.corn_area = (landcover[i] === 1) ? dataPointArea : 0;
+        global.results[global.year].yield.conservation_corn_area = (landcover[i] === 2) ? dataPointArea : 0;
+        
+        // Soy Yield
         setSoyYield(i);
+        global.results[global.year].yield.soybean_area = (landcover[i] === 3) ? dataPointArea : 0;
+        global.results[global.year].yield.conservation_soybean_area = (landcover[i] === 4) ? dataPointArea : 0;
+        
+        // Alfalfa Yield
         setAlfalfaYield(i);
+        global.results[global.year].yield.alfalfa_area = (landcover[i] === 5) ? dataPointArea : 0;
+        
+        // GrassHay Yield
         setGrassHayYield(i);
+        global.results[global.year].yield.grasshay_area = (landcover[i] === 8) ? dataPointArea : 0;
+        
+        // Timer Yield
         setTimberYield(i);
+        global.results[global.year].yield.forest_area = (landcover[i] === 11) ? dataPointArea : 0;
+        global.results[global.year].yield.conservation_forest_area = (landcover[i] === 10) ? dataPointArea : 0;
+        
+        // Cattle Yield
         setCattleYield(i);
+        global.results[global.year].yield.permanent_pasture_area = (landcover[i] === 6) ? dataPointArea : 0;
+        global.results[global.year].yield.rotation_grazing_area = (landcover[i] === 7) ? dataPointArea : 0;
+        
+        // Herbaceous Bioenergy Yield
+        setHerbaceousBioenergyYield(i);
+        global.results[global.year].yield.herbaceous_bioenergy_area = (landcover[i] === 12) ? dataPointArea : 0;
+        
+        // Woody Bioenergy Yield
+        setWoodyBioenergyYield(i);
+        global.results[global.year].yield.woody_bioenergy_area = (landcover[i] === 13) ? dataPointArea : 0;
+        
+        // Wetland Yield
+        global.results[global.year].yield.wetland_area = (landcover[i] === 14) ? dataPointArea : 0;
+        
+        // FruitVeggie Yield
         setFruitVeggieYield(i);
+        global.results[global.year].yield.mixed_fruit_veggie_area = (landcover[i] === 15) ? dataPointArea : 0;
 
         // Results calculations
 //        global.results[global.year].yield.corn_percent += (data[i] === 1) ? area
     };
     this.calculate = function () {
+        // Corn Yield
         yieldVals.corn.index = 100 * (yieldVals.corn.val / yieldVals.corn.max);
         dataset[0]["Year" + global.year] = yieldVals.corn.index;
+        global.results[global.year].yield.corn_percent = global.results[global.year].yield.corn_area / watershedArea * 100;
+        global.results[global.year].yield.conservation_corn_percent = global.results[global.year].yield.conservation_corn_area / watershedArea * 100;
+        
+        // Soy Yield
         yieldVals.soybean.index = 100 * (yieldVals.soybean.val / yieldVals.soybean.max);
         dataset[1]["Year" + global.year] = yieldVals.soybean.index;
+        global.results[global.year].yield.soybean_percent = global.results[global.year].yield.soybean_area / watershedArea * 100;
+        global.results[global.year].yield.conservation_soybean_percent = global.results[global.year].yield.conservation_soybean_area / watershedArea * 100;
+        
+        // Alfalfa Yield
         yieldVals.alfalfa.index = 100 * (yieldVals.alfalfa.val / yieldVals.alfalfa.max);
         dataset[2]["Year" + global.year] = yieldVals.alfalfa.index;
+        global.results[global.year].yield.alfalfa_percent = global.results[global.year].yield.alfalfa_area / watershedArea * 100;
+        
+        // GrassHay Yield
         yieldVals.grass.index = 100 * (yieldVals.grass.val / yieldVals.grass.max);
         dataset[3]["Year" + global.year] = yieldVals.grass.index;
+        global.results[global.year].yield.grasshay_percent = global.results[global.year].yield.grasshay_area / watershedArea * 100;
+        
+        // Timer Yield
         yieldVals.timber.index = 100 * (yieldVals.timber.val / yieldVals.timber.max);
         dataset[4]["Year" + global.year] = yieldVals.timber.index;
+        global.results[global.year].yield.forest_percent = global.results[global.year].yield.forest_area / watershedArea * 100;
+        global.results[global.year].yield.conservation_forest_percent = global.results[global.year].yield.conservation_forest_area / watershedArea * 100;
+        
+        // Cattle
         yieldVals.cattle.index = 100 * (yieldVals.cattle.val / yieldVals.cattle.max);
         dataset[5]["Year" + global.year] = yieldVals.cattle.index;
-        yieldVals.fruitveggie.index = 100 * (yieldVals.fruitveggie.val / yieldVals.fruitveggie.max);
-        dataset[6]["Year" + global.year] = yieldVals.fruitveggie.index;
+        global.results[global.year].yield.permanent_pasture_percent = global.results[global.year].yield.permanent_pasture_area / watershedArea * 100;
+        global.results[global.year].yield.rotational_grazing_percent = global.results[global.year].yield.rotational_grazing_area / watershedArea * 100;
+        
+        // Herbaceous Bioenergy Yield
+        dataset[15]["Year" + global.year] = 100 * (yieldVals.herb.val / yieldVals.herb.max);
+        global.results[global.year].yield.herbaceous_bioenergy_percent = global.results[global.year].yield.herbaceous_bioenergy_area / watershedArea * 100;
+        
+        // Woody Bioenergy Yield
+        dataset[16]["Year" + global.year] = 100 * (yieldVals.woody.val / yieldVals.woody.max);
+        global.results[global.year].yield.woody_bioenergy_percent = global.results[global.year].yield.woody_bioenergy_area / watershedArea * 100;
+        
+        // FruitVeggie Yield
+        dataset[6]["Year" + global.year] = 100 * (yieldVals.fruitveggie.val / yieldVals.fruitveggie.max);
+        global.results[global.year].yield.mixed_fruit_veggie_percent = global.results[global.year].yield.mixed_fruit_veggie_area / watershedArea * 100;
     };
 
-    //----------Corn Yield-------------------
+    //////////////Corn Yield///////////////////
     function setCornYield(i) {
-        yieldVals.corn.val += getBaseCornYield(i) * getConservationYieldFactor(i);
+        yieldVals.corn.val += yieldPrecipitationMultiplier * getCornYield(i);
         setCornMax(i);
     }
 
-    function getBaseCornYield(i) {
+    function getCornYield(i) {
         if (landcover[i] === 1 || landcover[i] === 2) {
-            return unitYield[0][soiltype];
-        } else {
-            return 0;
-        }
-    }
-
-    function getConservationYieldFactor(i) {
-        if (landcover[i] === 1 || landcover[i] === 3) {
-            return 1;
-        } else if (landcover[i] === 2 || landcover[i] === 4) {
-            return conservationYieldFactor[soiltype];
+            return unitYield[0][soiltype] * dataPointArea[i];
         } else {
             return 0;
         }
@@ -209,19 +282,15 @@ var Yield = function () {
         yieldVals.corn.max += unitYield[0][soiltype];
     }
 
-    function getCornPercent(i) {
-//        return (landcover[i] === 1) ? area /
-    }
-
-    //----------Soy Yield--------------------
+    //////////////Soy Yield///////////////////
     function setSoyYield(i) {
-        yieldVals.soybean.val += getBaseSoyYield(i) * getConservationYieldFactor(i);
+        yieldVals.soybean.val += yieldPrecipitationMultiplier * getBaseSoyYield(i);
         setSoyMax(i);
     }
 
     function getBaseSoyYield(i) {
         if (landcover[i] === 3 || landcover[i] === 4) {
-            return unitYield[1][soiltype];
+            return unitYield[1][soiltype] * dataPointArea[i];
         } else {
             return 0;
         }
@@ -231,14 +300,14 @@ var Yield = function () {
         yieldVals.soybean.max += unitYield[1][soiltype];
     }
 
-    //---------Alfalfa Yield-----------------
+    //////////////Alfalfa Yield///////////////////
     function setAlfalfaYield(i) {
-        yieldVals.alfalfa.val += getAlfalfaYield(i);
+        yieldVals.alfalfa.val += yieldPrecipitationMultiplier * getAlfalfaYield(i);
         setAlfalfaMax(i);
     }
 
     function getAlfalfaYield(i) {
-        if (landcover[i] === 5) return unitYield[2][soiltype];
+        if (landcover[i] === 5) return unitYield[2][soiltype] * dataPointArea[i];
         else return 0;
     }
 
@@ -246,14 +315,14 @@ var Yield = function () {
         yieldVals.alfalfa.max += unitYield[2][soiltype];
     }
 
-    //----------Grass Hay Yield--------------
+    //////////////GrassHay Yield///////////////////
     function setGrassHayYield(i) {
-        yieldVals.grass.val += getGrassHayYield(i);
+        yieldVals.grass.val += yieldPrecipitationMultiplier * getGrassHayYield(i);
         setGrassHayMax(i);
     }
 
     function getGrassHayYield(i) {
-        if (landcover[i] === 8) return unitYield[2][soiltype];
+        if (landcover[i] === 8) return unitYield[2][soiltype] * dataPointArea[i];
         else return 0;
     }
 
@@ -261,9 +330,9 @@ var Yield = function () {
         yieldVals.grass.max += unitYield[2][soiltype];
     }
 
-    //----------Timber Yield-----------------
+    //////////////Timber Yield///////////////////
     function setTimberYield(i) {
-        yieldVals.timber.val += getTimberYield(i);
+        yieldVals.timber.val += yieldPrecipitationMultiplier * getTimberYield(i);
         setTimberMax(i);
     }
 
@@ -276,21 +345,55 @@ var Yield = function () {
         yieldVals.timber.max += unitYield[3][soiltype] * watershedArea;
     }
 
-    //----------Cattle Yield-----------------
+    //////////////Cattle Yield///////////////////
     function setCattleYield(i) {
-        yieldVals.cattle.val += getCattleYield(i);
+        yieldVals.cattle.val += yieldPrecipitationMultiplier * getCattleSupported(i);
         setCattleMax(i);
     }
 
-    function getCattleYield(i) {
-        var returnVar = 0;
-        if (landcover[i] === 6) returnVar += unitYield[4][soiltype] * watershedArea;
-        if (landcover[i] === 7) returnVar += unitYield[4][soiltype] * 1.67 * 1.25 * watershedArea;
-        return returnVar;
+    function getCattleSupported(i) {
+        if(landcover[i] === 6 || landcover[i] === 7) {
+            return (getSeasonalUtilizationRate(i) / ((cattleAverageDailyIntake / 2000) * GRAZING_SEASON_LENGTH) * unitYield[4][soiltype] * dataPointArea);
+        }
+    }
+    
+    function getSeasonalUtilizationRate(i) {
+        if (landcover[i] === 6) return 0.35;
+        else if(landcover[i] === 7) return 0.55;
+        else return 0;
     }
 
     function setCattleMax(i) {
-        yieldVals.cattle.max += unitYield[4][soiltype] * 1.67 * 1.25 * watershedArea;
+        yieldVals.cattle.max += (0.55 / ((cattleAverageDailyIntake / 2000) * GRAZING_SEASON_LENGTH) * unitYield[4][soiltype] * dataPointArea);
+    }
+    
+    //////////////Herbaceous Bioenergy Yield///////////////////
+    function setHerbaceousBioenergyYield(i) {
+        yieldVals.herb.val += yieldPrecipitationMultiplier * getHerbaceousBioenergyYield(i);
+        setHerbaceousBioenergyMax();
+    }
+    
+    function getHerbaceousBioenergyYield(i) {
+        if (landcover[i] === 12) return unitYield[6][soiltype] * dataPointArea;
+        else return 0;
+    }
+    
+    function setHerbaceousBioenergyMax() {
+        yieldVals.herb.max += unitYield[6][soiltype] * dataPointArea;
+    }
+    
+    //////////////Woody Bioenergy Yield///////////////////
+    function setWoodyBioenergyYield(i) {
+        yieldVals.woody.val += getWoodyBioenergyYield(i);
+        setWoodyBioenergyMax();
+    }
+    
+    function getWoodyBioenergyYield(i) {
+        return (landcover[i] === 13) ? 60.8608 * dataPointArea : 0;
+    }
+    
+    function setWoodyBioenergyMax() {
+        yieldVals.woody.max += 60.8608 * dataPointArea;
     }
 
     //------Mixed Fruit/Veggie Yield---------
@@ -313,6 +416,13 @@ var Yield = function () {
             if(global.precipitation[global.year] === 24.58 || global.precipitation[global.year] === 45.10) return 0.75;
             else if(global.precipitation[global.year] === 28.18 || global.precipitation[global.year] === 36.47) return 0.9;
             else if(global.precipitation[global.year] === 30.39 || global.precipitation[global.year] === 32.16 || global.precipitation[global.year] === 34.34) return 1;
+        } else if ((landcover[i] > 4 && landcover[i] < 9) || landcover[i] === 12) {
+            if (global.precipitation[global.year] > 24.58 && global.precipitation[global.year] < 45.10) return 1;
+            else return 0.95;
+        } else if (landcover[i] === 15) {
+            if (global.precipitation[global.year] < 36.47) return 1;
+            else if (global.precipitation[global.year] === 36.47) return 0.9
+            else return 0.75;
         }
     }
 
