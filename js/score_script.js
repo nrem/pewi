@@ -7,12 +7,12 @@ var dataset = [
     {    Metric: 'Cattle', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Fruit-Veggie Yield', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Stream Nitrate Mitigation', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Phosphorus', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Phosphorus Load', Year1: 0, Year2: 0, Year3: 0},//check
     {    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Sediment Control', Year1: 0, Year2: 0, Year3: 0},//check
-    {    Metric: 'Erosion Control', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Sediment Delivered', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Erosion', Year1: 0, Year2: 0, Year3: 0},//check
     {    Metric: 'Herbaceous Bioenergy', Year1: 0, Year2: 0, Year3: 0},//check
     {    Metric: 'Woody Bioenergy', Year1: 0, Year2: 0, Year3: 0}//check
 ];
