@@ -179,7 +179,6 @@ var Plot = function () {
         node.append("rect")
             .attr("fill", "gray")
             .attr("x", function (d, i) {
-                console.log(legendrectvals[i]);
                 return 530 + legendrectvals[i] / 100 * 50;
             })
             .attr("y", function (d, i) {

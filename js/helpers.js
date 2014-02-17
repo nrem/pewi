@@ -122,7 +122,6 @@ function setTopographyFactors(i) {
  */
 function changeBaselandcoverDataPoint(value, i, firstpass) {
     if(global.data[global.year].baselandcover.data[i] !== 0 && !firstpass) {
-        console.log(global.data[global.year].baselandcover.data[i]);
         setLandCoverArea(value, global.data[global.year].baselandcover.data[i]);
     } else {
         setLandCoverArea(value);
@@ -145,7 +144,6 @@ function setLandCoverArea(newIdx, oldIdx) {
         if(oldIdx) {
             // We need to subtract this area from it's respective landcover
             landCoverArea[oldIdx] -= area;
-            console.log(landCoverArea);
         } else {
             // We haven't accounted for this area yet
             watershedArea += area;

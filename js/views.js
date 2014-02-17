@@ -62,7 +62,8 @@ var PrintView = function () {
             height: "",
             title: "PE/WI Results"
         },
-        modal = new ModalView(options);
+        modal = new ModalView(options),
+        HECTARES = 0.404686;
     modal.append('<div id="results-container"></div>');
 //    modal.append('<section class="output-map-container"><div><a>Nitrate Watershed Percent Contribution</a></div><div id="nitrate-output-map" class="output-map"><div id="watershed-percent-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Gross Erosion</a></div><div id="erosion-output-map" class="output-map"><div id="erosion-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Phosphorus Index Risk Assessment</a></div><div id="risk-assessment-output-map" class="output-map"><div id="risk-assessment-stat"><a></a></div></div></section>');
 //    modal.append('<section id="left-col"><section id=""><div id="precipitation-placeholder"></div></section><section id="landuse-outputs"></section><br /><div id="stats">Stats</div></section>');
@@ -116,26 +117,19 @@ var PrintView = function () {
     }
     
     // Body
-    var j=0;
-    for(var key in global.landcovers[1]) {
-        var row = tableLandcover.append("tr")
-            .attr("class", (j%2 !== 0) ? "odd" : "even");
-        console.log(key);
-        row.append("td").append("a").text(global.landcovers[1][key].name);
-        row.append("td").append("a").text((global.landcovers[1][key].percent) ? Math.round(global.landcovers[1][key].percent * 10) / 10 : 0);
-        row.append("td").append("a").text((global.landcovers[2][key] !== undefined) ? Math.round(global.landcovers[2][key].percent * 10) / 10 : 0);
-        row.append("td").append("a").text((global.landcovers[3][key] !== undefined) ? Math.round(global.landcovers[3][key].percent * 10) / 10 : 0);
-        row.append("td").append("a").text((global.landcovers[1][key] !== undefined) ? Math.round(global.landcovers[1][key].area * 10) / 10 : 0);
-        row.append("td").append("a").text((global.landcovers[2][key] !== undefined) ? Math.round(global.landcovers[2][key].area * 10) / 10 : 0);
-        row.append("td").append("a").text((global.landcovers[3][key] !== undefined) ? Math.round(global.landcovers[3][key].area * 10) / 10 : 0);
-        row.append("td").append("a").text((global.landcovers[1][key] !== undefined) ? Math.round(global.landcovers[1][key].area * 10) / 10 : 0);
-        row.append("td").append("a").text((global.landcovers[2][key] !== undefined) ? Math.round(global.landcovers[2][key].area * 10) / 10 : 0);
-        row.append("td").append("a").text((global.landcovers[3][key] !== undefined) ? Math.round(global.landcovers[3][key].area * 10) / 10 : 0);
-        j++;
-    }
-
     for(var i=1; i<landcovers.length; i++) {
-
+        var row = tableLandcover.append("tr")
+            .attr("class", (i%2 !== 0) ? "odd" : "even");
+        row.append("td").append("a").text(landcovers[i]);
+        row.append("td").append("a").text(Math.round((100 * global.landuse[1][i-1] / watershedArea) * 10) / 10);
+        row.append("td").append("a").text((global.landuse[2] !== undefined) ? Math.round((100 * global.landuse[2][i-1] / watershedArea) * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landuse[3] !== undefined) ? Math.round((100 * global.landuse[3][i-1] / watershedArea) * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landuse[1] !== undefined) ? Math.round(global.landuse[1][i-1] * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landuse[2] !== undefined) ? Math.round(global.landuse[2][i-1] * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landuse[3] !== undefined) ? Math.round(global.landuse[3][i-1] * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landuse[1] !== undefined) ? Math.round(global.landuse[1][i-1] * HECTARES * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landuse[2] !== undefined) ? Math.round(global.landuse[2][i-1] * HECTARES * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landuse[3] !== undefined) ? Math.round(global.landuse[3][i-1] * HECTARES * 10) / 10 : 0);
     }
     
     // Footer
