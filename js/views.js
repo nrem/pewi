@@ -90,7 +90,7 @@ var PrintView = function () {
     
     var measure = tableLandcover.append("tr")
     .attr("class", "results-table-header-row");
-    headerMeasureCellFactory(measure, {1: "", 2: "Percent", 5: "Acres", 8: "Hectares"});
+    headerMeasureCellFactory(measure, {1: "", 2: "Percent", 3: "", 4: "", 5: "Acres", 6: "", 7: "", 8: "Hectares", 9: "", 10: ""});
     
     var titles = tableLandcover.append("tr")
     .attr("class", "results-table-header-row");
@@ -98,10 +98,12 @@ var PrintView = function () {
     
     function headerMeasureCellFactory(header, data) {
         for(var value in data) {
-            header.append("th")
+            var b = header.append("th")
             .attr("class", "results-table-header-row-cell")
-            .style("right", 0)
+            .style("text-align", "center")
             .append("a").text(data[value]);
+
+            if(data[value] !== "") b.attr("colspan", 3);
         }
     }
     
@@ -114,20 +116,26 @@ var PrintView = function () {
     }
     
     // Body
-    for(var i=1; i<landcovers.length; i++) {
+    var j=0;
+    for(var key in global.landcovers[1]) {
         var row = tableLandcover.append("tr")
-        .attr("class", (i%2 !== 0) ? "odd" : "even");
+            .attr("class", (j%2 !== 0) ? "odd" : "even");
+        console.log(key);
+        row.append("td").append("a").text(global.landcovers[1][key].name);
+        row.append("td").append("a").text((global.landcovers[1][key].percent) ? Math.round(global.landcovers[1][key].percent * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landcovers[2][key] !== undefined) ? Math.round(global.landcovers[2][key].percent * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landcovers[3][key] !== undefined) ? Math.round(global.landcovers[3][key].percent * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landcovers[1][key] !== undefined) ? Math.round(global.landcovers[1][key].area * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landcovers[2][key] !== undefined) ? Math.round(global.landcovers[2][key].area * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landcovers[3][key] !== undefined) ? Math.round(global.landcovers[3][key].area * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landcovers[1][key] !== undefined) ? Math.round(global.landcovers[1][key].area * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landcovers[2][key] !== undefined) ? Math.round(global.landcovers[2][key].area * 10) / 10 : 0);
+        row.append("td").append("a").text((global.landcovers[3][key] !== undefined) ? Math.round(global.landcovers[3][key].area * 10) / 10 : 0);
+        j++;
+    }
 
-        row.append("td").append("a").text(landcovers[i]);
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
+    for(var i=1; i<landcovers.length; i++) {
+
     }
     
     // Footer
@@ -151,7 +159,7 @@ var PrintView = function () {
     
     measure = tableScoreIndicator.append("tr")
     .attr("class", "results-table-header-row");
-    headerMeasureCellFactory(measure, {1: "", 2: "Score(out of 100)", 5: "Value (English units)", 8: "Value (Metric units)"});
+    headerMeasureCellFactory(measure, {1: "", 2: "Score(out of 100)", 3: "", 4: "", 5: "Value (English units)", 6: "", 7: "", 8: "Value (Metric units)", 9: "", 10: ""});
     
     titles = tableScoreIndicator.append("tr")
     .attr("class", "results-table-header-row");
@@ -163,30 +171,20 @@ var PrintView = function () {
         var row = tableScoreIndicator.append("tr")
         .attr("class", (i%2 !== 0) ? "odd" : "even");
         row.append("td").append("a").text(dataset[i].Metric);
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
-        row.append("td");
+        row.append("td").append("a").text(Math.round(dataset[i].Year1 * 10) / 10);
+        row.append("td").append("a").text(Math.round(dataset[i].Year2 * 10) / 10);
+        row.append("td").append("a").text(Math.round(dataset[i].Year3 * 10) / 10);
+        row.append("td").append("a").text((dataset[i].Value1) ? Math.round(dataset[i].Value1 * 10) / 10 : 0);
+        row.append("td").append("a").text((dataset[i].Value2) ? Math.round(dataset[i].Value2 * 10) / 10 : 0);
+        row.append("td").append("a").text((dataset[i].Value3) ? Math.round(dataset[i].Value3 * 10) / 10 : 0);
+        row.append("td").append("a").text((dataset[i].Value1) ? Math.round(dataset[i].Value1 * 10) / 10 * 1 : 0);
+        row.append("td").append("a").text((dataset[i].Value2) ? Math.round(dataset[i].Value2 * 10) / 10 * 1 : 0);
+        row.append("td").append("a").text((dataset[i].Value3) ? Math.round(dataset[i].Value3 * 10) / 10 * 1: 0);
     }
     
     // Footer
     tableScoreIndicator.append("tr")
     .attr("class", "results-table-footer-row");
-    
-    tableScoreIndicator.append("tr");
-    tableScoreIndicator.append("tr");
-    tableScoreIndicator.append("tr");
-    tableScoreIndicator.append("tr");
-    tableScoreIndicator.append("tr");
-    tableScoreIndicator.append("tr");
-    tableScoreIndicator.append("tr");
-    tableScoreIndicator.append("tr");
-    tableScoreIndicator.append("tr");
     
 //
 //    var scale = 2,
