@@ -591,7 +591,6 @@ h1 {
 }
 
 #infobox #info {
-    font-family: Helvetica, Arial, sans-serif;
     font-size: 2em;
 }
 
@@ -770,7 +769,6 @@ circle {
 }
 
 #bubble {
-    font-family: sans-serif;
     height: 650px;
 }
 
@@ -1026,3 +1024,17 @@ iframe {
     float: left;
     width: 0.7in;
 }*/
+
+/*------ Precipitation Input -----------*/
+
+#edit-precipitation-container {
+    width: 20em;
+    background: #ffffff;
+    position: absolute;
+    top: 100px;
+    left: 200px;
+}
+
+#edit-precipitation-container .row {
+    float: left;
+}

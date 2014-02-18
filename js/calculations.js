@@ -1364,8 +1364,13 @@ var Erosion = function () {
         dataset[12]["Year" + global.year] = 100 * ((sedimentDeliveredMax - global.sedimentDelivered[global.year]) / (sedimentDeliveredMax - sedimentDeliveredMin));
         dataset[8]["Year" + global.year] = 100 * ((phosphorusLoadMax - global.phosphorusLoad[global.year]) / (phosphorusLoadMax - phosphorusLoadMin));
         dataset[13]["Year" + global.year] = 100 * ((erosionMax - global.grossErosion[global.year]) / (erosionMax - erosionMin));
-//        console.log("Erosion: " + erosionMax, global.grossErosion[global.year], erosionMin);
+        console.log("Sediment: " + global.sedimentDelivered[global.year], sedimentDeliveredMax, sedimentDeliveredMin);
         console.log("Phosphorus: " + global.phosphorusLoad[global.year], phosphorusLoadMax, phosphorusLoadMin);
+        console.log("Erosion: " + erosionMax, global.grossErosion[global.year], erosionMin);
+
+        dataset[12]["Value" + global.year] = global.sedimentDelivered[global.year];
+        dataset[8]["Value" + global.year] = global.phosphorusLoad[global.year];
+        dataset[13]["Value" + global.year] = global.grossErosion[global.year];
     };
 
     function getSedimentDelivered(i) {
@@ -1377,12 +1382,13 @@ var Erosion = function () {
         var eph = ephemeralGullyErosion(i, false),
             rusl = rusle(i, false);
 //        console.log(eph, rusl);
-        if (rusl + eph >= 2) return 5;
-        else if (rusl + eph < 2 && rusl + eph >= 0.1) return 4;
-        else if (rusl + eph < 0.1 && rusl + eph >= 0.025) return 3;
-        else if (rusl + eph < 0.025 && rusl + eph >= 0.001) return 2;
-        else if (rusl + eph < 0.001) return 1;
+//        if (rusl + eph >= 2) return 5;
+//        else if (rusl + eph < 2 && rusl + eph >= 0.1) return 4;
+//        else if (rusl + eph < 0.1 && rusl + eph >= 0.025) return 3;
+//        else if (rusl + eph < 0.025 && rusl + eph >= 0.001) return 2;
+//        else if (rusl + eph < 0.001) return 1;
 //        console.log("hello");
+        return (rusl + eph) * datapointarea[i];
     }
 
     function grossErosionIndex(i) {
@@ -1431,6 +1437,7 @@ var Erosion = function () {
     }
 
     function getSedimentDeliveredMax(i) {
+//        console.log(rusle(i, 2));
         return (((rusle(i, 2) + ephemeralGullyErosion(i, 2)) * sedimentDeliveryRatio(i) * bufferFactor(i, 2)) * datapointarea[i]);
     }
 
@@ -1450,14 +1457,13 @@ var Erosion = function () {
     }
 
     function rusle(i, point) {
-//        console.log(rainfallRunoffErosivityFactor(i), soilErodibilityFactor(i), slopeLengthSteepnessFactor(i, point), coverManagementFactor(i, point), supportPracticeFactor(i, point));
+//        console.log(rainfallRunoffErosivityFactor(i), soilErodibilityFactor(i)/*, slopeLengthSteepnessFactor(i, point), coverManagementFactor(i, point), supportPracticeFactor(i, point)*/);
         return rainfallRunoffErosivityFactor(i) * soilErodibilityFactor(i) * slopeLengthSteepnessFactor(i, point) * coverManagementFactor(i, point) * supportPracticeFactor(i, point);
     }
 
     function rainfallRunoffErosivityFactor(i) {
-        if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 150;
-        else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 162;
-        return null;
+        if(global.precipitation[global.year] <= 33.46) return (0.0483 * ((global.precipitation[global.year] * 25.4) ^ 1.61)) / 17.02;
+        else return (587.8 - (1.219 * global.precipitation[global.year] * 25.4) + (0.004105 * ((global.precipitation[global.year] * 25.4) ^ 2))) / 17.02;
     }
 
     function soilErodibilityFactor(i) {
