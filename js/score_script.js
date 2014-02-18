@@ -163,7 +163,6 @@ var Plot = function () {
                 legendrectvals.push(0)
             }
         }); // NEEDS FIXED
-
         node.append("rect")
             .attr("fill", "gray")
             .attr("x", "530")
@@ -171,7 +170,9 @@ var Plot = function () {
                 return i * 27 + 40
             })
             .attr("width", function (d, i) {
-                return legendrectvals[i] / 100 * 50
+                var width = legendrectvals[i] / 100 * 50;
+                console.assert((width >= 0 || width <= 100), "The rect value in the plot was either less than 0 or greater than 100. Value: " + width);
+                return (width < 0 || width > 100) ? ((width < 0) ? 0 : 100) : width;
             })
             .attr("class", "ia")
             .attr("height", 12);
@@ -199,7 +200,7 @@ var Plot = function () {
          .style("fill", "black");
          */
 
-
+        var temp;
         objs.forEach(function (obj, i) {
             node
                 .append("circle")
@@ -208,7 +209,8 @@ var Plot = function () {
                     return xdata(obj) + 10;
                 })
                 .attr("cy", function (d) {
-                    return y(d[obj.replace(/ /g, '')]);
+                    temp = valueChangeFactory(d[obj.replace(/ /g, '')]);
+                    return y(temp);
                 })
                 .attr("r", function (d) {
                 })
@@ -217,7 +219,7 @@ var Plot = function () {
                     return obj
                 })
                 .attr("class", function (d) {
-                    return "ia " + d.Metric.replace(/ /g, '') + " " + obj.replace(/ /g, '');
+                    return "ia " + d.Metric.replace(/ /g, '') + " " + temp;
                 })
                 .attr("title", function (d) {
                     return d.Metric;
@@ -229,9 +231,13 @@ var Plot = function () {
                         return 0;
                     }
                 });
-
-
         });
+
+        function valueChangeFactory(value) {
+            console.assert((value > 0 || value < 100), "Value: " + value + " is out of bounds.");
+            value = (value < 0 || value > 100) ? ((value < 0) ? 0 : 100) : value;
+            return value;
+        }
 
         plot.selectAll("text.rule3")
             .data(objs)
