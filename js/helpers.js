@@ -20,18 +20,18 @@ function initCalcs() {
 
 function setStrategicWetland(i) {
     if (global.data[global.year].wetland.data[i] == 1) {
-        strategicArea++;
+        strategicArea += global.data[global.year].area.data[i];
     }
 }
 function setSubwatershedArea(i) {
     var subwatershed = global.data[global.year].subwatershed.data;
     if (subwatershed[i] != undefined && subwatershed[i] != "Subwatershed") {
-        subwatershedArea[subwatershed[i]]++;
+        subwatershedArea[subwatershed[i]] += global.data[global.year].area.data[i];
     }
 }
 function setStreamNetworkArea(i) {
     if (global.data[global.year].streamnetwork.data[i] == 1) {
-        streamArea += area;
+        streamArea += global.data[global.year].area.data[i];
     }
 }
 function setSoiltypeFactors(i) {
@@ -122,9 +122,9 @@ function setTopographyFactors(i) {
  */
 function changeBaselandcoverDataPoint(value, i, firstpass) {
     if(global.data[global.year].baselandcover.data[i] !== 0 && !firstpass) {
-        setLandCoverArea(value, global.data[global.year].baselandcover.data[i]);
+        setLandCoverArea(value, i, global.data[global.year].baselandcover.data[i]);
     } else {
-        setLandCoverArea(value);
+        setLandCoverArea(value, i);
     }
     global.data[global.year].baselandcover.data[i] = value;
     global.update = true;
@@ -136,17 +136,18 @@ function changeBaselandcoverDataPoint(value, i, firstpass) {
  * @param newIdx - the old landcover type
  * @param oldIdx - the new landcover type
  */
-function setLandCoverArea(newIdx, oldIdx) {
+function setLandCoverArea(newIdx, i, oldIdx) {
+    var dataPointArea = global.data[global.year].area.data[i];
     if (landCoverArea[newIdx] == undefined) {
         landCoverArea[newIdx] = 0;
     } else {
-        landCoverArea[newIdx] += area;
+        landCoverArea[newIdx] += dataPointArea;
         if(oldIdx) {
             // We need to subtract this area from it's respective landcover
-            landCoverArea[oldIdx] -= area;
+            landCoverArea[oldIdx] -= dataPointArea;
         } else {
             // We haven't accounted for this area yet
-            watershedArea += area;
+            watershedArea += dataPointArea;
 //            console.log("Area");
         }
 

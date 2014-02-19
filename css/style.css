@@ -1028,7 +1028,7 @@ iframe {
 /*------ Precipitation Input -----------*/
 
 #edit-precipitation-container {
-    width: 20em;
+    width: 9em;
     background: #ffffff;
     position: absolute;
     top: 100px;
@@ -1036,5 +1036,4 @@ iframe {
 }
 
 #edit-precipitation-container .row {
-    float: left;
 }
