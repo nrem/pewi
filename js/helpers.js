@@ -194,22 +194,27 @@ function centerElement(parent, child) {
 /**
  * Sets the precipitation for year 0 through year 3 in the watershed
  */
-function setPrecipitation() {
+function setPrecipitation(year, overrideValue) {
     var precip = [24.58, 28.18, 30.39, 32.16, 34.34, 36.47, 45.10];
-
-    for (var i = 0; i < 4; i++) {
+    if(overrideValue) {
+        global.precipitation[year] = overrideValue;
+    } else {
         var r = Math.floor(Math.random() * precip.length);
-        global.precipitation[i] = precip[r];
+        global.precipitation[year] = precip[r];
 
         if (r === 0 || r === 1) {
-            global.r[i] = 0;
+            global.r[year] = 0;
         } else if (r === 2 || r === 3 || r === 4) {
-            global.r[i] = 1;
+            global.r[year] = 1;
         } else {
-            global.r[i] = 2;
+            global.r[year] = 2;
         }
     }
+}
 
+function getPrecipitationValue(index) {
+    var precip = [24.58, 28.18, 30.39, 32.16, 34.34, 36.47, 45.10];
+    return precip[index];
 }
 
 /**

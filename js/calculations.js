@@ -1375,12 +1375,14 @@ var Erosion = function () {
 
     function getSedimentDelivered(i) {
 //        console.log(rusle(i, false), ephemeralGullyErosion(i, false), bufferFactor(i, false), datapointarea[i]);
-        return (((rusle(i, false) + ephemeralGullyErosion(i, false)) * sedimentDeliveryRatio(i) * bufferFactor(i, false)) * datapointarea[i]);
+        return (((rusle(i, global.precipitation[global.year], false) + ephemeralGullyErosion(i, false)) * sedimentDeliveryRatio(i) * bufferFactor(i, false)) * datapointarea[i]);
     }
 
     function getGrossErosion(i) {
         var eph = ephemeralGullyErosion(i, false),
-            rusl = rusle(i, false);
+            rusl = rusle(i, global.precipitation[global.year], false);
+        console.log(global.precipitation[global.year], rainfallRunoffErosivityFactor(i, global.precipitation[global.year]));
+//        console.log(coverManagementFactor(i, false));
 //        console.log(eph, rusl);
 //        if (rusl + eph >= 2) return 5;
 //        else if (rusl + eph < 2 && rusl + eph >= 0.1) return 4;
@@ -1416,12 +1418,12 @@ var Erosion = function () {
     }
     
     function getErosionMin(i) {
-        return ((rusle(i, 9) + ephemeralGullyErosion(i, 9)) * datapointarea[i]);
+        return ((rusle(i, 24.58, 9) + ephemeralGullyErosion(i, 9)) * datapointarea[i]);
     }
     
     function getErosionMax(i) {
 //        console.log(rusle(i, 2), ephemeralGullyErosion(i, 2));
-        return ((rusle(i, 2) + ephemeralGullyErosion(i, 2)) * datapointarea[i]);
+        return ((rusle(i, 45.10, 2) + ephemeralGullyErosion(i, 2)) * datapointarea[i]);
     }
     
     function getPhosphorusLoadMin(i) {
@@ -1433,17 +1435,21 @@ var Erosion = function () {
     }
     
     function getSedimentDeliveredMin(i) {
-    	return (((rusle(i, 9) + ephemeralGullyErosion(i, 9)) * sedimentDeliveryRatio(i) * bufferFactor(i, 9)) * datapointarea[i]);
+    	return (((rusle(i, 24.58, 9) + ephemeralGullyErosion(i, 9)) * sedimentDeliveryRatio(i) * bufferFactor(i, 9)) * datapointarea[i]);
     }
 
     function getSedimentDeliveredMax(i) {
 //        console.log(rusle(i, 2));
-        return (((rusle(i, 2) + ephemeralGullyErosion(i, 2)) * sedimentDeliveryRatio(i) * bufferFactor(i, 2)) * datapointarea[i]);
+//        console.log(rainfallRunoffErosivityFactor(i, 45.10));
+//        console.log(soilErodibilityFactor(i));
+//        console.log(slopeLengthSteepnessFactor(i, 2));
+//        console.log(coverManagementFactor(i, 2));
+        return (((rusle(i, 45.10, 2) + ephemeralGullyErosion(i, 2)) * sedimentDeliveryRatio(i) * bufferFactor(i, 2)) * datapointarea[i]);
     }
 
     function erosionComponent(i, point) {
         //console.log(rusle(i), ephemeralGullyErosion(i), sedimentDeliveryRatio(i), bufferFactor(i), enrichmentFactor(i), soilTestPErosionFactor(i));
-        return (rusle(i, point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryRatio(i) * bufferFactor(i, point) * enrichmentFactor(i) * soilTestPErosionFactor(i);
+        return (rusle(i, global.precipitation[global.year], point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryRatio(i) * bufferFactor(i, point) * enrichmentFactor(i) * soilTestPErosionFactor(i);
     }
 
     function runoffComponent(i, point) {
@@ -1456,14 +1462,15 @@ var Erosion = function () {
         return precipitationFactor() * getFlowFactor(i) * SOILTESTPDRAINAGEFACTOR;
     }
 
-    function rusle(i, point) {
+    function rusle(i, precip, point) {
 //        console.log(rainfallRunoffErosivityFactor(i), soilErodibilityFactor(i)/*, slopeLengthSteepnessFactor(i, point), coverManagementFactor(i, point), supportPracticeFactor(i, point)*/);
-        return rainfallRunoffErosivityFactor(i) * soilErodibilityFactor(i) * slopeLengthSteepnessFactor(i, point) * coverManagementFactor(i, point) * supportPracticeFactor(i, point);
+//        console.log(rainfallRunoffErosivityFactor(i, precip));
+        return rainfallRunoffErosivityFactor(i, precip) * soilErodibilityFactor(i) * slopeLengthSteepnessFactor(i, point) * coverManagementFactor(i, point) * supportPracticeFactor(i, point);
     }
 
-    function rainfallRunoffErosivityFactor(i) {
-        if(global.precipitation[global.year] <= 33.46) return (0.0483 * ((global.precipitation[global.year] * 25.4) ^ 1.61)) / 17.02;
-        else return (587.8 - (1.219 * global.precipitation[global.year] * 25.4) + (0.004105 * ((global.precipitation[global.year] * 25.4) ^ 2))) / 17.02;
+    function rainfallRunoffErosivityFactor(i, precip) {
+        if(precip <= 33.46) return (0.0483 * ((precip * 25.4) ^ 1.61)) / 17.02;
+        else return (587.8 - (1.219 * precip * 25.4) + (0.004105 * ((precip * 25.4) ^ 2))) / 17.02;
     }
 
     function soilErodibilityFactor(i) {
