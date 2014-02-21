@@ -182,13 +182,13 @@ function copy(obj) {
  * @param parent - The parent element to center relative to
  * @param child - The container that needs to be centered
  */
-function centerElement(parent, child) {
+function centerElement(parent, child) { // Check for less than zero margin top!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     var viewwidth = parent.width();
     var viewheight = parent.height();
     var width = child.width();
     var height = child.height();
     var marginleft = (viewwidth - width) / 2;
-    var margintop = (viewheight - height) / 2;
+    var margintop = (viewheight - height) / 4;
     child.css("marginLeft", marginleft).css("marginTop", margintop);
 }
 

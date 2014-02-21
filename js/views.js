@@ -5,13 +5,13 @@
  */
 var ModalView = function (options) {
     this.width = (options.width !== undefined) ? options.width : $(window).width() / 2;
-    this.height = (options.height !== undefined) ? options.height : $(window).height() / 2;
+    this.height = (options.height !== undefined) ? options.height : $(window).height() / 1.25;
     this.title = (options.title !== undefined) ? options.title : "Default";
     this.scrollable = (options.scrollable !== undefined) ? options.scrollable : true;
     var close_button_url = "images/icons/navigation/close_mini_dark-gray.svg",
         $container, $body;
-    $("#main").append('<div id="popup-container" class="popup-window"></div>');
-    $("#popup-container").width(this.width).height(this.height).css("overflow", this.scrollable);
+    $("#main").append('<div id="popup-container" class="popup-window removable-displays-container"></div>');
+    $("#popup-container").width(this.width)/*.height(this.height)*/.css("max-height", this.height).css("overflow", this.scrollable);
     $container = $("#popup-container");
     $container.append('<div id="popup-container-head" class="popup-window-head"></div>');
     $("#popup-container-head").append("<a>" + this.title + "</a>");
@@ -59,7 +59,6 @@ var ModalView = function (options) {
 var PrintView = function () {
     var options = {
             width: "8.5in",
-            height: "",
             title: "PE/WI Results"
         },
         modal = new ModalView(options),
