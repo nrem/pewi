@@ -409,23 +409,55 @@ var Maps = function () {
         };
         global.stream = new Stream();
         global.stream.draw(opts);
+
+        $("#watershed1 #0").dblclick(function() {
+            console.log("hello");
+            options.singlelandcover = 1;
+            for(var i=0; i< options.landcover.length; i++) {
+                if(options.landcover[i] != undefined) {
+                    setStrategicWetland(i);
+                    setStreamNetworkArea(i);
+                    changeBaselandcoverDataPoint(global.selectedPaint, i, true);
+                    //setLandCoverArea(options.landcover[i]);
+                    setSubwatershedArea(i);
+                    setSoiltypeFactors(i);
+                    setTopographyFactors(i);
+
+                    if(options.landcover[i] != 0) {
+                        $("#image" + i).attr("href", function() {
+                            if(options.landcover[i] > 5 && options.landcover[i] < 9) {
+                                var r = Math.floor(Math.random() * 2);
+                                return "images/cell_images_bitmaps/" + picsForLandCoverGrid[options.landcover[i]][r];
+                            } else {
+                                return "images/cell_images_bitmaps/" + picsForLandCoverGrid[options.landcover[i]];
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 
     this.updateWatershed = function(options) {
-        for(var i=0; i< options.landcover.length; i++) {
-            if(options.landcover[i] != undefined) {
-                setStrategicWetland(i);
-                setStreamNetworkArea(i);
-                changeBaselandcoverDataPoint(options.landcover[i], i, true);
-                //setLandCoverArea(options.landcover[i]);
-                setSubwatershedArea(i);
-                setSoiltypeFactors(i);
-                setTopographyFactors(i);
+        if(options.singlelandcover == undefined) {
+            for(var i=0; i< options.landcover.length; i++) {
+                if(options.landcover[i] != undefined) {
+                    setStrategicWetland(i);
+                    setStreamNetworkArea(i);
+                    changeBaselandcoverDataPoint(options.landcover[i], i, true);
+                    //setLandCoverArea(options.landcover[i]);
+                    setSubwatershedArea(i);
+                    setSoiltypeFactors(i);
+                    setTopographyFactors(i);
 
-                if(options.landcover[i] != 0) {
-                    $("#image" + i).attr("href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover[i]));
+                    if(options.landcover[i] != 0) {
+                        $("#image" + i).attr("href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover[i]));
+                    }
                 }
             }
+        } else {
+            console.log("Hello");
+
         }
     }
 
