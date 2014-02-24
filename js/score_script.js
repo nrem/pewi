@@ -154,10 +154,16 @@ var Plot = function () {
         dataset.forEach(function (d, i) {
             //legendrectvals.push(d["Year1"]);
             var numerator = 0,
-                denominator = 3;
+                denominator = 1,
+                value;
             numerator = d.Year1 + d.Year2 + d.Year3;
+            denominator += (global.data[2] !== 0) ? 1 : 0;
+            denominator += (global.data[3] !== 0) ? 1 : 0;
+            value = numerator / denominator;
+            if(value > 100) value = 100;
+            else if(value < 0) value = 0;
             if (denominator != 0) {
-                legendrectvals.push(numerator / denominator);
+                legendrectvals.push(value);
             }
             else {
                 legendrectvals.push(0)
@@ -171,8 +177,7 @@ var Plot = function () {
             })
             .attr("width", function (d, i) {
                 var width = legendrectvals[i] / 100 * 50;
-                console.assert((width >= 0 || width <= 100), "The rect value in the plot was either less than 0 or greater than 100. Value: " + width);
-                return (width < 0 || width > 100) ? ((width < 0) ? 0 : 100) : width;
+                return width;
             })
             .attr("class", "ia")
             .attr("height", 12);
@@ -226,7 +231,7 @@ var Plot = function () {
                 })
                 .attr("value", function (d) {
                     if (d["Year" + (i + 1)] > 0) {
-                        return d["Year" + (i + 1)].toFixed(2);
+                        return valueChangeFactory(d[obj.replace(/ /g, '')]).toFixed(2);
                     } else {
                         return 0;
                     }
