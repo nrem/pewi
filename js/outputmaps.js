@@ -362,7 +362,7 @@ var Maps = function () {
                 setStreamNetworkArea(i);
                 changeBaselandcoverDataPoint(options.landcover[i], i, true);
                 //setLandCoverArea(options.landcover[i]);
-                setSubwatershedArea(i);
+                setSubwatershedArea(i, true);
                 setSoiltypeFactors(i);
                 setTopographyFactors(i);
                 if (options.landcover[i] != 0) {
@@ -417,9 +417,9 @@ var Maps = function () {
                 if(options.landcover[i] != undefined) {
                     setStrategicWetland(i);
                     setStreamNetworkArea(i);
-                    changeBaselandcoverDataPoint(global.selectedPaint, i, true);
+                    changeBaselandcoverDataPoint(global.selectedPaint, i, false);
                     //setLandCoverArea(options.landcover[i]);
-                    setSubwatershedArea(i);
+//                    setSubwatershedArea(i);
                     setSoiltypeFactors(i);
                     setTopographyFactors(i);
 
@@ -444,9 +444,9 @@ var Maps = function () {
                 if(options.landcover[i] != undefined) {
                     setStrategicWetland(i);
                     setStreamNetworkArea(i);
-                    changeBaselandcoverDataPoint(options.landcover[i], i, true);
+                    changeBaselandcoverDataPoint(options.landcover[i], i, false);
                     //setLandCoverArea(options.landcover[i]);
-                    setSubwatershedArea(i);
+//                    setSubwatershedArea(i, false);
                     setSoiltypeFactors(i);
                     setTopographyFactors(i);
 

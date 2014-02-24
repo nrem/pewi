@@ -12,6 +12,7 @@ var ScoreDirector = function () {
     this.update = function () {
        // console.log("Updating...");
         // Update
+        resetLandCoverValuesAreasFor(global.year);
         for (var i = 0; i <= landcover.length; i++) {
             if (landcover[i] > 0) {
                 yieldVals.update(i);
@@ -392,7 +393,7 @@ var Yield = function () {
     }
 
     function getFruitVeggieYield(i) {
-        if (landcover[i] == 15) return getYieldPrecipitationMultiplier(i) * 7.34 * area * getSoilTypeMultiplier(i);
+        if (landcover[i] == 15) return getYieldPrecipitationMultiplier(i) * 7.34 * datapointarea[i] * getSoilTypeMultiplier(i);
         else return 0;
     }
 
@@ -550,6 +551,8 @@ var Nitrates = function () {
             subwatershed[f].row += setRowCropMultiplier(i);
             subwatershed[f].wetland += setWetlandMultiplier(i);
             subwatershed[f].conservation += setConservationMultiplier(i);
+//            console.log(setConservationMultiplier(i));
+//            console.log(subwatershed[f].conservation);
         }
         subwatershed[f].precipitation = setPrecipitationMultiplier(i);
     };
@@ -607,18 +610,21 @@ var Nitrates = function () {
         if (subwatershed == undefined || subwatershed.length == null) {
             return console.alert("The subwatersheds are not defined. Try Nitrates.update() before calling this function.");
         }
-        for (var i = 1; i < subwatershed.length; i++) {
+        for (var i = 0; i < subwatershed.length; i++) {
             nitratesPPM += (subwatershedArea[i] * ppmSubwatershed[i]) / watershedArea;
+            console.log(subwatershedArea[i], ppmSubwatershed[i], nitratesPPM);
         }
 
-        for (var i = 1; i < subwatershed.length; i++) {
+        for (var i = 0; i < subwatershed.length; i++) {
             watershedPercent[i] = ppmSubwatershed[i] * (subwatershedArea[i] / watershedArea) / nitratesPPM;
             global.watershedPercent[i] = watershedPercent[i];
         }
     }
 
     this.calculate = function () {
-
+        console.log(subwatershed);
+        console.log(subwatershedArea);
+        var sum = 0;
         for (var i = 0; i < subwatershedArea.length; i++) {
             var row = 0, wet = 0, cons = 0, precip = 0;
             if (subwatershedArea[i] != null && subwatershed != undefined && subwatershedArea[i] != 0) {
@@ -630,7 +636,7 @@ var Nitrates = function () {
                 if (subwatershed[i].wetland != 0 && subwatershed[i].wetland != null) {
                     wet = 0.6;
                 } else {
-                    wet++;
+                    wet = 1;
                 }
                 if (subwatershed[i].conservation != 0 && subwatershed[i].conservation != null) {
                     cons = (subwatershed[i].conservation / subwatershedArea[i]);
@@ -653,15 +659,16 @@ var Nitrates = function () {
             } else {
                 ppmSubwatershed[i] = 100 * row * wet * cons * precip;
             }
+            console.log(ppmSubwatershed[i]);
             //console.log("Crop: " + row);
             //console.log("Wetland: " + wet);
             //console.log("Conservation: " + cons);
             //console.log("Precipitation: " + precip);
             //console.log("Subwatershed PPM: " + ppmSubwatershed[i]);
+            sum += subwatershedArea[i];
         }
-
+        console.log(sum, watershedArea);
         mapIt();
-        console.log(watershedArea);
         console.log("Nitrates PPM: " + nitratesPPM, max, min);
         dataset[7]['Year' + global.year] = 100 * ((max - nitratesPPM) / (max - min));
         dealloc();
@@ -681,7 +688,7 @@ var Carbon = function () {
     var carbonMultiplier = [0, 161.87, 0, 161.87, 202.34, 117.36, 117.36, 117.36, 433.01, 1485.20, 1485.20, 485.62, 1897.98, 1234.29, 0];
     var carbon = 0;
     var max = 1897.98 * watershedArea;
-    var min = 485.6,
+    var min = 0,
         dataPointArea = global.data[global.year].area.data;
     //console.log(max);
     this.update = function (i) {
@@ -1319,8 +1326,7 @@ var Erosion = function () {
         subwatershedSubsurfaceDrainageComponent = 0,
         subwatershedRunoffComponent = 0,
         subwatershedErosionComponent = 0,
-        pIndex = [],
-        risk = [], grossErosion = [], phosBufferedStreamMultiplier = [],
+        pIndex = 0, grossErosion = [], phosBufferedStreamMultiplier = [],
         phosphorusWetlandMultiplier = [], phosphorusLoad = 0,
         sedimentDeliveredMin = 0, sedimentDeliveredMax = 0,
         datapointarea = getSubdataValueWithName("area", global.year),
@@ -1343,10 +1349,11 @@ var Erosion = function () {
     }
 
     this.update = function (i) {
-        risk[i] = pIndexRiskAssessment(pIndex[i]);
         global.sedimentDelivered[global.year] += getSedimentDelivered(i);
         global.grossErosion[global.year] += getGrossErosion(i);
-        global.phosphorusLoad[global.year] += phosphorusIndex(i, false) * datapointarea[i] / 2000;
+        var val = phosphorusIndex(i, false);
+        pIndex += val;
+        global.phosphorusLoad[global.year] += val * datapointarea[i] / 2000;
         // Max & Min Values
         sedimentDeliveredMax += getSedimentDeliveredMax(i);
         sedimentDeliveredMin += getSedimentDeliveredMin(i);
@@ -1372,6 +1379,8 @@ var Erosion = function () {
         dataset[12]["Value" + global.year] = global.sedimentDelivered[global.year];
         dataset[8]["Value" + global.year] = global.phosphorusLoad[global.year];
         dataset[13]["Value" + global.year] = global.grossErosion[global.year];
+
+        global.riskAssessment = pIndexRiskAssessment(pIndex);
     };
 
     function getSedimentDelivered(i) {

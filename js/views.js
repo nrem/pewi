@@ -114,7 +114,6 @@ var PrintView = function () {
             .append("a").text(data[value]);
         }
     }
-    
     // Body
     for(var i=1; i<landcovers.length; i++) {
         var row = tableLandcover.append("tr")

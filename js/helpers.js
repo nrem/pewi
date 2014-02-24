@@ -2,7 +2,6 @@ var landCoverArea,
     watershedArea,
     streamArea,
     strategicArea,
-    area,
     subwatershedArea,
     subsoilGroup,
     topoSlopeRangeHigh,
@@ -140,11 +139,14 @@ function setLandCoverArea(newIdx, i, oldIdx) {
     var dataPointArea = global.data[global.year].area.data[i];
     if (landCoverArea[newIdx] == undefined) {
         landCoverArea[newIdx] = 0;
+        global.landuse[global.year] = 0;
     } else {
         landCoverArea[newIdx] += dataPointArea;
+        global.landuse[global.year] += dataPointArea;
         if(oldIdx) {
             // We need to subtract this area from it's respective landcover
             landCoverArea[oldIdx] -= dataPointArea;
+            global.landuse[global.year] -= dataPointArea;
         } else {
             // We haven't accounted for this area yet
             watershedArea += dataPointArea;
@@ -225,4 +227,25 @@ function getPrecipitationValue(index) {
  */
 function log10(x) {
     return Math.log(x) / Math.LN10;
+}
+
+/**
+ *
+ * @param year
+ */
+function resetLandCoverValuesAreasFor(year) {
+    global.landcovers[year]["Corn"].area = 0;
+    global.landcovers[year]["Conservation Corn"].area = 0;
+    global.landcovers[year]["Soybeans"].area = 0;
+    global.landcovers[year]["Conservation Soybeans"].area = 0;
+    global.landcovers[year]["Alfalfa"].area = 0;
+    global.landcovers[year]["Grass Hay"].area = 0;
+    global.landcovers[year]["Conventional Forest"].area = 0;
+    global.landcovers[year]["Conservation Forest"].area = 0;
+    global.landcovers[year]["Permanent Pasture"].area = 0;
+    global.landcovers[year]["Rotational Grazing"].area = 0;
+    global.landcovers[year]["Herbaceous Bioenergy"].area = 0;
+    global.landcovers[year]["Woody Bioenergy"].area = 0;
+    global.landcovers[year]["Wetlands"].area = 0;
+    global.landcovers[year]["Mixed Fruit & Vegetables"].area = 0;
 }
