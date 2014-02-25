@@ -615,10 +615,8 @@ h1 {
 
 .popup-window {
     position: absolute;
-    margin: 0 auto;
     border: 2px solid;
     background: rgba(240, 240, 240, 1);
-    display: none;
     z-index: 1001;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
@@ -635,9 +633,10 @@ h1 {
     height: 5em;
 }
 
-.popup-window a {
-    position: relative;
+.popup-window-head a {
+    position: absolute;
     margin: auto 0;
+    font-size: 1.7em;
 }
 
 .popup-window-close-button {

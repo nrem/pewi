@@ -191,7 +191,8 @@ function centerElement(parent, child) { // Check for less than zero margin top!!
     var height = child.height();
     var marginleft = (viewwidth - width) / 2;
     var margintop = (viewheight - height) / 4;
-    child.css("marginLeft", marginleft).css("marginTop", margintop);
+
+    child.css("marginLeft", marginleft)/*.css("marginTop", margintop)*/;
 }
 
 /**

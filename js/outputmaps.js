@@ -11,7 +11,7 @@ var OutputMap = function (options) {
         cellHeight = SCALE * 2,
         basedata = global.data[global.year].baselandcover.data,
         LEN = basedata.length,
-        grossErosionData = global.grossErosion,
+        grossErosionData = global.grossErosionSeverity,
         riskAssessmentData = global.riskAssessment,
         svgWidth = (options.width !== undefined) ? options.width : 350,
         svgHeight = (options.height !== undefined) ? options.height : 250;
@@ -468,9 +468,6 @@ var Maps = function () {
                     }
                 }
             }
-        } else {
-            console.log("Hello");
-
         }
     }
 
