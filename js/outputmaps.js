@@ -389,7 +389,10 @@ var Maps = function () {
                         .attr("y", options.y[i] * h)
                         .attr("width", w)
                         .attr("height", h)
-                        .style("fill", "url(#pattern" + i + ")");
+                        .style("fill", "url(#pattern" + i + ")")
+                        .attr("landcover", function() {return landcovers[options.landcover[i]];});
+                        
+                    //$("#" + i).attr("landcover", "blah");
                 } else {
                     g.append("rect")
                         .attr("id", i)
@@ -398,14 +401,15 @@ var Maps = function () {
                         .attr("y", options.y[i] * h)
                         .attr("width", w)
                         .attr("height", h)
-                        .style("fill", colorsForLandCoverGrid[options.landcover[i]]);
+                        .style("fill", colorsForLandCoverGrid[options.landcover[i]])
+                        .attr("landcover", function() {return landcovers[options.landcover[i]];});
                     global.streamIndices[global.year].push(i);
                 }
             }
         }
         var opts = {
             parent: "#watershed1",
-            scale:  Math.round(SCREEN.height / 36 / 2 - 2) / 13
+            scale:  Math.round(SCREEN.height / 36 / 2 - 1) / 13
         };
         global.stream = new Stream();
         global.stream.draw(opts);
@@ -436,6 +440,15 @@ var Maps = function () {
                 }
             }
         });
+        
+        $(".watershed-rect").hover(
+            function() {
+                $("#hover-selection-hud a").text($(this).attr("landcover"));
+            },
+            function() {
+                $("#hover-selection-hud a").text("");
+            }
+        );
     }
 
     this.updateWatershed = function(options) {

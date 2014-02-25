@@ -5,7 +5,7 @@
  */
 var ModalView = function (options) {
     this.width = (options.width !== undefined) ? options.width : $(window).width() / 2;
-    this.height = (options.height !== undefined) ? options.height : $(window).height() / 1.25;
+    this.height = (options.height !== undefined) ? options.height : $(window).height() / 1.1;
     this.title = (options.title !== undefined) ? options.title : "Default";
     this.scrollable = (options.scrollable !== undefined) ? options.scrollable : true;
     var close_button_url = "images/icons/navigation/close_mini_dark-gray.svg",
