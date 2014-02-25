@@ -8,7 +8,7 @@ var landCoverArea,
     permeabilityCode;
 
 function initCalcs() {
-    landCoverArea = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    landCoverArea = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     watershedArea = 0, streamArea = 0, strategicArea = 0;
     area = 1;
     subwatershedArea = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];

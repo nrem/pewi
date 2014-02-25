@@ -28,7 +28,7 @@ function togglePuk(type, coords) {
             .attr("width", "100%")
             .attr("height", "100%")
             .attr("id", "pfeature")
-            .attr("class", "removable-displays");
+            .attr("class", "removable-displays-container");
 
         var center = centerOfElement($("#pfeature"));
 
@@ -38,47 +38,38 @@ function togglePuk(type, coords) {
                     name: "Topo Relief",
                     x: offset,
                     y: 0,
-                    width: 84,
+                    width: 100,
                     id: "topo"
                 },
                 flood: {
                     name: "Flood Frequency",
                     x: 50 + offset,
                     y: 35,
-                    width: 122,
+                    width: 130,
                     id: "flood"
                 },
                 drain: {
                     name: "Drainage Class",
                     x: offset,
                     y: 140,
-                    width: 112,
+                    width: 130,
                     id: "drainage"
                 },
                 wetland: {
                     name: "Strategic Wetland Areas",
                     x: 50 + offset,
                     y: 105,
-                    width: 172,
+                    width: 300,
                     id: "wetland"
                 },
                 sub: {
                     name: "Subwatershed Boundaries",
                     x: 75 + offset,
                     y: 70,
-                    width: 190,
+                    width: 210,
                     id: "sub"
                 }
             };
-
-        /*puck.append("circle")
-         .style("fill", "#333")
-         .attr("cx", center.x)
-         .attr("cy", center.y)
-         .attr("r", 20)
-         .attr("id", "puck-center")
-         .attr("class", "puck-center-empty");
-         */
 
         for (var key in features) {
             var node = puck.append("rect")

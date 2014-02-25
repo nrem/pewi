@@ -118,20 +118,20 @@ var PrintView = function () {
         }
     }
     // Body
-
+	console.log(landCoverArea, global.landuse);
     for(var i=1; i<landcovers.length; i++) {
         var row = tableLandcover.append("tr")
             .attr("class", (i%2 !== 0) ? "odd" : "even");
         row.append("td").append("a").text(landcovers[i]);
-        row.append("td").attr("class", "results-cell landcover-percent-y1").append("a").text(Math.round((100 * global.landuse[1][i-1] / watershedArea) * 10) / 10);
-        row.append("td").attr("class", "results-cell landcover-percent-y2").append("a").text((global.landuse[2] !== undefined) ? Math.round((100 * global.landuse[2][i-1] / watershedArea) * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-percent-y3").append("a").text((global.landuse[3] !== undefined) ? Math.round((100 * global.landuse[3][i-1] / watershedArea) * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-acres-y1").append("a").text((global.landuse[1] !== undefined) ? Math.round(global.landuse[1][i-1] * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-acres-y2").append("a").text((global.landuse[2] !== undefined) ? Math.round(global.landuse[2][i-1] * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-acres-y3").append("a").text((global.landuse[3] !== undefined) ? Math.round(global.landuse[3][i-1] * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-hectares-y1").append("a").text((global.landuse[1] !== undefined) ? Math.round(global.landuse[1][i-1] * HECTARES * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-hectares-y2").append("a").text((global.landuse[2] !== undefined) ? Math.round(global.landuse[2][i-1] * HECTARES * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-hectares-y3").append("a").text((global.landuse[3] !== undefined) ? Math.round(global.landuse[3][i-1] * HECTARES * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-percent-y1").append("a").text(Math.round((100 * global.landuse[1][i] / watershedArea) * 10) / 10);
+        row.append("td").attr("class", "results-cell landcover-percent-y2").append("a").text((global.landuse[2] !== undefined) ? Math.round((100 * global.landuse[2][i] / watershedArea) * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-percent-y3").append("a").text((global.landuse[3] !== undefined) ? Math.round((100 * global.landuse[3][i] / watershedArea) * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-acres-y1").append("a").text((global.landuse[1] !== undefined) ? Math.round(global.landuse[1][i] * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-acres-y2").append("a").text((global.landuse[2] !== undefined) ? Math.round(global.landuse[2][i] * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-acres-y3").append("a").text((global.landuse[3] !== undefined) ? Math.round(global.landuse[3][i] * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-hectares-y1").append("a").text((global.landuse[1] !== undefined) ? Math.round(global.landuse[1][i] * HECTARES * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-hectares-y2").append("a").text((global.landuse[2] !== undefined) ? Math.round(global.landuse[2][i] * HECTARES * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-hectares-y3").append("a").text((global.landuse[3] !== undefined) ? Math.round(global.landuse[3][i] * HECTARES * 10) / 10 : 0);
     }
     
     // Footer
