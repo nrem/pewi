@@ -184,5 +184,86 @@ var PrintView = function () {
     // Footer
     tableScoreIndicator.append("tr")
     .attr("class", "results-table-footer-row");
+	
+    ///////////////////////////////////////////////////
+    // Other Metrics //////////////////////////////////
+    ///////////////////////////////////////////////////
+	var otherMetrics = d3.select("#results-container")
+	.append("table")
+	.attr("class", "results-table");
+	
+	// Strategic Wetland Placement
+	var strategicWetlandRow = otherMetrics.append("tr")
+	.attr("class", "odd");
+	strategicWetlandRow.append("td").append("a").text("Strategic Wetland out of" + global.strategicWetland[1].possible/10);
+	strategicWetlandRow.append("td").attr("class", "results-cell");
+	strategicWetlandRow.append("td").attr("class", "results-cell");
+	strategicWetlandRow.append("td").attr("class", "results-cell");
+	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0) ? global.strategicWetland[1].actual : 0);
+	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0) ? global.strategicWetland[2].actual : 0);
+	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0) ? global.strategicWetland[3].actual : 0);
+	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0) ? global.strategicWetland[1].actual : 0);
+	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0) ? global.strategicWetland[2].actual : 0);
+	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0) ? global.strategicWetland[3].actual : 0);
+	
+	// Precipitation
+	var precipitationRow = otherMetrics.append("tr")
+	.attr("class", "even");
+	
+	precipitationRow.append("td").append("a").text("Precipitation");
+	precipitationRow.append("td").attr("class", "results-cell");
+	precipitationRow.append("td").attr("class", "results-cell");
+	precipitationRow.append("td").attr("class", "results-cell");
+	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[1]);
+	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[2]);
+	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[3]);
+	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[1]);
+	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[2]);
+	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[3]);
+	
+    ///////////////////////////////////////////////////
+    // Indicator Table ////////////////////////////////
+    ///////////////////////////////////////////////////
+	// var indicatorTable = d3.select("#results-container")
+// 	.append("table")
+// 	.attr("class", "results-table");
+// 	
+//     // Header
+//     indicatorTable.append("tr")
+//         .attr("class", "results-table-header-row")
+//         .append("th")
+//         .attr("class", "results-table-header-row-cell")
+//         .style("right", 0)
+//         .attr("colspan", 10)
+//         .append("a").text("Display Options");
+//     
+//     measure = indicatorTable.append("tr")
+//     .attr("class", "results-table-header-row");
+//     measure.append("th")
+//         .attr("class", "results-table-header-row-cell");
+//     headerMeasureCellFactory(measure, {1: "Year 1", 2: "Year 2", 3: "Year 3"});
+//     
+//     titles = indicatorTable.append("tr")
+//     .attr("class", "results-table-header-row");
+//     headerTitleCellFactory(titles, {1: "Indicator", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "", 10: ""});
+// 	
+// 	// Body
+// 	var mapRow = indicatorTable.append("tr")
+// 	.attr("class", "odd");
+// 	
+// 	mapRow.append("td").append("a").text("Nitrate Contributions");
+// 	mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#nitrate-output-map");
+// 	mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#erosion-output-map");
+// 	mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#risk-assessment-output-map");
+//     global.scoreDirector = new ScoreDirector();
+//     global.scoreDirector.calculateOutputMapValues();
+//     var opts = {
+//         scale: 3,
+//         height: 250,
+//         width: 350
+//     };
+//     global.outputmap = new OutputMap(opts);
+//     global.outputmap.draw();
+	
     centerElement($(window), modal.$element);
 };

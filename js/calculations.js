@@ -877,6 +877,8 @@ var Biodiversity = function () {
 
     var nativePNindex = 0, nonNativePNindex = 0, pGindex = 0, streamNindex = 0,
         streamGindex = 0, wetlandNindex = 0, wetlandGindex = 0, forestGindex = 0;
+		
+		global.strategicWetland = {};
 
     this.update = function (i) {
         setHeterogeneityGroup(i);
@@ -942,10 +944,11 @@ var Biodiversity = function () {
         setNativeIndex();
         setGameIndex();
 
-        global.strategicWetland = {
+        global.strategicWetland[global.year] = {
             actual: strategicWetlandArea,
             possible: strategicArea
         };
+		console.log(global.strategicWetland);
         global.streamNetwork = streamBufferPercent;
         // dataset[x]["Year"+global.year] = setGameIndex();
         // dataset[x]["Year"+global.year] = setNativeIndex();
@@ -1771,17 +1774,17 @@ var Erosion = function () {
             else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 69;
             else if (hydrogroup == 'C' && flowfactor == 0) return 79;
             else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 84;
-        } else if (cover == 8 || cover == 13) {
+        } else if (cover == 8 || cover == 12) {
             if (hydrogroup == 'A') return 30;
             else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 58;
             else if (hydrogroup == 'C' && flowfactor == 0) return 71;
             else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 78;
-        } else if (cover == 9) {
+        } else if (cover == 9 || cover == 14) {
             if (hydrogroup == 'A') return 30;
             else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 48;
             else if (hydrogroup == 'C' && flowfactor == 0) return 65;
             else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 73;
-        } else if (cover == 10 || cover == 11 || cover == 14) {
+        } else if (cover == 10 || cover == 11 || cover == 13) {
             if (hydrogroup == 'A') return 30;
             else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 55;
             else if (hydrogroup == 'C' && flowfactor == 0) return 70;
