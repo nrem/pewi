@@ -154,27 +154,27 @@ var OutputMap = function (options) {
                 0: {
                     x: cellWidth * 27,
                     y: cellHeight * 36 * 0.2,
-                    text: "< 0.001"
+                    text: "< 0.5"
                 },
                 1: {
                     x: cellWidth * 27,
                     y: cellHeight * 36 * 0.3,
-                    text: "0.025 - 0.001"
+                    text: "0.5 - 2"
                 },
                 2: {
                     x: cellWidth * 27,
                     y: cellHeight * 36 * 0.4,
-                    text: "0.1 - 0.025"
+                    text: "2 - 3.5"
                 },
                 3: {
                     x: cellWidth * 27,
                     y: cellHeight * 36 * 0.5,
-                    text: "0.1 - 2"
+                    text: "3.5 - 5"
                 },
                 4: {
                     x: cellWidth * 27,
                     y: cellHeight * 36 * 0.6,
-                    text: "> 2"
+                    text: "> 5"
                 }
             },
             risk: {
