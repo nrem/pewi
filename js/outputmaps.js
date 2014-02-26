@@ -16,6 +16,24 @@ var OutputMap = function (options) {
         svgWidth = (options.width !== undefined) ? options.width : 350,
         svgHeight = (options.height !== undefined) ? options.height : 250;
 
+    var registration = {
+        nitrates: {
+            container: "",
+            width: 0,
+            height: 0,
+        },
+        erosion: {
+            container: "",
+            width: 0,
+            height: 0
+        },
+        phosphorus: {
+            container: "",
+            width: 0,
+            height: 0
+        }
+    };
+
 
     var nitrates = d3.select("#nitrate-output-map")
         .append("svg")
@@ -39,6 +57,53 @@ var OutputMap = function (options) {
         nitrates: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"],
         erosion: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"],
         risk: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"]
+    };
+
+    /**
+     *
+     * @param container
+     * @param size
+     */
+    this.registerNitrateMap = function(container, size) {
+        registration.nitrates.container = container;
+        registration.nitrates.width = size.width;
+        registration.nitrates.height = size.height;
+    };
+
+    /**
+     *
+     * @param container
+     * @param size
+     */
+    this.registerErosionMap = function(container, size) {
+        registration.erosion.container = container;
+        registration.erosion.width = size.width;
+        registration.erosion.height = size.height;
+    };
+
+    /**
+     *
+     * @param container
+     * @param size
+     */
+    this.registerPhosphorusMap = function(container, size) {
+        registration.phosphorus.container = container;
+        registration.phosphorus.width = size.width;
+        registration.phosphorus.height = size.height;
+    };
+
+    /**
+     *
+     */
+    this.drawRegisteredMaps = function() {
+        for (var i = 0; i < LEN; i++) {
+            if (basedata[i] != undefined) {
+                drawNitrateCell(i);
+//                drawErosionCell(i);
+//                drawRiskAssessmentCell(i);
+            }
+        }
+        drawKeys();
     };
 
     function drawNitrateCell(i) {

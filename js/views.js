@@ -48,7 +48,7 @@ var ModalView = function (options) {
 //      }
         global.sm.consumeEvent("goto-mainevent");
     });
-    
+
     this.$element = $("#popup-container");
 };
 
@@ -68,18 +68,18 @@ var PrintView = function () {
 //    modal.append('<section id="left-col"><section id=""><div id="precipitation-placeholder"></div></section><section id="landuse-outputs"></section><br /><div id="stats">Stats</div></section>');
 //    modal.append('<section id="right-col"><div id="landcover-values"><div id="percent-landcover"></div></div></section>');
     modal.display();
-    
+
     ///////////////////////////////////////////////////
     // Landcover Table ////////////////////////////////
     ///////////////////////////////////////////////////
-    
+
     var tableLandcover = d3.select("#results-container")
-    .append("table")
-    .attr("class", "results-table");
-    
+        .append("table")
+        .attr("class", "results-table");
+
 //    var headLandcover = tableLandcover.append("th")
 //    .attr("class", "results-table-header");
-    
+
     // Header
     tableLandcover.append("tr")
         .attr("class", "results-table-header-row")
@@ -89,39 +89,40 @@ var PrintView = function () {
         .attr("colspan", 10)
         .append("a").text("Display Options")
         .attr("class", "display-options-dropdown");
-    
+
     var measure = tableLandcover.append("tr")
         .attr("class", "results-table-header-row");
     measure.append("th")
         .attr("class", "results-table-header-row-cell");
     headerMeasureCellFactory(measure, {1: "Percent", 2: "Acres", 3: "Hectares"});
-    
+
     var titles = tableLandcover.append("tr")
-    .attr("class", "results-table-header-row");
+        .attr("class", "results-table-header-row");
     headerTitleCellFactory(titles, {1: "Land Cover", 2: "Y1", 3: "Y2", 4: "Y3", 5: "Y1", 6: "Y2", 7: "Y3", 8: "Y1", 9: "Y2", 10: "Y3"});
-    
+
     function headerMeasureCellFactory(header, data) {
-        for(var value in data) {
+        for (var value in data) {
             var b = header.append("th")
-            .attr("class", "results-table-header-row-cell")
+                .attr("class", "results-table-header-row-cell")
 //            .style("text-align", "center")
-            .attr("colspan", 3)
-            .append("a").text(data[value]);
+                .attr("colspan", 3)
+                .append("a").text(data[value]);
         }
     }
-    
+
     function headerTitleCellFactory(header, data) {
-        for(var value in data) {
+        for (var value in data) {
             header.append("th")
-            .attr("class", "results-table-header-row-cell")
-            .append("a").text(data[value]);
+                .attr("class", "results-table-header-row-cell")
+                .append("a").text(data[value]);
         }
     }
+
     // Body
-	console.log(landCoverArea, global.landuse);
-    for(var i=1; i<landcovers.length; i++) {
+    console.log(landCoverArea, global.landuse);
+    for (var i = 1; i < landcovers.length; i++) {
         var row = tableLandcover.append("tr")
-            .attr("class", (i%2 !== 0) ? "odd" : "even");
+            .attr("class", (i % 2 !== 0) ? "odd" : "even");
         row.append("td").append("a").text(landcovers[i]);
         row.append("td").attr("class", "results-cell landcover-percent-y1").append("a").text(Math.round((100 * global.landuse[1][i] / watershedArea) * 10) / 10);
         row.append("td").attr("class", "results-cell landcover-percent-y2").append("a").text((global.landuse[2] !== undefined) ? Math.round((100 * global.landuse[2][i] / watershedArea) * 10) / 10 : 0);
@@ -133,18 +134,18 @@ var PrintView = function () {
         row.append("td").attr("class", "results-cell landcover-hectares-y2").append("a").text((global.landuse[2] !== undefined) ? Math.round(global.landuse[2][i] * HECTARES * 10) / 10 : 0);
         row.append("td").attr("class", "results-cell landcover-hectares-y3").append("a").text((global.landuse[3] !== undefined) ? Math.round(global.landuse[3][i] * HECTARES * 10) / 10 : 0);
     }
-    
+
     // Footer
-    
+
     ///////////////////////////////////////////////////
     // Score Indicator Table //////////////////////////
     ///////////////////////////////////////////////////
-    
+
     var tableScoreIndicator = d3.select("#results-container")
-    .append("table")
-    .attr("class", "results-table")
-    .style("width", "100%");
-    
+        .append("table")
+        .attr("class", "results-table")
+        .style("width", "100%");
+
     // Header
     tableScoreIndicator.append("tr")
         .attr("class", "results-table-header-row")
@@ -153,22 +154,22 @@ var PrintView = function () {
         .style("right", 0)
         .attr("colspan", 10)
         .append("a").text("Display Options");
-    
+
     measure = tableScoreIndicator.append("tr")
-    .attr("class", "results-table-header-row");
+        .attr("class", "results-table-header-row");
     measure.append("th")
         .attr("class", "results-table-header-row-cell");
     headerMeasureCellFactory(measure, {1: "Score(out of 100)", 2: "Value (English units)", 3: "Value (Metric units)"});
-    
+
     titles = tableScoreIndicator.append("tr")
-    .attr("class", "results-table-header-row");
+        .attr("class", "results-table-header-row");
     headerTitleCellFactory(titles, {1: "Score Indicator / Measurement", 2: "Y1", 3: "Y2", 4: "Y3", 5: "Y1", 6: "Y2", 7: "Y3", 8: "Y1", 9: "Y2", 10: "Y3"});
-    
+
     // Body
     console.log(dataset);
-    for(var i=0; i<dataset.length; i++) {
+    for (var i = 0; i < dataset.length; i++) {
         var row = tableScoreIndicator.append("tr")
-        .attr("class", (i%2 !== 0) ? "odd" : "even");
+            .attr("class", (i % 2 !== 0) ? "odd" : "even");
         row.append("td").append("a").text(dataset[i].Metric);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year1 * 10) / 10);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year2 * 10) / 10);
@@ -178,92 +179,94 @@ var PrintView = function () {
         row.append("td").attr("class", "results-cell").append("a").text((dataset[i].Value3) ? Math.round(dataset[i].Value3 * 10) / 10 : 0);
         row.append("td").attr("class", "results-cell").append("a").text((dataset[i].Value1) ? Math.round(dataset[i].Value1 * 10) / 10 * 1 : 0);
         row.append("td").attr("class", "results-cell").append("a").text((dataset[i].Value2) ? Math.round(dataset[i].Value2 * 10) / 10 * 1 : 0);
-        row.append("td").attr("class", "results-cell").append("a").text((dataset[i].Value3) ? Math.round(dataset[i].Value3 * 10) / 10 * 1: 0);
+        row.append("td").attr("class", "results-cell").append("a").text((dataset[i].Value3) ? Math.round(dataset[i].Value3 * 10) / 10 * 1 : 0);
     }
-    
+
     // Footer
     tableScoreIndicator.append("tr")
-    .attr("class", "results-table-footer-row");
-	
+        .attr("class", "results-table-footer-row");
+
     ///////////////////////////////////////////////////
     // Other Metrics //////////////////////////////////
     ///////////////////////////////////////////////////
-	var otherMetrics = d3.select("#results-container")
-	.append("table")
-	.attr("class", "results-table");
-	
-	// Strategic Wetland Placement
-	var strategicWetlandRow = otherMetrics.append("tr")
-	.attr("class", "odd");
-	strategicWetlandRow.append("td").append("a").text("Strategic Wetland out of" + global.strategicWetland[1].possible/10);
-	strategicWetlandRow.append("td").attr("class", "results-cell");
-	strategicWetlandRow.append("td").attr("class", "results-cell");
-	strategicWetlandRow.append("td").attr("class", "results-cell");
-	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0) ? global.strategicWetland[1].actual : 0);
-	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0) ? global.strategicWetland[2].actual : 0);
-	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0) ? global.strategicWetland[3].actual : 0);
-	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0) ? global.strategicWetland[1].actual : 0);
-	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0) ? global.strategicWetland[2].actual : 0);
-	strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0) ? global.strategicWetland[3].actual : 0);
-	
-	// Precipitation
-	var precipitationRow = otherMetrics.append("tr")
-	.attr("class", "even");
-	
-	precipitationRow.append("td").append("a").text("Precipitation");
-	precipitationRow.append("td").attr("class", "results-cell");
-	precipitationRow.append("td").attr("class", "results-cell");
-	precipitationRow.append("td").attr("class", "results-cell");
-	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[1]);
-	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[2]);
-	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[3]);
-	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[1]);
-	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[2]);
-	precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[3]);
-	
+    var otherMetrics = d3.select("#results-container")
+        .append("table")
+        .attr("class", "results-table");
+
+    // Strategic Wetland Placement
+    var strategicWetlandRow = otherMetrics.append("tr")
+        .attr("class", "odd");
+    strategicWetlandRow.append("td").append("a").text("Strategic Wetland out of" + global.strategicWetland[1].possible / 10);
+    strategicWetlandRow.append("td").attr("class", "results-cell");
+    strategicWetlandRow.append("td").attr("class", "results-cell");
+    strategicWetlandRow.append("td").attr("class", "results-cell");
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0) ? global.strategicWetland[1].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0) ? global.strategicWetland[2].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0) ? global.strategicWetland[3].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0) ? global.strategicWetland[1].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0) ? global.strategicWetland[2].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0) ? global.strategicWetland[3].actual : 0);
+
+    // Precipitation
+    var precipitationRow = otherMetrics.append("tr")
+        .attr("class", "even");
+
+    precipitationRow.append("td").append("a").text("Precipitation");
+    precipitationRow.append("td").attr("class", "results-cell");
+    precipitationRow.append("td").attr("class", "results-cell");
+    precipitationRow.append("td").attr("class", "results-cell");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[1]);
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[2]);
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[3]);
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[1]);
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[2]);
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[3]);
+
     ///////////////////////////////////////////////////
     // Indicator Table ////////////////////////////////
     ///////////////////////////////////////////////////
-	// var indicatorTable = d3.select("#results-container")
-// 	.append("table")
-// 	.attr("class", "results-table");
-// 	
-//     // Header
-//     indicatorTable.append("tr")
-//         .attr("class", "results-table-header-row")
-//         .append("th")
-//         .attr("class", "results-table-header-row-cell")
-//         .style("right", 0)
-//         .attr("colspan", 10)
-//         .append("a").text("Display Options");
-//     
-//     measure = indicatorTable.append("tr")
-//     .attr("class", "results-table-header-row");
-//     measure.append("th")
-//         .attr("class", "results-table-header-row-cell");
-//     headerMeasureCellFactory(measure, {1: "Year 1", 2: "Year 2", 3: "Year 3"});
-//     
-//     titles = indicatorTable.append("tr")
-//     .attr("class", "results-table-header-row");
-//     headerTitleCellFactory(titles, {1: "Indicator", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "", 10: ""});
-// 	
-// 	// Body
-// 	var mapRow = indicatorTable.append("tr")
-// 	.attr("class", "odd");
-// 	
-// 	mapRow.append("td").append("a").text("Nitrate Contributions");
-// 	mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#nitrate-output-map");
-// 	mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#erosion-output-map");
-// 	mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#risk-assessment-output-map");
-//     global.scoreDirector = new ScoreDirector();
-//     global.scoreDirector.calculateOutputMapValues();
-//     var opts = {
-//         scale: 3,
-//         height: 250,
-//         width: 350
-//     };
-//     global.outputmap = new OutputMap(opts);
-//     global.outputmap.draw();
-	
+    var indicatorTable = d3.select("#results-container")
+        .append("table")
+        .attr("class", "results-table");
+
+    // Header
+    indicatorTable.append("tr")
+        .attr("class", "results-table-header-row")
+        .append("th")
+        .attr("class", "results-table-header-row-cell")
+        .style("right", 0)
+        .attr("colspan", 10)
+        .append("a").text("Display Options");
+
+    measure = indicatorTable.append("tr")
+        .attr("class", "results-table-header-row");
+    measure.append("th")
+        .attr("class", "results-table-header-row-cell");
+    headerMeasureCellFactory(measure, {1: "Year 1", 2: "Year 2", 3: "Year 3"});
+
+    titles = indicatorTable.append("tr")
+        .attr("class", "results-table-header-row");
+    headerTitleCellFactory(titles, {1: "Indicator", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "", 10: ""});
+
+    // Body
+    var mapRow = indicatorTable.append("tr")
+        .attr("class", "odd");
+
+    mapRow.append("td").append("a").text("Nitrate Contributions");
+    mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#nitrate-output-map");
+    mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#erosion-output-map");
+    mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#risk-assessment-output-map");
+    global.scoreDirector = new ScoreDirector();
+    global.scoreDirector.calculateOutputMapValues();
+    var opts = {
+        scale: 3,
+        height: 250,
+        width: 350
+    };
+    global.outputmap = new OutputMap(opts);
+//    global.outputmap.draw();
+    global.outputmap.registerNitrateMap("#nitrate-output-map", {width: 250, height: 350});
+    global.outputmap.drawRegisteredMaps();
+
     centerElement($(window), modal.$element);
 };
