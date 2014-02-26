@@ -245,7 +245,7 @@ h1 {
 
 .rounds li {
     margin-left: 5px;
-    line-height: 30px;
+    line-height: 40px;
 
 }
 
@@ -535,15 +535,15 @@ h1 {
 }
 
 #score-tab {
-    height: 130px;
+    height: 70px;
     margin-bottom: 5px;
     padding-top: 3px;
 }
 
 #outputmap-tab {
-    height: 125px;
+    height: 70px;
     margin-bottom: 5px;
-    padding-top: 3px;
+    padding-top: 12px;
 }
 
 #results-tab {

@@ -2,23 +2,23 @@ var dataset = [
     {    Metric: 'Corn Yield', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Soybean Yield', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Alfalfa Yield', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Grass Hay Yield', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Timber Yield', Year1: 0, Year2: 0, Year3: 0},
+    {    Metric: 'Hay Yield', Year1: 0, Year2: 0, Year3: 0},
+    {    Metric: 'Timber Production', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Cattle', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Fruit-Veggie Yield', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Stream Nitrate Mitigation', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Phosphorus Load', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Mixed Fruit & Vegetable Yield', Year1: 0, Year2: 0, Year3: 0},
+    {    Metric: 'Nitrate Pollution Control (In-stream Concentration)', Year1: 0, Year2: 0, Year3: 0},
+    {    Metric: 'Phosphorus Pollution Control (In-stream Loading)', Year1: 0, Year2: 0, Year3: 0},//check
     {    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Sediment Delivered', Year1: 0, Year2: 0, Year3: 0},//check
-    {    Metric: 'Erosion', Year1: 0, Year2: 0, Year3: 0},//check
-    {    Metric: 'Herbaceous Bioenergy', Year1: 0, Year2: 0, Year3: 0},//check
-    {    Metric: 'Woody Bioenergy', Year1: 0, Year2: 0, Year3: 0}//check
+    {    Metric: 'Sediment Delivered (In-stream Delivery)', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Erosion Control (Gross Erosion)', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Herbaceous Perennial Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Short-rotation Woody Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0}//check
 ];
 var Plot = function () {
     //setup plot
-    var w = 700,
+    var w = 960,
         h = 650;
 
     var plot;
@@ -141,7 +141,7 @@ var Plot = function () {
             })
             .attr("fill", "black")
             .attr("opacity", "0.3")
-            .attr("x", "440")
+            .attr("x", "475")
             .attr("y", function (d, i) {
                 return i * 27 + 50
             })
@@ -171,7 +171,7 @@ var Plot = function () {
         }); // NEEDS FIXED
         node.append("rect")
             .attr("fill", "gray")
-            .attr("x", "530")
+            .attr("x", "700")
             .attr("y", function (d, i) {
                 return i * 27 + 40
             })
@@ -185,7 +185,7 @@ var Plot = function () {
         node.append("rect")
             .attr("fill", "gray")
             .attr("x", function (d, i) {
-                return 530 + legendrectvals[i] / 100 * 50;
+                return 700 + legendrectvals[i] / 100 * 50;
             })
             .attr("y", function (d, i) {
                 return i * 27 + 40
