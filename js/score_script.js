@@ -4,18 +4,37 @@ var dataset = [
     {    Metric: 'Alfalfa Yield', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Hay Yield', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Timber Production', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Cattle', Year1: 0, Year2: 0, Year3: 0},
+    {    Metric: 'Cattle Supported', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Mixed Fruit & Vegetable Yield', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Nitrate Pollution Control', resultsLabel: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0},
+    {    Metric: 'Phosphorus Pollution Control', resultsLabel: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0},//check
     {    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Sediment Delivered / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0},//check
-    {    Metric: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Sediment Control', resultsLabel: 'Sediment Control / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Erosion Control', resultsLabel: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0},//check
     {    Metric: 'Herbaceous Perennial Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0},//check
     {    Metric: 'Short-rotation Woody Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0}//check
 ];
+
+//var  set = {
+// 	corn: {label: 'Corn Yield', Year1: 0, Year2: 0, Year3: 0},
+// 	soybean: {label: 'Soybean Yield', Year1: 0, Year2: 0, Year3: 0},
+// 	alfalfa: {label: 'Alfalfa Yield', Year1: 0, Year2: 0, Year3: 0},
+// 	hay: {label: 'Hay Yield', Year1: 0, Year2: 0, Year3: 0},
+// 	timber: {label: 'Timber Production', Year1: 0, Year2: 0, Year3: 0},
+// 	cattle: {label: 'Cattle', Year1: 0, Year2: 0, Year3: 0},
+// 	fruitVeggie: {label: 'Mixed Fruit & Vegetable Yield', Year1: 0, Year2: 0, Year3: 0},
+// 	nitrate: {label: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0},
+// 	phosphorus: {label: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0},
+// 	carbon: {label: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0},
+// 	wildlife: {label: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0},
+// 	biodiversity: {label: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0},
+// 	sediment: {label: 'Sediment Delivered / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0},
+// 	erosion: {label: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0},
+// 	herbaceousBioenergy: {label: 'Herbaceous Perennial Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0},
+// 	woodyBioenergy: {label: 'Short-rotation Woody Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0}
+// };
 var Plot = function () {
     //setup plot
     var w = 960,

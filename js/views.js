@@ -173,7 +173,7 @@ var PrintView = function () {
     for (var i = 0; i < dataset.length; i++) {
         var row = tableScoreIndicator.append("tr")
             .attr("class", (i % 2 !== 0) ? "odd" : "even");
-        row.append("td").append("a").text(dataset[i].Metric);
+        row.append("td").append("a").text((dataset[i].resultsLabel) ? dataset[i].resultsLabel : dataset[i].Metric);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year1 * 10) / 10);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year2 * 10) / 10);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year3 * 10) / 10);
