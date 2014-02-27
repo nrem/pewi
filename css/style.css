@@ -1032,3 +1032,12 @@ iframe {
 
 #edit-precipitation-container .row {
 }
+
+#version-tag {
+    position: absolute;
+    bottom: 3px;
+    right: 10px;
+    color: #ffffff;
+    opacity: 0.5;
+    font-size: 1.5em;
+}
