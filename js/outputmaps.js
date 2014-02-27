@@ -14,13 +14,14 @@ var OutputMap = function (options) {
         grossErosionData = global.grossErosionSeverity,
         riskAssessmentData = global.riskAssessment,
         svgWidth = (options.width !== undefined) ? options.width : 350,
-        svgHeight = (options.height !== undefined) ? options.height : 250;
+        svgHeight = (options.height !== undefined) ? options.height : 250,
+        actionQueue = [];
 
     var registration = {
         nitrates: {
             container: "",
             width: 0,
-            height: 0,
+            height: 0
         },
         erosion: {
             container: "",
@@ -32,6 +33,19 @@ var OutputMap = function (options) {
             width: 0,
             height: 0
         }
+    };
+
+    /**
+     *
+     * @param fn
+     * @param context
+     * @param params
+     * @returns {Function}
+     */
+    var wrapFunction = function(fn, context, params) {
+        return function() {
+            fn.apply(context, params);
+        };
     };
 
 
@@ -64,10 +78,11 @@ var OutputMap = function (options) {
      * @param container
      * @param size
      */
-    this.registerNitrateMap = function(container, size) {
+    this.registerNitrateMap = function(container, params) {
         registration.nitrates.container = container;
-        registration.nitrates.width = size.width;
-        registration.nitrates.height = size.height;
+        registration.nitrates.width = params.width;
+        registration.nitrates.height = params.height;
+//        var registree = wrapFunction(drawNitrateMap(params.year), this, )
     };
 
     /**
@@ -106,7 +121,7 @@ var OutputMap = function (options) {
         drawKeys();
     };
 
-    function drawNitrateCell(i) {
+    function drawNitrateCell(i, year) {
         nitrates.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
@@ -480,7 +495,6 @@ var Maps = function () {
         global.stream.draw(opts);
 
         $("#watershed1 #0").dblclick(function() {
-            console.log("hello");
             options.singlelandcover = 1;
             for(var i=0; i< options.landcover.length; i++) {
                 if(options.landcover[i] != undefined) {
@@ -504,8 +518,17 @@ var Maps = function () {
                     }
                 }
             }
+
+            $(".watershed-rect").unbind('mouseenter mouseleave').hover(
+                function() {
+                    $("#hover-selection-hud a").text($(this).attr("landcover"));
+                },
+                function() {
+                    $("#hover-selection-hud a").text("");
+                }
+            );
         });
-        
+
         $(".watershed-rect").hover(
             function() {
                 $("#hover-selection-hud a").text($(this).attr("landcover"));

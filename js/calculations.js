@@ -41,10 +41,10 @@ var ScoreDirector = function () {
         //console.log(yieldVals.getCornYield());
         //console.log(yieldVals.soyYield);
         updatePlot = false;
-        for(var i=0; i<dataset.length; i++)
-        {
-        	console.log(dataset[i]);
-        }
+//        for(var i=0; i<dataset.length; i++)
+//        {
+//        	console.log(dataset[i]);
+//        }
         global.update = false;
     }
 
@@ -948,7 +948,7 @@ var Biodiversity = function () {
             actual: strategicWetlandArea,
             possible: strategicArea
         };
-		console.log(global.strategicWetland);
+//		console.log(global.strategicWetland);
         global.streamNetwork = streamBufferPercent;
         // dataset[x]["Year"+global.year] = setGameIndex();
         // dataset[x]["Year"+global.year] = setNativeIndex();

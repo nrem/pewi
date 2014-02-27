@@ -85,8 +85,10 @@ var PrintView = function () {
         .attr("class", "results-table-header-row")
         .append("th")
         .attr("class", "results-table-header-row-cell")
-        .style("right", 0)
+        .style("text-align", "right")
         .attr("colspan", 10)
+        .append("div")
+        .attr("class", "display-options-dropdown-button")
         .append("a").text("Display Options")
         .attr("class", "display-options-dropdown");
 
@@ -119,7 +121,6 @@ var PrintView = function () {
     }
 
     // Body
-    console.log(landCoverArea, global.landuse);
     for (var i = 1; i < landcovers.length; i++) {
         var row = tableLandcover.append("tr")
             .attr("class", (i % 2 !== 0) ? "odd" : "even");
@@ -151,9 +152,12 @@ var PrintView = function () {
         .attr("class", "results-table-header-row")
         .append("th")
         .attr("class", "results-table-header-row-cell")
-        .style("right", 0)
+        .style("text-align", "right")
         .attr("colspan", 10)
-        .append("a").text("Display Options");
+        .append("div")
+        .attr("class", "display-options-dropdown-button")
+        .append("a").text("Display Options")
+        .attr("class", "display-options-dropdown");
 
     measure = tableScoreIndicator.append("tr")
         .attr("class", "results-table-header-row");
@@ -166,7 +170,6 @@ var PrintView = function () {
     headerTitleCellFactory(titles, {1: "Score Indicator / Measurement", 2: "Y1", 3: "Y2", 4: "Y3", 5: "Y1", 6: "Y2", 7: "Y3", 8: "Y1", 9: "Y2", 10: "Y3"});
 
     // Body
-    console.log(dataset);
     for (var i = 0; i < dataset.length; i++) {
         var row = tableScoreIndicator.append("tr")
             .attr("class", (i % 2 !== 0) ? "odd" : "even");
@@ -225,48 +228,51 @@ var PrintView = function () {
     ///////////////////////////////////////////////////
     // Indicator Table ////////////////////////////////
     ///////////////////////////////////////////////////
-    var indicatorTable = d3.select("#results-container")
-        .append("table")
-        .attr("class", "results-table");
-
-    // Header
-    indicatorTable.append("tr")
-        .attr("class", "results-table-header-row")
-        .append("th")
-        .attr("class", "results-table-header-row-cell")
-        .style("right", 0)
-        .attr("colspan", 10)
-        .append("a").text("Display Options");
-
-    measure = indicatorTable.append("tr")
-        .attr("class", "results-table-header-row");
-    measure.append("th")
-        .attr("class", "results-table-header-row-cell");
-    headerMeasureCellFactory(measure, {1: "Year 1", 2: "Year 2", 3: "Year 3"});
-
-    titles = indicatorTable.append("tr")
-        .attr("class", "results-table-header-row");
-    headerTitleCellFactory(titles, {1: "Indicator", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "", 10: ""});
-
-    // Body
-    var mapRow = indicatorTable.append("tr")
-        .attr("class", "odd");
-
-    mapRow.append("td").append("a").text("Nitrate Contributions");
-    mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#nitrate-output-map");
-    mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#erosion-output-map");
-    mapRow.append("td").attr("colspan", 3).append("div").attr("class", "#risk-assessment-output-map");
-    global.scoreDirector = new ScoreDirector();
-    global.scoreDirector.calculateOutputMapValues();
-    var opts = {
-        scale: 3,
-        height: 250,
-        width: 350
-    };
-    global.outputmap = new OutputMap(opts);
-//    global.outputmap.draw();
-    global.outputmap.registerNitrateMap("#nitrate-output-map", {width: 250, height: 350});
-    global.outputmap.drawRegisteredMaps();
+//    var indicatorTable = d3.select("#results-container")
+//        .append("table")
+//        .attr("class", "results-table");
+//
+//    // Header
+//    indicatorTable.append("tr")
+//        .attr("class", "results-table-header-row")
+//        .append("th")
+//        .attr("class", "results-table-header-row-cell")
+//        .style("text-align", "right")
+//        .attr("colspan", 10)
+//        .append("div")
+//        .attr("class", "display-options-dropdown-button")
+//        .append("a").text("Display Options")
+//        .attr("class", "display-options-dropdown");
+//
+//    measure = indicatorTable.append("tr")
+//        .attr("class", "results-table-header-row");
+//    measure.append("th")
+//        .attr("class", "results-table-header-row-cell");
+//    headerMeasureCellFactory(measure, {1: "Year 1", 2: "Year 2", 3: "Year 3"});
+//
+//    titles = indicatorTable.append("tr")
+//        .attr("class", "results-table-header-row");
+//    headerTitleCellFactory(titles, {1: "Indicator", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "", 10: ""});
+//
+//    // Body
+//    var mapRow = indicatorTable.append("tr")
+//        .attr("class", "odd");
+//
+//    mapRow.append("td").append("a").text("Nitrate Contributions");
+//    mapRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map");
+//    mapRow.append("td").attr("colspan", 3).append("div").attr("id", "erosion-output-map");
+//    mapRow.append("td").attr("colspan", 3).append("div").attr("id", "risk-assessment-output-map");
+//    global.scoreDirector = new ScoreDirector();
+//    global.scoreDirector.calculateOutputMapValues();
+//    var opts = {
+//        scale: 3,
+//        height: 250,
+//        width: 350
+//    };
+//    global.outputmap = new OutputMap(opts);
+////    global.outputmap.draw();
+//    global.outputmap.registerNitrateMap("#nitrate-output-map", {width: 250, height: 350});
+//    global.outputmap.drawRegisteredMaps();
 
     centerElement($(window), modal.$element);
 };

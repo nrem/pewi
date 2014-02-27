@@ -137,10 +137,10 @@ var Plot = function () {
 
         node.append("text")
             .attr("class", function (d) {
-                return "ia " + " metric-label " + d.Metric.replace(/ \//g, '');
+                return "ia " + " metric-label " + d.Metric.replace(/ /g, '').replace(/\//g, '').replace(/&/g, '');
             })
-            .attr("fill", "black")
-            .attr("opacity", "0.3")
+            .style("fill", "black")
+            .style("opacity", "0.3")
             .attr("x", "475")
             .attr("y", function (d, i) {
                 return i * 27 + 50
@@ -224,7 +224,7 @@ var Plot = function () {
                     return obj
                 })
                 .attr("class", function (d) {
-                    return "ia " + d.Metric.replace(/ \//g, '') + " " + temp;
+                    return "ia " + d.Metric.replace(/ /g, '').replace(/\//g, '').replace(/&/g, '') + " " + temp;
                 })
                 .attr("title", function (d) {
                     return d.Metric;
@@ -275,12 +275,12 @@ var Plot = function () {
         plot.selectAll(".ia")
             .on("click", function (d) {
                 if (!MetricStack.some(function (e, i) {
-                    return d.Metric.replace(/ /g, '') == e
+                    return d.Metric.replace(/ \//g, '').replace(/ &/g, '') == e;
                 })) {
-                    MetricStack.push(d.Metric.replace(/ /g, ''));
+                    MetricStack.push(d.Metric.replace(/ \//g, '').replace(/ &/g, ''));
                 } else {
                     MetricStack = MetricStack.filter(function (e, i) {
-                        return d.Metric.replace(/ /g, '') != e
+                        return d.Metric.replace(/ \//g, '').replace(/ &/g, '') != e;
                     });
                 }
                 updateMetrics(MetricStack);
@@ -345,7 +345,6 @@ var Plot = function () {
             .style("stroke", "#ccc");
 
         dataset.forEach(function (d, i) {
-            console.log("Bar width: " + barWidth);
             histogram.append("rect")
                 .attr("y", "500")
                 .attr("x", i * barWidth)
@@ -373,7 +372,7 @@ var Plot = function () {
             var d = plot.selectAll("circle." + metric);
             plot.selectAll(".ia")
                 .filter(function (e) {
-                    return metric == e.Metric.replace(/ /g, '')
+                    return metric == e.Metric.replace(/ \//g, '')
                 })
                 .transition()
                 .duration(1000)
