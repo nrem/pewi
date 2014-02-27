@@ -519,14 +519,14 @@ var Maps = function () {
                 }
             }
 
-            $(".watershed-rect").unbind('mouseenter mouseleave').hover(
-                function() {
-                    $("#hover-selection-hud a").text($(this).attr("landcover"));
-                },
-                function() {
-                    $("#hover-selection-hud a").text("");
-                }
-            );
+            // $(".watershed-rect").hover(
+//                 function() {
+//                     $("#hover-selection-hud a").text($(this).attr("landcover"));
+//                 },
+//                 function() {
+//                     $("#hover-selection-hud a").text("");
+//                 }
+//             );
         });
 
         $(".watershed-rect").hover(
