@@ -6,13 +6,13 @@ var dataset = [
     {    Metric: 'Timber Production', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Cattle', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Mixed Fruit & Vegetable Yield', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Nitrate Pollution Control (In-stream Concentration)', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Phosphorus Pollution Control (In-stream Loading)', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0},
+    {    Metric: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0},//check
     {    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Sediment Delivered (In-stream Delivery)', Year1: 0, Year2: 0, Year3: 0},//check
-    {    Metric: 'Erosion Control (Gross Erosion)', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Sediment Delivered / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0},//check
+    {    Metric: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0},//check
     {    Metric: 'Herbaceous Perennial Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0},//check
     {    Metric: 'Short-rotation Woody Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0}//check
 ];
@@ -137,7 +137,7 @@ var Plot = function () {
 
         node.append("text")
             .attr("class", function (d) {
-                return "ia " + " metric-label " + d.Metric.replace(/ /g, '');
+                return "ia " + " metric-label " + d.Metric.replace(/ \//g, '');
             })
             .attr("fill", "black")
             .attr("opacity", "0.3")
@@ -224,7 +224,7 @@ var Plot = function () {
                     return obj
                 })
                 .attr("class", function (d) {
-                    return "ia " + d.Metric.replace(/ /g, '') + " " + temp;
+                    return "ia " + d.Metric.replace(/ \//g, '') + " " + temp;
                 })
                 .attr("title", function (d) {
                     return d.Metric;
@@ -288,13 +288,20 @@ var Plot = function () {
         var origopacity;
         $(".ia").hover(
             function (d) {
+				console.log(d);
                 if (d.currentTarget.nodeName == "circle") {
                     var $selector = $("." + d.currentTarget.classList[1]);
                 } else if (d.currentTarget.nodeName == "text") {
-                    var $selector = $("." + d.currentTarget.classList[2]);
+					// console.log(d.currentTarget.classList[2]);
+					var string = d.currentTarget.classList[2].replace(/\//g,'');
+					console.log(string);
+                    var $selector = $("." + string);
+					
                 }
+				console.log("here");
                 origopacity = $selector.css("opacity");
                 $selector.css("opacity", "1");
+				
             },
             function (d) {
                 if (d.currentTarget.nodeName == "circle") {
