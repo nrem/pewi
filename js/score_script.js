@@ -288,17 +288,12 @@ var Plot = function () {
         var origopacity;
         $(".ia").hover(
             function (d) {
-				console.log(d);
                 if (d.currentTarget.nodeName == "circle") {
                     var $selector = $("." + d.currentTarget.classList[1]);
                 } else if (d.currentTarget.nodeName == "text") {
-					// console.log(d.currentTarget.classList[2]);
-					var string = d.currentTarget.classList[2].replace(/\//g,'');
-					console.log(string);
-                    var $selector = $("." + string);
+                    var $selector = $("." + d.currentTarget.classList[2].replace(/\//g,''));
 					
                 }
-				console.log("here");
                 origopacity = $selector.css("opacity");
                 $selector.css("opacity", "1");
 				
