@@ -4,6 +4,7 @@
 
 .results-cell {
     width: 5em;
+    text-align: right;
 }
 
 /*.display-options-dropdown-button {*/

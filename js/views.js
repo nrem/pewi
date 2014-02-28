@@ -274,14 +274,17 @@ var PrintView = function () {
 //    global.outputmap.registerNitrateMap("#nitrate-output-map", {width: 250, height: 350});
 //    global.outputmap.drawRegisteredMaps();
 
-	var printCommands = d3.select("#results-container")
-		.append("div")
-		.attr("class", "print-commands-container");
-	
-	printCommands.append("input")
-	.attr("type", "button")
-	.attr("onClick", "window.print()")
-	.attr("value", "Print");
+    ///////////////////////////////////////////////////
+    // Print Commands /////////////////////////////////
+    ///////////////////////////////////////////////////
+//	var printCommands = d3.select("#results-container")
+//		.append("div")
+//		.attr("class", "print-commands-container");
+//
+//	printCommands.append("input")
+//	.attr("type", "button")
+//	.attr("onClick", "window.print()")
+//	.attr("value", "Print");
 
     centerElement($(window), modal.$element);
 };

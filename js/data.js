@@ -112,6 +112,13 @@ var landcovers = ["None",
     "Mixed Fruit & Vegetables"
 ];
 
+var units = {
+    english: [],
+    dict_to_english_factor: [],
+    metric: [],
+    english_to_metric_factor: []
+};
+
 var Data = {
     baselandcover: {
         name: "BaseLandCover",
