@@ -1,4 +1,8 @@
-pewi - Active Development
+pewi - Deployment
+====
+
+This branch has [Piwik](http://piwik.org/) functionality.
+
 ====
 
 People in Ecosystems / Watershed Integration
