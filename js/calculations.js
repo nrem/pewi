@@ -41,10 +41,10 @@ var ScoreDirector = function () {
         //console.log(yieldVals.getCornYield());
         //console.log(yieldVals.soyYield);
         updatePlot = false;
-//        for(var i=0; i<dataset.length; i++)
-//        {
-//        	console.log(dataset[i]);
-//        }
+       for(var i=0; i<dataset.length; i++)
+       {
+       		console.log(dataset[i]);
+       }
         global.update = false;
     }
 
@@ -702,6 +702,7 @@ var Carbon = function () {
     this.calculate = function () {
         // Needs a look-see
         dataset[9]["Year" + global.year] = 100 * (carbon - min) / (max - min);
+		dataset[9]["Value" + global.year] = carbon;
         carbon = 0;
     }
 };
@@ -1031,22 +1032,10 @@ var Biodiversity = function () {
     }
 
     function setNativeIndex() {
-        // Calculated once per watershed
-        //console.log("Contagion Native Index: " + getContagionPointsNativeIndex());
-        //console.log("Native Perennial Native Index: " + nativePNindex);
-        //console.log("Non N Perennials Native Index: " + nonNativePNindex);
-        //console.log("Stream Native Index: " + streamNindex);
-        //console.log("Wetland Native Index: " + wetlandNindex);
         dataset[11]['Year' + global.year] = 10 * (getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex);
     }
 
     function setGameIndex() {
-        // Calculated once per watershed
-        //console.log("Contagion Game Index: " + getContagionPointsGameIndex());
-        //console.log("Perennial Game Index: " + pGindex);
-        //console.log("Stream Game Index: " + streamGindex);
-        //console.log("Wetland Game Index: " + wetlandGindex);
-        //console.log("Forest Game Index: " + forestGindex);
         dataset[10]['Year' + global.year] = 10 * (getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex);
     }
 

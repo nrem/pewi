@@ -16,3 +16,22 @@
 /*.results-table-header-row {*/
     /*height: 1.5em;*/
 /*}*/
+	
+@media print {
+	.popup-window {
+	    position: absolute;
+	    border: none;
+	    background: #fff;
+	    z-index: 100000;
+	    -moz-border-radius: 0px;
+	    -webkit-border-radius: 0px;
+	    border-radius: 0px;
+	    box-shadow: 0px 0px 0px;
+	    -webkit-box-shadow: 0px 0px 0px;
+	    -moz-box-shadow: 0px 0px 0px;
+	    padding: 1em;
+	    overflow: auto;
+		height: 100%;
+		width: 100%;
+	}
+}
