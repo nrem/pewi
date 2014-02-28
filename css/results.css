@@ -1,10 +1,16 @@
 .results-table {
-	margin-top: 20px;
+    width: 100%;
+    font-size: 0.75em;
+    margin-top: 20px;
 }
 
 .results-cell {
     width: 5em;
     text-align: right;
+}
+
+.odd {
+    background-color: rgba(204,222,255,0.5);
 }
 
 /*.display-options-dropdown-button {*/

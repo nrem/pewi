@@ -41,10 +41,10 @@ var ScoreDirector = function () {
         //console.log(yieldVals.getCornYield());
         //console.log(yieldVals.soyYield);
         updatePlot = false;
-       for(var i=0; i<dataset.length; i++)
-       {
-       		console.log(dataset[i]);
-       }
+//       for(var i=0; i<dataset.length; i++)
+//       {
+//       		console.log(dataset[i]);
+//       }
         global.update = false;
     }
 

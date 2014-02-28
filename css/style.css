@@ -841,7 +841,7 @@ circle {
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-    overflow: visible;
+    /*overflow: visible;*/
 }
 
 #popup-container .row {
@@ -997,14 +997,7 @@ iframe {
 
 /*------ Results -----------*/
 
-.results-table {
-    width: 100%;
-    font-size: 0.75em;
-}
 
-.odd {
-    background-color: rgba(204,222,255,0.5);
-}
 
 /*.results-table-header {
     width: 100%;

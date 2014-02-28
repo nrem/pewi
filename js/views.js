@@ -58,7 +58,7 @@ var ModalView = function (options) {
  */
 var PrintView = function () {
     var options = {
-            width: "8.5in",
+            width: "9.5in",
             title: "PE/WI Results"
         },
         modal = new ModalView(options),
@@ -177,12 +177,12 @@ var PrintView = function () {
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year1 * 10) / 10);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year2 * 10) / 10);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year3 * 10) / 10);
-        row.append("td").attr("class", "results-cell").append("a").text((dataset[i].Value1) ? Math.round(dataset[i].Value1 * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell").append("a").text((dataset[i].Value2) ? Math.round(dataset[i].Value2 * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell").append("a").text((dataset[i].Value3) ? Math.round(dataset[i].Value3 * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell").append("a").text((dataset[i].Value1) ? Math.round(dataset[i].Value1 * 10) / 10 * 1 : 0);
-        row.append("td").attr("class", "results-cell").append("a").text((dataset[i].Value2) ? Math.round(dataset[i].Value2 * 10) / 10 * 1 : 0);
-        row.append("td").attr("class", "results-cell").append("a").text((dataset[i].Value3) ? Math.round(dataset[i].Value3 * 10) / 10 * 1 : 0);
+        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.english[i]);
+        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.english[i]);
+        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.english[i]);
+        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.metric[i]);
+        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.metric[i]);
+        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.metric[i]);
     }
 
     // Footer
@@ -218,12 +218,12 @@ var PrintView = function () {
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[1]);
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[2]);
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[3]);
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[1]);
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[2]);
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[3]);
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[1]).append("a").style("opacity",0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[2]).append("a").style("opacity",0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[3]).append("a").style("opacity",0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.precipitation[1] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.precipitation[2] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.precipitation[3] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
 
     ///////////////////////////////////////////////////
     // Indicator Table ////////////////////////////////
