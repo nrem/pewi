@@ -100,7 +100,8 @@ var Plot = function () {
             3: 160
         };
 
-        var arrowpath = "M-65 0L-80 20L-70 20L-70 430L-80 430L-65 450L-50 430L-60 430L-60 20L-50 20L-65 0z";
+        var arrowpath = "M-65 0L-80 20L-70 20L-70 450L-60 450L-60 20L-50 20L-65 0z";
+//        var arrowpath = "M-65 0L-80 20L-70 20L-70 430L-80 430L-65 450L-50 430L-60 430L-60 20L-50 20L-65 0z";
         var gradient = plot.append("svg:defs")
             .append("svg:linearGradient")
             .attr("id", "arrow-indicator-grad")
@@ -124,6 +125,13 @@ var Plot = function () {
             })
             .style("fill", "url(#arrow-indicator-grad)")
             .style("opacity", "0.8");
+
+        plot.append("svg:text")
+            .attr("x", 108)
+            .attr("y", -10)
+            .text("Score (out of 100)")
+            .style("fill", "#888")
+            .attr("text-anchor", "middle");
 
         for (var i = 1; i < 4; i++) {
             plot.append("rect")
@@ -220,6 +228,14 @@ var Plot = function () {
                 return 50 * (1 - legendrectvals[i] / 100)
             })
             .attr("height", 12);
+
+        plot.append("svg:text")
+            .attr("x", 725)
+            .attr("y", 35)
+            .text("Average Score")
+            .style("fill", "#888")
+            .attr("text-anchor", "middle")
+            .style("font-size", "0.5em");
 
         /*  node.append("text")
          .attr("class", function(d) {return "ia label "+d.country + " " + objs[Math.year(d.blog*100)%4]})
