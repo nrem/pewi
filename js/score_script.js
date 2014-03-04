@@ -18,10 +18,10 @@ var dataset = [
 ];
 
 var units = {
-    english: ["bu","bu","tons","tons","board-ft","cows","tons","ppm","tons","tons","","","tons","tons","tons","tons"],
+    english: ["bu","bu","tons","tons","board-ft","cows","tons","ppm","tons","tons","pts","pts","tons","tons","tons","tons"],
     dict_to_english_factor: [1,1,1,1,1,1,1,1,1,0.0011,1,1,1,1,1,1],
-    metric: ["Mg","Mg","Mg","Mg","m^3","cows","Mg","mg/L","Mg","Mg","Mg","Mg","Mg","Mg","Mg","Mg"],
-    english_to_metric_factor: [0.0254,0.0272,0.9072,0.9072,0.0024,1,0.9072,1,0.9072,0.001,0.9072,0.9072,0.9072,0.9072,0.9072,0.9072]
+    metric: ["Mg","Mg","Mg","Mg","m^3","cows","Mg","mg/L","Mg","Mg","pts","pts","Mg","Mg","Mg","Mg"],
+    english_to_metric_factor: [0.0254,0.0272,0.9072,0.9072,0.0024,1,0.9072,1,0.9072,0.001,1,1,0.9072,0.9072,0.9072,0.9072]
 };
 
 //var  set = {
