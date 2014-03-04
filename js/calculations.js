@@ -667,6 +667,7 @@ var Nitrates = function () {
         mapIt();
 //        console.log("Nitrates PPM: " + nitratesPPM, max, min);
         dataset[7]['Year' + global.year] = 100 * ((max - nitratesPPM) / (max - min));
+		dataset[7]['Value' + global.year] = nitratesPPM;
         dealloc();
     };
 
@@ -1033,10 +1034,12 @@ var Biodiversity = function () {
 
     function setNativeIndex() {
         dataset[11]['Year' + global.year] = 10 * (getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex);
+		dataset[11]['Value' + global.year] = getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex;
     }
 
     function setGameIndex() {
         dataset[10]['Year' + global.year] = 10 * (getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex);
+		dataset[10]['Value' + global.year] = getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex;
     }
 
     function getContagionPointsNativeIndex() {
@@ -1347,6 +1350,7 @@ var Erosion = function () {
         pIndex += val;
         global.riskAssessment[i] = pIndexRiskAssessment(val);
         global.phosphorusLoad[global.year] += val * datapointarea[i] / 2000;
+		console.log(val*datapointarea[i]/2000);
         // Max & Min Values
         sedimentDeliveredMax += getSedimentDeliveredMax(i);
         sedimentDeliveredMin += getSedimentDeliveredMin(i);
@@ -1366,7 +1370,7 @@ var Erosion = function () {
         dataset[8]["Year" + global.year] = 100 * ((phosphorusLoadMax - global.phosphorusLoad[global.year]) / (phosphorusLoadMax - phosphorusLoadMin));
         dataset[13]["Year" + global.year] = 100 * ((erosionMax - global.grossErosion[global.year]) / (erosionMax - erosionMin));
 //        console.log("Sediment: " + global.sedimentDelivered[global.year], sedimentDeliveredMax, sedimentDeliveredMin);
-//        console.log("Phosphorus: " + global.phosphorusLoad[global.year], phosphorusLoadMax, phosphorusLoadMin);
+       console.log("Phosphorus: " + global.phosphorusLoad[global.year], phosphorusLoadMax, phosphorusLoadMin);
 //        console.log("Erosion: " + global.grossErosion[global.year], erosionMax, erosionMin);
 
         dataset[12]["Value" + global.year] = global.sedimentDelivered[global.year];
