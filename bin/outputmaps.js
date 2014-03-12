@@ -583,7 +583,7 @@ var Maps = function () {
         var Maps = {
             TOPOGRAPHY: "topo",
             FLOOD_FREQUENCY: "flood",
-            DRAINAGE_CLASS: "drain",
+            DRAINAGE_CLASS: "drainage",
             WETLAND: "wetland",
             SUBWATERSHED: "sub"
         };
@@ -616,6 +616,11 @@ var Maps = function () {
                 4: "Ponded",
                 length: 5
             }
+        }
+
+        var keyTypes = {
+            RECTS: "rects",
+            HORN: "horn"
         }
 
         options.width *= SCALE;
@@ -666,7 +671,7 @@ var Maps = function () {
                         appendRectHelper(topography[i], colors);
                     }
                 }
-                buildKey("TOPOGRAPHY");
+                buildKey("TOPOGRAPHY", colors, keyTypes.RECTS);
                 break;
             case Maps.FLOOD_FREQUENCY:
                 $("#" + options.id + "-minimap-container div>a").text("Flood Frequency");
@@ -677,7 +682,7 @@ var Maps = function () {
                         appendRectHelper(flood[i] / 10, colors);
                     }
                 }
-                buildKey("FLOOD_FREQUENCY");
+                buildKey("FLOOD_FREQUENCY", colors, keyTypes.RECTS);
                 break;
             case Maps.SUBWATERSHED:
                 $("#" + options.id + "-minimap-container div>a").text("Subwatershed Boundaries");
@@ -705,30 +710,10 @@ var Maps = function () {
                     colors = colorbrewer.BrBG[8];
                 for (var i = 0; i < drainage.length; i++) {
                     if (drainage[i] != undefined && !isNaN(drainage[i])) {
-                        svg.append("rect")
-                            .attr("x", function () {
-                                return columnData[i] * options.width;
-                            })
-                            .attr("y", function () {
-                                return rowData[i] * options.height;
-                            })
-                            .attr("width", options.width)
-                            .attr("height", options.height)
-                            .style("fill", function () {
-                                d = drainage[i] / 10;
-                                if (d === 4.5) {
-                                    return colors[4];
-                                } else if (d < 4.5) {
-                                    return colors[d - 1];
-                                } else {
-                                    return colors[d];
-                                }
-                            })
-                            .attr("id", options.id + "-rect-" + i)
-                            .attr("class", "minimap-rect");
+                        appendRectHelper(drainage[i] / 10, colors);
                     }
                 }
-                buildKey("DRAINAGE_CLASS");
+                buildKey("DRAINAGE_CLASS", ["#d95f0e", "#2c7fb8"], keyTypes.HORN);
                 break;
         }
 
@@ -750,29 +735,72 @@ var Maps = function () {
                 .attr("class", "minimap-rect");
         }
 
-        function buildKey(id) {
+        function buildKey(id, colors, type) {
             var w = options.width * 2,
                 h = options.height * 2,
-                xstart = parseFloat(svg.attr("height")) - (keys[id].length * 15);
-            console.log(xstart);
-            for (var i = 0; i<keys[id].length; i++) {
-                var keyGroup = svg.append("g");
-                keyGroup.append("rect")
-                    .attr("x", 10)
-                    .attr("y", xstart + (i * 15))
-                    .attr("width", w)
-                    .attr("height", h)
-                    .style("fill", "#fff")
-                    .attr("id", id + "-" + "key-" + i)
-                    .attr("class", "pfeature-key-rect");
+                ystart = parseFloat(svg.attr("height")) - (keys[id].length * 15 * 1.25);
+
+            var keyGroup = svg.append("g");
+            if(type == "rects") {
+                for (var i = 0; i<keys[id].length; i++) {
+                    keyGroup.append("rect")
+                        .attr("x", 10)
+                        .attr("y", ystart + (i * 15))
+                        .attr("width", w)
+                        .attr("height", h)
+                        .style("fill", colors[i])
+                        .attr("id", id + "-" + "key-" + i)
+                        .attr("class", "pfeature-key-rect");
+
+                    keyGroup.append("text")
+                        .attr("x", (10 + w) * 1.25)
+                        .attr("y", ystart + (i * 14 + h))
+                        .text(keys[id][i])
+                        .style("fill", "#fff")
+                        .style("font-size", "0.5em");
+
+                }
+            } else if(type == "horn") {
+                //var path = "M6 0L12 5L8 5L8 50L12 50L6 55L0 50L4 50L4 5L0 5z";
+                var path = "M0,0L20,0C20,0 0,25 20,50L0,50C0,50 20,25 0,0z";
+
+                var gradient = keyGroup.append("svg:defs")
+                    .append("svg:linearGradient")
+                    .attr("id", "pfeature-key-color-gradient")
+                    .attr("x1", "0%")
+                    .attr("y1", "0%")
+                    .attr("x2", "0%")
+                    .attr("y2", "100%");
+
+                gradient.append("svg:stop")
+                    .attr("offset", "0%")
+                    .style("stop-color", colors[0])
+                    .style("stop-opacity", "90");
+
+                gradient.append("svg:stop")
+                    .attr("offset", "100%")
+                    .style("stop-color", colors[1])
+                    .style("stop-opacity", "90");
+
+                keyGroup.append("svg:path")
+                    .attr("d", function() { return path; })
+                    .style("fill", "url(#pfeature-key-color-gradient)");
 
                 keyGroup.append("text")
-                    .attr("x", (10 + w) * 1.25)
-                    .attr("y", xstart + (i * 14 + h))
-                    .text(keys[id][i])
+                    .attr("x", 25)
+                    .attr("y", 10)
+                    .text("Excessive")
                     .style("fill", "#fff")
                     .style("font-size", "0.5em");
 
+                keyGroup.append("text")
+                    .attr("x", 25)
+                    .attr("y", 50)
+                    .text("Very Poor")
+                    .style("fill", "#fff")
+                    .style("font-size", "0.5em");
+
+                keyGroup.attr("transform", "translate(10, " + (ystart - (50)) + ") scale(1.25)");
             }
         }
     }
