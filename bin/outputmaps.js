@@ -579,6 +579,45 @@ var Maps = function () {
         if (options.height == undefined) {
             options.height = global.mapCellHeight;
         }
+
+        var Maps = {
+            TOPOGRAPHY: "topo",
+            FLOOD_FREQUENCY: "flood",
+            DRAINAGE_CLASS: "drain",
+            WETLAND: "wetland",
+            SUBWATERSHED: "sub"
+        };
+
+        var keys = {
+            TOPOGRAPHY: {
+                label: "Slope Range",
+                0: "0%",
+                1: "1 - 2%",
+                2: "2 - 5%",
+                3: "5 - 9%",
+                4: "0 - 14%",
+                5: "14 - 18%",
+                length: 6
+            },
+            DRAINAGE_CLASS: {
+                label: "Drainage Class",
+                0: "Excessive",
+                1: "Very Poor",
+                topColor: "",
+                bottomColor: "",
+                length: 2,
+            },
+            FLOOD_FREQUENCY: {
+                label: "Flood Frequency",
+                0: "None",
+                1: "Rare",
+                2: "Occasionally",
+                3: "Frequently",
+                4: "Ponded",
+                length: 5
+            }
+        }
+
         options.width *= SCALE;
         options.height *= SCALE;
         var container = d3.select("#workspace")
@@ -618,7 +657,7 @@ var Maps = function () {
             .attr("height", options.height * 2 * global.data[global.year].columns);
         miniMapState[options.id] = true;
         switch (options.id) {
-            case "topo":
+            case Maps.TOPOGRAPHY:
                 $("#" + options.id + "-minimap-container div>a").text("Topographic Relief");
                 var topography = global.data[global.year].topography.data,
                     colors = colorbrewer.YlGnBu[6];
@@ -627,8 +666,9 @@ var Maps = function () {
                         appendRectHelper(topography[i], colors);
                     }
                 }
+                buildKey("TOPOGRAPHY");
                 break;
-            case "flood":
+            case Maps.FLOOD_FREQUENCY:
                 $("#" + options.id + "-minimap-container div>a").text("Flood Frequency");
                 var flood = global.data[global.year].floodfrequency.data,
                     colors = colorbrewer.YlGnBu[6];
@@ -637,8 +677,9 @@ var Maps = function () {
                         appendRectHelper(flood[i] / 10, colors);
                     }
                 }
+                buildKey("FLOOD_FREQUENCY");
                 break;
-            case "sub":
+            case Maps.SUBWATERSHED:
                 $("#" + options.id + "-minimap-container div>a").text("Subwatershed Boundaries");
                 var subwatershed = global.data[global.year].subwatershed.data,
                     colors = boundaryColors;
@@ -648,7 +689,7 @@ var Maps = function () {
                     }
                 }
                 break;
-            case "wetland":
+            case Maps.WETLAND:
                 $("#" + options.id + "-minimap-container div>a").text("Strategic Wetland Areas");
                 var wetland = global.data[global.year].wetland.data,
                     colors = colorbrewer.PuBuGn[3];
@@ -658,7 +699,7 @@ var Maps = function () {
                     }
                 }
                 break;
-            case "drainage":
+            case Maps.DRAINAGE_CLASS:
                 $("#" + options.id + "-minimap-container div>a").text("Drainage Class");
                 var drainage = global.data[global.year].drainageclass.data,
                     colors = colorbrewer.BrBG[8];
@@ -687,6 +728,7 @@ var Maps = function () {
                             .attr("class", "minimap-rect");
                     }
                 }
+                buildKey("DRAINAGE_CLASS");
                 break;
         }
 
@@ -706,6 +748,32 @@ var Maps = function () {
                 })
                 .attr("id", options.id + "-rect-" + i)
                 .attr("class", "minimap-rect");
+        }
+
+        function buildKey(id) {
+            var w = options.width * 2,
+                h = options.height * 2,
+                xstart = parseFloat(svg.attr("height")) - (keys[id].length * 15);
+            console.log(xstart);
+            for (var i = 0; i<keys[id].length; i++) {
+                var keyGroup = svg.append("g");
+                keyGroup.append("rect")
+                    .attr("x", 10)
+                    .attr("y", xstart + (i * 15))
+                    .attr("width", w)
+                    .attr("height", h)
+                    .style("fill", "#fff")
+                    .attr("id", id + "-" + "key-" + i)
+                    .attr("class", "pfeature-key-rect");
+
+                keyGroup.append("text")
+                    .attr("x", (10 + w) * 1.25)
+                    .attr("y", xstart + (i * 14 + h))
+                    .text(keys[id][i])
+                    .style("fill", "#fff")
+                    .style("font-size", "0.5em");
+
+            }
         }
     }
 }
