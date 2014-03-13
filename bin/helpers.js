@@ -204,17 +204,17 @@ function centerElement(parent, child) { // Check for less than zero margin top!!
 function setPrecipitation(year, overrideValue) {
     var precip = [24.58, 28.18, 30.39, 32.16, 34.34, 36.47, 45.10];
     if(overrideValue) {
-        global.precipitation[year] = overrideValue;
+        global.data.precipitation[year] = overrideValue;
     } else {
         var r = Math.floor(Math.random() * precip.length);
-        global.precipitation[year] = precip[r];
+        global.data.precipitation[year] = precip[r];
 
         if (r === 0 || r === 1) {
-            global.r[year] = 0;
+            global.data.r[year] = 0;
         } else if (r === 2 || r === 3 || r === 4) {
-            global.r[year] = 1;
+            global.data.r[year] = 1;
         } else {
-            global.r[year] = 2;
+            global.data.r[year] = 2;
         }
     }
 }

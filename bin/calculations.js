@@ -403,15 +403,15 @@ var Yield = function () {
 
     function getYieldPrecipitationMultiplier(i) {
         if(landcover[i] > 0 && landcover[i] < 5) {
-            if(global.precipitation[global.year] == 24.58 || global.precipitation[global.year] == 45.10) return 0.75;
-            else if(global.precipitation[global.year] == 28.18 || global.precipitation[global.year] == 36.47) return 0.9;
-            else if(global.precipitation[global.year] == 30.39 || global.precipitation[global.year] == 32.16 || global.precipitation[global.year] == 34.34) return 1;
+            if(global.data.precipitation[global.year] == 24.58 || global.data.precipitation[global.year] == 45.10) return 0.75;
+            else if(global.data.precipitation[global.year] == 28.18 || global.data.precipitation[global.year] == 36.47) return 0.9;
+            else if(global.data.precipitation[global.year] == 30.39 || global.data.precipitation[global.year] == 32.16 || global.data.precipitation[global.year] == 34.34) return 1;
         } else if ((landcover[i] > 4 && landcover[i] < 9) || landcover[i] == 12) {
-            if (global.precipitation[global.year] > 24.58 && global.precipitation[global.year] < 45.10) return 1;
+            if (global.data.precipitation[global.year] > 24.58 && global.data.precipitation[global.year] < 45.10) return 1;
             else return 0.95;
         } else if (landcover[i] == 15) {
-            if (global.precipitation[global.year] < 36.47) return 1;
-            else if (global.precipitation[global.year] == 36.47) return 0.9
+            if (global.data.precipitation[global.year] < 36.47) return 1;
+            else if (global.data.precipitation[global.year] == 36.47) return 0.9
             else return 0.75;
         }
         return 1;
@@ -586,18 +586,18 @@ var Nitrates = function () {
     }
 
     function setPrecipitationMultiplier(i) {
-        var p = global.precipitation[global.year];
+        var p = global.data.precipitation[global.year];
         if (p == 24.58 || p == 28.18) // If it's a dry year
         {
             return 0.86;
         } else if (p == 30.39 || p == 32.16 || p == 34.34) { // If it's a normal year
-            if (global.precipitation[global.year - 1] == 24.58 || global.precipitation[global.year - 1] == 28.18) {
+            if (global.data.precipitation[global.year - 1] == 24.58 || global.data.precipitation[global.year - 1] == 28.18) {
                 return 1.69;
             } else {
                 return 1;
             }
         } else { // If it's a flood year
-            if (global.precipitation[global.year - 1] == 24.58 || global.precipitation[global.year - 1] == 28.18) {
+            if (global.data.precipitation[global.year - 1] == 24.58 || global.data.precipitation[global.year - 1] == 28.18) {
                 return 2.11;
             } else {
                 return 1;
@@ -1381,7 +1381,7 @@ var Erosion = function () {
     function getSedimentDelivered(i) {
 //        console.log(rusle(i, false), ephemeralGullyErosion(i, false), bufferFactor(i, false), datapointarea[i]);
 //        console.log(phosphorusIndex(i, false));
-        return (((rusle(i, global.precipitation[global.year], false) + ephemeralGullyErosion(i, false)) * sedimentDeliveryRatio(i) * bufferFactor(i, false)) * datapointarea[i]);
+        return (((rusle(i, global.data.precipitation[global.year], false) + ephemeralGullyErosion(i, false)) * sedimentDeliveryRatio(i) * bufferFactor(i, false)) * datapointarea[i]);
     }
 
     function getGrossErosionSeverity(i, erosion) {
@@ -1395,7 +1395,7 @@ var Erosion = function () {
 
     function getGrossErosion(i) {
         var eph = ephemeralGullyErosion(i, false),
-            rusl = rusle(i, global.precipitation[global.year], false);
+            rusl = rusle(i, global.data.precipitation[global.year], false);
 //        console.log(coverManagementFactor(i, false));
 //        console.log(eph, rusl);
 //        if (rusl + eph >= 2) return 5;
@@ -1468,7 +1468,7 @@ var Erosion = function () {
 
     function erosionComponent(i, point) {
         //console.log(rusle(i), ephemeralGullyErosion(i), sedimentDeliveryRatio(i), bufferFactor(i), enrichmentFactor(i), soilTestPErosionFactor(i));
-        return (rusle(i, global.precipitation[global.year], point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryRatio(i) * bufferFactor(i, point) * enrichmentFactor(i) * soilTestPErosionFactor(i);
+        return (rusle(i, global.data.precipitation[global.year], point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryRatio(i) * bufferFactor(i, point) * enrichmentFactor(i) * soilTestPErosionFactor(i);
     }
 
     function runoffComponent(i, point) {
@@ -1832,7 +1832,7 @@ var Erosion = function () {
         return "";
     }
     function precipitationFactor() {
-        return global.precipitation[global.year] / 4.415;
+        return global.data.precipitation[global.year] / 4.415;
     } // Once
     function getSoilTestPRunoffFactor(i) {
         if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 0.2;

@@ -218,12 +218,12 @@ var PrintView = function () {
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[1]).append("a").style("opacity",0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[2]).append("a").style("opacity",0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.precipitation[3]).append("a").style("opacity",0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.precipitation[1] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.precipitation[2] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.precipitation[3] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[1]).append("a").style("opacity",0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[2]).append("a").style("opacity",0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[3]).append("a").style("opacity",0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[1] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[2] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[3] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
 
     ///////////////////////////////////////////////////
     // Indicator Table ////////////////////////////////

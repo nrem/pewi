@@ -152,7 +152,7 @@ var Plot = function () {
                 .attr("y", 100)
                 .attr("text-anchor", "middle")
                 .style("fill", "#888")
-                .text(getPrecipitationValuation(global.precipitation[i]));
+                .text(getPrecipitationValuation(global.data.precipitation[i]));
         }
 
         plot.selectAll("line")
@@ -441,9 +441,9 @@ var Plot = function () {
     }
 
     function getPrecipFill(year) {
-        if (global.precipitation[year] < 30) {
+        if (global.data.precipitation[year] < 30) {
             return "#fee0b6";
-        } else if (global.precipitation[year] < 36.47) {
+        } else if (global.data.precipitation[year] < 36.47) {
             return "#fff";
         } else {
             return "#d1e5f0";
