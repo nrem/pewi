@@ -1052,4 +1052,9 @@ iframe {
     width: 100%;
     height: 20em;
     border: dashed 1px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    background-color: #ffffff;
+}
+
+#file-upload-dropzone a {
 }
