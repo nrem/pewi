@@ -167,6 +167,7 @@ function copy(obj) {
 //    console.log(obj.baselandcover.data[0]);
     var returnObj = {};
     for (var property in obj) {
+//        console.log(property);
         var data = {name: "", data: []};
         if (obj[property].data != undefined) {
             for (var i = 0; i < obj[property].data.length; i++) {
@@ -174,9 +175,10 @@ function copy(obj) {
             }
             data.name = obj[property].name;
             returnObj[property] = data;
+        } else {
+            returnObj[property] = obj[property];
         }
     }
-    //console.log(returnObj);
     return returnObj;
 }
 

@@ -666,7 +666,7 @@ var Maps = function () {
                 $("#" + options.id + "-minimap-container div>a").text("Topographic Relief");
                 var topography = global.data[global.year].topography.data,
                     colors = colorbrewer.YlGnBu[6];
-                console.log(colors);
+//                console.log(colors, topography);
                 for (var i = 0; i < topography.length; i++) {
                     if (topography[i] != undefined && !isNaN(topography[i])) {
                         appendRectHelper(topography[i], colors);
@@ -714,7 +714,8 @@ var Maps = function () {
                         appendRectHelper(drainage[i] / 10, colors);
                     }
                 }
-                buildKey("DRAINAGE_CLASS", ["#d95f0e", "#2c7fb8"], keyTypes.HORN);
+                console.log(colorbrewer.BrBG[8]);
+                buildKey("DRAINAGE_CLASS", ["#8c510a", "#01665e"], keyTypes.HORN);
                 break;
         }
 
@@ -763,7 +764,7 @@ var Maps = function () {
                 }
             } else if(type == "horn") {
                 //var path = "M6 0L12 5L8 5L8 50L12 50L6 55L0 50L4 50L4 5L0 5z";
-                var path = "M0,0L20,0C20,0 0,25 20,50L0,50C0,50 20,25 0,0z";
+                var path = "M0,0L15,0C15,0 0,40 15,80L0,80C0,80 15,40 0,0z";
 
                 var gradient = keyGroup.append("svg:defs")
                     .append("svg:linearGradient")
@@ -788,20 +789,20 @@ var Maps = function () {
                     .style("fill", "url(#pfeature-key-color-gradient)");
 
                 keyGroup.append("text")
-                    .attr("x", 25)
-                    .attr("y", 10)
+                    .attr("x", 20)
+                    .attr("y", 7)
                     .text("Excessive")
                     .style("fill", "#fff")
                     .style("font-size", "0.5em");
 
                 keyGroup.append("text")
-                    .attr("x", 25)
-                    .attr("y", 50)
+                    .attr("x", 20)
+                    .attr("y", 80)
                     .text("Very Poor")
                     .style("fill", "#fff")
                     .style("font-size", "0.5em");
 
-                keyGroup.attr("transform", "translate(10, " + (ystart - (50)) + ") scale(1.25)");
+                keyGroup.attr("transform", "translate(10, " + (ystart - (90)) + ") scale(1.25)");
             }
         }
     }
