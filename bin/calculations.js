@@ -1350,7 +1350,7 @@ var Erosion = function () {
         pIndex += val;
         global.riskAssessment[i] = pIndexRiskAssessment(val);
         global.phosphorusLoad[global.year] += val * datapointarea[i] / 2000;
-		console.log(val*datapointarea[i]/2000);
+//		console.log(val*datapointarea[i]/2000);
         // Max & Min Values
         sedimentDeliveredMax += getSedimentDeliveredMax(i);
         sedimentDeliveredMin += getSedimentDeliveredMin(i);
@@ -1370,7 +1370,7 @@ var Erosion = function () {
         dataset[8]["Year" + global.year] = 100 * ((phosphorusLoadMax - global.phosphorusLoad[global.year]) / (phosphorusLoadMax - phosphorusLoadMin));
         dataset[13]["Year" + global.year] = 100 * ((erosionMax - global.grossErosion[global.year]) / (erosionMax - erosionMin));
 //        console.log("Sediment: " + global.sedimentDelivered[global.year], sedimentDeliveredMax, sedimentDeliveredMin);
-       console.log("Phosphorus: " + global.phosphorusLoad[global.year], phosphorusLoadMax, phosphorusLoadMin);
+//       console.log("Phosphorus: " + global.phosphorusLoad[global.year], phosphorusLoadMax, phosphorusLoadMin);
 //        console.log("Erosion: " + global.grossErosion[global.year], erosionMax, erosionMin);
 
         dataset[12]["Value" + global.year] = global.sedimentDelivered[global.year];

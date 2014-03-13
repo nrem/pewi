@@ -666,6 +666,7 @@ var Maps = function () {
                 $("#" + options.id + "-minimap-container div>a").text("Topographic Relief");
                 var topography = global.data[global.year].topography.data,
                     colors = colorbrewer.YlGnBu[6];
+                console.log(colors);
                 for (var i = 0; i < topography.length; i++) {
                     if (topography[i] != undefined && !isNaN(topography[i])) {
                         appendRectHelper(topography[i], colors);

@@ -5,7 +5,7 @@ var dataset = [
     {    Metric: 'Hay Yield', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Timber Production', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Cattle Supported', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Mixed Fruit & Vegetable Yield', Year1: 0, Year2: 0, Year3: 0},
+    {    Metric: 'Mixed Fruit and Vegetable Yield', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Nitrate Pollution Control', resultsLabel: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0},
     {    Metric: 'Phosphorus Pollution Control', resultsLabel: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0},//check
     {    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0},
