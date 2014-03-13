@@ -68,9 +68,9 @@ var OutputMap = function (options) {
         .attr("height", svgHeight);
 
     var colors = {
-        nitrates: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"],
-        erosion: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"],
-        risk: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"]
+        nitrates: ["#ffffd4", "#fed98e", "#fe9929", "#d95f0e", "#993404"],
+        erosion: ["#ffffd4", "#fed98e", "#fe9929", "#d95f0e", "#993404"],
+        risk: ["#ffffd4", "#fed98e", "#fe9929", "#d95f0e", "#993404"]
     };
 
     /**
@@ -605,7 +605,7 @@ var Maps = function () {
                 1: "Very Poor",
                 topColor: "",
                 bottomColor: "",
-                length: 2,
+                length: 2
             },
             FLOOD_FREQUENCY: {
                 label: "Flood Frequency",
