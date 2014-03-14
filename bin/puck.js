@@ -53,7 +53,12 @@ function togglePuk(type, coords) {
                     x: offset,
                     y: 140,
                     width: 130,
-                    id: "drainage"
+                    id: "drainage",
+                    key: {
+                        label: "Drainage Class",
+                        topLabel: "Excessive",
+
+                    }
                 },
                 wetland: {
                     name: "Strategic Wetland Areas",

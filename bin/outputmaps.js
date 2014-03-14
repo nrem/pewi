@@ -68,9 +68,9 @@ var OutputMap = function (options) {
         .attr("height", svgHeight);
 
     var colors = {
-        nitrates: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"],
-        erosion: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"],
-        risk: ["#ffffd4", "fed98e", "fe9929", "#d95f0e", "#993404"]
+        nitrates: ["#ffffd4", "#fed98e", "#fe9929", "#d95f0e", "#993404"],
+        erosion: ["#ffffd4", "#fed98e", "#fe9929", "#d95f0e", "#993404"],
+        risk: ["#ffffd4", "#fed98e", "#fe9929", "#d95f0e", "#993404"]
     };
 
     /**
@@ -579,6 +579,50 @@ var Maps = function () {
         if (options.height == undefined) {
             options.height = global.mapCellHeight;
         }
+
+        var Maps = {
+            TOPOGRAPHY: "topo",
+            FLOOD_FREQUENCY: "flood",
+            DRAINAGE_CLASS: "drainage",
+            WETLAND: "wetland",
+            SUBWATERSHED: "sub"
+        };
+
+        var keys = {
+            TOPOGRAPHY: {
+                label: "Slope Range",
+                0: "0%",
+                1: "1 - 2%",
+                2: "2 - 5%",
+                3: "5 - 9%",
+                4: "0 - 14%",
+                5: "14 - 18%",
+                length: 6
+            },
+            DRAINAGE_CLASS: {
+                label: "Drainage Class",
+                0: "Excessive",
+                1: "Very Poor",
+                topColor: "",
+                bottomColor: "",
+                length: 2
+            },
+            FLOOD_FREQUENCY: {
+                label: "Flood Frequency",
+                0: "None",
+                1: "Rare",
+                2: "Occasionally",
+                3: "Frequently",
+                4: "Ponded",
+                length: 5
+            }
+        }
+
+        var keyTypes = {
+            RECTS: "rects",
+            HORN: "horn"
+        }
+
         options.width *= SCALE;
         options.height *= SCALE;
         var container = d3.select("#workspace")
@@ -618,17 +662,19 @@ var Maps = function () {
             .attr("height", options.height * 2 * global.data[global.year].columns);
         miniMapState[options.id] = true;
         switch (options.id) {
-            case "topo":
+            case Maps.TOPOGRAPHY:
                 $("#" + options.id + "-minimap-container div>a").text("Topographic Relief");
                 var topography = global.data[global.year].topography.data,
                     colors = colorbrewer.YlGnBu[6];
+//                console.log(colors, topography);
                 for (var i = 0; i < topography.length; i++) {
                     if (topography[i] != undefined && !isNaN(topography[i])) {
                         appendRectHelper(topography[i], colors);
                     }
                 }
+                buildKey("TOPOGRAPHY", colors, keyTypes.RECTS);
                 break;
-            case "flood":
+            case Maps.FLOOD_FREQUENCY:
                 $("#" + options.id + "-minimap-container div>a").text("Flood Frequency");
                 var flood = global.data[global.year].floodfrequency.data,
                     colors = colorbrewer.YlGnBu[6];
@@ -637,8 +683,9 @@ var Maps = function () {
                         appendRectHelper(flood[i] / 10, colors);
                     }
                 }
+                buildKey("FLOOD_FREQUENCY", colors, keyTypes.RECTS);
                 break;
-            case "sub":
+            case Maps.SUBWATERSHED:
                 $("#" + options.id + "-minimap-container div>a").text("Subwatershed Boundaries");
                 var subwatershed = global.data[global.year].subwatershed.data,
                     colors = boundaryColors;
@@ -648,7 +695,7 @@ var Maps = function () {
                     }
                 }
                 break;
-            case "wetland":
+            case Maps.WETLAND:
                 $("#" + options.id + "-minimap-container div>a").text("Strategic Wetland Areas");
                 var wetland = global.data[global.year].wetland.data,
                     colors = colorbrewer.PuBuGn[3];
@@ -658,35 +705,17 @@ var Maps = function () {
                     }
                 }
                 break;
-            case "drainage":
+            case Maps.DRAINAGE_CLASS:
                 $("#" + options.id + "-minimap-container div>a").text("Drainage Class");
                 var drainage = global.data[global.year].drainageclass.data,
                     colors = colorbrewer.BrBG[8];
                 for (var i = 0; i < drainage.length; i++) {
                     if (drainage[i] != undefined && !isNaN(drainage[i])) {
-                        svg.append("rect")
-                            .attr("x", function () {
-                                return columnData[i] * options.width;
-                            })
-                            .attr("y", function () {
-                                return rowData[i] * options.height;
-                            })
-                            .attr("width", options.width)
-                            .attr("height", options.height)
-                            .style("fill", function () {
-                                d = drainage[i] / 10;
-                                if (d === 4.5) {
-                                    return colors[4];
-                                } else if (d < 4.5) {
-                                    return colors[d - 1];
-                                } else {
-                                    return colors[d];
-                                }
-                            })
-                            .attr("id", options.id + "-rect-" + i)
-                            .attr("class", "minimap-rect");
+                        appendRectHelper(drainage[i] / 10, colors);
                     }
                 }
+                console.log(colorbrewer.BrBG[8]);
+                buildKey("DRAINAGE_CLASS", ["#8c510a", "#01665e"], keyTypes.HORN);
                 break;
         }
 
@@ -706,6 +735,75 @@ var Maps = function () {
                 })
                 .attr("id", options.id + "-rect-" + i)
                 .attr("class", "minimap-rect");
+        }
+
+        function buildKey(id, colors, type) {
+            var w = options.width * 2,
+                h = options.height * 2,
+                ystart = parseFloat(svg.attr("height")) - (keys[id].length * 15 * 1.25);
+
+            var keyGroup = svg.append("g");
+            if(type == "rects") {
+                for (var i = 0; i<keys[id].length; i++) {
+                    keyGroup.append("rect")
+                        .attr("x", 10)
+                        .attr("y", ystart + (i * 15))
+                        .attr("width", w)
+                        .attr("height", h)
+                        .style("fill", colors[i])
+                        .attr("id", id + "-" + "key-" + i)
+                        .attr("class", "pfeature-key-rect");
+
+                    keyGroup.append("text")
+                        .attr("x", (10 + w) * 1.25)
+                        .attr("y", ystart + (i * 14 + h))
+                        .text(keys[id][i])
+                        .style("fill", "#fff")
+                        .style("font-size", "0.5em");
+
+                }
+            } else if(type == "horn") {
+                //var path = "M6 0L12 5L8 5L8 50L12 50L6 55L0 50L4 50L4 5L0 5z";
+                var path = "M0,0L15,0C15,0 0,40 15,80L0,80C0,80 15,40 0,0z";
+
+                var gradient = keyGroup.append("svg:defs")
+                    .append("svg:linearGradient")
+                    .attr("id", "pfeature-key-color-gradient")
+                    .attr("x1", "0%")
+                    .attr("y1", "0%")
+                    .attr("x2", "0%")
+                    .attr("y2", "100%");
+
+                gradient.append("svg:stop")
+                    .attr("offset", "0%")
+                    .style("stop-color", colors[0])
+                    .style("stop-opacity", "90");
+
+                gradient.append("svg:stop")
+                    .attr("offset", "100%")
+                    .style("stop-color", colors[1])
+                    .style("stop-opacity", "90");
+
+                keyGroup.append("svg:path")
+                    .attr("d", function() { return path; })
+                    .style("fill", "url(#pfeature-key-color-gradient)");
+
+                keyGroup.append("text")
+                    .attr("x", 20)
+                    .attr("y", 7)
+                    .text("Excessive")
+                    .style("fill", "#fff")
+                    .style("font-size", "0.5em");
+
+                keyGroup.append("text")
+                    .attr("x", 20)
+                    .attr("y", 80)
+                    .text("Very Poor")
+                    .style("fill", "#fff")
+                    .style("font-size", "0.5em");
+
+                keyGroup.attr("transform", "translate(10, " + (ystart - (90)) + ") scale(1.25)");
+            }
         }
     }
 }

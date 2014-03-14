@@ -167,6 +167,7 @@ function copy(obj) {
 //    console.log(obj.baselandcover.data[0]);
     var returnObj = {};
     for (var property in obj) {
+//        console.log(property);
         var data = {name: "", data: []};
         if (obj[property].data != undefined) {
             for (var i = 0; i < obj[property].data.length; i++) {
@@ -174,9 +175,10 @@ function copy(obj) {
             }
             data.name = obj[property].name;
             returnObj[property] = data;
+        } else {
+            returnObj[property] = obj[property];
         }
     }
-    //console.log(returnObj);
     return returnObj;
 }
 
@@ -202,17 +204,25 @@ function centerElement(parent, child) { // Check for less than zero margin top!!
 function setPrecipitation(year, overrideValue) {
     var precip = [24.58, 28.18, 30.39, 32.16, 34.34, 36.47, 45.10];
     if(overrideValue) {
-        global.precipitation[year] = overrideValue;
+        global.data.precipitation[year] = overrideValue;
+
+        if(global.data.precipitation[year] < 28.19) {
+            global.data.r[year] = 0;
+        } else if(global.data.precipitation[year] < 36.47) {
+            global.data.r[year] = 1;
+        } else {
+            global.data.r[year] = 2;
+        }
     } else {
         var r = Math.floor(Math.random() * precip.length);
-        global.precipitation[year] = precip[r];
+        global.data.precipitation[year] = precip[r];
 
         if (r === 0 || r === 1) {
-            global.r[year] = 0;
+            global.data.r[year] = 0;
         } else if (r === 2 || r === 3 || r === 4) {
-            global.r[year] = 1;
+            global.data.r[year] = 1;
         } else {
-            global.r[year] = 2;
+            global.data.r[year] = 2;
         }
     }
 }
