@@ -261,3 +261,10 @@ function resetLandCoverValuesAreasFor(year) {
     global.landcovers[year]["Wetlands"].area = 0;
     global.landcovers[year]["Mixed Fruit & Vegetables"].area = 0;
 }
+
+function closeAllRemovableDisplays() {
+    $(".removable-displays-container").each(function () {
+        $(this).remove();
+    });
+    d3.selectAll(".removable-displays").remove();
+}

@@ -4,6 +4,10 @@
  * @constructor
  */
 var ModalView = function (options) {
+
+    // Make sure to close all open displays
+    closeAllRemovableDisplays();
+
     this.width = (options.width !== undefined) ? options.width : $(window).width() / 2;
     this.height = (options.height !== undefined) ? options.height : $(window).height() / 1.1;
     this.title = (options.title !== undefined) ? options.title : "Default";
