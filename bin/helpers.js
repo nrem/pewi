@@ -205,6 +205,14 @@ function setPrecipitation(year, overrideValue) {
     var precip = [24.58, 28.18, 30.39, 32.16, 34.34, 36.47, 45.10];
     if(overrideValue) {
         global.data.precipitation[year] = overrideValue;
+
+        if(global.data.precipitation[year] < 28.19) {
+            global.data.r[year] = 0;
+        } else if(global.data.precipitation[year] < 36.47) {
+            global.data.r[year] = 1;
+        } else {
+            global.data.r[year] = 2;
+        }
     } else {
         var r = Math.floor(Math.random() * precip.length);
         global.data.precipitation[year] = precip[r];
