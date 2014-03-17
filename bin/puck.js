@@ -4,12 +4,10 @@
 
 function togglePuk(type, coords) {
     if (type == "layer") {
-        if (!$("#layer-puck-container").is(":visible")) {
-            $("#layer-puck-container").show();
+        if (!$(".pfeature-puk-item-container").is(":visible")) {
             initLayerPuk();
         } else {
-            $("#layer-puck-container").hide();
-            d3.select("#pfeature").remove();
+            d3.selectAll(".pfeature-puk-item-container").remove();
         }
     }
     else if (type == "rclick") {
@@ -23,117 +21,160 @@ function togglePuk(type, coords) {
     }
 
     function initLayerPuk() {
-        var puck = d3.select("#layer-puck-container")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", "100%")
-            .attr("id", "pfeature")
-            .attr("class", "removable-displays-container");
+        var pfeatureButtonPos = $("#sidebar-left #layer").position(),
+            radius = 4;
+        pfeatureButtonPos.height = $("#sidebar-left #layer").height();
+//        var puck = d3.select("#layer-puck-container")
+//            .append("svg")
+//            .attr("width", "100%")
+//            .attr("height", "100%")
+//            .attr("id", "pfeature")
+//            .attr("class", "removable-displays-container");
+        var puck = d3.select("#main");
 
         var center = centerOfElement($("#pfeature"));
 
-        var offset = 40,
+        var offsetx = 30,
+            offsety = 50,
             features = {
                 topo: {
-                    name: "Topo Relief",
-                    x: offset,
-                    y: 0,
+                    name: "Topographic Relief",
+                    x: offsetx,
+                    y: -offsety,
                     width: 100,
-                    id: "topo"
+                    id: "topo",
+                    file: "Icon_Topography.svg"
                 },
                 flood: {
                     name: "Flood Frequency",
-                    x: 50 + offset,
-                    y: 35,
+                    x: offsetx,
+                    y: 0,
                     width: 130,
-                    id: "flood"
+                    id: "flood",
+                    file: "Icon_Flood_Frequency.svg"
+                },
+                wetland: {
+                    name: "Strategic Wetland Areas",
+                    x: offsetx,
+                    y: offsety,
+                    width: 300,
+                    id: "wetland",
+                    file: "Icon_Strategic_Wetlands.svg"
+                },
+                sub: {
+                    name: "Subwatershed Boundaries",
+                    x: offsetx,
+                    y: offsety * 2,
+                    width: 210,
+                    id: "sub",
+                    file: "Icon_Subwatershed_Boundaries.svg"
                 },
                 drain: {
                     name: "Drainage Class",
-                    x: offset,
-                    y: 140,
+                    x: offsetx,
+                    y: offsety * 3,
                     width: 130,
                     id: "drainage",
                     key: {
                         label: "Drainage Class",
-                        topLabel: "Excessive",
+                        topLabel: "Excessive"
 
-                    }
-                },
-                wetland: {
-                    name: "Strategic Wetland Areas",
-                    x: 50 + offset,
-                    y: 105,
-                    width: 300,
-                    id: "wetland"
-                },
-                sub: {
-                    name: "Subwatershed Boundaries",
-                    x: 75 + offset,
-                    y: 70,
-                    width: 210,
-                    id: "sub"
+                    },
+                    file: "Icon_Drainage_Class.svg"
                 }
             };
 
-        for (var key in features) {
-            var node = puck.append("rect")
-                .attr("x", function () {
-                    return features[key].x
-                })
-                .attr("y", function () {
-                    return features[key].y
-                })
-                .attr("width", function () {
-                    return features[key].width
-                })
-                .attr("height", 20)
-                .attr("id", function () {
-                    return features[key].name + "-rect"
-                })
-                .attr("class", "puk-rect")
-                .style("fill", "#333")
-                .style("opacity", "0.8")
-                .style("border", "2px solid #cccc00");
 
-            puck.append("text")
-                .style("fill", "white")
+        console.log(pfeatureButtonPos);
+        for (var key in features) {
+            var id = "pfeature-" + key,
+                containerWidth = 4;
+            var node = d3.select('#main').append('div')
+                .attr("class", "pfeature-puk-item-container removable-displays")
+                .style("left", pfeatureButtonPos.left + "px")
+                .style("top", (pfeatureButtonPos.top + (pfeatureButtonPos.height / 2)) + "px")
+                .attr("id", id)
+                .style("width", containerWidth + "em")
+                .style("text-align", "center")
+                .style("padding-top", function() {
+                    return containerWidth * 0.07 + "em";
+                })
+                .style("border-radius", 5 + "em");
+
+            var img = node.append("img")
+                .attr("src", "images/icons/navigation/" + features[key].file)
+                .style("width", "86%")
+                .attr("class", "selectable-feature")
                 .attr("id", function () {
                     return features[key].id
                 })
-                .attr("x", function () {
-                    return features[key].x
-                })
-                .attr("y", function () {
-                    return features[key].y + 16
-                })
-                .attr("text-anchor", "start")
-                .text(function () {
+                .attr("title", function () {
                     return features[key].name
-                })
-                .attr("class", "selectable-feature");
+                });
+
+
+            $("#" + id).animate({
+                left: features[key].x + pfeatureButtonPos.left + "px",
+                top: features[key].y + pfeatureButtonPos.top + "px"
+            }, 100, "linear");
+//            var node = puck.append("rect")
+//                .attr("x", function () {
+//                    return features[key].x
+//                })
+//                .attr("y", function () {
+//                    return features[key].y
+//                })
+//                .attr("width", function () {
+//                    return features[key].width
+//                })
+//                .attr("height", 20)
+//                .attr("id", function () {
+//                    return features[key].name + "-rect"
+//                })
+//                .attr("class", "puk-rect")
+//                .style("fill", "#333")
+//                .style("opacity", "0.8")
+//                .style("border", "2px solid #cccc00");
+//
+//            puck.append("text")
+//                .style("fill", "white")
+//                .attr("id", function () {
+//                    return features[key].id
+//                })
+//                .attr("x", function () {
+//                    return features[key].x
+//                })
+//                .attr("y", function () {
+//                    return features[key].y + 16
+//                })
+//                .attr("text-anchor", "start")
+//                .text(function () {
+//                    return features[key].name
+//                })
+//                .attr("class", "selectable-feature");
         }
 
-        $("#pfeature").mousemove(function (e) {
-            puck.select("line").remove();
-            var offset = $("#pfeature").offset();
-            var mouse = {
-                x: e.pageX - offset.left,
-                y: e.pageY - offset.top
-            };
-            puck.append("line")
-                .attr("x1", coords.x)
-                .attr("y1", coords.y)
-                .attr("x2", mouse.x - 2)
-                .attr("y2", mouse.y)
-                .style("stroke", "#cccc00")
-                .style("stroke-width", "3")
-                .attr("id", "pfeature-indicator-line");
-        })/*.mouseout(function(){puck.select("line").remove();})*/;
+//        $("#pfeature").mousemove(function (e) {
+//            puck.select("line").remove();
+//            var offset = $("#pfeature").offset();
+//            var mouse = {
+//                x: e.pageX - offset.left,
+//                y: e.pageY - offset.top
+//            };
+//            puck.append("line")
+//                .attr("x1", coords.x)
+//                .attr("y1", coords.y)
+//                .attr("x2", mouse.x - 2)
+//                .attr("y2", mouse.y)
+//                .style("stroke", "#cccc00")
+//                .style("stroke-width", "3")
+//                .attr("id", "pfeature-indicator-line");
+//        })/*.mouseout(function(){puck.select("line").remove();})*/;
 
         $(".selectable-feature")
             .click(function () {
                 var id = $(this).attr("id");
+                console.log(id);
                 displayMiniMap(id);
                 $("#layer-puck-container").hide();
                 puck.select("#pfeature-indicator-line").remove();
