@@ -20,6 +20,7 @@
     <script src="bin/outputmaps.js"></script>
     <script src="bin/score_script.js"></script>
     <script src="bin/views.js"></script>
+    <script src="bin/hud.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             go();
@@ -65,9 +66,6 @@
         <div class="hud-element" id="precipitation-hud"><a>Precipitation: Unknown</a></div>
         <div class="hud-element" id="current-selection-hud"><a>Current Selection: None</a></div>
         <div class="hud-element" id="hover-selection-hud"><a></a></div>
-    </section>
-    <section id="infobox">
-        <div id="info">PE/WI</div>
     </section>
     <section id="sidebar-left" class="sidebar">
         <section id="landcover-toolbar">
@@ -172,13 +170,11 @@
                          width="20px"></div>
             </li>
         </ul>
-
-        <section id="layer-puck-container"></section>
     </section>
     <section id="sidebar-right" class="sidebar">
         <ul class="list-vertical">
             <li id="score-tab" class="rotated">
-                <!--<article id="score-selection-helper" class="helper-box">Watershed performance<br />indicators</article>-->
+                <!--<article id="improve-selection-helper" class="helper-box">Spatially displayed<br />output maps</article>-->
                 <div>
                     <div><a id="score">Scores</a></div>
                 </div>

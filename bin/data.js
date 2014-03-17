@@ -112,6 +112,8 @@ var landcovers = ["None",
     "Mixed Fruit & Vegetables"
 ];
 
+var physicalFeatureIcons = [];
+
 var Data = {
     baselandcover: {
         name: "BaseLandCover",

@@ -68,9 +68,9 @@ var OutputMap = function (options) {
         .attr("height", svgHeight);
 
     var colors = {
-        nitrates: ["#ffffd4", "#fed98e", "#fe9929", "#d95f0e", "#993404"],
-        erosion: ["#ffffd4", "#fed98e", "#fe9929", "#d95f0e", "#993404"],
-        risk: ["#ffffd4", "#fed98e", "#fe9929", "#d95f0e", "#993404"]
+        nitrates: ["#fed98e", "#f4b350", "#fe9929", "#d95f0e", "#993404"],
+        erosion: ["#fed98e", "#f4b350", "#fe9929", "#d95f0e", "#993404"],
+        risk: ["#fed98e", "#f4b350", "#fe9929", "#d95f0e", "#993404"]
     };
 
     /**
@@ -137,7 +137,9 @@ var OutputMap = function (options) {
             .attr("id", function () {
                 return wp[subwatershed[i]];
             })
-            .attr("class", "output-map-rect");
+            .attr("class", "output-map-rect")
+            .style("stroke-width", 0.01)
+            .style("stroke", "#000");
 
         function retColor(i) {
             if (basedata[i] === 0) return "#999";
@@ -167,7 +169,9 @@ var OutputMap = function (options) {
             .attr("id", function () {
                 return grossErosionData[i];
             })
-            .attr("class", "output-map-rect");
+            .attr("class", "output-map-rect")
+            .style("stroke-width", 0.01)
+            .style("stroke", "#000");
 
         function retColor(i) {
             return colors.erosion[grossErosionData[i] - 1];
@@ -190,7 +194,9 @@ var OutputMap = function (options) {
             .attr("id", function () {
                 return riskAssessmentData[i];
             })
-            .attr("class", "output-map-rect");
+            .attr("class", "output-map-rect")
+            .style("stroke-width", 0.01)
+            .style("stroke", "#000");
 
         function retColor(i) {
             if (riskAssessmentData[i] === "Very Low") return colors.risk[0];
