@@ -171,7 +171,7 @@ function togglePuk(type, coords) {
 //                .attr("id", "pfeature-indicator-line");
 //        })/*.mouseout(function(){puck.select("line").remove();})*/;
 
-        $(".selectable-feature")
+        $(".selectable-pfeature")
             .click(function () {
                 var id = $(this).attr("id");
                 console.log(id);
