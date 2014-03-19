@@ -275,48 +275,9 @@ var OutputMap = function (options) {
                     return key.risk[i].text;
                 });
         }
-        nitrates.append("text")
-            .attr("x", function () {
-                return offsetx * cellWidth;
-            })
-            .attr("y", function () {
-                return cellHeight * 36 * 0.85;
-            })
-            .attr("text-anchor", "start")
-            .style("font-size", "15")
-            .text(function () {
-                return "Year " + year;
-            });
-
-        erosion.append("text")
-            .attr("x", function () {
-                return offsetx * cellWidth;
-            })
-            .attr("y", function () {
-                return cellHeight * 36 * 0.85;
-            })
-            .attr("text-anchor", "start")
-            .style("font-size", "15")
-            .text(function () {
-                return "Year " + year;
-            });
-
-        riskAssessment.append("text")
-            .attr("x", function () {
-                return offsetx * cellWidth;
-            })
-            .attr("y", function () {
-                return cellHeight * 36 * 0.85;
-            })
-            .attr("text-anchor", "start")
-            .style("font-size", "15")
-            .text(function () {
-                return "Year " + year;
-            });
-
     }
 
-    this.draw = function (years) {
+    this.draw = function (years, label) {
         for(var year = 1; year<=years; year++) {
             nitrates = d3.select("#nitrate-output-map-" + year)
                 .append("svg")
@@ -352,6 +313,45 @@ var OutputMap = function (options) {
             }
             if(global.data[year] == 0) continue;
             drawKeys(year);
+            if(!label) continue;
+            nitrates.append("text")
+                .attr("x", function () {
+                    return cellWidth;
+                })
+                .attr("y", function () {
+                    return cellHeight * 36 * 0.85;
+                })
+                .attr("text-anchor", "start")
+                .style("font-size", "15")
+                .text(function () {
+                    return "Year " + year;
+                });
+
+            erosion.append("text")
+                .attr("x", function () {
+                    return cellWidth;
+                })
+                .attr("y", function () {
+                    return cellHeight * 36 * 0.85;
+                })
+                .attr("text-anchor", "start")
+                .style("font-size", "15")
+                .text(function () {
+                    return "Year " + year;
+                });
+
+            riskAssessment.append("text")
+                .attr("x", function () {
+                    return cellWidth;
+                })
+                .attr("y", function () {
+                    return cellHeight * 36 * 0.85;
+                })
+                .attr("text-anchor", "start")
+                .style("font-size", "15")
+                .text(function () {
+                    return "Year " + year;
+                });
         }
 
     }

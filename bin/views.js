@@ -290,7 +290,7 @@ var PrintView = function () {
         scale: 3
     };
     global.outputmap = new OutputMap(opts);
-    global.outputmap.draw(3);
+    global.outputmap.draw(3, false);
 
     ///////////////////////////////////////////////////
     // Print Commands /////////////////////////////////
