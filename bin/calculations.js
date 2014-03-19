@@ -880,8 +880,6 @@ var Biodiversity = function () {
     var nativePNindex = 0, nonNativePNindex = 0, pGindex = 0, streamNindex = 0,
         streamGindex = 0, wetlandNindex = 0, wetlandGindex = 0, forestGindex = 0;
 
-    global.strategicWetland = {};
-
     this.update = function (i) {
         setHeterogeneityGroup(i);
 

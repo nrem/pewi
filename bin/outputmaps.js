@@ -324,13 +324,13 @@ var OutputMap = function (options) {
                 .attr("width", svgWidth)
                 .attr("height", svgHeight);
 
-            erosion = d3.select("#erosion-output-map" + year)
+            erosion = d3.select("#erosion-output-map-" + year)
                 .append("svg")
                 .attr("id", "erosion-svg")
                 .attr("width", svgWidth)
                 .attr("height", svgHeight);
 
-            riskAssessment = d3.select("#risk-assessment-output-map" + year)
+            riskAssessment = d3.select("#risk-assessment-output-map-" + year)
                 .append("svg")
                 .attr("id", "risk-assessment-svg")
                 .attr("width", svgWidth)
@@ -350,6 +350,7 @@ var OutputMap = function (options) {
                     }
                 }
             }
+            if(global.data[year] == 0) continue;
             drawKeys(year);
         }
 

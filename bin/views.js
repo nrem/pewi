@@ -232,51 +232,65 @@ var PrintView = function () {
     ///////////////////////////////////////////////////
     // Indicator Table ////////////////////////////////
     ///////////////////////////////////////////////////
-//    var indicatorTable = d3.select("#results-container")
-//        .append("table")
-//        .attr("class", "results-table");
-//
-//    // Header
-//    indicatorTable.append("tr")
-//        .attr("class", "results-table-header-row")
-//        .append("th")
-//        .attr("class", "results-table-header-row-cell")
-//        .style("text-align", "right")
-//        .attr("colspan", 10)
-//        .append("div")
-//        .attr("class", "display-options-dropdown-button")
-//        .append("a").text("Display Options")
-//        .attr("class", "display-options-dropdown");
-//
-//    measure = indicatorTable.append("tr")
-//        .attr("class", "results-table-header-row");
-//    measure.append("th")
-//        .attr("class", "results-table-header-row-cell");
-//    headerMeasureCellFactory(measure, {1: "Year 1", 2: "Year 2", 3: "Year 3"});
-//
-//    titles = indicatorTable.append("tr")
-//        .attr("class", "results-table-header-row");
-//    headerTitleCellFactory(titles, {1: "Indicator", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "", 10: ""});
-//
-//    // Body
-//    var mapRow = indicatorTable.append("tr")
-//        .attr("class", "odd");
-//
-//    mapRow.append("td").append("a").text("Nitrate Contributions");
-//    mapRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map");
-//    mapRow.append("td").attr("colspan", 3).append("div").attr("id", "erosion-output-map");
-//    mapRow.append("td").attr("colspan", 3).append("div").attr("id", "risk-assessment-output-map");
-//    global.scoreDirector = new ScoreDirector();
-//    global.scoreDirector.calculateOutputMapValues();
-//    var opts = {
-//        scale: 3,
-//        height: 250,
-//        width: 350
-//    };
-//    global.outputmap = new OutputMap(opts);
-////    global.outputmap.draw();
-//    global.outputmap.registerNitrateMap("#nitrate-output-map", {width: 250, height: 350});
-//    global.outputmap.drawRegisteredMaps();
+    var indicatorTable = d3.select("#results-container")
+        .append("table")
+        .attr("class", "results-table");
+
+    // Header
+    indicatorTable.append("tr")
+        .attr("class", "results-table-header-row")
+        .append("th")
+        .attr("class", "results-table-header-row-cell")
+        .style("text-align", "right")
+        .attr("colspan", 10)
+        .append("div")
+        .attr("class", "display-options-dropdown-button")
+        .append("a").text("Display Options")
+        .attr("class", "display-options-dropdown");
+
+    measure = indicatorTable.append("tr")
+        .attr("class", "results-table-header-row");
+    measure.append("th")
+        .attr("class", "results-table-header-row-cell");
+    headerMeasureCellFactory(measure, {1: "Year 1", 2: "Year 2", 3: "Year 3"});
+
+    titles = indicatorTable.append("tr")
+        .attr("class", "results-table-header-row");
+    headerTitleCellFactory(titles, {1: "Indicator", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "", 10: ""});
+
+    // Body
+    var nitrateRow = indicatorTable.append("tr")
+        .attr("class", "odd");
+
+    nitrateRow.append("td").append("a").text("Nitrate Pollution Contribution");
+    nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-1");
+    nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-2");
+    nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-3");
+
+    var erosionRow = indicatorTable.append("tr")
+        .attr("class", "even");
+
+    erosionRow.append("td").append("a").text("Gross Erosion");
+    erosionRow.append("td").attr("colspan", 3).append("div").attr("id", "erosion-output-map-1");
+    erosionRow.append("td").attr("colspan", 3).append("div").attr("id", "erosion-output-map-2");
+    erosionRow.append("td").attr("colspan", 3).append("div").attr("id", "erosion-output-map-3");
+
+    var riskRow = indicatorTable.append("tr")
+        .attr("class", "odd");
+
+    riskRow.append("td").append("a").text("Phosphorus Pollution Contribution");
+    riskRow.append("td").attr("colspan", 3).append("div").attr("id", "risk-assessment-output-map-1");
+    riskRow.append("td").attr("colspan", 3).append("div").attr("id", "risk-assessment-output-map-2");
+    riskRow.append("td").attr("colspan", 3).append("div").attr("id", "risk-assessment-output-map-3");
+
+    global.scoreDirector = new ScoreDirector();
+    global.scoreDirector.calculateOutputMapValues();
+
+    var opts = {
+        scale: 3
+    };
+    global.outputmap = new OutputMap(opts);
+    global.outputmap.draw(3);
 
     ///////////////////////////////////////////////////
     // Print Commands /////////////////////////////////
