@@ -1,5 +1,5 @@
-var Stream = function() {
-    this.draw = function(options) {
+var Stream = function () {
+    this.draw = function (options) {
         var path = d3.select(options.parent)
 //            .append("svg")
 //            .attr("watershed-stream-container")
@@ -12,7 +12,7 @@ var Stream = function() {
         $("#watershed-stream-container").css("position", "relative").css("marginBottom", 0);
     }
 
-    this.scale = function(options) {
+    this.scale = function (options) {
 
     }
 

@@ -18,10 +18,10 @@ var dataset = [
 ];
 
 var units = {
-    english: ["bu","bu","tons","tons","board-ft","cows","tons","ppm","tons","tons","pts","pts","tons","tons","tons","tons"],
-    dict_to_english_factor: [1,1,1,1,1,1,1,1,1,0.0011,1,1,1,1,1,1],
-    metric: ["Mg","Mg","Mg","Mg","m^3","cows","Mg","mg/L","Mg","Mg","pts","pts","Mg","Mg","Mg","Mg"],
-    english_to_metric_factor: [0.0254,0.0272,0.9072,0.9072,0.0024,1,0.9072,1,0.9072,0.001,1,1,0.9072,0.9072,0.9072,0.9072]
+    english: ["bu", "bu", "tons", "tons", "board-ft", "cows", "tons", "ppm", "tons", "tons", "pts", "pts", "tons", "tons", "tons", "tons"],
+    dict_to_english_factor: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0.0011, 1, 1, 1, 1, 1, 1],
+    metric: ["Mg", "Mg", "Mg", "Mg", "m^3", "cows", "Mg", "mg/L", "Mg", "Mg", "pts", "pts", "Mg", "Mg", "Mg", "Mg"],
+    english_to_metric_factor: [0.0254, 0.0272, 0.9072, 0.9072, 0.0024, 1, 0.9072, 1, 0.9072, 0.001, 1, 1, 0.9072, 0.9072, 0.9072, 0.9072]
 };
 
 //var  set = {
@@ -194,8 +194,8 @@ var Plot = function () {
             denominator += (global.data[2] !== 0) ? 1 : 0;
             denominator += (global.data[3] !== 0) ? 1 : 0;
             value = numerator / denominator;
-            if(value > 100) value = 100;
-            else if(value < 0) value = 0;
+            if (value > 100) value = 100;
+            else if (value < 0) value = 0;
             if (denominator != 0) {
                 legendrectvals.push(value);
             }
@@ -333,12 +333,12 @@ var Plot = function () {
                 if (d.currentTarget.nodeName == "circle") {
                     var $selector = $("." + d.currentTarget.classList[1]);
                 } else if (d.currentTarget.nodeName == "text") {
-                    var $selector = $("." + d.currentTarget.classList[2].replace(/\//g,''));
-					
+                    var $selector = $("." + d.currentTarget.classList[2].replace(/\//g, ''));
+
                 }
                 origopacity = $selector.css("opacity");
                 $selector.css("opacity", "1");
-				
+
             },
             function (d) {
                 if (d.currentTarget.nodeName == "circle") {

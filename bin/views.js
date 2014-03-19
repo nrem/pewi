@@ -176,17 +176,17 @@ var PrintView = function () {
     // Body
     for (var i = 0; i < dataset.length; i++) {
         var row = tableScoreIndicator.append("tr")
-            .attr("class", (i % 2 !== 0) ? "odd" : "even");
+            .attr("class", (i % 2 !== 0) ? "even" : "odd");
         row.append("td").append("a").text((dataset[i].resultsLabel) ? dataset[i].resultsLabel : dataset[i].Metric);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year1 * 10) / 10);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year2 * 10) / 10);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year3 * 10) / 10);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.english[i]);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.english[i]);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.english[i]);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.metric[i]);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.metric[i]);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.metric[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.english[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.english[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.english[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.metric[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.metric[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.metric[i]);
     }
 
     // Footer
@@ -222,12 +222,12 @@ var PrintView = function () {
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[1]).append("a").style("opacity",0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[2]).append("a").style("opacity",0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[3]).append("a").style("opacity",0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[1] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[2] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[3] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[1]).append("a").style("opacity", 0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[2]).append("a").style("opacity", 0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[3]).append("a").style("opacity", 0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[1] * 2.54 * 10) / 10).append("a").style("opacity", 0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[2] * 2.54 * 10) / 10).append("a").style("opacity", 0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[3] * 2.54 * 10) / 10).append("a").style("opacity", 0.5).text(" cm");
 
     ///////////////////////////////////////////////////
     // Indicator Table ////////////////////////////////

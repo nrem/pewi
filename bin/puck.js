@@ -96,7 +96,7 @@ function togglePuk(type, coords) {
                 .attr("id", id)
                 .style("width", containerWidth + "em")
                 .style("text-align", "center")
-                .style("padding-top", function() {
+                .style("padding-top", function () {
                     return containerWidth * 0.07 + "em";
                 })
                 .style("border-radius", 5 + "em");
@@ -434,13 +434,13 @@ function togglePuk(type, coords) {
                 updatePaintSelection();
             }
         }).mouseenter(function () {
-                console.log("lkjansd");
-                var i = $("#quick-puk-circle").index(this);
-                quickpuk = parseInt($("#quick-puk-circle").eq(i).attr("value"));
-                console.log(quickpuk);
-            }).mouseleave(function () {
-                quickpuk = -1;
-            });
+            console.log("lkjansd");
+            var i = $("#quick-puk-circle").index(this);
+            quickpuk = parseInt($("#quick-puk-circle").eq(i).attr("value"));
+            console.log(quickpuk);
+        }).mouseleave(function () {
+            quickpuk = -1;
+        });
     }
 
     function centerOfElement(element) {
