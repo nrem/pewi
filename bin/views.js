@@ -300,9 +300,22 @@ var PrintView = function () {
 //		.attr("class", "print-commands-container");
 //
 //	printCommands.append("input")
-//	.attr("type", "button")
-//	.attr("onClick", "window.print()")
-//	.attr("value", "Print");
+//	    .attr("type", "button")
+//	    .attr("value", "Print")
+//        .on("click", function(e) {
+//            var doc = $("#popup-container").html();
+//
+//            var w = window.open();
+//            w.document.open();
+//            w.document.write(doc);
+//            w.document.close();
+//            w.focus();
+//            w.print();
+//            w.close();
+//
+//        });
+
+
 
     centerElement($(window), modal.$element);
 };
