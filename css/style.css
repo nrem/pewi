@@ -45,6 +45,10 @@ input[type="file"] {
     -moz-box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
 }
 
+.menu-item {
+    text-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
+}
+
 /*-----------------------------
  * Loading Screens
  */
@@ -382,6 +386,14 @@ input[type="file"] {
 
 #pfeature-toolbar img {
     width: 3.2em;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+}
+
+#pfeature-toolbar ul li img:hover {
+    box-shadow: 2px 2px 2px #999, 2px 2px 4px #777, 2px 2px 6px #333, 2px 2px 8px #111, -1px -1px 10px #222, -1px -1px 13px #111, -1px -1px 16px #000;
+    -moz-box-shadow: 2px 2px 2px #999, 2px 2px 4px #777, 2px 2px 6px #333, 2px 2px 8px #111, -1px -1px 10px #222, -1px -1px 13px #111, -1px -1px 16px #000;
 }
 
 #landcover-toolbar {
@@ -956,6 +968,7 @@ iframe {
 
 .credits-button-img:hover {
     opacity: 1;
+    cursor: pointer;
 }
 
 /*------ Results -----------*/
@@ -998,18 +1011,14 @@ iframe {
 
 /*------ Download/Upload -----------*/
 .menu-button-container {
-    width: 3em;
-    height: 3em;
+    width: 2.5em;
+    height: 2.5em;
     text-align: center;
-}
-
-.menu-button-container:hover {
-    cursor: pointer;
 }
 
 #download-upload-container {
     position: absolute;
-    right: 4em;
+    right: 2.5em;
 }
 
 #credits-container {
@@ -1019,8 +1028,8 @@ iframe {
 
 #infobox-container {
     position: absolute;
-    top: 1em;
-    right: 10em;
+    top: 1.2em;
+    right: 6.5em;
 }
 
 #infobox-container a:first-child {
@@ -1034,13 +1043,14 @@ iframe {
 
 #download-upload-button {
     /*top: 4em;*/
-    font-size: 2.5em;
+    font-size: 2em;
     color: #fff;
     opacity: 0.5;
 }
 
 #download-upload-button:hover {
     opacity: 1;
+    cursor: pointer;
 }
 
 #file-upload-dropzone {
