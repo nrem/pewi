@@ -45,7 +45,7 @@ var ScoreDirector = function () {
 //       {
 //       		console.log(dataset[i]);
 //       }
-        global.update = false;
+        global.update[global.year] = false;
     }
 
     this.calculateOutputMapValues = function () {

@@ -127,7 +127,7 @@ function changeBaselandcoverDataPoint(value, i, firstpass) {
     }
     $("#watershed1 #" + i).attr("landcover", landcovers[value]);
     global.data[global.year].baselandcover.data[i] = value;
-    global.update = true;
+    global.update[global.year] = true;
 }
 
 
@@ -146,7 +146,6 @@ function setLandCoverArea(newIdx, i, oldIdx) {
         landCoverArea[oldIdx] -= dataPointArea;
         if(!global.landuse[global.year][oldIdx]) global.landuse[global.year][newIdx] = 0;
         global.landuse[global.year][oldIdx] -= dataPointArea;
-        console.log(global.landuse[global.year][oldIdx], global.landuse[global.year][newIdx]);
     } else {
         // We haven't accounted for this area yet
         watershedArea += dataPointArea;

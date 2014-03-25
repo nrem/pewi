@@ -486,21 +486,15 @@ var Maps = function () {
             options.singlelandcover = 1;
             for (var i = 0; i < options.landcover.length; i++) {
                 if (options.landcover[i] != undefined) {
-                    setStrategicWetland(i);
-                    setStreamNetworkArea(i);
                     changeBaselandcoverDataPoint(global.selectedPaint, i, false);
-                    //setLandCoverArea(options.landcover[i]);
-//                    setSubwatershedArea(i);
-                    setSoiltypeFactors(i);
-                    setTopographyFactors(i);
 
                     if (options.landcover[i] != 0) {
                         $("#image" + i).attr("href", function () {
                             if (options.landcover[i] > 5 && options.landcover[i] < 9) {
                                 var r = Math.floor(Math.random() * 2);
-                                return "images/cell_images_bitmaps/" + picsForLandCoverGrid[options.landcover[i]][r];
+                                return "images/cell_images_bitmaps/" + getIcon(global.selectedPaint);
                             } else {
-                                return "images/cell_images_bitmaps/" + picsForLandCoverGrid[options.landcover[i]];
+                                return "images/cell_images_bitmaps/" + getIcon(global.selectedPaint);
                             }
                         });
                     }
@@ -557,13 +551,17 @@ var Maps = function () {
         }
     }
 
-    this.setIcon = function (landcover) {
+    function getIcon(landcover) {
         if (landcover > 5 && landcover < 9) {
             var r = Math.floor(Math.random() * 2);
             return picsForLandCoverGrid[landcover][r];
         } else {
             return picsForLandCoverGrid[landcover];
         }
+    }
+
+    this.setIcon = function (landcover) {
+        return getIcon(landcover);
     }
 
     this.minimap = function (options) {
