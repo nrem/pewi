@@ -315,7 +315,5 @@ var PrintView = function () {
 //
 //        });
 
-
-
     centerElement($(window), modal.$element);
 };

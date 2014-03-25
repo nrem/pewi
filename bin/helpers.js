@@ -268,3 +268,21 @@ function closeAllRemovableDisplays() {
     });
     d3.selectAll(".removable-displays").remove();
 }
+
+function addDatasetChangesToUndoLog(actions) {
+    global.undo.push(actions);
+}
+
+function undoLastDatasetChanges() {
+    if(!global.undo[0]) return;
+
+    var lastaction = global.undo.pop();
+    for(var i = 0; i<lastaction.length; i++) {
+        var opts = {
+            singlelandcover: true,
+            landcover: lastaction[i].previous,
+            location: lastaction[i].location
+        };
+        global.maps.updateWatershed(opts);
+    }
+}
