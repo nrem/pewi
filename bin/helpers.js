@@ -117,7 +117,7 @@ function setTopographyFactors(i) {
  *
  * @param value - landcover type
  * @param i - index that the landcover occurs
- * @param firstpass - true if we are building the watershed from scratch, false if we are simply updating data points
+ * @param firstpass - true if we are building the watershed from scratch, false if we are updating already existing data points
  */
 function changeBaselandcoverDataPoint(value, i, firstpass) {
     if (global.data[global.year].baselandcover.data[i] !== 0 && !firstpass) {
@@ -138,22 +138,19 @@ function changeBaselandcoverDataPoint(value, i, firstpass) {
  */
 function setLandCoverArea(newIdx, i, oldIdx) {
     var dataPointArea = global.data[global.year].area.data[i];
-    if (landCoverArea[newIdx] == undefined) {
-        landCoverArea[newIdx] = 0;
-        global.landuse[global.year] = 0;
+    landCoverArea[newIdx] += dataPointArea;
+    if(!global.landuse[global.year][newIdx]) global.landuse[global.year][newIdx] = 0;
+    global.landuse[global.year][newIdx] += dataPointArea;
+    if (oldIdx) {
+        // We need to subtract this area from it's respective landcover
+        landCoverArea[oldIdx] -= dataPointArea;
+        if(!global.landuse[global.year][oldIdx]) global.landuse[global.year][newIdx] = 0;
+        global.landuse[global.year][oldIdx] -= dataPointArea;
+        console.log(global.landuse[global.year][oldIdx], global.landuse[global.year][newIdx]);
     } else {
-        landCoverArea[newIdx] += dataPointArea;
-        global.landuse[global.year] += dataPointArea;
-        if (oldIdx) {
-            // We need to subtract this area from it's respective landcover
-            landCoverArea[oldIdx] -= dataPointArea;
-            global.landuse[global.year] -= dataPointArea;
-        } else {
-            // We haven't accounted for this area yet
-            watershedArea += dataPointArea;
+        // We haven't accounted for this area yet
+        watershedArea += dataPointArea;
 //            console.log("Area");
-        }
-
     }
 }
 
