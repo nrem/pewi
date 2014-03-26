@@ -273,6 +273,7 @@ function undoLastDatasetChanges() {
     if(!global.undo[0]) return;
 
     var lastaction = global.undo.pop();
+    console.log(lastaction);
     for(var i = 0; i<lastaction.length; i++) {
         var opts = {
             singlelandcover: true,
