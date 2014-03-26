@@ -1028,13 +1028,13 @@ iframe {
 
 #infobox-container {
     position: absolute;
-    top: 1.2em;
+    top: 1.1em;
     right: 6.5em;
 }
 
 #infobox-container a:first-child {
     color: #ffffff;
-    font-size: 1.7em;
+    font-size: 2em;
 }
 
 #infobox-container a {
