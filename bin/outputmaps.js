@@ -5,67 +5,16 @@ var OutputMap = function (options) {
     var rowdata = global.data[global.year].row.data,
         coldata = global.data[global.year].column.data,
         subwatershed = global.data[global.year].subwatershed.data,
-        wp = global.watershedPercent,
         SCALE = (options.scale !== undefined) ? options.scale : 1,
         cellWidth = SCALE * 3,
         cellHeight = SCALE * 2,
         basedata = global.data[global.year].baselandcover.data,
         LEN = basedata.length,
-        grossErosionData = global.grossErosionSeverity,
-        riskAssessmentData = global.riskAssessment,
-        svgWidth = (options.width !== undefined) ? options.width : 350,
+        svgWidth = (options.width !== undefined) ? options.width : 25 * cellWidth,
         svgHeight = (options.height !== undefined) ? options.height : 250,
-        actionQueue = [];
-
-    var registration = {
-        nitrates: {
-            container: "",
-            width: 0,
-            height: 0
-        },
-        erosion: {
-            container: "",
-            width: 0,
-            height: 0
-        },
-        phosphorus: {
-            container: "",
-            width: 0,
-            height: 0
-        }
-    };
-
-    /**
-     *
-     * @param fn
-     * @param context
-     * @param params
-     * @returns {Function}
-     */
-    var wrapFunction = function(fn, context, params) {
-        return function() {
-            fn.apply(context, params);
-        };
-    };
-
-
-    var nitrates = d3.select("#nitrate-output-map")
-        .append("svg")
-        .attr("id", "nitrate-svg")
-        .attr("width", svgWidth)
-        .attr("height", svgHeight);
-
-    var erosion = d3.select("#erosion-output-map")
-        .append("svg")
-        .attr("id", "erosion-svg")
-        .attr("width", svgWidth)
-        .attr("height", svgHeight);
-
-    var riskAssessment = d3.select("#risk-assessment-output-map")
-        .append("svg")
-        .attr("id", "risk-assessment-svg")
-        .attr("width", svgWidth)
-        .attr("height", svgHeight);
+        nitrates,
+        erosion,
+        riskAssessment;
 
     var colors = {
         nitrates: ["#fed98e", "#f4b350", "#fe9929", "#d95f0e", "#993404"],
@@ -73,55 +22,9 @@ var OutputMap = function (options) {
         risk: ["#fed98e", "#f4b350", "#fe9929", "#d95f0e", "#993404"]
     };
 
-    /**
-     *
-     * @param container
-     * @param size
-     */
-    this.registerNitrateMap = function(container, params) {
-        registration.nitrates.container = container;
-        registration.nitrates.width = params.width;
-        registration.nitrates.height = params.height;
-//        var registree = wrapFunction(drawNitrateMap(params.year), this, )
-    };
-
-    /**
-     *
-     * @param container
-     * @param size
-     */
-    this.registerErosionMap = function(container, size) {
-        registration.erosion.container = container;
-        registration.erosion.width = size.width;
-        registration.erosion.height = size.height;
-    };
-
-    /**
-     *
-     * @param container
-     * @param size
-     */
-    this.registerPhosphorusMap = function(container, size) {
-        registration.phosphorus.container = container;
-        registration.phosphorus.width = size.width;
-        registration.phosphorus.height = size.height;
-    };
-
-    /**
-     *
-     */
-    this.drawRegisteredMaps = function() {
-        for (var i = 0; i < LEN; i++) {
-            if (basedata[i] != undefined) {
-                drawNitrateCell(i);
-//                drawErosionCell(i);
-//                drawRiskAssessmentCell(i);
-            }
-        }
-        drawKeys();
-    };
-
     function drawNitrateCell(i, year) {
+        if(global.watershedPercent[year].length == 0) return;
+        var wp = global.watershedPercent[year];
         nitrates.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
@@ -153,7 +56,9 @@ var OutputMap = function (options) {
         }
     }
 
-    function drawErosionCell(i) {
+    function drawErosionCell(i, year) {
+        if(global.grossErosionSeverity[year].length == 0) return;
+        var grossErosionData = global.grossErosionSeverity[year];
         erosion.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
@@ -178,7 +83,9 @@ var OutputMap = function (options) {
         }
     }
 
-    function drawRiskAssessmentCell(i) {
+    function drawRiskAssessmentCell(i, year) {
+        if(global.riskAssessment[year].length == 0) return;
+        var riskAssessmentData = global.riskAssessment[year];
         riskAssessment.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
@@ -207,86 +114,87 @@ var OutputMap = function (options) {
         }
     }
 
-    function drawKeys() {
+    function drawKeys(year) {
+        var offsetx = 1;
         var key = {
             nitrates: {
                 0: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.2,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.9,
                     text: "0 - 5%"
                 },
                 1: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.3,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.95,
                     text: "5 - 10%"
                 },
                 2: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.4,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1,
                     text: "10 - 20%"
                 },
                 3: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.5,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.05,
                     text: "20 - 15%"
                 },
                 4: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.6,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.1,
                     text: "> 25%"
                 }
             },
             erosion: {
                 0: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.2,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.9,
                     text: "< 0.5"
                 },
                 1: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.3,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.95,
                     text: "0.5 - 2"
                 },
                 2: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.4,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36,
                     text: "2 - 3.5"
                 },
                 3: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.5,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.05,
                     text: "3.5 - 5"
                 },
                 4: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.6,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.1,
                     text: "> 5"
                 }
             },
             risk: {
                 0: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.2,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.9,
                     text: "Very Low"
                 },
                 1: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.3,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.95,
                     text: "Low"
                 },
                 2: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.4,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36,
                     text: "Medium"
                 },
                 3: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.5,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.05,
                     text: "High"
                 },
                 4: {
-                    x: cellWidth * 27,
-                    y: cellHeight * 36 * 0.6,
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.1,
                     text: "Very High"
                 }
             }
@@ -312,6 +220,7 @@ var OutputMap = function (options) {
                     return key.nitrates[i].y + 10;
                 })
                 .attr("text-anchor", "start")
+                .style("font-size", "10")
                 .text(function () {
                     return key.nitrates[i].text;
                 });
@@ -336,6 +245,7 @@ var OutputMap = function (options) {
                     return key.erosion[i].y + 10;
                 })
                 .attr("text-anchor", "start")
+                .style("font-size", "10")
                 .text(function () {
                     return key.erosion[i].text;
                 });
@@ -360,22 +270,90 @@ var OutputMap = function (options) {
                     return key.risk[i].y + 10;
                 })
                 .attr("text-anchor", "start")
+                .style("font-size", "10")
                 .text(function () {
                     return key.risk[i].text;
                 });
         }
     }
 
-    this.draw = function () {
+    this.draw = function (years, label) {
+        for(var year = 1; year<=years; year++) {
+            nitrates = d3.select("#nitrate-output-map-" + year)
+                .append("svg")
+                .attr("id", "nitrate-svg")
+                .attr("width", svgWidth)
+                .attr("height", svgHeight);
 
-        for (var i = 0; i < LEN; i++) {
-            if (basedata[i] != undefined) {
-                drawNitrateCell(i);
-                drawErosionCell(i);
-                drawRiskAssessmentCell(i);
+            erosion = d3.select("#erosion-output-map-" + year)
+                .append("svg")
+                .attr("id", "erosion-svg")
+                .attr("width", svgWidth)
+                .attr("height", svgHeight);
+
+            riskAssessment = d3.select("#risk-assessment-output-map-" + year)
+                .append("svg")
+                .attr("id", "risk-assessment-svg")
+                .attr("width", svgWidth)
+                .attr("height", svgHeight);
+
+            //console.log(year, nitrates);
+            for (var i = 0; i < LEN; i++) {
+                if (basedata[i] != undefined) {
+                    if(nitrates[0][0] !== null) {
+                        drawNitrateCell(i,year);
+                    }
+                    if(erosion[0][0] != undefined) {
+                        drawErosionCell(i,year);
+                    }
+                    if(riskAssessment[0][0] != undefined) {
+                        drawRiskAssessmentCell(i,year);
+                    }
+                }
             }
+            if(global.data[year] == 0) continue;
+            drawKeys(year);
+            if(!label) continue;
+            nitrates.append("text")
+                .attr("x", function () {
+                    return cellWidth;
+                })
+                .attr("y", function () {
+                    return cellHeight * 36 * 0.85;
+                })
+                .attr("text-anchor", "start")
+                .style("font-size", "15")
+                .text(function () {
+                    return "Year " + year;
+                });
+
+            erosion.append("text")
+                .attr("x", function () {
+                    return cellWidth;
+                })
+                .attr("y", function () {
+                    return cellHeight * 36 * 0.85;
+                })
+                .attr("text-anchor", "start")
+                .style("font-size", "15")
+                .text(function () {
+                    return "Year " + year;
+                });
+
+            riskAssessment.append("text")
+                .attr("x", function () {
+                    return cellWidth;
+                })
+                .attr("y", function () {
+                    return cellHeight * 36 * 0.85;
+                })
+                .attr("text-anchor", "start")
+                .style("font-size", "15")
+                .text(function () {
+                    return "Year " + year;
+                });
         }
-        drawKeys();
+
     }
 
     $("#nitrate-svg rect").hover(function () {
@@ -476,8 +454,10 @@ var Maps = function () {
                         .attr("width", w)
                         .attr("height", h)
                         .style("fill", "url(#pattern" + i + ")")
-                        .attr("landcover", function() {return landcovers[options.landcover[i]];});
-                        
+                        .attr("landcover", function () {
+                            return landcovers[options.landcover[i]];
+                        });
+
                     //$("#" + i).attr("landcover", "blah");
                 } else {
                     g.append("rect")
@@ -488,37 +468,33 @@ var Maps = function () {
                         .attr("width", w)
                         .attr("height", h)
                         .style("fill", colorsForLandCoverGrid[options.landcover[i]])
-                        .attr("landcover", function() {return landcovers[options.landcover[i]];});
+                        .attr("landcover", function () {
+                            return landcovers[options.landcover[i]];
+                        });
                     global.streamIndices[global.year].push(i);
                 }
             }
         }
         var opts = {
             parent: "#watershed1",
-            scale:  Math.round(SCREEN.height / 36 / 2 - 1) / 13
+            scale: Math.round(SCREEN.height / 36 / 2 - 1) / 13
         };
         global.stream = new Stream();
         global.stream.draw(opts);
 
-        $("#watershed1 #0").dblclick(function() {
+        $("#watershed1 #0").dblclick(function () {
             options.singlelandcover = 1;
-            for(var i=0; i< options.landcover.length; i++) {
-                if(options.landcover[i] != undefined) {
-                    setStrategicWetland(i);
-                    setStreamNetworkArea(i);
+            for (var i = 0; i < options.landcover.length; i++) {
+                if (options.landcover[i] != undefined) {
                     changeBaselandcoverDataPoint(global.selectedPaint, i, false);
-                    //setLandCoverArea(options.landcover[i]);
-//                    setSubwatershedArea(i);
-                    setSoiltypeFactors(i);
-                    setTopographyFactors(i);
 
-                    if(options.landcover[i] != 0) {
-                        $("#image" + i).attr("href", function() {
-                            if(options.landcover[i] > 5 && options.landcover[i] < 9) {
+                    if (options.landcover[i] != 0) {
+                        $("#image" + i).attr("href", function () {
+                            if (options.landcover[i] > 5 && options.landcover[i] < 9) {
                                 var r = Math.floor(Math.random() * 2);
-                                return "images/cell_images_bitmaps/" + picsForLandCoverGrid[options.landcover[i]][r];
+                                return "images/cell_images_bitmaps/" + getIcon(global.selectedPaint);
                             } else {
-                                return "images/cell_images_bitmaps/" + picsForLandCoverGrid[options.landcover[i]];
+                                return "images/cell_images_bitmaps/" + getIcon(global.selectedPaint);
                             }
                         });
                     }
@@ -536,42 +512,56 @@ var Maps = function () {
         });
 
         $(".watershed-rect").hover(
-            function() {
+            function () {
                 $("#hover-selection-hud a").text($(this).attr("landcover"));
             },
-            function() {
+            function () {
                 $("#hover-selection-hud a").text("");
             }
         );
     }
 
-    this.updateWatershed = function(options) {
-        if(options.singlelandcover == undefined) {
-            for(var i=0; i< options.landcover.length; i++) {
-                if(options.landcover[i] != undefined) {
-                    setStrategicWetland(i);
-                    setStreamNetworkArea(i);
+    this.updateWatershed = function (options) {
+        if (options.singlelandcover == undefined) {
+            for (var i = 0; i < options.landcover.length; i++) {
+                if (options.landcover[i] != undefined) {
+//                    setStrategicWetland(i);
+//                    setStreamNetworkArea(i);
                     changeBaselandcoverDataPoint(options.landcover[i], i, false);
                     //setLandCoverArea(options.landcover[i]);
 //                    setSubwatershedArea(i, false);
-                    setSoiltypeFactors(i);
-                    setTopographyFactors(i);
+//                    setSoiltypeFactors(i);
+//                    setTopographyFactors(i);
 
-                    if(options.landcover[i] != 0) {
+                    if (options.landcover[i] != 0) {
                         $("#image" + i).attr("href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover[i]));
                     }
                 }
             }
+        } else if(options.singlelandcover) {
+            if(options.landcover == undefined) return;
+            if(options.location == undefined) return;
+//            setStrategicWetland(options.location);
+//            setStreamNetworkArea(options.location);
+            changeBaselandcoverDataPoint(options.landcover, options.location, false);
+//            setSoiltypeFactors(options.location);
+//            setTopographyFactors(options.location);
+
+            $("#image" + options.location).attr("href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover));
         }
     }
 
-    this.setIcon = function(landcover) {
-        if(landcover > 5 && landcover < 9) {
+    function getIcon(landcover) {
+        if (landcover > 5 && landcover < 9) {
             var r = Math.floor(Math.random() * 2);
             return picsForLandCoverGrid[landcover][r];
         } else {
             return picsForLandCoverGrid[landcover];
         }
+    }
+
+    this.setIcon = function (landcover) {
+        return getIcon(landcover);
     }
 
     this.minimap = function (options) {
@@ -646,7 +636,7 @@ var Maps = function () {
             }
         }
         $("#" + options.id + "-minimap-container").draggable();
-        
+
         var title = container.append("div");
         title.append("img")
             .attr("class", "physical-feature-map-close-button")
@@ -655,8 +645,8 @@ var Maps = function () {
             .style("+filter", "grayscale(1%)")
             .attr("src", "images/icons/navigation/close_mini_light-gray.svg");
         title.append("a");
-        
-        $("#" + options.id + "-minimap-container img").click(function() {
+
+        $("#" + options.id + "-minimap-container img").click(function () {
             $(this).parent().parent().remove();
             miniMapState[options.id] = false;
             miniMapSlots[options.slot].vacant = true;
@@ -749,8 +739,8 @@ var Maps = function () {
                 ystart = parseFloat(svg.attr("height")) - (keys[id].length * 15 * 1.25);
 
             var keyGroup = svg.append("g");
-            if(type == "rects") {
-                for (var i = 0; i<keys[id].length; i++) {
+            if (type == "rects") {
+                for (var i = 0; i < keys[id].length; i++) {
                     keyGroup.append("rect")
                         .attr("x", 10)
                         .attr("y", ystart + (i * 15))
@@ -768,7 +758,7 @@ var Maps = function () {
                         .style("font-size", "0.5em");
 
                 }
-            } else if(type == "horn") {
+            } else if (type == "horn") {
                 //var path = "M6 0L12 5L8 5L8 50L12 50L6 55L0 50L4 50L4 5L0 5z";
                 var path = "M0,0L15,0C15,0 0,40 15,80L0,80C0,80 15,40 0,0z";
 
@@ -791,7 +781,9 @@ var Maps = function () {
                     .style("stop-opacity", "90");
 
                 keyGroup.append("svg:path")
-                    .attr("d", function() { return path; })
+                    .attr("d", function () {
+                        return path;
+                    })
                     .style("fill", "url(#pfeature-key-color-gradient)");
 
                 keyGroup.append("text")

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv=”X-UA-Compatible” content=”chrome=1;IE=edge”>
-    <title>PE/WI 2 Work Space Index</title>
+    <title>PE/WI Work Space</title>
     <meta name="description" content="A dynamic watershed.">
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/broken.css"/>
@@ -46,18 +46,19 @@
         <canvas id="3d-container"></canvas>
     </section>
     <section id="rounds" class="rounds">
+        <!--<div id="year-transition-label" class="menu-background"><a>Years</a></div>-->
         <ul>
             <li id="r1" title="Transition to year 1">
                 <input type="radio" id="round1" name="round" value="1"/><label
-                    for="round1">1</label>
+                    for="round1" class="menu-background">1</label>
             </li>
             <li id="r2" title="Transition to year 2">
                 <input type="radio" id="round2" name="round" value="2"/><label
-                    for="round2">2</label>
+                    for="round2" class="menu-background">2</label>
             </li>
             <li id="r3" title="Transition to year 3">
                 <input type="radio" id="round3" name="round" value="3"/><label
-                    for="round3">3</label>
+                    for="round3" class="menu-background">3</label>
             </li>
         </ul>
     </section>
@@ -68,7 +69,7 @@
         <div class="hud-element" id="hover-selection-hud"><a></a></div>
     </section>
     <section id="sidebar-left" class="sidebar">
-        <section id="landcover-toolbar">
+        <section id="landcover-toolbar" class="menu-background">
             <ul id="selectable-paint" class="list-vertical">
                 <li>
                     <div><input value="1" type="radio" id="cover1"
@@ -156,36 +157,55 @@
                 </li>
             </ul>
         </section>
+        <section id="pfeature-toolbar" class="menu-background">
+            <ul class="list-vertical">
+                <li>
+                    <div><img src="images/icons/navigation/Icon_Topography.svg" id="topo" class="selectable-pfeature" title="Topography"></div>
+                </li>
+                <li>
+                    <div><img src="images/icons/navigation/Icon_Flood_Frequency.svg" id="flood" class="selectable-pfeature" title="Flood Frequency"></div>
+                </li>
+                <li>
+                    <div><img src="images/icons/navigation/Icon_Strategic_Wetlands.svg" id="wetland" class="selectable-pfeature" title="Strategic Wetlands"></div>
+                </li>
+                <li>
+                    <div><img src="images/icons/navigation/Icon_Subwatershed_Boundaries.svg" id="sub" class="selectable-pfeature" title="Subwatershed Boundaries"></div>
+                </li>
+                <li>
+                    <div><img src="images/icons/navigation/Icon_Drainage_Class.svg" id="drainage" class="selectable-pfeature" title="Drainage Class"></div>
+                </li>
+            </ul>
+        </section>
         <ul class="list-vertical">
-            <li class="rotated" id="landcover">
+            <li class="rotated menu-background" id="landcover">
                 <div>
                     <div><a>Land&nbsp;Covers</a></div>
-                    <img src="images/icons/white-l.png" alt="" title=""
-                         width="10px"></div>
+                    <!--<img src="images/icons/white-l.png" alt="" title="" width="10px">-->
+                </div>
             </li>
-            <li class="rotated" id="layer">
+            <li class="rotated menu-background" id="layer">
                 <div>
                     <div><a>Physical&nbsp;Features</a></div>
-                    <img src="images/icons/puk-icon-white.png" alt="" title=""
-                         width="20px"></div>
+                    <!--<img src="images/icons/white-l.png" alt="" title="" width="10px">-->
+                </div>
             </li>
         </ul>
     </section>
     <section id="sidebar-right" class="sidebar">
         <ul class="list-vertical">
-            <li id="score-tab" class="rotated">
+            <li id="score-tab" class="rotated menu-background">
                 <!--<article id="improve-selection-helper" class="helper-box">Spatially displayed<br />output maps</article>-->
                 <div>
                     <div><a id="score">Scores</a></div>
                 </div>
             </li>
-            <li id="outputmap-tab" class="rotated">
+            <li id="outputmap-tab" class="rotated menu-background">
                 <!--<article id="improve-selection-helper" class="helper-box">Spatially displayed<br />output maps</article>-->
                 <div>
                     <div><a id="improve">Maps</a></div>
                 </div>
             </li>
-            <li id="results-tab" class="rotated">
+            <li id="results-tab" class="rotated menu-background">
                 <!--<article id="improve-selection-helper" class="helper-box">Spatially displayed<br />output maps</article>-->
                 <div>
                     <div><a id="facts">Results</a></div>
@@ -195,7 +215,7 @@
     </section>
 </section>
 <section id="rclick-puk-container"></section>
-<section id="movement-controls">
+<section id="movement-controls" class="menu-background">
     <ul class="list-vertical">
         <li>
             <div id="zoom-fit"><img src="images/icons/panel_resize_actual.png"

@@ -129,15 +129,15 @@ var PrintView = function () {
         var row = tableLandcover.append("tr")
             .attr("class", (i % 2 !== 0) ? "odd" : "even");
         row.append("td").append("a").text(landcovers[i]);
-        row.append("td").attr("class", "results-cell landcover-percent-y1").append("a").text(Math.round((100 * global.landuse[1][i] / watershedArea) * 10) / 10);
-        row.append("td").attr("class", "results-cell landcover-percent-y2").append("a").text((global.landuse[2] !== undefined) ? Math.round((100 * global.landuse[2][i] / watershedArea) * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-percent-y3").append("a").text((global.landuse[3] !== undefined) ? Math.round((100 * global.landuse[3][i] / watershedArea) * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-acres-y1").append("a").text((global.landuse[1] !== undefined) ? Math.round(global.landuse[1][i] * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-acres-y2").append("a").text((global.landuse[2] !== undefined) ? Math.round(global.landuse[2][i] * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-acres-y3").append("a").text((global.landuse[3] !== undefined) ? Math.round(global.landuse[3][i] * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-hectares-y1").append("a").text((global.landuse[1] !== undefined) ? Math.round(global.landuse[1][i] * HECTARES * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-hectares-y2").append("a").text((global.landuse[2] !== undefined) ? Math.round(global.landuse[2][i] * HECTARES * 10) / 10 : 0);
-        row.append("td").attr("class", "results-cell landcover-hectares-y3").append("a").text((global.landuse[3] !== undefined) ? Math.round(global.landuse[3][i] * HECTARES * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-percent-y1").append("a").text((global.landuse[1][i]) ? Math.round((100 * global.landuse[1][i] / watershedArea) * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-percent-y2").append("a").text((global.landuse[2][i]) ? Math.round((100 * global.landuse[2][i] / watershedArea) * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-percent-y3").append("a").text((global.landuse[3][i]) ? Math.round((100 * global.landuse[3][i] / watershedArea) * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-acres-y1").append("a").text((global.landuse[1][i]) ? Math.round(global.landuse[1][i] * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-acres-y2").append("a").text((global.landuse[2][i]) ? Math.round(global.landuse[2][i] * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-acres-y3").append("a").text((global.landuse[3][i]) ? Math.round(global.landuse[3][i] * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-hectares-y1").append("a").text((global.landuse[1][i]) ? Math.round(global.landuse[1][i] * HECTARES * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-hectares-y2").append("a").text((global.landuse[2][i]) ? Math.round(global.landuse[2][i] * HECTARES * 10) / 10 : 0);
+        row.append("td").attr("class", "results-cell landcover-hectares-y3").append("a").text((global.landuse[3][i]) ? Math.round(global.landuse[3][i] * HECTARES * 10) / 10 : 0);
     }
 
     // Footer
@@ -176,17 +176,17 @@ var PrintView = function () {
     // Body
     for (var i = 0; i < dataset.length; i++) {
         var row = tableScoreIndicator.append("tr")
-            .attr("class", (i % 2 !== 0) ? "odd" : "even");
+            .attr("class", (i % 2 !== 0) ? "even" : "odd");
         row.append("td").append("a").text((dataset[i].resultsLabel) ? dataset[i].resultsLabel : dataset[i].Metric);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year1 * 10) / 10);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year2 * 10) / 10);
         row.append("td").attr("class", "results-cell").append("a").text(Math.round(dataset[i].Year3 * 10) / 10);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.english[i]);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.english[i]);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.english[i]);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.metric[i]);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.metric[i]);
-        row.append("td").attr("class", "results-cell").append("a").text((Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity",0.5).text(" " + units.metric[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.english[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.english[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.dict_to_english_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.english[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.metric[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.metric[i]);
+        row.append("td").attr("class", "results-cell grayed").append("a").text((Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.english_to_metric_factor[i] * 10)) / 10)).append("a").style("opacity", 0.5).text(" " + units.metric[i]);
     }
 
     // Footer
@@ -222,61 +222,75 @@ var PrintView = function () {
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[1]).append("a").style("opacity",0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[2]).append("a").style("opacity",0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[3]).append("a").style("opacity",0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[1] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[2] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[3] * 2.54 * 10) / 10).append("a").style("opacity",0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[1]).append("a").style("opacity", 0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[2]).append("a").style("opacity", 0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[3]).append("a").style("opacity", 0.5).text(" in");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[1] * 2.54 * 10) / 10).append("a").style("opacity", 0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[2] * 2.54 * 10) / 10).append("a").style("opacity", 0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[3] * 2.54 * 10) / 10).append("a").style("opacity", 0.5).text(" cm");
 
     ///////////////////////////////////////////////////
     // Indicator Table ////////////////////////////////
     ///////////////////////////////////////////////////
-//    var indicatorTable = d3.select("#results-container")
-//        .append("table")
-//        .attr("class", "results-table");
-//
-//    // Header
-//    indicatorTable.append("tr")
-//        .attr("class", "results-table-header-row")
-//        .append("th")
-//        .attr("class", "results-table-header-row-cell")
-//        .style("text-align", "right")
-//        .attr("colspan", 10)
-//        .append("div")
-//        .attr("class", "display-options-dropdown-button")
-//        .append("a").text("Display Options")
-//        .attr("class", "display-options-dropdown");
-//
-//    measure = indicatorTable.append("tr")
-//        .attr("class", "results-table-header-row");
-//    measure.append("th")
-//        .attr("class", "results-table-header-row-cell");
-//    headerMeasureCellFactory(measure, {1: "Year 1", 2: "Year 2", 3: "Year 3"});
-//
-//    titles = indicatorTable.append("tr")
-//        .attr("class", "results-table-header-row");
-//    headerTitleCellFactory(titles, {1: "Indicator", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "", 10: ""});
-//
-//    // Body
-//    var mapRow = indicatorTable.append("tr")
-//        .attr("class", "odd");
-//
-//    mapRow.append("td").append("a").text("Nitrate Contributions");
-//    mapRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map");
-//    mapRow.append("td").attr("colspan", 3).append("div").attr("id", "erosion-output-map");
-//    mapRow.append("td").attr("colspan", 3).append("div").attr("id", "risk-assessment-output-map");
-//    global.scoreDirector = new ScoreDirector();
-//    global.scoreDirector.calculateOutputMapValues();
-//    var opts = {
-//        scale: 3,
-//        height: 250,
-//        width: 350
-//    };
-//    global.outputmap = new OutputMap(opts);
-////    global.outputmap.draw();
-//    global.outputmap.registerNitrateMap("#nitrate-output-map", {width: 250, height: 350});
-//    global.outputmap.drawRegisteredMaps();
+    var indicatorTable = d3.select("#results-container")
+        .append("table")
+        .attr("class", "results-table");
+
+    // Header
+    indicatorTable.append("tr")
+        .attr("class", "results-table-header-row")
+        .append("th")
+        .attr("class", "results-table-header-row-cell")
+        .style("text-align", "right")
+        .attr("colspan", 10)
+        .append("div")
+        .attr("class", "display-options-dropdown-button")
+        .append("a").text("Display Options")
+        .attr("class", "display-options-dropdown");
+
+    measure = indicatorTable.append("tr")
+        .attr("class", "results-table-header-row");
+    measure.append("th")
+        .attr("class", "results-table-header-row-cell");
+    headerMeasureCellFactory(measure, {1: "Year 1", 2: "Year 2", 3: "Year 3"});
+
+    titles = indicatorTable.append("tr")
+        .attr("class", "results-table-header-row");
+    headerTitleCellFactory(titles, {1: "Indicator", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "", 10: ""});
+
+    // Body
+    var nitrateRow = indicatorTable.append("tr")
+        .attr("class", "odd");
+
+    nitrateRow.append("td").append("a").text("Nitrate Pollution Contribution");
+    nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-1");
+    nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-2");
+    nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-3");
+
+    var erosionRow = indicatorTable.append("tr")
+        .attr("class", "even");
+
+    erosionRow.append("td").append("a").text("Gross Erosion");
+    erosionRow.append("td").attr("colspan", 3).append("div").attr("id", "erosion-output-map-1");
+    erosionRow.append("td").attr("colspan", 3).append("div").attr("id", "erosion-output-map-2");
+    erosionRow.append("td").attr("colspan", 3).append("div").attr("id", "erosion-output-map-3");
+
+    var riskRow = indicatorTable.append("tr")
+        .attr("class", "odd");
+
+    riskRow.append("td").append("a").text("Phosphorus Pollution Contribution");
+    riskRow.append("td").attr("colspan", 3).append("div").attr("id", "risk-assessment-output-map-1");
+    riskRow.append("td").attr("colspan", 3).append("div").attr("id", "risk-assessment-output-map-2");
+    riskRow.append("td").attr("colspan", 3).append("div").attr("id", "risk-assessment-output-map-3");
+
+    global.scoreDirector = new ScoreDirector();
+    global.scoreDirector.calculateOutputMapValues();
+
+    var opts = {
+        scale: 3
+    };
+    global.outputmap = new OutputMap(opts);
+    global.outputmap.draw(3, false);
 
     ///////////////////////////////////////////////////
     // Print Commands /////////////////////////////////
@@ -286,9 +300,20 @@ var PrintView = function () {
 //		.attr("class", "print-commands-container");
 //
 //	printCommands.append("input")
-//	.attr("type", "button")
-//	.attr("onClick", "window.print()")
-//	.attr("value", "Print");
+//	    .attr("type", "button")
+//	    .attr("value", "Print")
+//        .on("click", function(e) {
+//            var doc = $("#popup-container").html();
+//
+//            var w = window.open();
+//            w.document.open();
+//            w.document.write(doc);
+//            w.document.close();
+//            w.focus();
+//            w.print();
+//            w.close();
+//
+//        });
 
     centerElement($(window), modal.$element);
 };

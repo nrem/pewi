@@ -117,17 +117,17 @@ function setTopographyFactors(i) {
  *
  * @param value - landcover type
  * @param i - index that the landcover occurs
- * @param firstpass - true if we are building the watershed from scratch, false if we are simply updating data points
+ * @param firstpass - true if we are building the watershed from scratch, false if we are updating already existing data points
  */
 function changeBaselandcoverDataPoint(value, i, firstpass) {
-    if(global.data[global.year].baselandcover.data[i] !== 0 && !firstpass) {
+    if (global.data[global.year].baselandcover.data[i] !== 0 && !firstpass) {
         setLandCoverArea(value, i, global.data[global.year].baselandcover.data[i]);
     } else {
         setLandCoverArea(value, i);
     }
-	$("#watershed1 #" + i).attr("landcover", landcovers[value]);
+    $("#watershed1 #" + i).attr("landcover", landcovers[value]);
     global.data[global.year].baselandcover.data[i] = value;
-    global.update = true;
+    global.update[global.year] = true;
 }
 
 
@@ -138,22 +138,18 @@ function changeBaselandcoverDataPoint(value, i, firstpass) {
  */
 function setLandCoverArea(newIdx, i, oldIdx) {
     var dataPointArea = global.data[global.year].area.data[i];
-    if (landCoverArea[newIdx] == undefined) {
-        landCoverArea[newIdx] = 0;
-        global.landuse[global.year] = 0;
+    landCoverArea[newIdx] += dataPointArea;
+    if(!global.landuse[global.year][newIdx]) global.landuse[global.year][newIdx] = 0;
+    global.landuse[global.year][newIdx] += dataPointArea;
+    if (oldIdx) {
+        // We need to subtract this area from it's respective landcover
+        landCoverArea[oldIdx] -= dataPointArea;
+        if(!global.landuse[global.year][oldIdx]) global.landuse[global.year][newIdx] = 0;
+        global.landuse[global.year][oldIdx] -= dataPointArea;
     } else {
-        landCoverArea[newIdx] += dataPointArea;
-        global.landuse[global.year] += dataPointArea;
-        if(oldIdx) {
-            // We need to subtract this area from it's respective landcover
-            landCoverArea[oldIdx] -= dataPointArea;
-            global.landuse[global.year] -= dataPointArea;
-        } else {
-            // We haven't accounted for this area yet
-            watershedArea += dataPointArea;
+        // We haven't accounted for this area yet
+        watershedArea += dataPointArea;
 //            console.log("Area");
-        }
-
     }
 }
 
@@ -203,12 +199,12 @@ function centerElement(parent, child) { // Check for less than zero margin top!!
  */
 function setPrecipitation(year, overrideValue) {
     var precip = [24.58, 28.18, 30.39, 32.16, 34.34, 36.47, 45.10];
-    if(overrideValue) {
+    if (overrideValue) {
         global.data.precipitation[year] = overrideValue;
 
-        if(global.data.precipitation[year] < 28.19) {
+        if (global.data.precipitation[year] < 28.19) {
             global.data.r[year] = 0;
-        } else if(global.data.precipitation[year] < 36.47) {
+        } else if (global.data.precipitation[year] < 36.47) {
             global.data.r[year] = 1;
         } else {
             global.data.r[year] = 2;
@@ -267,4 +263,22 @@ function closeAllRemovableDisplays() {
         $(this).remove();
     });
     d3.selectAll(".removable-displays").remove();
+}
+
+function addDatasetChangesToUndoLog(actions) {
+    global.undo.push(actions);
+}
+
+function undoLastDatasetChanges() {
+    if(!global.undo[0]) return;
+
+    var lastaction = global.undo.pop();
+    for(var i = 0; i<lastaction.length; i++) {
+        var opts = {
+            singlelandcover: true,
+            landcover: lastaction[i].previous,
+            location: lastaction[i].location
+        };
+        global.maps.updateWatershed(opts);
+    }
 }
