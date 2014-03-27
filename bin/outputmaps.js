@@ -483,9 +483,12 @@ var Maps = function () {
         global.stream.draw(opts);
 
         $("#watershed1 #0").dblclick(function () {
+			var undoData = [];
             options.singlelandcover = 1;
             for (var i = 0; i < options.landcover.length; i++) {
                 if (options.landcover[i] != undefined) {
+					undoData.push({location: i, previous: options.landcover[i]});
+					
                     changeBaselandcoverDataPoint(global.selectedPaint, i, false);
 
                     if (options.landcover[i] != 0) {
@@ -500,7 +503,8 @@ var Maps = function () {
                     }
                 }
             }
-
+			
+			addDatasetChangesToUndoLog(undoData);
             // $(".watershed-rect").hover(
 //                 function() {
 //                     $("#hover-selection-hud a").text($(this).attr("landcover"));
