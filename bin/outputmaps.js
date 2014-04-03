@@ -531,7 +531,12 @@ var Maps = function () {
                 if (options.landcover[i] != undefined) {
 //                    setStrategicWetland(i);
 //                    setStreamNetworkArea(i);
-                    changeBaselandcoverDataPoint(options.landcover[i], i, false);
+                    if(options.newDataset) {
+                        changeBaselandcoverDataPoint(options.landcover[i], i, true);
+                    } else {
+                        changeBaselandcoverDataPoint(options.landcover[i], i, false);
+                    }
+
                     //setLandCoverArea(options.landcover[i]);
 //                    setSubwatershedArea(i, false);
 //                    setSoiltypeFactors(i);
