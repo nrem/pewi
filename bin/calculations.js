@@ -915,12 +915,13 @@ var Biodiversity = function () {
                 if (adjacencyGroup[y][2] != 0 && heterogeneityGroup[i][2] != 0) {
                     var product1 = heterogeneityGroup[i][2] * adjacencyGroup[y][2];
                     var product2 = Math.log(heterogeneityGroup[i][2] * adjacencyGroup[y][2]);
+
                     //console.log(product2, "Het: " + heterogeneityGroup[i][2], "Adj: " + adjacencyGroup[j][2]);
                     x += adjacencyGroup[y][2];
                     contagion += (product1 * product2);
-                    //console.log("Heterogeneity: " + heterogeneityGroup[i][2], "Adj: " + adjacencyGroup[y][2]);
-                    //console.log("Product1: " + product1, "Product2: " + product2);
-                    //console.log("Numerator: " + (product1 * product2));
+//                    console.log("Heterogeneity: " + heterogeneityGroup[i][2], "Adj: " + adjacencyGroup[y][2]);
+//                    console.log("Product1: " + product1, "Product2: " + product2);
+//                    console.log("Numerator: " + (product1 * product2));
                     //console.log(j);
                 }
                 y++;
@@ -952,6 +953,7 @@ var Biodiversity = function () {
         global.streamNetwork = streamBufferPercent;
         // dataset[x]["Year"+global.year] = setGameIndex();
         // dataset[x]["Year"+global.year] = setNativeIndex();
+        console.log('Contagion: ' + contagion);
     };
 
     /**
@@ -1019,6 +1021,7 @@ var Biodiversity = function () {
             wetlandNindex = 2;
         }
 
+
         // Wetland Points Game Index
         if (wetlandPercent >= 0.05 && strategicWetlandPercent >= 0.5) {
             wetlandGindex = 1;
@@ -1033,11 +1036,13 @@ var Biodiversity = function () {
     function setNativeIndex() {
         dataset[11]['Year' + global.year] = 10 * (getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex);
         dataset[11]['Value' + global.year] = getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex;
+        console.log('Native Index: ' + getContagionPointsNativeIndex());
     }
 
     function setGameIndex() {
         dataset[10]['Year' + global.year] = 10 * (getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex);
         dataset[10]['Value' + global.year] = getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex;
+        console.log('Game Index: ' + getContagionPointsGameIndex());
     }
 
     function getContagionPointsNativeIndex() {
@@ -1126,7 +1131,7 @@ var Biodiversity = function () {
         // Calculates for each hetero group (attached to secondary loop)
         // Heterogeneity group proportion setter
         //console.log(heterogeneityGroup[i][1], watershedArea);
-        heterogeneityGroup[i][2] = heterogeneityGroup[i][1] / (dataPointArea);
+        heterogeneityGroup[i][2] = heterogeneityGroup[i][1] / dataPointArea.length;
     }
 
     function setHeterogeneityGroupDistinctCount(i) {
