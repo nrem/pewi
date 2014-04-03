@@ -19,7 +19,7 @@ function initCalcs() {
 
 function setStrategicWetland(i) {
     if (global.data[global.year].wetland.data[i] == 1) {
-        strategicArea += global.data[global.year].area.data[i];
+        strategicArea++;
     }
 }
 function setSubwatershedArea(i) {
