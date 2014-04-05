@@ -207,12 +207,12 @@ var PrintView = function () {
     strategicWetlandRow.append("td").attr("class", "results-cell");
     strategicWetlandRow.append("td").attr("class", "results-cell");
     strategicWetlandRow.append("td").attr("class", "results-cell");
-    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0) ? global.strategicWetland[1].actual : 0);
-    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0) ? global.strategicWetland[2].actual : 0);
-    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0) ? global.strategicWetland[3].actual : 0);
-    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0) ? global.strategicWetland[1].actual : 0);
-    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0) ? global.strategicWetland[2].actual : 0);
-    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0) ? global.strategicWetland[3].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0 && global.strategicWetland[1]) ? global.strategicWetland[1].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0 && global.strategicWetland[2]) ? global.strategicWetland[2].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0 && global.strategicWetland[3]) ? global.strategicWetland[3].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0 && global.strategicWetland[1]) ? global.strategicWetland[1].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0 && global.strategicWetland[2]) ? global.strategicWetland[2].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0 && global.strategicWetland[3]) ? global.strategicWetland[3].actual : 0);
 
     // Precipitation
     var precipitationRow = otherMetrics.append("tr")
