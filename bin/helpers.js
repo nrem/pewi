@@ -17,6 +17,10 @@ function initCalcs() {
     permeabilityCode = [];
 }
 
+function setWatershedArea(i) {
+	watershedArea += global.data[global.year].area.data[i];
+}
+
 function setStrategicWetland(i) {
     if (global.data[global.year].wetland.data[i] == 1) {
         strategicArea++;
@@ -127,7 +131,7 @@ function changeBaselandcoverDataPoint(value, i, firstpass, year) {
     }
     $("#watershed1 #" + i).attr("landcover", landcovers[value]);
     global.data[year].baselandcover.data[i] = value;
-    global.update[year] = true;
+    // global.update[year] = true;
 }
 
 
@@ -148,8 +152,6 @@ function setLandCoverArea(newIdx, i, year, oldIdx) {
         global.landuse[year][oldIdx] -= dataPointArea;
     } else {
         // We haven't accounted for this area yet
-        watershedArea += dataPointArea;
-//            console.log("Area");
     }
 }
 
@@ -294,8 +296,6 @@ function updateDataPoint(i, options) {
 
 function reinitialize() {
 	for(var index in dataset) {
-
-		console.log(dataset[index]);
 		for(var year=1; year<=global.years; year++) {
 			if(dataset[index]['Year' + year] !== 0) dataset[index]['Year' + year] = 0;
 			if(dataset[index]['Value' + year] !== 0) dataset[index]['Value' + year] = 0;

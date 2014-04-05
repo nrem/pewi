@@ -655,10 +655,10 @@ var Nitrates = function () {
         if (subwatershed == undefined || subwatershed.length == null) {
             return console.alert("The subwatersheds are not defined. Try Nitrates.update() before calling this function.");
         }
+		//console.log(ppmSubwatershed);
         for (var i = 0; i < subwatershed.length; i++) {
             nitratesPPM += (subwatershedArea[i] * ppmSubwatershed[i]) / watershedArea;
         }
-
         for (var i = 0; i < subwatershed.length; i++) {
             watershedPercent[i] = ppmSubwatershed[i] * (subwatershedArea[i] / watershedArea) / nitratesPPM;
             global.watershedPercent[year][i] = watershedPercent[i];
@@ -666,6 +666,7 @@ var Nitrates = function () {
     }
 
     this.calculate = function () {
+		console.log(subwatershed);
         var sum = 0;
         for (var i = 0; i < subwatershedArea.length; i++) {
             var row = 0, wet = 0, cons = 0, precip = 0;
@@ -717,7 +718,7 @@ var Nitrates = function () {
     };
 
     function dealloc() {
-
+		nitratesPPM = 0;
     }
 };
 
