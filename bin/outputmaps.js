@@ -424,7 +424,7 @@ var Maps = function () {
             if (options.landcover[i] != undefined) {
                 setStrategicWetland(i);
                 setStreamNetworkArea(i);
-                changeBaselandcoverDataPoint(options.landcover[i], i, true);
+                changeBaselandcoverDataPoint(options.landcover[i], i, true, options.year);
                 //setLandCoverArea(options.landcover[i]);
                 setSubwatershedArea(i, true);
                 setSoiltypeFactors(i);
@@ -489,7 +489,7 @@ var Maps = function () {
                 if (options.landcover[i] != undefined) {
 					undoData.push({location: i, previous: options.landcover[i]});
 					
-                    changeBaselandcoverDataPoint(global.selectedPaint, i, false);
+                    changeBaselandcoverDataPoint(global.selectedPaint, i, false, global.year);
 
                     if (options.landcover[i] != 0) {
                         $("#image" + i).attr("href", function () {
@@ -529,18 +529,7 @@ var Maps = function () {
         if (options.singlelandcover == undefined) {
             for (var i = 0; i < options.landcover.length; i++) {
                 if (options.landcover[i] != undefined) {
-//                    setStrategicWetland(i);
-//                    setStreamNetworkArea(i);
-                    if(options.newDataset) {
-                        changeBaselandcoverDataPoint(options.landcover[i], i, true);
-                    } else {
-                        changeBaselandcoverDataPoint(options.landcover[i], i, false);
-                    }
-
-                    //setLandCoverArea(options.landcover[i]);
-//                    setSubwatershedArea(i, false);
-//                    setSoiltypeFactors(i);
-//                    setTopographyFactors(i);
+                    changeBaselandcoverDataPoint(options.landcover[i], i, false, options.year);
 
                     if (options.landcover[i] != 0) {
                         $("#image" + i).attr("href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover[i]));
@@ -552,7 +541,7 @@ var Maps = function () {
             if(options.location == undefined) return;
 //            setStrategicWetland(options.location);
 //            setStreamNetworkArea(options.location);
-            changeBaselandcoverDataPoint(options.landcover, options.location, false);
+            changeBaselandcoverDataPoint(options.landcover, options.location, false, options.year);
 //            setSoiltypeFactors(options.location);
 //            setTopographyFactors(options.location);
 
