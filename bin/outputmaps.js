@@ -504,7 +504,7 @@ var Maps = function () {
                     }
                 }
             }
-			
+			global.update[global.year] = true;
 			addDatasetChangesToUndoLog(undoData);
             // $(".watershed-rect").hover(
 //                 function() {

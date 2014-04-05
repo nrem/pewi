@@ -10,7 +10,8 @@ var ScoreDirector = function () {
         erosion = new Erosion(),
         landcover;
     this.update = function () {
-        // console.log("Updating...");
+        console.log("Updating...");
+		console.log(global.update);
         // Update
 		for(var year in global.update) {
 			if(global.update[year] == true) {
@@ -666,7 +667,6 @@ var Nitrates = function () {
     }
 
     this.calculate = function () {
-		console.log(subwatershed);
         var sum = 0;
         for (var i = 0; i < subwatershedArea.length; i++) {
             var row = 0, wet = 0, cons = 0, precip = 0;
@@ -711,7 +711,7 @@ var Nitrates = function () {
             sum += subwatershedArea[i];
         }
         mapIt();
-//        console.log("Nitrates PPM: " + nitratesPPM, max, min);
+        // console.log("Nitrates PPM: " + nitratesPPM, max, min);
         dataset[7]['Year' + year] = 100 * ((max - nitratesPPM) / (max - min));
         dataset[7]['Value' + year] = nitratesPPM;
         dealloc();
