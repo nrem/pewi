@@ -242,6 +242,7 @@ function log10(x) {
  * @param year
  */
 function resetLandCoverValuesAreasFor(year) {
+	console.log(year);
     global.landcovers[year]["Corn"].area = 0;
     global.landcovers[year]["Conservation Corn"].area = 0;
     global.landcovers[year]["Soybeans"].area = 0;
