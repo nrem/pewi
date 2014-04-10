@@ -14,6 +14,7 @@ var ScoreDirector = function () {
 		console.log(global.update);
         // Update
 		for(var year in global.update) {
+            if(global.data[year] == 0 || global.data[year] == undefined) continue;
 			if(global.update[year] == true) {
 				setLandcover(year);
 				setYear(year);
@@ -68,7 +69,7 @@ var ScoreDirector = function () {
 //       {
 //       		console.log(dataset[i]);
 //       }
-        global.update[year] = false;
+        flagUpdateToFalse(year);
     	}
 
     this.calculateOutputMapValues = function () {

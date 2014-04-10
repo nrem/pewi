@@ -131,7 +131,10 @@ function changeBaselandcoverDataPoint(value, i, firstpass, year) {
     }
     $("#watershed1 #" + i).attr("landcover", landcovers[value]);
     global.data[year].baselandcover.data[i] = value;
-    // global.update[year] = true;
+    if(!global.update[year]) {
+        flagUpdateToTrue(year);
+
+    }
 }
 
 
@@ -222,6 +225,9 @@ function setPrecipitation(year, overrideValue) {
         } else {
             global.data.r[year] = 2;
         }
+    }
+    if(global.data[year] != 0 && global.data[year] != undefined) {
+        flagUpdateToTrue(year);
     }
 }
 
@@ -329,4 +335,14 @@ function reinitialize() {
 	global.strategicWetland = {};
 	
 	initCalcs();
+}
+
+function flagUpdateToTrue(year) {
+    global.update[year] = true;
+    console.log("Year " + year + " update set to true");
+}
+
+function flagUpdateToFalse(year) {
+    global.update[year] = false;
+    console.log("Year " + year + " update set to false");
 }

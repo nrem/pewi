@@ -36,6 +36,10 @@ var ModalView = function (options) {
         centerize();
     }
 
+    this.remove = function ($element) {
+        $element.remove();
+    }
+
     function centerize() {
         centerElement($(window), $container);
     }
