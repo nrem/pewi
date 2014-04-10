@@ -23,6 +23,7 @@ function setWatershedArea(i) {
 
 function setStrategicWetland(i) {
     if (global.data[global.year].wetland.data[i] == 1) {
+        console.log("HELLO!");
         strategicArea++;
     }
 }
