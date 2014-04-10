@@ -292,12 +292,12 @@ function undoLastDatasetChanges() {
 }
 
 function updateDataPoint(i, options) {
-	setStrategicWetland(i);
-	setStreamNetworkArea(i);
+	//setStrategicWetland(i);
+	//setStreamNetworkArea(i);
     changeBaselandcoverDataPoint(options.landcover, i, true, options.year);
-	setSubwatershedArea(i, false);
-	setSoiltypeFactors(i);
-	setTopographyFactors(i);
+	//setSubwatershedArea(i, false);
+	//setSoiltypeFactors(i);
+	//setTopographyFactors(i);
 }
 
 function reinitialize() {
@@ -333,8 +333,8 @@ function reinitialize() {
     };
 	
 	global.strategicWetland = {};
-	
-	initCalcs();
+
+    landCoverArea = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 }
 
 function flagUpdateToTrue(year) {
