@@ -515,7 +515,20 @@ var Maps = function () {
 //             );
         });
 
-        $(".watershed-rect").hover(
+        $('.watershed-rect').hover(
+            function () {
+                $("#hover-selection-hud a").text($(this).attr("landcover"));
+            },
+            function () {
+                $("#hover-selection-hud a").text("");
+            }
+        );
+    }
+
+    function rebindWatershedHover() {
+        var $rect = $('.watershed-rect');
+        $rect.unbind('mouseenter mouseleave');
+        $rect.hover(
             function () {
                 $("#hover-selection-hud a").text($(this).attr("landcover"));
             },

@@ -990,6 +990,7 @@ var Biodiversity = function () {
     };
     var contagion = 0;
     this.calculate = function () {
+        console.log("//////////////////// BIO INDICES START ///////////////////")
         //console.log(adjacencyGroup);
         //console.log(heterogeneityGroup);
         setAdjacencyGroupProportion();
@@ -1016,10 +1017,11 @@ var Biodiversity = function () {
         }
         //console.log(x);
         //console.log(distinctCount);
-
+        console.log("Numerator: ", contagion);
         var product3 = 2 * Math.log(distinctCount);
-        //console.log(contagion, "Denomimator: " + product3, (contagion/product3));
+        console.log("Denomimator: ", product3);
         contagion = 1 + (contagion / product3);
+        console.log('Contagion: ' + contagion);
         //console.log("Contagion: " + contagion, "Product3: " + product3);
         //console.log(contagion);
         setNativePerennialsPercent();
@@ -1040,7 +1042,7 @@ var Biodiversity = function () {
         global.streamNetwork = streamBufferPercent;
         // dataset[x]["Year"+year] = setGameIndex();
         // dataset[x]["Year"+year] = setNativeIndex();
-        console.log('Contagion: ' + contagion);
+        console.log("//////////////////// BIO INDICES END ///////////////////")
     };
 	
 	function dealloc() {
@@ -1122,7 +1124,7 @@ var Biodiversity = function () {
             forestGindex = 1;
         }
 
-        console.log("//////////////////// BIO INDICES START ///////////////////")
+
         console.log("Native perennial native index: ", nativePNindex);
         console.log("Non-native perennial native index: ", nonNativePNindex);
         console.log("Perrennial points game index: ", pGindex);
@@ -1131,7 +1133,7 @@ var Biodiversity = function () {
         console.log("Wetland points native index: ", wetlandNindex);
         console.log("Wetland points game index: ", wetlandGindex);
         console.log("Forest game index: ", forestGindex);
-        console.log("//////////////////// BIO INDICES END ///////////////////")
+
 
     }
 
