@@ -685,8 +685,6 @@ var Nitrates = function () {
 
     this.calculate = function () {
         var sum = 0;
-        console.log(subwatershed);
-        console.log(subwatershedArea);
         for (var i = 0; i < subwatershedArea.length; i++) {
             var row = 0, wet = 0, cons = 0, precip = 0;
             if (subwatershedArea[i] != null && subwatershed[year] != undefined && subwatershedArea[i] != 0) {
@@ -700,8 +698,7 @@ var Nitrates = function () {
                 } else {
                     wet = 1;
                 }
-                console.log("Subwatershed Area: ", subwatershedArea[i]);
-                console.log("Conservation: ", subwatershed[year][i].conservation);
+
                 if (subwatershed[year][i].conservation != 0 && subwatershed[year][i].conservation != null) {
                     cons = (subwatershed[year][i].conservation / subwatershedArea[i]);
                 } else {
@@ -717,7 +714,7 @@ var Nitrates = function () {
                  }*/
 
                 precip = setPrecipitationMultiplier(i);
-                console.log(row, wet, cons, precip);
+                // console.log(row, wet, cons, precip);
             }
             if ((100 * row * wet * cons * precip) < 2) {
                 ppmSubwatershed[year][i] = 2;
@@ -729,11 +726,11 @@ var Nitrates = function () {
 //            console.log("Wetland: " + wet);
 //            console.log("Conservation: " + cons);
 //            console.log("Precipitation: " + precip);
-            console.log("Subwatershed PPM: " + ppmSubwatershed[year][i]);
+            // console.log("Subwatershed PPM: " + ppmSubwatershed[year][i]);
             sum += subwatershedArea[i];
         }
         mapIt();
-        console.log("Nitrates PPM: " + nitratesPPM[year], max, min);
+        // console.log("Nitrates PPM: " + nitratesPPM[year], max, min);
         dataset[7]['Year' + year] = 100 * ((max - nitratesPPM[year]) / (max - min));
         dataset[7]['Value' + year] = nitratesPPM[year];
         dealloc();
