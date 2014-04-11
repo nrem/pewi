@@ -1069,16 +1069,15 @@ var Biodiversity = function () {
         else if (nativePerennialsPercent >= 0.50) {
             nativePNindex = 3;
         }
-
         // Non-Native Perennials Native Index
         if (nonNativePerennialsPercent >= 0.05 && nonNativePerennialsPercent < 0.25) {
-            nonNativePNindex = 1;
+            nonNativePNindex = 0.5;
         }
         else if (nonNativePerennialsPercent >= 0.25 && nonNativePerennialsPercent < 0.50) {
-            nonNativePNindex = 2;
+            nonNativePNindex = 1;
         }
         else if (nonNativePerennialsPercent >= 0.50) {
-            nonNativePNindex = 3;
+            nonNativePNindex = 1.5;
         }
 
         // Perennials Points Game Index
@@ -1122,6 +1121,18 @@ var Biodiversity = function () {
         if (forestPercent >= 0.2) {
             forestGindex = 1;
         }
+
+        console.log("//////////////////// BIO INDICES START ///////////////////")
+        console.log("Native perennial native index: ", nativePNindex);
+        console.log("Non-native perennial native index: ", nonNativePNindex);
+        console.log("Perrennial points game index: ", pGindex);
+        console.log("Stream buffer points native index: ", streamNindex);
+        console.log("Stream bugger points game index: ", streamGindex);
+        console.log("Wetland points native index: ", wetlandNindex);
+        console.log("Wetland points game index: ", wetlandGindex);
+        console.log("Forest game index: ", forestGindex);
+        console.log("//////////////////// BIO INDICES END ///////////////////")
+
     }
 
     function setNativeIndex() {
