@@ -36,6 +36,10 @@ var ModalView = function (options) {
         centerize();
     }
 
+    this.remove = function ($element) {
+        $element.remove();
+    }
+
     function centerize() {
         centerElement($(window), $container);
     }
@@ -203,7 +207,7 @@ var PrintView = function () {
     // Strategic Wetland Placement
     var strategicWetlandRow = otherMetrics.append("tr")
         .attr("class", "odd");
-    strategicWetlandRow.append("td").append("a").text("Strategic Wetland out of" + global.strategicWetland[1].possible / 10);
+    strategicWetlandRow.append("td").append("a").text("Strategic Wetland out of " + global.strategicWetland[1].possible);
     strategicWetlandRow.append("td").attr("class", "results-cell");
     strategicWetlandRow.append("td").attr("class", "results-cell");
     strategicWetlandRow.append("td").attr("class", "results-cell");

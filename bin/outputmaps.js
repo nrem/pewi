@@ -504,7 +504,6 @@ var Maps = function () {
                     }
                 }
             }
-			global.update[global.year] = true;
 			addDatasetChangesToUndoLog(undoData);
             // $(".watershed-rect").hover(
 //                 function() {
@@ -548,6 +547,15 @@ var Maps = function () {
 //            setTopographyFactors(options.location);
 
             $("#image" + options.location).attr("href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover));
+        }
+    }
+
+    this.switchYear = function (options) {
+        console.log("switching year");
+        for(var i=0; i<options.landcover.length; i++) {
+            if (options.landcover[i] != 0) {
+                $("#image" + i).attr("href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover[i]));
+            }
         }
     }
 

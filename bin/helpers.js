@@ -23,6 +23,7 @@ function setWatershedArea(i) {
 
 function setStrategicWetland(i) {
     if (global.data[global.year].wetland.data[i] == 1) {
+        console.log("HELLO!");
         strategicArea++;
     }
 }
@@ -131,7 +132,10 @@ function changeBaselandcoverDataPoint(value, i, firstpass, year) {
     }
     $("#watershed1 #" + i).attr("landcover", landcovers[value]);
     global.data[year].baselandcover.data[i] = value;
-    // global.update[year] = true;
+    if(!global.update[year]) {
+        flagUpdateToTrue(year);
+
+    }
 }
 
 
@@ -223,6 +227,9 @@ function setPrecipitation(year, overrideValue) {
             global.data.r[year] = 2;
         }
     }
+    if(global.data[year] != 0 && global.data[year] != undefined) {
+        flagUpdateToTrue(year);
+    }
 }
 
 function getPrecipitationValue(index) {
@@ -286,12 +293,12 @@ function undoLastDatasetChanges() {
 }
 
 function updateDataPoint(i, options) {
-	setStrategicWetland(i);
-	setStreamNetworkArea(i);
+	//setStrategicWetland(i);
+	//setStreamNetworkArea(i);
     changeBaselandcoverDataPoint(options.landcover, i, true, options.year);
-	setSubwatershedArea(i, false);
-	setSoiltypeFactors(i);
-	setTopographyFactors(i);
+	//setSubwatershedArea(i, false);
+	//setSoiltypeFactors(i);
+	//setTopographyFactors(i);
 }
 
 function reinitialize() {
@@ -327,6 +334,16 @@ function reinitialize() {
     };
 	
 	global.strategicWetland = {};
-	
-	initCalcs();
+
+    landCoverArea = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+}
+
+function flagUpdateToTrue(year) {
+    global.update[year] = true;
+    console.log("Year " + year + " update set to true");
+}
+
+function flagUpdateToFalse(year) {
+    global.update[year] = false;
+    console.log("Year " + year + " update set to false");
 }
