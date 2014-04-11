@@ -408,7 +408,8 @@ var Maps = function () {
             left: 60,
             bottom: 0
         }
-    ];
+    ],
+        watershed = this;
     this.watershed = function (options) {
         var svg = d3.select(options.parent)
                 .append("svg")
@@ -493,14 +494,7 @@ var Maps = function () {
                     changeBaselandcoverDataPoint(global.selectedPaint, i, false, global.year);
 
                     if (options.landcover[i] != 0) {
-                        $("#image" + i).attr("href", function () {
-                            if (options.landcover[i] > 5 && options.landcover[i] < 9) {
-                                var r = Math.floor(Math.random() * 2);
-                                return "images/cell_images_bitmaps/" + getIcon(global.selectedPaint);
-                            } else {
-                                return "images/cell_images_bitmaps/" + getIcon(global.selectedPaint);
-                            }
-                        });
+                        watershed.changeWatershedRectImage(i, global.selectedPaint);
                     }
                 }
             }
@@ -546,7 +540,7 @@ var Maps = function () {
                     changeBaselandcoverDataPoint(options.landcover[i], i, false, options.year);
 
                     if (options.landcover[i] != 0) {
-                        $("#image" + i).attr("href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover[i]));
+                        this.changeWatershedRectImage(i, options.landcover[i]);
                     }
                 }
             }
@@ -559,7 +553,7 @@ var Maps = function () {
 //            setSoiltypeFactors(options.location);
 //            setTopographyFactors(options.location);
 
-            $("#image" + options.location).attr("href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover));
+            this.changeWatershedRectImage(options.location, options.landcover);
         }
     }
 
@@ -567,9 +561,14 @@ var Maps = function () {
         console.log("switching year");
         for(var i=0; i<options.landcover.length; i++) {
             if (options.landcover[i] != 0) {
-                $("#image" + i).attr("href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover[i]));
+                this.changeWatershedRectImage(i, options.landcover[i]);
             }
         }
+    }
+
+    this.changeWatershedRectImage = function(location, landcover) {
+        $("#image" + location).attr("href", "images/cell_images_bitmaps/" + getIcon(landcover));
+        $("#watershed1 #" + location).attr("landcover", landcovers[landcover]);
     }
 
     function getIcon(landcover) {

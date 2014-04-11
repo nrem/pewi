@@ -1042,6 +1042,9 @@ var Biodiversity = function () {
         global.streamNetwork = streamBufferPercent;
         // dataset[x]["Year"+year] = setGameIndex();
         // dataset[x]["Year"+year] = setNativeIndex();
+
+        console.log('Group Adjencies [title, count, proportion]: ', adjacencyGroup);
+        console.log('Heterogeneity Groups [title, count, proportion, !unused!]: ', heterogeneityGroup);
         console.log("//////////////////// BIO INDICES END ///////////////////")
     };
 	

@@ -129,7 +129,6 @@ function changeBaselandcoverDataPoint(value, i, firstpass, year) {
     } else {
         setLandCoverArea(value, i, year);
     }
-    $("#watershed1 #" + i).attr("landcover", landcovers[value]);
     global.data[year].baselandcover.data[i] = value;
     if(!global.update[year]) {
         flagUpdateToTrue(year);
