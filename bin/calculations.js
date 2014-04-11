@@ -963,7 +963,7 @@ var Biodiversity = function () {
         nonNativePerennialsArea = 0, nonNativePerennialsPercent,
         streamBufferArea = 0, streamBufferPercent,
         wetlandArea = 0, wetlandPercent,
-        strategicWetlandArea = 0, strategicWetlandPercent,
+        strategicWetlandArea = {1:0, 2:0, 3:0}, strategicWetlandPercent,
         forestArea = 0, forestPercent;
 
     var nativePNindex = 0, nonNativePNindex = 0, pGindex = 0, streamNindex = 0,
@@ -977,6 +977,7 @@ var Biodiversity = function () {
         setStreamBufferArea(i);
         setWetlandArea(i);
         setStrategicWetlandArea(i);
+		// console.log(strategicWetlandArea, year);
         setForestArea(i);
     };
     var x = 0;
@@ -1035,7 +1036,7 @@ var Biodiversity = function () {
         setGameIndex();
 
         global.strategicWetland[year] = {
-            actual: strategicWetlandArea,
+            actual: strategicWetlandArea[year],
             possible: strategicArea
         };
 //		console.log(global.strategicWetland);
@@ -1044,6 +1045,10 @@ var Biodiversity = function () {
         // dataset[x]["Year"+year] = setNativeIndex();
         console.log('Contagion: ' + contagion);
     };
+	
+	function dealloc() {
+		strategicWetlandArea[year] = 0;
+	}
 
     /**
      * Sets the following Biodiversity indices:
@@ -1370,13 +1375,13 @@ var Biodiversity = function () {
     function setStrategicWetlandArea(i) {
         if (global.data[year].wetland.data[i] == 1) {
             if (global.data[year].baselandcover.data[i] == 14) {
-                strategicWetlandArea++;
+                strategicWetlandArea[year]++;
             }
         }
     }
 
     function setStrategicWetlandPercent() {
-        strategicWetlandPercent = strategicWetlandArea / strategicArea;
+        strategicWetlandPercent = strategicWetlandArea[year] / strategicArea;
     }
 
     function setForestArea(i) {
