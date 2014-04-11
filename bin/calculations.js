@@ -993,7 +993,7 @@ var Biodiversity = function () {
         x++;
         setAdjacencyGroup(i);
         //setAdjacencyGroupCount(i);
-        setAdjacencyGroupSubtotal(i);
+//        setAdjacencyGroupSubtotal(i);
     };
     var contagion = 0;
     this.calculate = function () {
@@ -1053,10 +1053,36 @@ var Biodiversity = function () {
         console.log('Group Adjencies [title, count, proportion]: ', adjacencyGroup);
         console.log('Heterogeneity Groups [title, count, proportion, !unused!]: ', heterogeneityGroup);
         console.log("//////////////////// BIO INDICES END ///////////////////")
+        dealloc();
     };
 	
 	function dealloc() {
 		strategicWetlandArea[year] = 0;
+        contagion = 0;
+        adjacencySubtotal = 0;
+        nativePerennialsArea = 0;
+        nativePerennialsPercent = 0;
+        nonNativePerennialsArea = 0;
+        nonNativePerennialsPercent = 0;
+        streamBufferArea = 0;
+        streamBufferPercent = 0;
+        wetlandArea = 0;
+        wetlandPercent = 0;
+        strategicWetlandPercent = 0;
+        forestArea = 0;
+        nativePNindex = 0;
+        nonNativePNindex = 0;
+        pGindex = 0;
+        streamNindex = 0
+        streamGindex = 0;
+        wetlandNindex = 0;
+        wetlandGindex = 0;
+        forestGindex = 0;
+        distinctCount = 0;
+
+        for(var key in adjSubtotal) {
+            adjSubtotal[key] = 0;
+        }
 	}
 
     /**
