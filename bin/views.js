@@ -7,33 +7,75 @@ var ModalView = function (options) {
 
     // Make sure to close all open displays
     closeAllRemovableDisplays();
-
+	
     this.width = (options.width !== undefined) ? options.width : $(window).width() / 2;
     this.height = (options.height !== undefined) ? options.height : $(window).height() / 1.1;
     this.title = (options.title !== undefined) ? options.title : "Default";
     this.scrollable = (options.scrollable !== undefined) ? options.scrollable : true;
     var close_button_url = "images/icons/navigation/close_mini_dark-gray.svg",
-        $container, $body;
-    $("#main").append('<div id="popup-container" class="popup-window removable-displays-container"></div>');
-    $("#popup-container").width(this.width)/*.height(this.height)*/.css("max-height", this.height).css("overflow", this.scrollable);
-    $container = $("#popup-container");
-    $container.append('<div id="popup-container-head" class="popup-window-head"></div>');
-    $("#popup-container-head").append("<a>" + this.title + "</a>");
-    $("#popup-container-head").append('<img src="' + close_button_url + '" class="popup-window-close-button" id="popup-container-head-close-button">');
-    $container.append('<div id="popup-container-body" class="popup-window-body"></div>');
-    $body = $("#popup-container-body");
+        $container, $body, $addons = '', interval, thisview = this;
 
     this.display = function () {
+	    $("#main").append('<div id="popup-container" class="popup-window removable-displays-container"></div>');
+	    $("#popup-container").width(this.width)/*.height(this.height)*/.css("max-height", this.height).css("overflow", this.scrollable);
+	    $container = $("#popup-container");
+	    $container.append('<div id="popup-container-head" class="popup-window-head"></div>');
+	    $("#popup-container-head").append("<a>" + this.title + "</a>");
+	    $("#popup-container-head").append('<img src="' + close_button_url + '" class="popup-window-close-button" id="popup-container-head-close-button">');
+	    $container.append('<div id="popup-container-body" class="popup-window-body"></div>');
+	    $body = $("#popup-container-body");
+		if($addons !== undefined) {
+			$body.append($addons);
+		}
+		
         centerize();
 //        $container.show("slide", {direction: "right"}, 500);
         $container.fadeIn();
+		
+	    $(".popup-window-close-button").click(function () {
+	        var id = $(this).attr("id");
+	        var parent = $("#" + id + "-mini-map");
+	        $("#popup-container").remove();
+	//      closeButtonWasClicked(parent);
+	//      
+	//      function closeButtonWasClicked(svg_parent_container) {
+	//        svg_parent_container.hide();
+	//        closeAllRemovableDisplays();
+	//      }
+	        global.sm.consumeEvent("goto-mainevent");
+	    });
     };
+	
+	this.teaser = function(options) {
+		// var width = (options.width !== undefined) ? options.width : '150px',
+			// height = (options.height !== undefined) ? options.width : '100px';
+		var message = (options.message !== undefined) ? options.message : 'Click Here for more information';
+		
+		$('#main').append('<div id="popup-container-teaser" class="popup-window removable-displays-container"></div>');
+		$container = $('#popup-container-teaser');
+		$container.append('<div id="popup-container-teaser-body" class="popup-window-teaser-body">' + message + '</div>');
+		
+		setTimeout(function() {
+			$container.show('slide', {direction: 'left'}, 200);
+			interval = setInterval(function() { $container.effect('bounce', 'slow') }, 2000);
+		}, 1500);
+		
+		$container.click(function() {
+			$container.remove();
+			clearInterval(interval);
+			global.sm.consumeEvent(global.sm.goto.POPUP);
+			thisview.display();
+		});
+	};
+	
     this.dispose = function () {
         $("#main").remove("#popup-container");
     }
+	
     this.append = function ($element) {
-        $body.append($element);
-        centerize();
+		$addons = $addons + $element;
+        // $body.append($element);
+        // centerize();
     }
 
     this.remove = function ($element) {
@@ -43,19 +85,6 @@ var ModalView = function (options) {
     function centerize() {
         centerElement($(window), $container);
     }
-
-    $(".popup-window-close-button").click(function () {
-        var id = $(this).attr("id");
-        var parent = $("#" + id + "-mini-map");
-        $("#popup-container").remove();
-//      closeButtonWasClicked(parent);
-//      
-//      function closeButtonWasClicked(svg_parent_container) {
-//        svg_parent_container.hide();
-//        closeAllRemovableDisplays();
-//      }
-        global.sm.consumeEvent("goto-mainevent");
-    });
 
     this.$element = $("#popup-container");
 };
