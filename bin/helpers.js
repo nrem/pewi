@@ -273,18 +273,19 @@ function closeAllRemovableDisplays() {
 }
 
 function addDatasetChangesToUndoLog(actions) {
-    global.undo.push(actions);
+    global.undo[global.year].push(actions);
 }
 
 function undoLastDatasetChanges() {
-    if(!global.undo[0]) return;
+    if(!global.undo[global.year][0]) return;
 
-    var lastaction = global.undo.pop();
+    var lastaction = global.undo[global.year].pop();
     for(var i = 0; i<lastaction.length; i++) {
         var opts = {
             singlelandcover: true,
             landcover: lastaction[i].previous,
-            location: lastaction[i].location
+            location: lastaction[i].location,
+			year: global.year
         };
         global.maps.updateWatershed(opts);
     }
