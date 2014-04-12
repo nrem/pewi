@@ -71,9 +71,12 @@ var ModalView = function (options) {
     }
 	
     this.append = function ($element) {
-		$addons = $addons + $element;
-        // $body.append($element);
-        // centerize();
+		if($container !== undefined && $container.is(':visible')) {
+			$body.append($element);
+			centerize();
+		} else {
+			$addons = $addons + $element;
+		} 
     }
 
     this.remove = function ($element) {
