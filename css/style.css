@@ -1043,13 +1043,14 @@ iframe {
 }
 
 #paint-selection-tool-container {
-	position: absolute;
-	left: 0;
-	bottom: 175px;
-	background: url("../images/icons/bg-tile.png");
+	/*position: absolute;
+	left: 200px;
+	top: 0;*/
+/*	background: url("../images/icons/bg-tile.png");*/
 	width: inherit;
 	height: inherit;
-	padding: 0.3em;
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
 	box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
 }
 
@@ -1059,7 +1060,7 @@ iframe {
 }
 
 .square-paint-toggle {
-	width: 1.5em;
+	width: 1.1em;
 }
 
 /*------ Download/Upload -----------*/
