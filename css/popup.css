@@ -18,6 +18,7 @@
 
 #popup-container-teaser.popup-window:hover {
 	cursor: pointer;
+	border: 2px solid #cccc00;
 }
 
 .popup-window-head {
@@ -38,6 +39,11 @@
     position: absolute;
     right: 0;
     top: 0;
+}
+
+.popup-window-teaser-close-button {
+	width: 1em;
+	height: 1em;
 }
 
 .popup-window-close-button:hover {

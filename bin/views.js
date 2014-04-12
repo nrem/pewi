@@ -33,15 +33,7 @@ var ModalView = function (options) {
         $container.fadeIn();
 		
 	    $(".popup-window-close-button").click(function () {
-	        var id = $(this).attr("id");
-	        var parent = $("#" + id + "-mini-map");
 	        $("#popup-container").remove();
-	//      closeButtonWasClicked(parent);
-	//      
-	//      function closeButtonWasClicked(svg_parent_container) {
-	//        svg_parent_container.hide();
-	//        closeAllRemovableDisplays();
-	//      }
 	        global.sm.consumeEvent("goto-mainevent");
 	    });
     };
@@ -54,10 +46,11 @@ var ModalView = function (options) {
 		$('#main').append('<div id="popup-container-teaser" class="popup-window removable-displays-container"></div>');
 		$container = $('#popup-container-teaser');
 		$container.append('<div id="popup-container-teaser-body" class="popup-window-teaser-body">' + message + '</div>');
+		$container.append('<img src="' + close_button_url + '" class="popup-window-close-button popup-window-teaser-close-button" id="popup-container-head-close-button">');
 		
 		setTimeout(function() {
 			$container.show('slide', {direction: 'left'}, 200);
-			interval = setInterval(function() { $container.effect('bounce', 'slow') }, 2000);
+			interval = setInterval(function() { $container.effect('bounce', 'slow') }, 3000);
 		}, 1500);
 		
 		$container.click(function() {
@@ -66,6 +59,11 @@ var ModalView = function (options) {
 			global.sm.consumeEvent(global.sm.goto.POPUP);
 			thisview.display();
 		});
+		
+   	 	$(".popup-window-close-button").click(function () {
+        	$("#popup-container-teaser").remove();
+        	// global.sm.consumeEvent("goto-mainevent");
+    	});
 	};
 	
     this.dispose = function () {
@@ -81,6 +79,10 @@ var ModalView = function (options) {
     this.remove = function ($element) {
         $element.remove();
     }
+	
+	function bindCloseButtonInteraction() {
+	    
+	}
 
     function centerize() {
         centerElement($(window), $container);

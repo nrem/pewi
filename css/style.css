@@ -320,7 +320,6 @@ input[type="file"] {
     cursor: pointer;
 }
 
-
 .rotated div div {
     padding: 3px 0;
     transform: rotate(90deg);
@@ -331,6 +330,14 @@ input[type="file"] {
 .rotated:hover {
     cursor: pointer;
 }
+
+/*#sidebar-left .rotated:hover {
+	border-right: 3px solid #fff;
+}
+
+#sidebar-right .rotated:hover {
+	border-left: 3px solid #fff;
+}*/
 
 .sidebar {
     position: absolute;
