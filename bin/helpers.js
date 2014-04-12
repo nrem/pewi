@@ -132,7 +132,11 @@ function changeBaselandcoverDataPoint(value, i, firstpass, year) {
     global.data[year].baselandcover.data[i] = value;
     if(!global.update[year]) {
         flagUpdateToTrue(year);
-
+		if(year + 1 < 4 && global.data[year + 1] !== 0) {
+			if((value > 0 && value < 5) || value == 15) {
+				flagUpdateToTrue(year + 1);
+			}
+		}
     }
 }
 

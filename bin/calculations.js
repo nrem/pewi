@@ -1494,6 +1494,7 @@ var Erosion = function () {
         erosionMax = 0, erosionMin = 0, year = global.year;
 
     this.init = function() {
+		console.log(global.sedimentDelivered[year]);
         global.sedimentDelivered[year] = 0;
         global.grossErosion[year] = 0;
         global.phosphorusLoad[year] = 0;
