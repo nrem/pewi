@@ -1031,6 +1031,7 @@ iframe {
 #file-download-button {
     text-decoration: none;
     color: #cd0a0a;
+	display: block;
 }
 
 #file-download-button:visited {

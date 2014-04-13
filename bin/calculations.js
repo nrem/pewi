@@ -1528,9 +1528,9 @@ var Erosion = function () {
         dataset[12]["Year" + year] = 100 * ((sedimentDeliveredMax - global.sedimentDelivered[year]) / (sedimentDeliveredMax - sedimentDeliveredMin));
         dataset[8]["Year" + year] = 100 * ((phosphorusLoadMax - global.phosphorusLoad[year]) / (phosphorusLoadMax - phosphorusLoadMin));
         dataset[13]["Year" + year] = 100 * ((erosionMax - global.grossErosion[year]) / (erosionMax - erosionMin));
-//        console.log("Sediment: " + global.sedimentDelivered[year], sedimentDeliveredMax, sedimentDeliveredMin);
-//       console.log("Phosphorus: " + global.phosphorusLoad[year], phosphorusLoadMax, phosphorusLoadMin);
-//        console.log("Erosion: " + global.grossErosion[year], erosionMax, erosionMin);
+        console.log("Sediment: " + global.sedimentDelivered[year], sedimentDeliveredMax, sedimentDeliveredMin);
+        console.log("Phosphorus: " + global.phosphorusLoad[year], phosphorusLoadMax, phosphorusLoadMin);
+        console.log("Erosion: " + global.grossErosion[year], erosionMax, erosionMin);
 
         dataset[12]["Value" + year] = global.sedimentDelivered[year];
         dataset[8]["Value" + year] = global.phosphorusLoad[year];
@@ -1593,10 +1593,10 @@ var Erosion = function () {
         return "";
     }
 
-    function phosphorusIndex(i, point) {
+    function phosphorusIndex(i, point, precip_override) {
 //        console.log(erosionComponent(i, point), runoffComponent(i, point), subsurfaceDrainageComponent(i));
 //        console.log(runoffFactor(i, false), runoffCurveNumber(i, false));
-        return erosionComponent(i, point) + runoffComponent(i, point) + subsurfaceDrainageComponent(i);
+        return erosionComponent(i, point, precip_override) + runoffComponent(i, point, precip_override) + subsurfaceDrainageComponent(i, precip_override);
     }
 
     function pWetlandMultiplier(i) {
@@ -1617,11 +1617,11 @@ var Erosion = function () {
     }
 
     function getPhosphorusLoadMin(i) {
-        return (phosphorusIndex(i, 9) * datapointarea[i] / 2000);
+        return (phosphorusIndex(i, 9, 24.58) * datapointarea[i] / 2000);
     }
 
     function getPhosphorusLoadMax(i) {
-        return (phosphorusIndex(i, 3) * datapointarea[i] / 2000);
+        return (phosphorusIndex(i, 3, 45.10) * datapointarea[i] / 2000);
     }
 
     function getSedimentDeliveredMin(i) {
@@ -1637,20 +1637,24 @@ var Erosion = function () {
         return (((rusle(i, 45.10, 3) + ephemeralGullyErosion(i, 3)) * sedimentDeliveryRatio(i) * bufferFactor(i, 3)) * datapointarea[i]);
     }
 
-    function erosionComponent(i, point) {
+    function erosionComponent(i, point, precip_override) {
+		if(precip_override !== undefined) {
+			return (rusle(i, precip_override, point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryRatio(i) * bufferFactor(i, point) * enrichmentFactor(i, point) * soilTestPErosionFactor(i);
+		} else {
+			return (rusle(i, global.data.precipitation[year], point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryRatio(i) * bufferFactor(i, point) * enrichmentFactor(i) * soilTestPErosionFactor(i);
+		}
         //console.log(rusle(i), ephemeralGullyErosion(i), sedimentDeliveryRatio(i), bufferFactor(i), enrichmentFactor(i), soilTestPErosionFactor(i));
-        return (rusle(i, global.data.precipitation[year], point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryRatio(i) * bufferFactor(i, point) * enrichmentFactor(i) * soilTestPErosionFactor(i);
     }
 
-    function runoffComponent(i, point) {
+    function runoffComponent(i, point, precip_override) {
 
         var cover = (point != false) ? point : landcover[i];
 
-        return runoffFactor(i, cover) * precipitationFactor() * (getSoilTestPRunoffFactor(i) + getPApplicationFactor(i, cover));
+        return runoffFactor(i, cover) * precipitationFactor(precip_override) * (getSoilTestPRunoffFactor(i) + getPApplicationFactor(i, cover));
     }
 
-    function subsurfaceDrainageComponent(i) {
-        return precipitationFactor() * getFlowFactor(i) * SOILTESTPDRAINAGEFACTOR;
+    function subsurfaceDrainageComponent(i, precip_override) {
+        return precipitationFactor(precip_override) * getFlowFactor(i) * SOILTESTPDRAINAGEFACTOR;
     }
 
     function rusle(i, precip, point) {
@@ -1731,8 +1735,14 @@ var Erosion = function () {
     }
 
     function coverManagementFactor(i, point) {
+	    if (point != false) {
+	        if (point == 3) return 0.3;
+	        else if (point == 9) return 0.001;
+	    }
+		
         var temp = getSubdataValueWithName("baselandcover", year - 1),
             cover = (point !== false) ? point : landcover[i];
+		
         if (temp != undefined) {
             if (temp[i] == 1) {
                 if (cover == 1) return 0.15;
@@ -1761,11 +1771,6 @@ var Erosion = function () {
                 else if (cover == 3 || cover == 15) return 0.116;
                 else if (cover == 4) return 0.031;
             }
-        }
-
-        if (point != false) {
-            if (cover == 3) return 0.3;
-            else if (cover == 9) return 0.001;
         }
 
         if (cover == 1) return 0.085;
@@ -1863,8 +1868,6 @@ var Erosion = function () {
     function sedimentDeliveryRatio(i) {
         if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return (Math.pow(10, (log10(4 / 6) * log10(watershedArea) + (log10(4) - (4 * log10(4 / 6)))))) / 100;
         else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return (Math.pow(10, (log10(26 / 35) * log10(watershedArea) + (log10(26) - (4 * log10(26 / 35)))))) / 100;
-//        if (distanceToStream < 58.528) return 1;
-//        return (distanceToStream ^ sedimentDeliveryRatioSlope(i)) * (10 ^ sedimentDeliveryRatioIntercept(i));
     }
 
     function row(x) {
@@ -1878,8 +1881,9 @@ var Erosion = function () {
         if (cover == 2 || cover == 4 || (cover > 7 && cover < 15)) return 0.5;
         return 1;
     } // For every land cover point
-    function enrichmentFactor(i) {
-        if (landcover[i] == 1 || landcover[i] == 3 || landcover[i] == 15) return 1.1;
+    function enrichmentFactor(i, point) {
+		var cover = (point != false) ? point : landcover[i];
+        if (cover == 1 || cover == 3 || cover == 15) return 1.1;
         return 1.3;
     } // For every land cover point
     function soilTestPErosionFactor(i) {
@@ -2004,8 +2008,13 @@ var Erosion = function () {
         return "";
     }
 
-    function precipitationFactor() {
-        return global.data.precipitation[year] / 4.415;
+    function precipitationFactor(override) {
+		if(override == undefined) {
+			return global.data.precipitation[year] / 4.415;
+		} else {
+			return override / 4.415;
+		}
+        
     } // Once
     function getSoilTestPRunoffFactor(i) {
         if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 0.2;
@@ -2119,7 +2128,7 @@ var Erosion = function () {
                 default:
                     break;
             }
-            return retvar * 0.053 * 2.2 * 2.29 * (getSeasonalUtilizationRate(i) / (getCattleAverageDailyIntake() / 2000));
+            return retvar * 0.053 * 2.2 * 2.29 * (getSeasonalUtilizationRate(i, cover) / (getCattleAverageDailyIntake() / 2000));
         } else if (cover == 8) {
             if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 34;
             else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 39;
@@ -2128,8 +2137,8 @@ var Erosion = function () {
         }
         return 0;
     } // For every land cover point
-    function getSeasonalUtilizationRate(i) {
-        return (landcover[i] == 6 || landcover[i] == 7) ? 0.35 : 0;
+    function getSeasonalUtilizationRate(i, cover) {
+        return (cover == 6 || cover == 7) ? 0.35 : 0;
     }
 
     function getCattleAverageDailyIntake() {
