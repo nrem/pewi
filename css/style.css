@@ -320,7 +320,6 @@ input[type="file"] {
     cursor: pointer;
 }
 
-
 .rotated div div {
     padding: 3px 0;
     transform: rotate(90deg);
@@ -331,6 +330,14 @@ input[type="file"] {
 .rotated:hover {
     cursor: pointer;
 }
+
+/*#sidebar-left .rotated:hover {
+	border-right: 3px solid #fff;
+}
+
+#sidebar-right .rotated:hover {
+	border-left: 3px solid #fff;
+}*/
 
 .sidebar {
     position: absolute;
@@ -609,46 +616,6 @@ input[type="file"] {
     z-index: 1000;
 
     display: none;
-}
-
-.popup-window {
-    position: absolute;
-    border: 2px solid;
-    /*background: rgba(240, 240, 240, 1);*/
-    background: rgba(236, 240, 241, 1.0);
-    z-index: 1001;
-    box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
-    -moz-box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
-    padding: 1em;
-    overflow: auto;
-}
-
-.popup-window-head {
-    width: 100%;
-    height: 5em;
-    text-align: center;
-}
-
-.popup-window-head a {
-    /*position: absolute;
-    margin: auto 0;*/
-    font-size: 1.7em;
-}
-
-.popup-window-close-button {
-    width: 2.5em;
-    height: 2.5em;
-    position: absolute;
-    right: 0;
-    top: 0;
-}
-
-.popup-window-close-button:hover {
-    cursor: pointer;
-}
-
-.popup-window-body {
-    width: 100%;
 }
 
 #scoreBox {
@@ -1064,6 +1031,7 @@ iframe {
 #file-download-button {
     text-decoration: none;
     color: #cd0a0a;
+	display: block;
 }
 
 #file-download-button:visited {
@@ -1073,6 +1041,27 @@ iframe {
 #file-download-button:hover {
     cursor: pointer;
     text-decoration: underline;
+}
+
+#paint-selection-tool-container {
+	/*position: absolute;
+	left: 200px;
+	top: 0;*/
+/*	background: url("../images/icons/bg-tile.png");*/
+	width: inherit;
+	height: inherit;
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
+	box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
+}
+
+#paint-selection-tool-container:hover {
+	cursor: pointer;
+	border-right: 2px solid #cccc00;
+}
+
+.square-paint-toggle {
+	width: 1.1em;
 }
 
 /*------ Download/Upload -----------*/

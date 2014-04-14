@@ -21,8 +21,8 @@ var colorsForLandCoverGrid = ["rgba(63, 140, 191, 0.8)",
 
 
 var picsForLandCoverGrid = ["",
-    "Landcover_Conservation_Corn.png",
     "Landcover_Corn.png",
+    "Landcover_Conservation_Corn.png",
     "Landcover_Soybean.png",
     "Landcover_Conservation_Soybean.png",
     "Landcover_Alfalfa.png",

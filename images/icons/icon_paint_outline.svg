@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" width="36px" height="36px" viewBox="0 0 36 36" version="1.1">
+    <title>more</title>
+    <description>Created with Sketch (http://www.bohemiancoding.com/sketch)</description>
+    <defs/>
+    <g id="Editor" stroke="none" stroke-width="6" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <path d="M34,20 L34,34 L31,34 L31,36 L35.4199447,36 C35.7403004,36 36,35.7508898 36,35.4199447 L36,13 L34,13 L34,18 L36,18 L36,20 L34,20 L34,20 Z M2,18 L2,13 L0,13 L0,11 L2,11 L2,7 L0,7 L0,5 L2,5 L2,2 L5,2 L5,0 L7,0 L7,2 L11,2 L11,0 L13,0 L13,2 L17,2 L17,0 L19,0 L19,2 L23,2 L23,0 L25,0 L25,2 L29,2 L29,0 L31,0 L31,2 L34,2 L34,5 L36,5 L36,5 L36,0.580055259 C36,0.259699585 35.7508898,0 35.4199447,0 L0.580055259,0 C0.259699585,0 0,0.249110162 0,0.580055259 L0,18 L2,18 L2,18 Z M2,20 L2,34 L5,34 L5,36 L0.580055259,36 C0.249110162,36 0,35.7403004 0,35.4199447 L0,20 L2,20 L2,20 Z M36,11 L36,7 L34,7 L34,11 L36,11 L36,11 Z M29,36 L25,36 L25,34 L29,34 L29,36 L29,36 Z M23,36 L19,36 L19,34 L23,34 L23,36 L23,36 Z M17,36 L13,36 L13,36 L13,34 L17,34 L17,36 L17,36 Z M11,36 L7,36 L7,34 L11,34 L11,36 L11,36 Z M0,24 L0,26 L2,26 L2,24 L0,24 Z M0,30 L0,32 L2,32 L2,30 L0,30 Z M34,24 L34,26 L36,26 L36,24 L34,24 Z M34,30 L34,32 L36,32 L36,30 L34,30 Z M34,30" id="more" fill="#ffffff" sketch:type="MSShapeGroup"/>
+    </g>
+</svg>
