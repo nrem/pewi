@@ -1505,7 +1505,7 @@ var Erosion = function () {
         var val = getGrossErosion(i);
         global.grossErosionSeverity[year][i] = getGrossErosionSeverity(i, val);
         global.grossErosion[year] += val;
-        val = phosphorusIndex(i, false);
+        val = phosphorusIndex(i, false, global.data.precipitation[year]);
         pIndex += val;
         global.riskAssessment[year][i] = pIndexRiskAssessment(val);
         global.phosphorusLoad[year] += val * datapointarea[i] / 2000;
@@ -1594,6 +1594,10 @@ var Erosion = function () {
     }
 
     function phosphorusIndex(i, point, precip_override) {
+//        if(year == 3) {
+//            // Do this
+//            console.log('lhsdflk');
+//        }
 //        console.log(erosionComponent(i, point), runoffComponent(i, point), subsurfaceDrainageComponent(i));
 //        console.log(runoffFactor(i, false), runoffCurveNumber(i, false));
         return erosionComponent(i, point, precip_override) + runoffComponent(i, point, precip_override) + subsurfaceDrainageComponent(i, precip_override);
