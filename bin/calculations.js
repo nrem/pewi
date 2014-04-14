@@ -39,6 +39,7 @@ var ScoreDirector = function () {
         console.log('---------------------------- Year ' + year + ' calculations ------------------------------');
         resetLandCoverValuesAreasFor(year);
 
+        bio.init();
         erosion.init();
 
         for (var i = 0; i <= landcover.length; i++) {
@@ -805,173 +806,179 @@ var Biodiversity = function () {
 		rows = global.data[year].rows;
 		dataPointArea = global.data[year].area.data;
 	}
-	var year = global.year;
-    var data;
-    var cols, rows,
-        dataPointArea;
-    // Group ID,Count,proportion,percent of watershed
-    var heterogeneityGroup = [
-        ["Low Spatial Low Temporal", 0, 0, 0],
-        ["Low Spatial Medium Temporal", 0, 0, 0], 		// 1
-        ["Low Spatial Medium Temporal 2", 0, 0, 0],
-        ["Low Spatial High Temporal", 0, 0, 0],		// 3
-        ["Medium Spatial Low Temporal", 0, 0, 0],
-        ["Medium Spatial Medium Temporal", 0, 0, 0],	// 5
-        ["Medium Spatial Medium Temporal 2", 0, 0, 0],
-        ["High Spatial High Temporal", 0, 0, 0],		// 7
-        ["High Spatial High Temporal 2", 0, 0, 0],
-        ["High Spatial High Temporal 3", 0, 0, 0], 	// 9
-        ["High Spatial High Temporal 4", 0, 0, 0]
-    ];
-    var distinctCount = 0;
-
-    var adjSubtotal = {
-        0: 0,
-        1: 0,
-        2: 0,
-        3: 0,
-        4: 0,
-        5: 0,
-        6: 0,
-        7: 0,
-        8: 0,
-        9: 0,
-        10: 0
-    };
-
-    var adjacencyGroup = [
-        ["low-low -> low-low", 0, 0],
-        ["low-low -> low-medium", 0, 0],
-        ["low-low -> low-medium 2", 0, 0],
-        ["low-low -> low-high", 0, 0],
-        ["low-low -> medium-low", 0, 0],
-        ["low-low -> medium-medium", 0, 0],
-        ["low-low -> medium-medium 2", 0, 0],
-        ["low-low -> high-high", 0, 0],
-        ["low-low -> high-high 2", 0, 0],
-        ["low-low -> high-high 3", 0, 0],
-        ["low-low -> high-high 4", 0, 0],
-        ["low-medium -> low-low", 0, 0],
-        ["low-medium -> low-medium", 0, 0],
-        ["low-medium -> low-medium 2", 0, 0],
-        ["low-medium -> low-high", 0, 0],
-        ["low-medium -> medium-low", 0, 0],
-        ["low-medium -> medium-medium", 0, 0],
-        ["low-medium -> medium-medium 2", 0, 0],
-        ["low-medium -> high-high", 0, 0],
-        ["low-medium -> high-high 2", 0, 0],
-        ["low-medium -> high-high 3", 0, 0],
-        ["low-medium -> high-high 4", 0, 0],
-        ["low-medium 2 -> low-low", 0, 0],
-        ["low-medium 2 -> low-medium", 0, 0],
-        ["low-medium 2 -> low-medium 2", 0, 0],
-        ["low-medium 2 -> low-high", 0, 0],
-        ["low-medium 2 -> medium-low", 0, 0],
-        ["low-medium 2 -> medium-medium", 0, 0],
-        ["low-medium 2 -> medium-medium 2", 0, 0],
-        ["low-medium 2 -> high-high", 0, 0],
-        ["low-medium 2 -> high-high 2", 0, 0],
-        ["low-medium 2 -> high-high 3", 0, 0],
-        ["low-medium 2 -> high-high 4", 0, 0],
-        ["low-high -> low-low", 0, 0],
-        ["low-high -> low-medium", 0, 0],
-        ["low-high -> low-medium 2", 0, 0],
-        ["low-high -> low-high", 0, 0],
-        ["low-high -> medium-low", 0, 0],
-        ["low-high -> medium-medium", 0, 0],
-        ["low-high -> medium-medium 2", 0, 0],
-        ["low-high -> high-high", 0, 0],
-        ["low-high -> high-high 2", 0, 0],
-        ["low-high -> high-high 3", 0, 0],
-        ["low-high -> high-high 4", 0, 0],
-        ["medium-low -> low-low", 0, 0],
-        ["medium-low -> low-medium", 0, 0],
-        ["medium-low -> low-medium 2", 0, 0],
-        ["medium-low -> low-high", 0, 0],
-        ["medium-low -> medium-low", 0, 0],
-        ["medium-low -> medium-medium", 0, 0],
-        ["medium-low -> medium-medium 2", 0, 0],
-        ["medium-low -> high-high", 0, 0],
-        ["medium-low -> high-high 2", 0, 0],
-        ["medium-low -> high-high 3", 0, 0],
-        ["medium-low -> high-high 4", 0, 0],
-        ["medium-medium -> low-low", 0, 0],
-        ["medium-medium -> low-medium", 0, 0],
-        ["medium-medium -> low-medium 2", 0, 0],
-        ["medium-medium -> low-high", 0, 0],
-        ["medium-medium -> medium-low", 0, 0],
-        ["medium-medium -> medium-medium", 0, 0],
-        ["medium-medium -> medium-medium 2", 0, 0],
-        ["medium-medium -> high-high", 0, 0],
-        ["medium-medium -> high-high 2", 0, 0],
-        ["medium-medium -> high-high 3", 0, 0],
-        ["medium-medium -> high-high 4", 0, 0],
-        ["medium-medium 2 -> low-low", 0, 0],
-        ["medium-medium 2 -> low-medium", 0, 0],
-        ["medium-medium 2 -> low-medium 2", 0, 0],
-        ["medium-medium 2 -> low-high", 0, 0],
-        ["medium-medium 2 -> medium-low", 0, 0],
-        ["medium-medium 2 -> medium-medium", 0, 0],
-        ["medium-medium 2 -> medium-medium 2", 0, 0],
-        ["medium-medium 2 -> high-high", 0, 0],
-        ["medium-medium 2 -> high-high 2", 0, 0],
-        ["medium-medium 2 -> high-high 3", 0, 0],
-        ["medium-medium 2 -> high-high 4", 0, 0],
-        ["high-high -> low-low", 0, 0],
-        ["high-high -> low-medium", 0, 0],
-        ["high-high -> low-medium 2", 0, 0],
-        ["high-high -> low-high", 0, 0],
-        ["high-high -> medium-low", 0, 0],
-        ["high-high -> medium-medium", 0, 0],
-        ["high-high -> medium-medium 2", 0, 0],
-        ["high-high -> high-high", 0, 0],
-        ["high-high -> high-high 2", 0, 0],
-        ["high-high -> high-high 3", 0, 0],
-        ["high-high -> high-high 4", 0, 0],
-        ["high-high 2 -> low-low", 0, 0],
-        ["high-high 2 -> low-medium", 0, 0],
-        ["high-high 2 -> low-medium 2", 0, 0],
-        ["high-high 2 -> low-high", 0, 0],
-        ["high-high 2 -> medium-low", 0, 0],
-        ["high-high 2 -> medium-medium", 0, 0],
-        ["high-high 2 -> medium-medium 2", 0, 0],
-        ["high-high 2 -> high-high", 0, 0],
-        ["high-high 2 -> high-high 2", 0, 0],
-        ["high-high 2 -> high-high 3", 0, 0],
-        ["high-high 2 -> high-high 4", 0, 0],
-        ["high-high 3 -> low-low", 0, 0],
-        ["high-high 3 -> low-medium", 0, 0],
-        ["high-high 3 -> low-medium 2", 0, 0],
-        ["high-high 3 -> low-high", 0, 0],
-        ["high-high 3 -> medium-low", 0, 0],
-        ["high-high 3 -> medium-medium", 0, 0],
-        ["high-high 3 -> medium-medium 2", 0, 0],
-        ["high-high 3 -> high-high", 0, 0],
-        ["high-high 3 -> high-high 2", 0, 0],
-        ["high-high 3 -> high-high 3", 0, 0],
-        ["high-high 3 -> high-high 4", 0, 0],
-        ["high-high 4 -> low-low", 0, 0],
-        ["high-high 4 -> low-medium", 0, 0],
-        ["high-high 4 -> low-medium 2", 0, 0],
-        ["high-high 4 -> low-high", 0, 0],
-        ["high-high 4 -> medium-low", 0, 0],
-        ["high-high 4 -> medium-medium", 0, 0],
-        ["high-high 4 -> medium-medium 2", 0, 0],
-        ["high-high 4 -> high-high", 0, 0],
-        ["high-high 4 -> high-high 2", 0, 0],
-        ["high-high 4 -> high-high 3", 0, 0],
-        ["high-high 4 -> high-high 4", 0, 0]
-    ];
-    var adjacencySubtotal = 0,
+	var year = global.year,
+        data,
+        cols,
+        rows,
+        dataPointArea,
+        heterogeneityGroup = {},// Group ID,Count,proportion,percent of watershed
+        distinctCount = 0,
+        adjSubtotal = {
+            0: 0,
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            9: 0,
+            10: 0
+        },
+        adjacencyGroup = {},
+        adjacencySubtotal = {1:0,2:0,3:0},
         nativePerennialsArea = 0, nativePerennialsPercent,
         nonNativePerennialsArea = 0, nonNativePerennialsPercent,
         streamBufferArea = 0, streamBufferPercent,
         wetlandArea = 0, wetlandPercent,
         strategicWetlandArea = {1:0, 2:0, 3:0}, strategicWetlandPercent,
-        forestArea = 0, forestPercent;
-
-    var nativePNindex = 0, nonNativePNindex = 0, pGindex = 0, streamNindex = 0,
+        forestArea = 0, forestPercent,
+        nativePNindex = 0, nonNativePNindex = 0, pGindex = 0, streamNindex = 0,
         streamGindex = 0, wetlandNindex = 0, wetlandGindex = 0, forestGindex = 0;
+
+    this.init = function() {
+        for(var i=1; i<4; i++) {
+            heterogeneityGroup[i] = [
+                ["Low Spatial Low Temporal", 0, 0, 0],
+                ["Low Spatial Medium Temporal", 0, 0, 0], 		// 1
+                ["Low Spatial Medium Temporal 2", 0, 0, 0],
+                ["Low Spatial High Temporal", 0, 0, 0],		// 3
+                ["Medium Spatial Low Temporal", 0, 0, 0],
+                ["Medium Spatial Medium Temporal", 0, 0, 0],	// 5
+                ["Medium Spatial Medium Temporal 2", 0, 0, 0],
+                ["High Spatial High Temporal", 0, 0, 0],		// 7
+                ["High Spatial High Temporal 2", 0, 0, 0],
+                ["High Spatial High Temporal 3", 0, 0, 0], 	// 9
+                ["High Spatial High Temporal 4", 0, 0, 0]
+            ];
+            adjacencyGroup[i] = [
+                ["low-low -> low-low", 0, 0],
+                ["low-low -> low-medium", 0, 0],
+                ["low-low -> low-medium 2", 0, 0],
+                ["low-low -> low-high", 0, 0],
+                ["low-low -> medium-low", 0, 0],
+                ["low-low -> medium-medium", 0, 0],
+                ["low-low -> medium-medium 2", 0, 0],
+                ["low-low -> high-high", 0, 0],
+                ["low-low -> high-high 2", 0, 0],
+                ["low-low -> high-high 3", 0, 0],
+                ["low-low -> high-high 4", 0, 0],
+                ["low-medium -> low-low", 0, 0],
+                ["low-medium -> low-medium", 0, 0],
+                ["low-medium -> low-medium 2", 0, 0],
+                ["low-medium -> low-high", 0, 0],
+                ["low-medium -> medium-low", 0, 0],
+                ["low-medium -> medium-medium", 0, 0],
+                ["low-medium -> medium-medium 2", 0, 0],
+                ["low-medium -> high-high", 0, 0],
+                ["low-medium -> high-high 2", 0, 0],
+                ["low-medium -> high-high 3", 0, 0],
+                ["low-medium -> high-high 4", 0, 0],
+                ["low-medium 2 -> low-low", 0, 0],
+                ["low-medium 2 -> low-medium", 0, 0],
+                ["low-medium 2 -> low-medium 2", 0, 0],
+                ["low-medium 2 -> low-high", 0, 0],
+                ["low-medium 2 -> medium-low", 0, 0],
+                ["low-medium 2 -> medium-medium", 0, 0],
+                ["low-medium 2 -> medium-medium 2", 0, 0],
+                ["low-medium 2 -> high-high", 0, 0],
+                ["low-medium 2 -> high-high 2", 0, 0],
+                ["low-medium 2 -> high-high 3", 0, 0],
+                ["low-medium 2 -> high-high 4", 0, 0],
+                ["low-high -> low-low", 0, 0],
+                ["low-high -> low-medium", 0, 0],
+                ["low-high -> low-medium 2", 0, 0],
+                ["low-high -> low-high", 0, 0],
+                ["low-high -> medium-low", 0, 0],
+                ["low-high -> medium-medium", 0, 0],
+                ["low-high -> medium-medium 2", 0, 0],
+                ["low-high -> high-high", 0, 0],
+                ["low-high -> high-high 2", 0, 0],
+                ["low-high -> high-high 3", 0, 0],
+                ["low-high -> high-high 4", 0, 0],
+                ["medium-low -> low-low", 0, 0],
+                ["medium-low -> low-medium", 0, 0],
+                ["medium-low -> low-medium 2", 0, 0],
+                ["medium-low -> low-high", 0, 0],
+                ["medium-low -> medium-low", 0, 0],
+                ["medium-low -> medium-medium", 0, 0],
+                ["medium-low -> medium-medium 2", 0, 0],
+                ["medium-low -> high-high", 0, 0],
+                ["medium-low -> high-high 2", 0, 0],
+                ["medium-low -> high-high 3", 0, 0],
+                ["medium-low -> high-high 4", 0, 0],
+                ["medium-medium -> low-low", 0, 0],
+                ["medium-medium -> low-medium", 0, 0],
+                ["medium-medium -> low-medium 2", 0, 0],
+                ["medium-medium -> low-high", 0, 0],
+                ["medium-medium -> medium-low", 0, 0],
+                ["medium-medium -> medium-medium", 0, 0],
+                ["medium-medium -> medium-medium 2", 0, 0],
+                ["medium-medium -> high-high", 0, 0],
+                ["medium-medium -> high-high 2", 0, 0],
+                ["medium-medium -> high-high 3", 0, 0],
+                ["medium-medium -> high-high 4", 0, 0],
+                ["medium-medium 2 -> low-low", 0, 0],
+                ["medium-medium 2 -> low-medium", 0, 0],
+                ["medium-medium 2 -> low-medium 2", 0, 0],
+                ["medium-medium 2 -> low-high", 0, 0],
+                ["medium-medium 2 -> medium-low", 0, 0],
+                ["medium-medium 2 -> medium-medium", 0, 0],
+                ["medium-medium 2 -> medium-medium 2", 0, 0],
+                ["medium-medium 2 -> high-high", 0, 0],
+                ["medium-medium 2 -> high-high 2", 0, 0],
+                ["medium-medium 2 -> high-high 3", 0, 0],
+                ["medium-medium 2 -> high-high 4", 0, 0],
+                ["high-high -> low-low", 0, 0],
+                ["high-high -> low-medium", 0, 0],
+                ["high-high -> low-medium 2", 0, 0],
+                ["high-high -> low-high", 0, 0],
+                ["high-high -> medium-low", 0, 0],
+                ["high-high -> medium-medium", 0, 0],
+                ["high-high -> medium-medium 2", 0, 0],
+                ["high-high -> high-high", 0, 0],
+                ["high-high -> high-high 2", 0, 0],
+                ["high-high -> high-high 3", 0, 0],
+                ["high-high -> high-high 4", 0, 0],
+                ["high-high 2 -> low-low", 0, 0],
+                ["high-high 2 -> low-medium", 0, 0],
+                ["high-high 2 -> low-medium 2", 0, 0],
+                ["high-high 2 -> low-high", 0, 0],
+                ["high-high 2 -> medium-low", 0, 0],
+                ["high-high 2 -> medium-medium", 0, 0],
+                ["high-high 2 -> medium-medium 2", 0, 0],
+                ["high-high 2 -> high-high", 0, 0],
+                ["high-high 2 -> high-high 2", 0, 0],
+                ["high-high 2 -> high-high 3", 0, 0],
+                ["high-high 2 -> high-high 4", 0, 0],
+                ["high-high 3 -> low-low", 0, 0],
+                ["high-high 3 -> low-medium", 0, 0],
+                ["high-high 3 -> low-medium 2", 0, 0],
+                ["high-high 3 -> low-high", 0, 0],
+                ["high-high 3 -> medium-low", 0, 0],
+                ["high-high 3 -> medium-medium", 0, 0],
+                ["high-high 3 -> medium-medium 2", 0, 0],
+                ["high-high 3 -> high-high", 0, 0],
+                ["high-high 3 -> high-high 2", 0, 0],
+                ["high-high 3 -> high-high 3", 0, 0],
+                ["high-high 3 -> high-high 4", 0, 0],
+                ["high-high 4 -> low-low", 0, 0],
+                ["high-high 4 -> low-medium", 0, 0],
+                ["high-high 4 -> low-medium 2", 0, 0],
+                ["high-high 4 -> low-high", 0, 0],
+                ["high-high 4 -> medium-low", 0, 0],
+                ["high-high 4 -> medium-medium", 0, 0],
+                ["high-high 4 -> medium-medium 2", 0, 0],
+                ["high-high 4 -> high-high", 0, 0],
+                ["high-high 4 -> high-high 2", 0, 0],
+                ["high-high 4 -> high-high 3", 0, 0],
+                ["high-high 4 -> high-high 4", 0, 0]
+            ];
+
+        }
+        console.log(heterogeneityGroup[year]);
+    };
 
     this.update = function (i) {
         setHeterogeneityGroup(i);
@@ -986,7 +993,7 @@ var Biodiversity = function () {
     };
     var x = 0;
     this.updateAdj = function (i) {
-        if (x < heterogeneityGroup.length) {
+        if (x < heterogeneityGroup[year].length) {
             setHeterogeneityGroupProportions(x);
             setHeterogeneityGroupDistinctCount(x);
         }
@@ -1005,16 +1012,16 @@ var Biodiversity = function () {
         //console.log("Adjacency Subtotal: " + adjacencySubtotal);
         //console.log(adjacencyGroup);
         var x = 0, y = 0;
-        for (var i = 0; i < heterogeneityGroup.length; i++) {
+        for (var i = 0; i < heterogeneityGroup[year].length; i++) {
             for (var j = 0; j < 11; j++) {
-                if (adjacencyGroup[y][2] != 0 && heterogeneityGroup[i][2] != 0) {
-                    var product1 = heterogeneityGroup[i][2] * adjacencyGroup[y][2];
-                    var product2 = Math.log(heterogeneityGroup[i][2] * adjacencyGroup[y][2]);
+                if (adjacencyGroup[year][y][2] != 0 && heterogeneityGroup[year][i][2] != 0) {
+                    var product1 = heterogeneityGroup[year][i][2] * adjacencyGroup[year][y][2];
+                    var product2 = Math.log(heterogeneityGroup[year][i][2] * adjacencyGroup[year][y][2]);
 
-                    //console.log(product2, "Het: " + heterogeneityGroup[i][2], "Adj: " + adjacencyGroup[j][2]);
-                    x += adjacencyGroup[y][2];
+                    //console.log(product2, "Het: " + heterogeneityGroup[i][2], "Adj: " + adjacencyGroup[year][j][2]);
+                    x += adjacencyGroup[year][y][2];
                     contagion += (product1 * product2);
-//                    console.log("Heterogeneity: " + heterogeneityGroup[i][2], "Adj: " + adjacencyGroup[y][2]);
+//                    console.log("Heterogeneity: " + heterogeneityGroup[i][2], "Adj: " + adjacencyGroup[year][y][2]);
 //                    console.log("Product1: " + product1, "Product2: " + product2);
 //                    console.log("Numerator: " + (product1 * product2));
                     //console.log(j);
@@ -1050,11 +1057,11 @@ var Biodiversity = function () {
         // dataset[x]["Year"+year] = setGameIndex();
         // dataset[x]["Year"+year] = setNativeIndex();
 
-        for(var object in adjacencyGroup) {
-            console.log(adjacencyGroup[object]);
+        for(var object in adjacencyGroup[year]) {
+            console.log(adjacencyGroup[year][object]);
         }
-//        console.log('Group Adjencies [title, count, proportion]: ', adjacencyGroup);
-        console.log('Heterogeneity Groups [title, count, proportion, !unused!]: ', heterogeneityGroup);
+//        console.log('Group Adjencies [title, count, proportion]: ', adjacencyGroup[year]);
+        console.log('Heterogeneity Groups [title, count, proportion, !unused!]: ', heterogeneityGroup[year]);
         console.log("//////////////////// BIO INDICES END ///////////////////")
         dealloc();
     };
@@ -1208,62 +1215,63 @@ var Biodiversity = function () {
         // Calculates for each point in the watershed (attached to main loop)
         // Heterogeneity group setter
         // Heterogeneity group count setter
-        switch (global.data[year].baselandcover.data[j]) {
+        var val = global.data[year].baselandcover.data[j];
+        switch (parseInt(global.data[year].baselandcover.data[j])) {
             case 1:
                 global.data[year].group.data[j] = 0;        // Set Hetero Group in pewiData to identified group
-                heterogeneityGroup[0][1]++; // Add 1 to count for Low Spatial Low Temporal
+                heterogeneityGroup[year][0][1]++; // Add 1 to count for Low Spatial Low Temporal
                 break;
             case 2:
                 global.data[year].group.data[j] = 4;
-                heterogeneityGroup[4][1]++;
+                heterogeneityGroup[year][4][1]++;
                 break;
             case 3:
                 global.data[year].group.data[j] = 0;
-                heterogeneityGroup[0][1]++;
+                heterogeneityGroup[year][0][1]++;
                 break;
             case 4:
                 global.data[year].group.data[j] = 4;
-                heterogeneityGroup[4][1]++;
+                heterogeneityGroup[year][4][1]++;
                 break;
             case 5:
                 global.data[year].group.data[j] = 1;
-                heterogeneityGroup[1][1]++;
+                heterogeneityGroup[year][1][1]++;
                 break;
             case 6:
                 global.data[year].group.data[j] = 0;
-                heterogeneityGroup[0][1]++;
+                heterogeneityGroup[year][0][1]++;
                 break;
             case 7:
                 global.data[year].group.data[j] = 5;
-                heterogeneityGroup[5][1]++;
+                heterogeneityGroup[year][5][1]++;
                 break;
             case 8:
                 global.data[year].group.data[j] = 2;
-                heterogeneityGroup[2][1]++;
+                heterogeneityGroup[year][2][1]++;
                 break;
             case 9:
                 global.data[year].group.data[j] = 7;
-                heterogeneityGroup[7][1]++;
+                heterogeneityGroup[year][7][1]++;
                 break;
             case 10:
                 global.data[year].group.data[j] = 8;
-                heterogeneityGroup[8][1]++;
+                heterogeneityGroup[year][8][1]++;
                 break;
             case 11:
                 global.data[year].group.data[j] = 6;
-                heterogeneityGroup[6][1]++;
+                heterogeneityGroup[year][6][1]++;
                 break;
             case 12:
                 global.data[year].group.data[j] = 2;
-                heterogeneityGroup[2][1]++;
+                heterogeneityGroup[year][2][1]++;
                 break;
             case 13:
                 global.data[year].group.data[j] = 3;
-                heterogeneityGroup[3][1]++;
+                heterogeneityGroup[year][3][1]++;
                 break;
             case 14:
                 global.data[year].group.data[j] = 9;
-                heterogeneityGroup[9][1]++;
+                heterogeneityGroup[year][9][1]++;
                 break;
             case 15:
                 global.data[year].group.data[j] = 10;
@@ -1274,12 +1282,12 @@ var Biodiversity = function () {
         // Calculates for each hetero group (attached to secondary loop)
         // Heterogeneity group proportion setter
         //console.log(heterogeneityGroup[i][1], watershedArea);
-        heterogeneityGroup[i][2] = heterogeneityGroup[i][1] / dataPointArea.length;
+        heterogeneityGroup[year][i][2] = heterogeneityGroup[year][i][1] / dataPointArea.length;
     }
 
     function setHeterogeneityGroupDistinctCount(i) {
         // Calculates for each hetero group (attached to secondary loop)
-        if (heterogeneityGroup[i][1] > 0)
+        if (heterogeneityGroup[year][i][1] > 0)
             distinctCount++;
     }
 
@@ -1292,39 +1300,39 @@ var Biodiversity = function () {
                 //console.log(global.data[year].group.data[i-(cols+1)]);
                 //console.log(((global.data[year].group.data[i]*10) + global.data[year].group.data[i-1]));
 
-                adjacencyGroup[((data[i] * 11) + data[i - (cols + 1)])][1]++;
+                adjacencyGroup[year][((data[i] * 11) + data[i - (cols + 1)])][1]++;
                 adjSubtotal[data[i - (cols + 1)]]++;
 
-//            console.assert(data[i] == undefined, adjacencyGroup);
+//            console.assert(data[i] == undefined, adjacencyGroup[year]);
             }
             //global.data[year].group.data[i-(cols)] != undefined && parseInt(global.data[year].group.data[i-(cols)]) >= 0
             if (i > cols + 1 && data[i - (cols)] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i - (cols)])][1]++;
+                adjacencyGroup[year][((data[i] * 11) + data[i - (cols)])][1]++;
                 adjSubtotal[data[i - (cols)]]++;
             }
             if (i > cols && data[i - (cols - 1)] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i - (cols - 1)])][1]++;
+                adjacencyGroup[year][((data[i] * 11) + data[i - (cols - 1)])][1]++;
                 adjSubtotal[data[i - (cols - 1)]]++;
             }
             if (i > 1 && data[i - 1] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i - 1])][1]++;
+                adjacencyGroup[year][((data[i] * 11) + data[i - 1])][1]++;
                 adjSubtotal[data[i - 1]]++;
             }
             if (data[i + 1] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i + 1])][1]++;
+                adjacencyGroup[year][((data[i] * 11) + data[i + 1])][1]++;
                 adjSubtotal[data[i + 1]]++;
             }
             if (data[i + (cols - 1)] != undefined) {
                 //console.log(global.data[year].group.data[i+(cols-1)]);
-                adjacencyGroup[((data[i] * 11) + data[i + (cols - 1)])][1]++;
+                adjacencyGroup[year][((data[i] * 11) + data[i + (cols - 1)])][1]++;
                 adjSubtotal[data[i + (cols - 1)]]++;
             }
             if (data[i + (cols)] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i + (cols)])][1]++;
+                adjacencyGroup[year][((data[i] * 11) + data[i + (cols)])][1]++;
                 adjSubtotal[data[i + (cols)]]++;
             }
             if (data[i + (cols + 1)] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i + (cols + 1)])][1]++;
+                adjacencyGroup[year][((data[i] * 11) + data[i + (cols + 1)])][1]++;
                 adjSubtotal[data[i + (cols + 1)]]++;
             }
         } catch (error) {
@@ -1334,7 +1342,7 @@ var Biodiversity = function () {
 
     function setAdjacencyGroupCount(i) {
         // Calculates for each point in the watershed
-        adjacencyGroup[global.data[year].group.data[i]][1]++;
+        adjacencyGroup[year][global.data[year].group.data[i]][1]++;
     }
 
     function setAdjacencyGroupSubtotal(i) {
@@ -1370,7 +1378,7 @@ var Biodiversity = function () {
         for (var i = 0; i < 11; i++) {
             for (var j = 0; j < 11; j++) {
                 if (adjSubtotal[i] != 0) {
-                    adjacencyGroup[x][2] = adjacencyGroup[x][1] / adjSubtotal[i];
+                    adjacencyGroup[year][x][2] = adjacencyGroup[year][x][1] / adjSubtotal[i];
                 }
                 x++;
             }
