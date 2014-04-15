@@ -15,19 +15,26 @@ var ModalView = function (options) {
     var close_button_url = "images/icons/navigation/close_mini_dark-gray.svg",
         $container, $body, $addons = '', interval, thisview = this;
 
-    this.display = function () {
+    this.display = function (opts) {
 	    $("#main").append('<div id="popup-container" class="popup-window removable-displays-container"></div>');
 	    $("#popup-container").width(this.width)/*.height(this.height)*/.css("max-height", this.height).css("overflow", this.scrollable);
 	    $container = $("#popup-container");
 	    $container.append('<div id="popup-container-head" class="popup-window-head"></div>');
+
+        this.title = (opts !== undefined && opts.title !== undefined) ? opts.title : this.title;
+
 	    $("#popup-container-head").append("<a>" + this.title + "</a>");
+
 	    $("#popup-container-head").append('<img src="' + close_button_url + '" class="popup-window-close-button" id="popup-container-head-close-button">');
 	    $container.append('<div id="popup-container-body" class="popup-window-body"></div>');
 	    $body = $("#popup-container-body");
+
+        $addons += (opts !== undefined && opts.description !== undefined) ? opts.description : '';
+
 		if($addons !== undefined) {
 			$body.append($addons);
 		}
-		
+
         centerize();
 //        $container.show("slide", {direction: "right"}, 500);
         $container.fadeIn();
@@ -47,17 +54,22 @@ var ModalView = function (options) {
 		$container = $('#popup-container-teaser');
 		$container.append('<div id="popup-container-teaser-body" class="popup-window-teaser-body">' + message + '</div>');
 		$container.append('<img src="' + close_button_url + '" class="popup-window-close-button popup-window-teaser-close-button" id="popup-container-head-close-button">');
-		
-		setTimeout(function() {
-			$container.show('slide', {direction: 'left'}, 200);
-			interval = setInterval(function() { $container.effect('bounce', 'slow') }, 3000);
-		}, 1500);
-		
+
+        if(options.timeout !== undefined) {
+            setTimeout(function() {
+                $container.show('slide', {direction: 'left'}, 200);
+                interval = setInterval(function() { $container.effect('bounce', 'slow') }, 3000);
+            }, 1500);
+        } else {
+            $container.show('slide', {direction: 'left'}, 200);
+            interval = setInterval(function() { $container.effect('bounce', 'slow') }, 3000);
+        }
+
 		$container.click(function() {
 			$container.remove();
 			clearInterval(interval);
 			global.sm.consumeEvent(global.sm.goto.POPUP);
-			thisview.display();
+			thisview.display({title: options.title, description: options.description});
 		});
 		
    	 	$(".popup-window-close-button").click(function () {

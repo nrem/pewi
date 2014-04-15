@@ -19,18 +19,21 @@ var CompatibilityMonster = function() {
         }
     };
     this.windows = function() {
-        return (this.os.toUpperCase().indexOf('WIN') > -1) ? true : false;
+        return (this.os.toUpperCase().indexOf('WIN') > -1);
+    };
+    this.local_downloading = function() {
+        return (this.download_attr || this.blob);
     };
 
     var t = this;
 
     function init() {
-        this.svg = svg();
-        this.file = file();
-        this.filereader = filereader();
-        this.filelist = filelist();
-        this.blob = blob();
-        this.download_attr = download_attr();
+        t.svg = svg();
+        t.file = file();
+        t.filereader = filereader();
+        t.filelist = filelist();
+        t.blob = blob();
+        t.download_attr = download_attr();
     }
 
     function svg() {
@@ -58,4 +61,4 @@ var CompatibilityMonster = function() {
     }
 
     init();
-}
+};
