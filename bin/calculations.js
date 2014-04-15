@@ -1011,6 +1011,15 @@ var Biodiversity = function () {
         //console.log(adjacencyGroup);
         //console.log(heterogeneityGroup);
         setAdjacencyGroupProportion();
+
+        for(var object in adjacencyGroup) {
+            console.log(adjacencyGroup[object]);
+        }
+        console.log("Heterogeneity Group Numbers");
+        for(var thing in heterogeneityGroup) {
+            console.log(heterogeneityGroup[thing]);
+        }
+
         //console.log(heterogeneityGroup);
         //console.log("Adjacency Subtotal: " + adjacencySubtotal);
         //console.log(adjacencyGroup);
@@ -1064,13 +1073,6 @@ var Biodiversity = function () {
         // dataset[x]["Year"+year] = setGameIndex();
         // dataset[x]["Year"+year] = setNativeIndex();
 
-        for(var object in adjacencyGroup) {
-            console.log(adjacencyGroup[object]);
-        }
-        console.log("Heterogeneity Group Numbers");
-        for(var thing in heterogeneityGroup) {
-            console.log(heterogeneityGroup[thing]);
-        }
 //        console.log('Group Adjencies [title, count, proportion]: ', adjacencyGroup);
 //        console.log('Heterogeneity Groups [title, count, proportion, !unused!]: ', heterogeneityGroup);
         console.log("//////////////////// BIO INDICES END ///////////////////")
