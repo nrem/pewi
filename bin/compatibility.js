@@ -22,7 +22,7 @@ var CompatibilityMonster = function() {
         return (this.os.toUpperCase().indexOf('WIN') > -1);
     };
     this.local_downloading = function() {
-        return (this.download_attr || this.blob);
+        return (this.download_attr || (this.blob && this.mssaveblob()));
     };
 
     var t = this;

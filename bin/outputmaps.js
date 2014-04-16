@@ -459,7 +459,6 @@ var Maps = function () {
                         .attr("landcover", function () {
                             return landcovers[options.landcover[i]];
                         });
-
                     //$("#" + i).attr("landcover", "blah");
                 } else {
                     g.append("rect")
