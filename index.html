@@ -25,9 +25,14 @@
     <script src="bin/message.js"></script>
     <script src="bin/hud.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            go();
-        });
+        if(document.documentMode > 8) {
+            $(document).ready(function () {
+                go();
+            });
+        } else {
+            alert("Please turn off compatibility mode and refresh the browser.");
+        }
+
     </script>
 
 </head>
