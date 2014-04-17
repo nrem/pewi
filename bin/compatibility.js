@@ -24,6 +24,15 @@ var CompatibilityMonster = function() {
     this.local_downloading = function() {
         return (this.download_attr || (this.blob && this.mssaveblob()));
     };
+    this.istouchable = function() {
+        return 'ontouchend' in document;
+    };
+    this.enterable = function() {
+        return 'ontouchenter' in document;
+    };
+    this.moveable = function() {
+        return 'ontouchmove' in document;
+    };
 
     var t = this;
 

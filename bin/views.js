@@ -39,7 +39,7 @@ var ModalView = function (options) {
 //        $container.show("slide", {direction: "right"}, 500);
         $container.fadeIn();
 		
-	    $(".popup-window-close-button").click(function () {
+	    $(".popup-window-close-button").bind(global.clickType, function () {
 	        $("#popup-container").remove();
 	        global.sm.consumeEvent("goto-mainevent");
 	    });
@@ -65,14 +65,14 @@ var ModalView = function (options) {
             interval = setInterval(function() { $container.effect('bounce', 'slow') }, 3000);
         }
 
-		$container.click(function() {
+		$container.bind(global.clickType, function() {
 			$container.remove();
 			clearInterval(interval);
 			global.sm.consumeEvent(global.sm.goto.POPUP);
 			thisview.display({title: options.title, description: options.description});
 		});
 		
-   	 	$(".popup-window-close-button").click(function () {
+   	 	$(".popup-window-close-button").bind(global.clickType, function () {
         	$("#popup-container-teaser").remove();
         	// global.sm.consumeEvent("goto-mainevent");
     	});
