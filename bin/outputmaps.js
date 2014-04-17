@@ -458,7 +458,9 @@ var Maps = function () {
                         .style("fill", "url(#pattern" + i + ")")
                         .attr("landcover", function () {
                             return landcovers[options.landcover[i]];
-                        });
+                        })
+                        .attr("row", Math.ceil((i + 1) / 23))
+                        .attr("col", 1 + i % 23);
                     //$("#" + i).attr("landcover", "blah");
                 } else {
                     g.append("rect")
@@ -471,7 +473,9 @@ var Maps = function () {
                         .style("fill", colorsForLandCoverGrid[options.landcover[i]])
                         .attr("landcover", function () {
                             return landcovers[options.landcover[i]];
-                        });
+                        })
+                        .attr("row", Math.ceil((i + 1) / 23))
+                        .attr("col", 1 + i % 23);;
                     global.streamIndices[global.year].push(i);
                 }
             }

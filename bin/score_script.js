@@ -24,24 +24,6 @@ var units = {
     english_to_metric_factor: [0.0254, 0.0272, 0.9072, 0.9072, 0.0024, 1, 0.9072, 1, 0.9072, 0.001, 1, 1, 0.9072, 0.9072, 0.9072, 0.9072]
 };
 
-//var  set = {
-// 	corn: {label: 'Corn Yield', Year1: 0, Year2: 0, Year3: 0},
-// 	soybean: {label: 'Soybean Yield', Year1: 0, Year2: 0, Year3: 0},
-// 	alfalfa: {label: 'Alfalfa Yield', Year1: 0, Year2: 0, Year3: 0},
-// 	hay: {label: 'Hay Yield', Year1: 0, Year2: 0, Year3: 0},
-// 	timber: {label: 'Timber Production', Year1: 0, Year2: 0, Year3: 0},
-// 	cattle: {label: 'Cattle', Year1: 0, Year2: 0, Year3: 0},
-// 	fruitVeggie: {label: 'Mixed Fruit & Vegetable Yield', Year1: 0, Year2: 0, Year3: 0},
-// 	nitrate: {label: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0},
-// 	phosphorus: {label: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0},
-// 	carbon: {label: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0},
-// 	wildlife: {label: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0},
-// 	biodiversity: {label: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0},
-// 	sediment: {label: 'Sediment Delivered / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0},
-// 	erosion: {label: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0},
-// 	herbaceousBioenergy: {label: 'Herbaceous Perennial Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0},
-// 	woodyBioenergy: {label: 'Short-rotation Woody Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0}
-// };
 var Plot = function () {
     //setup plot
     var w = 960,
@@ -306,7 +288,6 @@ var Plot = function () {
                 dataset.forEach(function (e) {
                     legendrectvals.push(e[d.replace(/ /g, '')]);
                 });
-                updateLegend();
                 updateMetrics(MetricStack);
             });
 
