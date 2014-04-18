@@ -172,7 +172,7 @@ function togglePuk(type, coords) {
 //        })/*.mouseout(function(){puck.select("line").remove();})*/;
 
         $(".selectable-pfeature")
-            .click(function () {
+            .bind(global.clickType, function () {
                 var id = $(this).attr("id");
                 console.log(id);
                 displayMiniMap(id);
@@ -414,7 +414,7 @@ function togglePuk(type, coords) {
         });
 
         $(".selectable-feature")
-            .click(function () {
+            .bind(global.clickType, function () {
                 var id = $(this).attr("id");
                 displayPuk(id);
                 $("#rclick-puk-container").hide();
@@ -423,7 +423,7 @@ function togglePuk(type, coords) {
             });
 
         var quickpuk = -1;
-        $("#quick-puk-circle").click(function (e) {
+        $("#quick-puk-circle").bind(global.clickType, function (e) {
             if (e.which == 3) {
                 //$(this).toggleClass("highlighted");
                 var i = $("#quick-puk-circle").index(this);

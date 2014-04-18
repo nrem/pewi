@@ -706,7 +706,7 @@ var Maps = function () {
             .attr("src", "images/icons/navigation/close_mini_light-gray.svg");
         title.append("a");
 
-        $("#" + options.id + "-minimap-container img").click(function () {
+        $("#" + options.id + "-minimap-container img").bind(global.clickType, function () {
             $(this).parent().parent().remove();
             miniMapState[options.id] = false;
             miniMapSlots[options.slot].vacant = true;
