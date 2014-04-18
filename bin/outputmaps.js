@@ -695,7 +695,7 @@ var Maps = function () {
                 break;
             }
         }
-        $("#" + options.id + "-minimap-container").draggable();
+        $("#" + options.id + "-minimap-container").draggable({stack: "#" + options.id + "-minimap-container"});
 
         var title = container.append("div");
         title.append("img")
