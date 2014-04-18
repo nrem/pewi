@@ -414,11 +414,48 @@ var Maps = function () {
         var svg = d3.select(options.parent)
                 .append("svg")
                 .attr("id", "watershed1")
-                .attr("width", options.width)
-                .attr("height", options.height + 20),
+                .attr("width", options.width + options.rectWidth)
+                .attr("height", options.height + options.rectHeight),
             border = false;
 
         centerElement($(window), $("#watershed1"));
+
+        var opts = {};
+        var background = new Background();
+        opts.parent = "#watershed1";
+        opts.scale = '';
+        opts.x = 0;
+        opts.y = 0;
+        opts.width = 100;
+        opts.height = 100;
+        opts.file = 'images/backgrounds/Animation_Watershed_Border-002.svg';
+        opts.transform = '';
+//        background.draw(opts);
+
+        var filter = svg.append('svg:defs')
+            .append('svg:filter')
+            .attr('id', 'f1')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', '110%')
+            .attr('height', '110%');
+
+        filter.append('svg:feOffset')
+            .attr('result', 'offOut')
+            .attr('in', 'SourceAlpha')
+            .attr('dx', 7)
+            .attr('dy', 5);
+
+        filter.append('svg:feGaussianBlur')
+            .attr('result', 'blurOut')
+            .attr('in', 'offOut')
+            .attr('stdDeviation', 7);
+
+        filter.append('svg:feBlend')
+            .attr('in', 'SourceGraphic')
+            .attr('in2', 'blurOut')
+            .attr('mode', 'normal');
+
         var w = options.rectWidth, h = options.rectHeight;
         initCalcs();
         for (var i = 0; i < options.landcover.length; i++) {
@@ -451,8 +488,8 @@ var Maps = function () {
                     g.append("rect")
                         .attr("id", i)
                         .attr("class", "watershed-rect")
-                        .attr("x", options.x[i] * w)
-                        .attr("y", options.y[i] * h)
+                        .attr("x", options.x[i] * w - options.rectWidth)
+                        .attr("y", options.y[i] * h - options.rectHeight)
                         .attr("width", w)
                         .attr("height", h)
                         .style("fill", "url(#pattern" + i + ")")
@@ -460,14 +497,15 @@ var Maps = function () {
                             return landcovers[options.landcover[i]];
                         })
                         .attr("row", Math.ceil((i + 1) / 23))
-                        .attr("col", 1 + i % 23);
+                        .attr("col", 1 + i % 23)
+                        .attr('filter', 'url(#f1)');
                     //$("#" + i).attr("landcover", "blah");
                 } else {
                     g.append("rect")
                         .attr("id", i)
                         .attr("class", "watershed-rect")
-                        .attr("x", options.x[i] * w)
-                        .attr("y", options.y[i] * h)
+                        .attr("x", options.x[i] * w - options.rectWidth)
+                        .attr("y", options.y[i] * h - options.rectHeight)
                         .attr("width", w)
                         .attr("height", h)
                         .style("fill", colorsForLandCoverGrid[options.landcover[i]])
@@ -475,15 +513,14 @@ var Maps = function () {
                             return landcovers[options.landcover[i]];
                         })
                         .attr("row", Math.ceil((i + 1) / 23))
-                        .attr("col", 1 + i % 23);;
+                        .attr("col", 1 + i % 23)
+                        .attr('filter', 'url(#f1)');
                     global.streamIndices[global.year].push(i);
                 }
             }
         }
-        var opts = {
-            parent: "#watershed1",
-            scale: Math.round(SCREEN.height / 36 / 2 - 1) / 13
-        };
+        opts.scale = options.scale;
+
         global.stream = new Stream();
         global.stream.draw(opts);
 
@@ -795,12 +832,12 @@ var Maps = function () {
                 gradient.append("svg:stop")
                     .attr("offset", "0%")
                     .style("stop-color", colors[0])
-                    .style("stop-opacity", "90");
+                    .style("stop-opacity", "1");
 
                 gradient.append("svg:stop")
                     .attr("offset", "100%")
                     .style("stop-color", colors[1])
-                    .style("stop-opacity", "90");
+                    .style("stop-opacity", "1");
 
                 keyGroup.append("svg:path")
                     .attr("d", function () {

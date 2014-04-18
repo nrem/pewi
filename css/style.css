@@ -101,6 +101,7 @@ input[type="file"] {
 .watershed-rect {
     stroke-width: 0.1;
     stroke: #000;
+    box-shadow: 0 1em 2em #333;
 }
 
 @media only all and (max-height: 499px) {
