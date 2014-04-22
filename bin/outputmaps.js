@@ -279,6 +279,15 @@ var OutputMap = function (options) {
 
     this.draw = function (years, label) {
         for(var year = 1; year<=years; year++) {
+//            d3.select('#popup-container-body')
+//                .append('div')
+//                .attr('class', 'year-button')
+//                .append('a')
+//                .text('Year ' + year)
+//                .on('mouseover', function() {
+//
+//                });
+
             nitrates = d3.select("#nitrate-output-map-" + year)
                 .append("svg")
                 .attr("id", "nitrate-svg")
@@ -353,7 +362,6 @@ var OutputMap = function (options) {
                     return "Year " + year;
                 });
         }
-
     }
 
     $("#nitrate-svg rect").hover(function () {
