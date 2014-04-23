@@ -476,6 +476,7 @@ var Maps = function () {
                 setSubwatershedArea(i, true);
                 setSoiltypeFactors(i);
                 setTopographyFactors(i);
+                var rect;
                 if (options.landcover[i] != 0) {
                     var g = svg.append("g");
 
@@ -493,7 +494,7 @@ var Maps = function () {
                         .attr("width", w)
                         .attr("height", h);
 
-                    g.append("rect")
+                    rect = g.append("rect")
                         .attr("id", i)
                         .attr("class", "watershed-rect")
                         .attr("x", options.x[i] * w - options.rectWidth)
@@ -509,7 +510,7 @@ var Maps = function () {
                         .attr('filter', 'url(#f1)');
                     //$("#" + i).attr("landcover", "blah");
                 } else {
-                    g.append("rect")
+                    rect = g.append("rect")
                         .attr("id", i)
                         .attr("class", "watershed-rect")
                         .attr("x", options.x[i] * w - options.rectWidth)
@@ -525,6 +526,32 @@ var Maps = function () {
                         .attr('filter', 'url(#f1)');
                     global.streamIndices[global.year].push(i);
                 }
+                var timeout;
+                rect.on('mouseover', function() {
+                    clearTimeout(timeout);
+                    d3.selectAll('#watershed-rect-text').remove();
+
+                    var $this = d3.select(this),
+                        x = parseInt($this.attr('x')),
+                        y = parseInt($this.attr('y')),
+                        col = $this.attr('col'),
+                        row = $this.attr('row');
+                    timeout = setTimeout(function() {
+                        svg.append('text')
+                            .text(col + ', ' + row)
+                            .attr('x', x + options.rectWidth + 5)
+                            .attr('y', y + 18)
+                            .style('font-size', 15)
+                            .style('fill', 'white')
+                            .style('font-family', 'arial')
+                            .style('text-shadow', '0 0 5px #000')
+                            .attr('text-anchor', 'start')
+                            .attr('id', 'watershed-rect-text');
+                    }, 750);
+                }).on('mouseleave', function() {
+                    clearTimeout(timeout);
+                    d3.selectAll('#watershed-rect-text').remove();
+                });
             }
         }
         opts.scale = options.scale;
