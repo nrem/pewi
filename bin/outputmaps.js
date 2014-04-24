@@ -868,7 +868,7 @@ var Maps = function () {
                 break;
             }
         }
-        $("#" + options.id + "-minimap-container").draggable({stack: "#" + options.id + "-minimap-container"});
+        $("#" + options.id + "-minimap-container").draggable({stack: ".physical-feature-map", scroll: false});
 
         var title = container.append("div");
         title.append("img")
@@ -949,7 +949,7 @@ var Maps = function () {
 
         function appendRectHelper(datapoint, colors) {
             if (isNaN(columnData[i]) || isNaN(rowData[i])) return;
-            svg.append("rect")
+            var rect = svg.append("rect")
                 .attr("x", function () {
                     return columnData[i] * options.width + 100;
                 })
@@ -962,7 +962,31 @@ var Maps = function () {
                     return colors[datapoint];
                 })
                 .attr("id", options.id + "-rect-" + i)
-                .attr("class", "minimap-rect");
+                .attr("class", "minimap-rect")
+                .attr("row", Math.ceil((i + 1) / 23))
+                .attr("col", 1 + i % 23);
+
+            rect.on('mouseover', function() {
+                d3.selectAll('#pfeature-rect-text').remove();
+
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    col = $this.attr('col'),
+                    row = $this.attr('row');
+                svg.append('text')
+                    .text(col + ', ' + row)
+                    .attr('x', x + options.width + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'pfeature-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#pfeature-rect-text').remove();
+            });
         }
 
         function buildKey(id, colors, type) {
