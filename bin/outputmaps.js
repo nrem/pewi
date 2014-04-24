@@ -22,10 +22,10 @@ var OutputMap = function (options) {
         risk: ["#fed98e", "#f4b350", "#fe9929", "#d95f0e", "#993404"]
     };
 
-    function drawNitrateCell(i, year) {
+    function drawNitrateCell(i, year, interactive) {
         if(global.watershedPercent[year].length == 0) return;
         var wp = global.watershedPercent[year];
-        nitrates.append("rect")
+        var r =nitrates.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
             })
@@ -43,14 +43,17 @@ var OutputMap = function (options) {
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
             .style("stroke", "#000")
-            .on('mouseover', function() {
+            .attr('year', year);
+
+        if(interactive) {
+            r.on('mouseover', function() {
                 d3.selectAll('#nitrate-rect-text').remove();
 
                 var $this = d3.select(this),
                     x = parseInt($this.attr('x')),
                     y = parseInt($this.attr('y')),
                     id = parseFloat($this.attr('id'));
-                nitrates.append('text')
+                d3.select('#nitrate-svg-' + d3.select(this).attr('year')).append('text')
                     .text(Math.round(id * 1000) / 1000)
                     .attr('x', x + cellWidth + 5)
                     .attr('y', y + 18)
@@ -63,6 +66,8 @@ var OutputMap = function (options) {
             }).on('mouseleave', function() {
                 d3.selectAll('#nitrate-rect-text').remove();
             });
+        }
+
 
         function retColor(i) {
             if (basedata[i] === 0) return "#999";
@@ -76,10 +81,10 @@ var OutputMap = function (options) {
         }
     }
 
-    function drawErosionCell(i, year) {
+    function drawErosionCell(i, year, interactive) {
         if(global.grossErosionSeverity[year].length == 0) return;
         var grossErosionData = global.grossErosionSeverity[year];
-        erosion.append("rect")
+        var r = erosion.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
             })
@@ -97,14 +102,17 @@ var OutputMap = function (options) {
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
             .style("stroke", "#000")
-            .on('mouseover', function() {
+            .attr('year', year);
+
+        if(interactive) {
+            r.on('mouseover', function() {
                 d3.selectAll('#erosion-rect-text').remove();
 
                 var $this = d3.select(this),
                     x = parseInt($this.attr('x')),
                     y = parseInt($this.attr('y')),
                     id = parseFloat($this.attr('id'));
-                erosion.append('text')
+                d3.select('#erosion-svg-' + d3.select(this).attr('year')).append('text')
                     .text(Math.round(id * 1000) / 1000)
                     .attr('x', x + cellWidth + 5)
                     .attr('y', y + 18)
@@ -117,16 +125,18 @@ var OutputMap = function (options) {
             }).on('mouseleave', function() {
                 d3.selectAll('#erosion-rect-text').remove();
             });
+        }
+
 
         function retColor(i) {
             return colors.erosion[grossErosionData[i] - 1];
         }
     }
 
-    function drawRiskAssessmentCell(i, year) {
+    function drawRiskAssessmentCell(i, year, interactive) {
         if(global.riskAssessment[year].length == 0) return;
         var riskAssessmentData = global.riskAssessment[year];
-        riskAssessment.append("rect")
+        var r = riskAssessment.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
             })
@@ -144,14 +154,17 @@ var OutputMap = function (options) {
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
             .style("stroke", "#000")
-            .on('mouseover', function() {
+            .attr('year', year);
+
+        if(interactive) {
+            r.on('mouseover', function() {
                 d3.selectAll('#risk-assessment-rect-text').remove();
 
                 var $this = d3.select(this),
                     x = parseInt($this.attr('x')),
                     y = parseInt($this.attr('y')),
                     id = $this.attr('id');
-                riskAssessment.append('text')
+                d3.select('#risk-assessment-svg-' + d3.select(this).attr('year')).append('text')
                     .text(id)
                     .attr('x', x + cellWidth + 5)
                     .attr('y', y + 18)
@@ -164,6 +177,8 @@ var OutputMap = function (options) {
             }).on('mouseleave', function() {
                 d3.selectAll('#risk-assessment-rect-text').remove();
             });
+        }
+
 
         function retColor(i) {
             if (riskAssessmentData[i] === "Very Low") return colors.risk[0];
@@ -342,33 +357,13 @@ var OutputMap = function (options) {
 
 
             if(interactive) {
-                nitrates = d3.select("#nitrate-output-map")
-                    .append("svg")
-                    .attr("id", "nitrate-svg-" + year)
-                    .attr("width", svgWidth + 100)
-                    .attr("height", svgHeight)
-                    .style('display', 'none');
-
-                erosion = d3.select("#erosion-output-map")
-                    .append("svg")
-                    .attr("id", "erosion-svg-" + year)
-                    .attr("width", svgWidth)
-                    .attr("height", svgHeight)
-                    .style('display', 'none');
-
-                riskAssessment = d3.select("#risk-assessment-output-map")
-                    .append("svg")
-                    .attr("id", "risk-assessment-svg-" + year)
-                    .attr("width", svgWidth + 100)
-                    .attr("height", svgHeight)
-                    .style('display', 'none');
-
                 d3.select('#popup-container-body')
                     .append('div')
                     .attr('class', 'year-button')
                     .attr('year', year)
                     .on('mouseover', function() {
                         var year = d3.select(this).attr('year');
+
                         if(year == '1') {
                             d3.select('#nitrate-svg-1').style('display', 'block');
                             d3.select('#nitrate-svg-2').style('display', 'none');
@@ -405,6 +400,27 @@ var OutputMap = function (options) {
                     .text('Year ' + year)
                     .style('cursor', 'default');
 
+                nitrates = d3.select("#nitrate-output-map")
+                    .append("svg")
+                    .attr("id", "nitrate-svg-" + year)
+                    .attr("width", svgWidth + 100)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
+
+                erosion = d3.select("#erosion-output-map")
+                    .append("svg")
+                    .attr("id", "erosion-svg-" + year)
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
+
+                riskAssessment = d3.select("#risk-assessment-output-map")
+                    .append("svg")
+                    .attr("id", "risk-assessment-svg-" + year)
+                    .attr("width", svgWidth + 100)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
+
                 d3.select('#nitrate-svg-1').style('display', 'block');
                 d3.select('#erosion-svg-1').style('display', 'block');
                 d3.select('#risk-assessment-svg-1').style('display', 'block');
@@ -432,13 +448,13 @@ var OutputMap = function (options) {
             for (var i = 0; i < LEN; i++) {
                 if (basedata[i] != undefined) {
                     if(nitrates[0][0] !== null) {
-                        drawNitrateCell(i,year);
+                        drawNitrateCell(i,year, interactive);
                     }
                     if(erosion[0][0] != undefined) {
-                        drawErosionCell(i,year);
+                        drawErosionCell(i,year, interactive);
                     }
                     if(riskAssessment[0][0] != undefined) {
-                        drawRiskAssessmentCell(i,year);
+                        drawRiskAssessmentCell(i,year, interactive);
                     }
                 }
             }
