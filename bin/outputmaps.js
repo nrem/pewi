@@ -42,7 +42,27 @@ var OutputMap = function (options) {
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
-            .style("stroke", "#000");
+            .style("stroke", "#000")
+            .on('mouseover', function() {
+                d3.selectAll('#nitrate-rect-text').remove();
+
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    id = parseFloat($this.attr('id'));
+                nitrates.append('text')
+                    .text(Math.round(id * 1000) / 1000)
+                    .attr('x', x + cellWidth + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'nitrate-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#nitrate-rect-text').remove();
+            });
 
         function retColor(i) {
             if (basedata[i] === 0) return "#999";
@@ -76,7 +96,27 @@ var OutputMap = function (options) {
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
-            .style("stroke", "#000");
+            .style("stroke", "#000")
+            .on('mouseover', function() {
+                d3.selectAll('#erosion-rect-text').remove();
+
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    id = parseFloat($this.attr('id'));
+                erosion.append('text')
+                    .text(Math.round(id * 1000) / 1000)
+                    .attr('x', x + cellWidth + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'erosion-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#erosion-rect-text').remove();
+            });
 
         function retColor(i) {
             return colors.erosion[grossErosionData[i] - 1];
@@ -103,7 +143,27 @@ var OutputMap = function (options) {
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
-            .style("stroke", "#000");
+            .style("stroke", "#000")
+            .on('mouseover', function() {
+                d3.selectAll('#risk-assessment-rect-text').remove();
+
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    id = $this.attr('id');
+                riskAssessment.append('text')
+                    .text(id)
+                    .attr('x', x + cellWidth + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'risk-assessment-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#risk-assessment-rect-text').remove();
+            });
 
         function retColor(i) {
             if (riskAssessmentData[i] === "Very Low") return colors.risk[0];
@@ -277,34 +337,96 @@ var OutputMap = function (options) {
         }
     }
 
-    this.draw = function (years, label) {
+    this.draw = function (years, label, interactive) {
         for(var year = 1; year<=years; year++) {
-//            d3.select('#popup-container-body')
-//                .append('div')
-//                .attr('class', 'year-button')
-//                .append('a')
-//                .text('Year ' + year)
-//                .on('mouseover', function() {
-//
-//                });
 
-            nitrates = d3.select("#nitrate-output-map-" + year)
-                .append("svg")
-                .attr("id", "nitrate-svg")
-                .attr("width", svgWidth)
-                .attr("height", svgHeight);
 
-            erosion = d3.select("#erosion-output-map-" + year)
-                .append("svg")
-                .attr("id", "erosion-svg")
-                .attr("width", svgWidth)
-                .attr("height", svgHeight);
+            if(interactive) {
+                nitrates = d3.select("#nitrate-output-map")
+                    .append("svg")
+                    .attr("id", "nitrate-svg-" + year)
+                    .attr("width", svgWidth + 100)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
 
-            riskAssessment = d3.select("#risk-assessment-output-map-" + year)
-                .append("svg")
-                .attr("id", "risk-assessment-svg")
-                .attr("width", svgWidth)
-                .attr("height", svgHeight);
+                erosion = d3.select("#erosion-output-map")
+                    .append("svg")
+                    .attr("id", "erosion-svg-" + year)
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
+
+                riskAssessment = d3.select("#risk-assessment-output-map")
+                    .append("svg")
+                    .attr("id", "risk-assessment-svg-" + year)
+                    .attr("width", svgWidth + 100)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
+
+                d3.select('#popup-container-body')
+                    .append('div')
+                    .attr('class', 'year-button')
+                    .attr('year', year)
+                    .on('mouseover', function() {
+                        var year = d3.select(this).attr('year');
+                        if(year == '1') {
+                            d3.select('#nitrate-svg-1').style('display', 'block');
+                            d3.select('#nitrate-svg-2').style('display', 'none');
+                            d3.select('#nitrate-svg-3').style('display', 'none');
+                            d3.select('#erosion-svg-1').style('display', 'block');
+                            d3.select('#erosion-svg-2').style('display', 'none');
+                            d3.select('#erosion-svg-3').style('display', 'none');
+                            d3.select('#risk-assessment-svg-1').style('display', 'block');
+                            d3.select('#risk-assessment-svg-2').style('display', 'none');
+                            d3.select('#risk-assessment-svg-3').style('display', 'none');
+                        } else if(year == '2') {
+                            d3.select('#nitrate-svg-1').style('display', 'none');
+                            d3.select('#nitrate-svg-2').style('display', 'block');
+                            d3.select('#nitrate-svg-3').style('display', 'none');
+                            d3.select('#erosion-svg-1').style('display', 'none');
+                            d3.select('#erosion-svg-2').style('display', 'block');
+                            d3.select('#erosion-svg-3').style('display', 'none');
+                            d3.select('#risk-assessment-svg-1').style('display', 'none');
+                            d3.select('#risk-assessment-svg-2').style('display', 'block');
+                            d3.select('#risk-assessment-svg-3').style('display', 'none');
+                        } else if(year == '3') {
+                            d3.select('#nitrate-svg-1').style('display', 'none');
+                            d3.select('#nitrate-svg-2').style('display', 'none');
+                            d3.select('#nitrate-svg-3').style('display', 'block');
+                            d3.select('#erosion-svg-1').style('display', 'none');
+                            d3.select('#erosion-svg-2').style('display', 'none');
+                            d3.select('#erosion-svg-3').style('display', 'block');
+                            d3.select('#risk-assessment-svg-1').style('display', 'none');
+                            d3.select('#risk-assessment-svg-2').style('display', 'none');
+                            d3.select('#risk-assessment-svg-3').style('display', 'block');
+                        }
+                    })
+                    .append('a')
+                    .text('Year ' + year)
+                    .style('cursor', 'default');
+
+                d3.select('#nitrate-svg-1').style('display', 'block');
+                d3.select('#erosion-svg-1').style('display', 'block');
+                d3.select('#risk-assessment-svg-1').style('display', 'block');
+            } else {
+                nitrates = d3.select("#nitrate-output-map-" + year)
+                    .append("svg")
+                    .attr("id", "nitrate-svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight);
+
+                erosion = d3.select("#erosion-output-map-" + year)
+                    .append("svg")
+                    .attr("id", "erosion-svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight);
+
+                riskAssessment = d3.select("#risk-assessment-output-map-" + year)
+                    .append("svg")
+                    .attr("id", "risk-assessment-svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight);
+            }
 
             //console.log(year, nitrates);
             for (var i = 0; i < LEN; i++) {
