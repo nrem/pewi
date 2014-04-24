@@ -15,7 +15,6 @@ var Stream = function () {
     };
 
     function scaleSkewTranslate(scalar) {
-        console.log(scalar, scalar / 13);
         var multiplier = scalar / 13,
             scalex = 1.5 * multiplier,
             scaley = 2.06 * multiplier,

@@ -343,10 +343,10 @@ function reinitialize() {
 
 function flagUpdateToTrue(year) {
     global.update[year] = true;
-    console.log("Year " + year + " update set to true");
+//    console.log("Year " + year + " update set to true");
 }
 
 function flagUpdateToFalse(year) {
     global.update[year] = false;
-    console.log("Year " + year + " update set to false");
+//    console.log("Year " + year + " update set to false");
 }
