@@ -318,8 +318,8 @@ var Plot = function () {
 
                 }
                 origopacity = $selector.css("opacity");
-                $selector.css("opacity", "1");
-
+                $selector.css("opacity", 1);
+                $selector.css("stroke", "red").css('stroke-width', 1);
             },
             function (d) {
                 if (d.currentTarget.nodeName == "circle") {
@@ -328,6 +328,7 @@ var Plot = function () {
                     var $selector = $("." + d.currentTarget.classList[2]);
                 }
                 $selector.css("opacity", origopacity);
+                $selector.css("stroke", "none");
             }
         );
 

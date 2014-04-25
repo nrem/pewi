@@ -651,8 +651,8 @@ input[type="file"] {
 
 .tooltip {
     padding: 10px;
-    box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
-    -moz-box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
+    box-shadow: 0.1em 0.1em 0.2em rgba(42, 43, 36, 1);
+    -moz-box-shadow: 0.1em 0.1em 0.2em rgba(42, 43, 36, 1);
     float: left;
 }
 
@@ -724,10 +724,6 @@ input[type="file"] {
     cursor: pointer;
 }
 
-circle {
-
-}
-
 #bubble {
     height: 650px;
 }
@@ -738,8 +734,8 @@ circle {
     z-index: 9999;
     max-width: 300px;
     background: url("../images/icons/bg-tile.png");
-    box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
-    -moz-box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
+    box-shadow: 0.1em 0.1em 0.2em rgba(42, 43, 36, 1);
+    -moz-box-shadow: 0.1em 0.1em 0.2em rgba(42, 43, 36, 1);
 }
 
 .ui-tooltip-content {
@@ -753,7 +749,7 @@ circle {
 }
 
 .ui-widget-content {
-    border: 1px solid #aaaaaa;
+    border: 1px solid #cccc00;
     color: #222222;
 }
 
