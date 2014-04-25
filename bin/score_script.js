@@ -297,12 +297,15 @@ var Plot = function () {
 
         plot.selectAll(".ia")
             .on("click", function (d) {
+                var $selector = getSelector(d);
                 if (!MetricStack.some(function (e, i) {
                     return d.Metric.replace(/ \//g, '').replace(/ &/g, '') == e;
                 })) {
                     MetricStack.push(d.Metric.replace(/ \//g, '').replace(/ &/g, ''));
+                    $selector.css("opacity", 1);
                 } else {
                     MetricStack = MetricStack.filter(function (e, i) {
+                        $selector.css("opacity", 0.3);
                         return d.Metric.replace(/ \//g, '').replace(/ &/g, '') != e;
                     });
                 }
@@ -311,26 +314,23 @@ var Plot = function () {
         var origopacity;
         $(".ia").hover(
             function (d) {
-                if (d.currentTarget.nodeName == "circle") {
-                    var $selector = $("." + d.currentTarget.classList[1]);
-                } else if (d.currentTarget.nodeName == "text") {
-                    var $selector = $("." + d.currentTarget.classList[2].replace(/\//g, ''));
-
-                }
+                var $selector = getSelector(d);
                 origopacity = $selector.css("opacity");
                 $selector.css("opacity", 1);
-                $selector.css("stroke", "red").css('stroke-width', 1);
             },
             function (d) {
-                if (d.currentTarget.nodeName == "circle") {
-                    var $selector = $("." + d.currentTarget.classList[1]);
-                } else if (d.currentTarget.nodeName == "text") {
-                    var $selector = $("." + d.currentTarget.classList[2]);
-                }
+                var $selector = getSelector(d);
                 $selector.css("opacity", origopacity);
-                $selector.css("stroke", "none");
             }
         );
+
+        function getSelector(d) {
+            if (d.currentTarget.nodeName == "circle") {
+                return $("." + d.currentTarget.classList[1]);
+            } else if (d.currentTarget.nodeName == "text") {
+                return $("." + d.currentTarget.classList[2].replace(/\//g, ''));
+            }
+        }
 
         $(document).tooltip({
             position: {my: "left top", at: "right+50 center"},
@@ -346,7 +346,7 @@ var Plot = function () {
 
         yTicks(y, "r");
 
-        //DrawHistogramFor(1);
+//        DrawHistogramFor(1);
     }
 
     var barWidth = 30;
