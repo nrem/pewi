@@ -153,7 +153,7 @@ var PrintView = function () {
     headerMeasureCellFactory(measure, {1: "Percent", 2: "Acres", 3: "Hectares"});
 
     var titles = tableLandcover.append("tr")
-        .attr("class", "results-table-header-row");
+        .attr("class", "results-table-header-row border-bottom");
     headerTitleCellFactory(titles, {1: "Land Cover", 2: "Y1", 3: "Y2", 4: "Y3", 5: "Y1", 6: "Y2", 7: "Y3", 8: "Y1", 9: "Y2", 10: "Y3"});
 
     function headerMeasureCellFactory(header, data) {
@@ -213,6 +213,8 @@ var PrintView = function () {
         row.append("td").attr("class", "results-cell landcover-hectares-y1").append("a").text(o.valcvt1);
         row.append("td").attr("class", "results-cell landcover-hectares-y2").append("a").text(o.valcvt2);
         row.append("td").attr("class", "results-cell landcover-hectares-y3").append("a").text(o.valcvt3);
+
+        if(parseInt(key) + 1 == l.length) row.attr('class', 'border-bottom');
     }
 
     // Footer
@@ -244,7 +246,7 @@ var PrintView = function () {
     headerMeasureCellFactory(measure, {1: "Score(out of 100)", 2: "Value (English units)", 3: "Value (Metric units)"});
 
     titles = tableScoreIndicator.append("tr")
-        .attr("class", "results-table-header-row");
+        .attr("class", "results-table-header-row border-bottom");
     headerTitleCellFactory(titles, {1: "Score Indicator / Measurement", 2: "Y1", 3: "Y2", 4: "Y3", 5: "Y1", 6: "Y2", 7: "Y3", 8: "Y1", 9: "Y2", 10: "Y3"});
 
     var indexTotals = {1:0, 2:0, 3:0},
@@ -315,7 +317,7 @@ var PrintView = function () {
 
     // Strategic Wetland Placement
     var strategicWetlandRow = otherMetrics.append("tr")
-        .attr("class", "odd");
+        .attr("class", "odd border-top");
     strategicWetlandRow.append("td").append("a").text("Strategic Wetland out of " + global.strategicWetland[1].possible);
     strategicWetlandRow.append("td").attr("class", "results-cell");
     strategicWetlandRow.append("td").attr("class", "results-cell");
@@ -329,7 +331,7 @@ var PrintView = function () {
 
     // Precipitation
     var precipitationRow = otherMetrics.append("tr")
-        .attr("class", "even");
+        .attr("class", "even border-bottom");
 
     precipitationRow.append("td").append("a").text("Precipitation");
     precipitationRow.append("td").attr("class", "results-cell");
@@ -368,7 +370,7 @@ var PrintView = function () {
     headerMeasureCellFactory(measure, {1: "Year 1", 2: "Year 2", 3: "Year 3"});
 
     titles = indicatorTable.append("tr")
-        .attr("class", "results-table-header-row");
+        .attr("class", "results-table-header-row border-bottom");
     headerTitleCellFactory(titles, {1: "Indicator", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "", 10: ""});
 
     // Body
@@ -389,7 +391,7 @@ var PrintView = function () {
     erosionRow.append("td").attr("colspan", 3).append("div").attr("id", "erosion-output-map-3");
 
     var riskRow = indicatorTable.append("tr")
-        .attr("class", "odd");
+        .attr("class", "odd border-bottom");
 
     riskRow.append("td").append("a").text("Phosphorus Pollution Contribution");
     riskRow.append("td").attr("colspan", 3).append("div").attr("id", "risk-assessment-output-map-1");
