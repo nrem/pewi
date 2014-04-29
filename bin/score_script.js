@@ -297,15 +297,12 @@ var Plot = function () {
 
         plot.selectAll(".ia")
             .on("click", function (d) {
-                var $selector = getSelector(d);
                 if (!MetricStack.some(function (e, i) {
                     return d.Metric.replace(/ \//g, '').replace(/ &/g, '') == e;
                 })) {
                     MetricStack.push(d.Metric.replace(/ \//g, '').replace(/ &/g, ''));
-                    $selector.css("opacity", 1);
                 } else {
                     MetricStack = MetricStack.filter(function (e, i) {
-                        $selector.css("opacity", 0.3);
                         return d.Metric.replace(/ \//g, '').replace(/ &/g, '') != e;
                     });
                 }
