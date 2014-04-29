@@ -10,8 +10,8 @@ var ScoreDirector = function () {
         erosion = new Erosion(),
         landcover;
     this.update = function () {
-        console.log("Updating...");
-		console.log(global.update);
+//        console.log("Updating...");
+//		console.log(global.update);
         // Update
 		for(var year in global.update) {
             if(global.data[year] == 0 || global.data[year] == undefined) continue;
@@ -36,7 +36,7 @@ var ScoreDirector = function () {
 	}
 	
 	function updateYear(year) {
-        console.log('---------------------------- Year ' + year + ' calculations ------------------------------');
+//        console.log('---------------------------- Year ' + year + ' calculations ------------------------------');
         resetLandCoverValuesAreasFor(year);
 
 //        bio.init();
@@ -1007,18 +1007,18 @@ var Biodiversity = function () {
     };
     var contagion = 0;
     this.calculate = function () {
-        console.log("//////////////////// BIO INDICES START ///////////////////")
+//        console.log("//////////////////// BIO INDICES START ///////////////////")
         //console.log(adjacencyGroup);
         //console.log(heterogeneityGroup);
         setAdjacencyGroupProportion();
 
-        for(var object in adjacencyGroup) {
-            console.log(adjacencyGroup[object]);
-        }
-        console.log("Heterogeneity Group Numbers");
-        for(var thing in heterogeneityGroup) {
-            console.log(heterogeneityGroup[thing]);
-        }
+//        for(var object in adjacencyGroup) {
+//            console.log(adjacencyGroup[object]);
+//        }
+//        console.log("Heterogeneity Group Numbers");
+//        for(var thing in heterogeneityGroup) {
+//            console.log(heterogeneityGroup[thing]);
+//        }
 
         //console.log(heterogeneityGroup);
         //console.log("Adjacency Subtotal: " + adjacencySubtotal);
@@ -1044,14 +1044,14 @@ var Biodiversity = function () {
         }
         //console.log(x);
         //console.log(distinctCount);
-        console.log("Numerator: ", contagion);
+//        console.log("Numerator: ", contagion);
         // If there is only one landcover, the ln of distinctCount equals 0
         // therefore, override the value such that the final contagion value
         // equals 1
         var product3 = 2 * ((Math.log(distinctCount) == 0) ? 0.5 : Math.log(distinctCount));
-        console.log("Denomimator: ", product3);
+//        console.log("Denomimator: ", product3);
         contagion = 1 + (contagion / product3);
-        console.log('Contagion: ' + contagion);
+//        console.log('Contagion: ' + contagion);
         //console.log("Contagion: " + contagion, "Product3: " + product3);
         //console.log(contagion);
         setNativePerennialsPercent();
@@ -1075,7 +1075,7 @@ var Biodiversity = function () {
 
 //        console.log('Group Adjencies [title, count, proportion]: ', adjacencyGroup);
 //        console.log('Heterogeneity Groups [title, count, proportion, !unused!]: ', heterogeneityGroup);
-        console.log("//////////////////// BIO INDICES END ///////////////////")
+//        console.log("//////////////////// BIO INDICES END ///////////////////");
         dealloc();
     };
 	
@@ -1200,26 +1200,26 @@ var Biodiversity = function () {
             forestGindex = 1;
         }
 
-        console.log("Native perennial native index: ", nativePNindex);
-        console.log("Non-native perennial native index: ", nonNativePNindex);
-        console.log("Perrennial points game index: ", pGindex);
-        console.log("Stream buffer points native index: ", streamNindex);
-        console.log("Stream bugger points game index: ", streamGindex);
-        console.log("Wetland points native index: ", wetlandNindex);
-        console.log("Wetland points game index: ", wetlandGindex);
-        console.log("Forest game index: ", forestGindex);
+//        console.log("Native perennial native index: ", nativePNindex);
+//        console.log("Non-native perennial native index: ", nonNativePNindex);
+//        console.log("Perrennial points game index: ", pGindex);
+//        console.log("Stream buffer points native index: ", streamNindex);
+//        console.log("Stream bugger points game index: ", streamGindex);
+//        console.log("Wetland points native index: ", wetlandNindex);
+//        console.log("Wetland points game index: ", wetlandGindex);
+//        console.log("Forest game index: ", forestGindex);
     }
 
     function setNativeIndex() {
         dataset[11]['Year' + year] = 10 * (getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex);
         dataset[11]['Value' + year] = getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex;
-        console.log('Native Index: ' + getContagionPointsNativeIndex());
+//        console.log('Native Index: ' + getContagionPointsNativeIndex());
     }
 
     function setGameIndex() {
         dataset[10]['Year' + year] = 10 * (getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex);
         dataset[10]['Value' + year] = getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex;
-        console.log('Game Index: ' + getContagionPointsGameIndex());
+//        console.log('Game Index: ' + getContagionPointsGameIndex());
     }
 
     function getContagionPointsNativeIndex() {
@@ -1531,7 +1531,7 @@ var Erosion = function () {
         erosionMax = 0, erosionMin = 0, year = global.year;
 
     this.init = function() {
-		console.log(global.sedimentDelivered[year]);
+//		console.log(global.sedimentDelivered[year]);
         global.sedimentDelivered[year] = 0;
         global.grossErosion[year] = 0;
         global.phosphorusLoad[year] = 0;
@@ -1565,9 +1565,9 @@ var Erosion = function () {
         dataset[12]["Year" + year] = 100 * ((sedimentDeliveredMax - global.sedimentDelivered[year]) / (sedimentDeliveredMax - sedimentDeliveredMin));
         dataset[8]["Year" + year] = 100 * ((phosphorusLoadMax - global.phosphorusLoad[year]) / (phosphorusLoadMax - phosphorusLoadMin));
         dataset[13]["Year" + year] = 100 * ((erosionMax - global.grossErosion[year]) / (erosionMax - erosionMin));
-        console.log("Sediment: " + global.sedimentDelivered[year], sedimentDeliveredMax, sedimentDeliveredMin);
-        console.log("Phosphorus: " + global.phosphorusLoad[year], phosphorusLoadMax, phosphorusLoadMin);
-        console.log("Erosion: " + global.grossErosion[year], erosionMax, erosionMin);
+//        console.log("Sediment: " + global.sedimentDelivered[year], sedimentDeliveredMax, sedimentDeliveredMin);
+//        console.log("Phosphorus: " + global.phosphorusLoad[year], phosphorusLoadMax, phosphorusLoadMin);
+//        console.log("Erosion: " + global.grossErosion[year], erosionMax, erosionMin);
 
         dataset[12]["Value" + year] = global.sedimentDelivered[year];
         dataset[8]["Value" + year] = global.phosphorusLoad[year];

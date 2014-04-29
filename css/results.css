@@ -5,7 +5,7 @@
 }
 
 .results-cell {
-    width: 5em;
+    width: 6em;
     text-align: right;
 	font-family: arial;
 }
@@ -24,6 +24,15 @@
 
 .grayed {
     background-color: rgba(200, 200, 200, 0.4);
+}
+
+.total {
+    border-top: 3px double #333;
+    /*border-bottom: 1px double #333;*/
+}
+
+.total a {
+    font-weight: bold;
 }
 
 /*.display-options-dropdown-button {*/
