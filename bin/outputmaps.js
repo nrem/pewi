@@ -701,7 +701,7 @@ var Maps = function () {
 			var undoData = [];
             options.singlelandcover = 1;
             for (var i = 0; i < options.landcover.length; i++) {
-                if (options.landcover[i] != undefined) {
+                if (options.landcover[i] != undefined && global.selectedPaint !== options.landcover[i]) {
 					undoData.push({location: i, previous: options.landcover[i]});
 					
                     changeBaselandcoverDataPoint(global.selectedPaint, i, false, global.year);

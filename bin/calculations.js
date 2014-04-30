@@ -1520,11 +1520,7 @@ var Erosion = function () {
         cols = 23,
         rows = 36,
         subwatersheds = [],
-        subwatershedSubsurfaceDrainageComponent = 0,
-        subwatershedRunoffComponent = 0,
-        subwatershedErosionComponent = 0,
-        pIndex = 0, grossErosion = [], phosBufferedStreamMultiplier = [],
-        phosphorusWetlandMultiplier = [], phosphorusLoad = 0,
+        pIndex = 0,
         sedimentDeliveredMin = 0, sedimentDeliveredMax = 0,
         datapointarea,
         phosphorusLoadMax = 0, phosphorusLoadMin = 0,
@@ -1565,10 +1561,6 @@ var Erosion = function () {
         dataset[12]["Year" + year] = 100 * ((sedimentDeliveredMax - global.sedimentDelivered[year]) / (sedimentDeliveredMax - sedimentDeliveredMin));
         dataset[8]["Year" + year] = 100 * ((phosphorusLoadMax - global.phosphorusLoad[year]) / (phosphorusLoadMax - phosphorusLoadMin));
         dataset[13]["Year" + year] = 100 * ((erosionMax - global.grossErosion[year]) / (erosionMax - erosionMin));
-//        console.log("Sediment: " + global.sedimentDelivered[year], sedimentDeliveredMax, sedimentDeliveredMin);
-//        console.log("Phosphorus: " + global.phosphorusLoad[year], phosphorusLoadMax, phosphorusLoadMin);
-//        console.log("Erosion: " + global.grossErosion[year], erosionMax, erosionMin);
-
         dataset[12]["Value" + year] = global.sedimentDelivered[year];
         dataset[8]["Value" + year] = global.phosphorusLoad[year];
         dataset[13]["Value" + year] = global.grossErosion[year];
@@ -1587,8 +1579,6 @@ var Erosion = function () {
     }
 
     function getSedimentDelivered(i) {
-//        console.log(rusle(i, false), ephemeralGullyErosion(i, false), bufferFactor(i, false), datapointarea[i]);
-//        console.log(phosphorusIndex(i, false));
         return (((rusle(i, global.data.precipitation[year], false) + ephemeralGullyErosion(i, false)) * sedimentDeliveryRatio(i) * bufferFactor(i, false)) * datapointarea[i]);
     }
 
@@ -1604,15 +1594,6 @@ var Erosion = function () {
     function getGrossErosion(i) {
         var eph = ephemeralGullyErosion(i, false),
             rusl = rusle(i, global.data.precipitation[year], false);
-//        console.log(coverManagementFactor(i, false));
-//        console.log(eph, rusl);
-//        if (rusl + eph >= 2) return 5;
-//        else if (rusl + eph < 2 && rusl + eph >= 0.1) return 4;
-//        else if (rusl + eph < 0.1 && rusl + eph >= 0.025) return 3;
-//        else if (rusl + eph < 0.025 && rusl + eph >= 0.001) return 2;
-//        else if (rusl + eph < 0.001) return 1;
-//        console.log("hello");
-//        console.log((rusl + eph) * datapointarea[i]);
         return (rusl + eph) * datapointarea[i];
     }
 
@@ -1621,7 +1602,6 @@ var Erosion = function () {
     }
 
     function pIndexRiskAssessment(pindex) {
-//        console.log(pindex);
         if (pindex >= 0 && pindex <= 1) return "Very Low";
         else if (pindex > 1 && pindex <= 2) return "Low";
         else if (pindex > 2 && pindex <= 5) return "Medium";
@@ -1631,12 +1611,6 @@ var Erosion = function () {
     }
 
     function phosphorusIndex(i, point, precip_override) {
-//        if(year == 3) {
-//            // Do this
-//            console.log('lhsdflk');
-//        }
-//        console.log(erosionComponent(i, point), runoffComponent(i, point), subsurfaceDrainageComponent(i));
-//        console.log(runoffFactor(i, false), runoffCurveNumber(i, false));
         return erosionComponent(i, point, precip_override) + runoffComponent(i, point, precip_override) + subsurfaceDrainageComponent(i, precip_override);
     }
 
@@ -1652,8 +1626,6 @@ var Erosion = function () {
     }
 
     function getErosionMax(i) {
-//        console.log(rusle(i, 45.10, 3), ephemeralGullyErosion(i, 3));
-//        console.log(rainfallRunoffErosivityFactor(i, 45.1), soilErodibilityFactor(i), slopeLengthSteepnessFactor(i, 3), coverManagementFactor(i, 3), supportPracticeFactor(i, 3));
         return ((rusle(i, 45.10, 3) + ephemeralGullyErosion(i, 3)) * datapointarea[i]);
     }
 
@@ -1670,11 +1642,6 @@ var Erosion = function () {
     }
 
     function getSedimentDeliveredMax(i) {
-//        console.log(rusle(i, 2));
-//        console.log(rainfallRunoffErosivityFactor(i, 45.10));
-//        console.log(soilErodibilityFactor(i));
-//        console.log(slopeLengthSteepnessFactor(i, 2));
-//        console.log(coverManagementFactor(i, 2));
         return (((rusle(i, 45.10, 3) + ephemeralGullyErosion(i, 3)) * sedimentDeliveryRatio(i) * bufferFactor(i, 3)) * datapointarea[i]);
     }
 
@@ -1684,7 +1651,6 @@ var Erosion = function () {
 		} else {
 			return (rusle(i, global.data.precipitation[year], point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryRatio(i) * bufferFactor(i, point) * enrichmentFactor(i) * soilTestPErosionFactor(i);
 		}
-        //console.log(rusle(i), ephemeralGullyErosion(i), sedimentDeliveryRatio(i), bufferFactor(i), enrichmentFactor(i), soilTestPErosionFactor(i));
     }
 
     function runoffComponent(i, point, precip_override) {
@@ -1699,8 +1665,6 @@ var Erosion = function () {
     }
 
     function rusle(i, precip, point) {
-//        console.log(rainfallRunoffErosivityFactor(i), soilErodibilityFactor(i)/*, slopeLengthSteepnessFactor(i, point), coverManagementFactor(i, point), supportPracticeFactor(i, point)*/);
-//        console.log(rainfallRunoffErosivityFactor(i, precip));
         return rainfallRunoffErosivityFactor(i, precip) * soilErodibilityFactor(i) * slopeLengthSteepnessFactor(i, point) * coverManagementFactor(i, point) * supportPracticeFactor(i, point);
     }
 
@@ -1829,9 +1793,7 @@ var Erosion = function () {
         var slopelimit = slopeLengthLimit(i),
             slopefactor = slopeLengthFactor(i),
             cover = (point != false) ? point : landcover[i];
-        //console.log(slopelimit, slopefactor, topography[i]);
         if (slopelimit != null) {
-            //console.log(slopelimit, slopefactor, topography[i]);
             if (cover == 2 || cover == 4) {
                 if (topography[i] > 1 && slopefactor <= slopelimit) return contourSubfactor(i) * terraceSubfactor(i);
                 else if (topography[i] > 1 && slopefactor > slopelimit) return ((slopelimit * contourSubfactor(i) * terraceSubfactor(i)) + (slopelimit - slopefactor)) / slopefactor;
