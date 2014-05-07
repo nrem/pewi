@@ -5,6 +5,21 @@ var CompatibilityMonster = function() {
     this.filelist = false;
     this.blob = false;
     this.download_attr = false;
+    this.selectClickType = {
+        mouse: 'click',
+        touch: 'touchstart',
+        pointer: 'pointerdown'
+    };
+    this.selectDownType = {
+        mouse: 'click',
+        touch: 'touchstart',
+        pointer: 'pointerdown'
+    };
+    this.selectUpType = {
+        mouse: 'mouseup',
+        touch: 'touchend',
+        pointer: 'pointerup'
+    };
     this.file_api = function() {
         return (this.file && this.filereader && this.filelist && this.blob) ? true : false;
     };
@@ -27,6 +42,33 @@ var CompatibilityMonster = function() {
     this.istouchable = function() {
         return 'ontouchend' in document;
     };
+    this.selectClickEvent = function() {
+        if (window.navigator.msPointerEnabled) {
+            return this.selectClickType.pointer;
+        } else if(this.istouchable()) {
+            return this.selectClickType.touch;
+        } else {
+            return this.selectClickType.mouse;
+        }
+    };
+    this.selectDownEvent = function() {
+        if(window.navigator.msPointerEnabled) {
+            return this.selectDownType.pointer;
+        } else if(this.istouchable()) {
+            return this.selectDownType.touch;
+        } else {
+            return this.selectDownType.mouse;
+        }
+    };
+    this.selectUpEvent = function() {
+        if(window.navigator.msPointerEnabled) {
+            return this.selectUpType.pointer;
+        } else if(this.istouchable()) {
+            return this.selectUpType.touch;
+        } else {
+            return this.selectDownType.mouse;
+        }
+    }
     this.enterable = function() {
         return 'ontouchenter' in document;
     };
