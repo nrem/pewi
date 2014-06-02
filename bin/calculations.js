@@ -1772,7 +1772,7 @@ var Erosion = function () {
                 else if (cover == 4) return 0.055;
             } else if (temp[i] != 1 || temp[i] != 2 || temp[i] != 3 || temp[i] != 4 || temp[i] != 15) {
                 if (cover == 1) return 0.085;
-                else if (cover == 2) return 0.052;
+                else if (cover == 2) return 0.02;
                 else if (cover == 3 || cover == 15) return 0.116;
                 else if (cover == 4) return 0.031;
             }
