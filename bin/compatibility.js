@@ -11,7 +11,7 @@ var CompatibilityMonster = function() {
         pointer: 'pointerdown'
     };
     this.selectDownType = {
-        mouse: 'click',
+        mouse: 'mousedown',
         touch: 'touchstart',
         pointer: 'pointerdown'
     };
@@ -66,7 +66,7 @@ var CompatibilityMonster = function() {
         } else if(this.istouchable()) {
             return this.selectUpType.touch;
         } else {
-            return this.selectDownType.mouse;
+            return this.selectUpType.mouse;
         }
     }
     this.enterable = function() {

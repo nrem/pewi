@@ -43,7 +43,6 @@ var ModalView = function (options) {
 	        $("#popup-container").remove();
 	        global.sm.consumeEvent("goto-mainevent");
 	    });
-
         $container.draggable({scroll: false});
     };
 	
