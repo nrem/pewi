@@ -467,9 +467,10 @@ var Yield = function () {
     function getSoilTypeMultiplier(i) {
         var soiltexture = getSoilTexture(i);
         if (soiltexture == "FSL") return 1;
-        else if (soiltexture == "SL") return 0.9;
+        else if (soiltexture == "SIL") return 0.9;
         else if (soiltexture == "L") return 0.85;
-        else return 0.4;
+        else if (soiltexture == "SICL" || soiltexture == "CL" || soiltexture == "MK-SIL") return 0.4;
+        else return 1;
     }
 
     function getSoilTexture(i) {
