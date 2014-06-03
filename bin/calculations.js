@@ -1901,17 +1901,10 @@ var Erosion = function () {
         var hydrogroup = getHydrologicGroup(i),
             flowfactor = getFlowFactor(i);
         if (cover == 1 || cover == 3 || cover == 15) {
-            if (topography[i] == 0 || topography[i] == 1) {
-                if (hydrogroup == 'A') return 70;
-                else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 79;
-                else if (hydrogroup == 'C' && flowfactor == 0) return 84;
-                else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 88;
-            } else if (topography[i] >= 2) {
-                if (hydrogroup == 'A') return 72;
-                else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 81;
-                else if (hydrogroup == 'C' && flowfactor == 0) return 88;
-                else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 91;
-            }
+            if (hydrogroup == 'A') return 72;
+            else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 81;
+            else if (hydrogroup == 'C' && flowfactor == 0) return 88;
+            else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 91;
         } else if (cover == 2 || cover == 4) {
             if (topography[i] == 0 || topography[i] == 1 || topography[i] == 2 || topography[i] == 3) {
                 if (hydrogroup == 'A') return 64;
