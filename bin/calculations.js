@@ -1919,15 +1919,15 @@ var Erosion = function () {
             }
         } else if (cover == 5) {
             if (topography[i] == 0 || topography[i] == 1 || topography[i] == 2 || topography[i] == 3) {
+                if (hydrogroup == 'A') return 58;
+                else if (hydrogroup == 'B') return 72;
+                else if (hydrogroup == 'C') return 81;
+                else if (hydrogroup == 'D' || hydrogroup == 'B/D') return 85;
+            } else if (topography[i] == 4 || topography[i] == 5) {
                 if (hydrogroup == 'A') return 55;
                 else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 69;
                 else if (hydrogroup == 'C' && flowfactor == 0) return 78;
                 else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 83;
-            } else if (topography[i] == 4 || topography[i] == 5) {
-                if (hydrogroup == 'A') return 58;
-                else if (hydrogroup == 'B') return 72;
-                else if (hydrogroup == 'C') return 81;
-                else if (hydrogroup == 'D') return 85;
             }
         } else if (cover == 6) {
             if (hydrogroup == 'A') return 68;
