@@ -2136,7 +2136,7 @@ var Erosion = function () {
             if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 34;
             else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 39;
         } else if (cover == 15) {
-            return 1.95;
+            return 14.75;
         }
         return 0;
     } // For every land cover point
