@@ -12,4 +12,9 @@ Developed by the [Landscape Ecology and Sustainable Ecosystem Management Lab](ht
 
 Technologies
 ----
-
+-jQuery (http://jquery.com/)
+-D3 (http://d3js.org/)
+-HTML5
+-CSS3
+-Colorbrewer (https://github.com/mbostock/d3/tree/master/lib/colorbrewer)
+-jsPDF (http://parall.ax/products/jspdf)
