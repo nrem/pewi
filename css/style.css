@@ -101,6 +101,7 @@ input[type="file"] {
 .watershed-rect {
     stroke-width: 0.1;
     stroke: #000;
+    box-shadow: 0 1em 2em #333;
 }
 
 @media only all and (max-height: 499px) {
@@ -360,7 +361,6 @@ input[type="file"] {
 }
 
 #sidebar-left {
-    height: 100%;
     left: 0px;
 }
 
@@ -651,8 +651,8 @@ input[type="file"] {
 
 .tooltip {
     padding: 10px;
-    box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
-    -moz-box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
+    box-shadow: 0.1em 0.1em 0.2em rgba(42, 43, 36, 1);
+    -moz-box-shadow: 0.1em 0.1em 0.2em rgba(42, 43, 36, 1);
     float: left;
 }
 
@@ -724,10 +724,6 @@ input[type="file"] {
     cursor: pointer;
 }
 
-circle {
-
-}
-
 #bubble {
     height: 650px;
 }
@@ -738,8 +734,8 @@ circle {
     z-index: 9999;
     max-width: 300px;
     background: url("../images/icons/bg-tile.png");
-    box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
-    -moz-box-shadow: 0.1em 0.1em 0.5em rgba(42, 43, 36, 1);
+    box-shadow: 0.1em 0.1em 0.2em rgba(42, 43, 36, 1);
+    -moz-box-shadow: 0.1em 0.1em 0.2em rgba(42, 43, 36, 1);
 }
 
 .ui-tooltip-content {
@@ -886,8 +882,8 @@ iframe {
 /* ------- Output Map -------- */
 .output-map-container {
     float: left;
-    margin-right: 2em;
-    border: solid 1px rgba(0, 0, 0, 0.2);
+    margin-right: 1em;
+    margin-bottom: 1em;
 }
 
 .output-map {

@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta http-equiv=”X-UA-Compatible” content=”chrome=1;IE=edge”>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
     <title>PE/WI Work Space</title>
     <meta name="description" content="A dynamic watershed.">
     <link rel="stylesheet" href="css/style.css"/>
@@ -19,15 +20,20 @@
     <script src="bin/puck.js"></script>
     <script src="plugins/colorbrewer/colorbrewer.js"></script>
     <script src="bin/stream.js"></script>
+    <script src="bin/background.js"></script>
     <script src="bin/outputmaps.js"></script>
     <script src="bin/score_script.js"></script>
     <script src="bin/views.js"></script>
     <script src="bin/message.js"></script>
     <script src="bin/hud.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            go();
-        });
+        if(document.documentMode != undefined && document.documentMode < 9) {
+            alert("Please turn off compatibility mode and refresh the browser.");
+        } else {
+            $(document).ready(function () {
+                go();
+            });
+        }
     </script>
 
 </head>

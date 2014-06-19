@@ -5,25 +5,42 @@
 }
 
 .results-cell {
-    width: 5em;
+    width: 6em;
     text-align: right;
 	font-family: arial;
 }
 
 .odd {
-    background-color: rgba(204, 222, 255, 0.5);
+    background-color: rgba(230, 230, 230, 1);
 }
 
 #results-container table {
     border-collapse: collapse;
 }
 
-#results-container td {
-    border: solid 0.1em rgba(150, 150, 150, 0.5);
+.border-bottom {
+    border-bottom: 2px solid #999;
 }
+
+.border-top {
+    border-top: 2px solid #999;
+}
+
+/*#results-container td {*/
+    /*border: solid 0.1em rgba(150, 150, 150, 0.5);*/
+/*}*/
 
 .grayed {
     background-color: rgba(200, 200, 200, 0.4);
+}
+
+.total {
+    border-top: 3px double #333;
+    /*border-bottom: 1px double #333;*/
+}
+
+.total a {
+    font-weight: bold;
 }
 
 /*.display-options-dropdown-button {*/

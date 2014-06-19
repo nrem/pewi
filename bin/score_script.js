@@ -1,20 +1,20 @@
 var dataset = [
-    {    Metric: 'Corn Yield', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Soybean Yield', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Alfalfa Yield', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Hay Yield', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Timber Production', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Cattle Supported', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Mixed Fruit and Vegetable Yield', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Nitrate Pollution Control', resultsLabel: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Phosphorus Pollution Control', resultsLabel: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0},//check
-    {    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0},
-    {    Metric: 'Sediment Control', resultsLabel: 'Sediment Control / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0},//check
-    {    Metric: 'Erosion Control', resultsLabel: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0},//check
-    {    Metric: 'Herbaceous Perennial Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0},//check
-    {    Metric: 'Short-rotation Woody Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0}//check
+    {    Metric: 'Corn Yield', Year1: 0, Year2: 0, Year3: 0, weight: 2},
+    {    Metric: 'Soybean Yield', Year1: 0, Year2: 0, Year3: 0, weight: 7},
+    {    Metric: 'Alfalfa Yield', Year1: 0, Year2: 0, Year3: 0, weight: 0},
+    {    Metric: 'Hay Yield', Year1: 0, Year2: 0, Year3: 0, weight: 3},
+    {    Metric: 'Timber Production', Year1: 0, Year2: 0, Year3: 0, weight: 8},
+    {    Metric: 'Cattle Supported', Year1: 0, Year2: 0, Year3: 0, weight: 1},
+    {    Metric: 'Mixed Fruit and Vegetable Yield', Year1: 0, Year2: 0, Year3: 0, weight: 5},
+    {    Metric: 'Nitrate Pollution Control', resultsLabel: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0, weight: 12},
+    {    Metric: 'Phosphorus Pollution Control', resultsLabel: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0, weight: 10},//check
+    {    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0, weight: 15},
+    {    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0, weight: 14},
+    {    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0, weight: 13},
+    {    Metric: 'Sediment Control', resultsLabel: 'Sediment Control / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0, weight: 11},//check
+    {    Metric: 'Erosion Control', resultsLabel: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0, weight: 9},//check
+    {    Metric: 'Herbaceous Perennial Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0, weight: 4},//check
+    {    Metric: 'Short-rotation Woody Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0, weight: 6}//check
 ];
 
 var units = {
@@ -311,25 +311,23 @@ var Plot = function () {
         var origopacity;
         $(".ia").hover(
             function (d) {
-                if (d.currentTarget.nodeName == "circle") {
-                    var $selector = $("." + d.currentTarget.classList[1]);
-                } else if (d.currentTarget.nodeName == "text") {
-                    var $selector = $("." + d.currentTarget.classList[2].replace(/\//g, ''));
-
-                }
+                var $selector = getSelector(d);
                 origopacity = $selector.css("opacity");
-                $selector.css("opacity", "1");
-
+                $selector.css("opacity", 1);
             },
             function (d) {
-                if (d.currentTarget.nodeName == "circle") {
-                    var $selector = $("." + d.currentTarget.classList[1]);
-                } else if (d.currentTarget.nodeName == "text") {
-                    var $selector = $("." + d.currentTarget.classList[2]);
-                }
+                var $selector = getSelector(d);
                 $selector.css("opacity", origopacity);
             }
         );
+
+        function getSelector(d) {
+            if (d.currentTarget.nodeName == "circle") {
+                return $("." + d.currentTarget.classList[1]);
+            } else if (d.currentTarget.nodeName == "text") {
+                return $("." + d.currentTarget.classList[2].replace(/\//g, ''));
+            }
+        }
 
         $(document).tooltip({
             position: {my: "left top", at: "right+50 center"},
@@ -345,7 +343,7 @@ var Plot = function () {
 
         yTicks(y, "r");
 
-        //DrawHistogramFor(1);
+//        DrawHistogramFor(1);
     }
 
     var barWidth = 30;

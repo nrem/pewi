@@ -22,10 +22,10 @@ var OutputMap = function (options) {
         risk: ["#fed98e", "#f4b350", "#fe9929", "#d95f0e", "#993404"]
     };
 
-    function drawNitrateCell(i, year) {
+    function drawNitrateCell(i, year, interactive) {
         if(global.watershedPercent[year].length == 0) return;
         var wp = global.watershedPercent[year];
-        nitrates.append("rect")
+        var r =nitrates.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
             })
@@ -42,7 +42,32 @@ var OutputMap = function (options) {
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
-            .style("stroke", "#000");
+            .style("stroke", "#000")
+            .attr('year', year);
+
+        if(interactive) {
+            r.on('mouseover', function() {
+                d3.selectAll('#nitrate-rect-text').remove();
+
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    id = parseFloat($this.attr('id'));
+                d3.select('#nitrate-svg-' + d3.select(this).attr('year')).append('text')
+                    .text(Math.round(id * 1000) / 1000)
+                    .attr('x', x + cellWidth + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'nitrate-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#nitrate-rect-text').remove();
+            });
+        }
+
 
         function retColor(i) {
             if (basedata[i] === 0) return "#999";
@@ -56,10 +81,10 @@ var OutputMap = function (options) {
         }
     }
 
-    function drawErosionCell(i, year) {
+    function drawErosionCell(i, year, interactive) {
         if(global.grossErosionSeverity[year].length == 0) return;
         var grossErosionData = global.grossErosionSeverity[year];
-        erosion.append("rect")
+        var r = erosion.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
             })
@@ -76,17 +101,42 @@ var OutputMap = function (options) {
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
-            .style("stroke", "#000");
+            .style("stroke", "#000")
+            .attr('year', year);
+
+        if(interactive) {
+            r.on('mouseover', function() {
+                d3.selectAll('#erosion-rect-text').remove();
+
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    id = parseFloat($this.attr('id'));
+                d3.select('#erosion-svg-' + d3.select(this).attr('year')).append('text')
+                    .text(Math.round(id * 1000) / 1000)
+                    .attr('x', x + cellWidth + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'erosion-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#erosion-rect-text').remove();
+            });
+        }
+
 
         function retColor(i) {
             return colors.erosion[grossErosionData[i] - 1];
         }
     }
 
-    function drawRiskAssessmentCell(i, year) {
+    function drawRiskAssessmentCell(i, year, interactive) {
         if(global.riskAssessment[year].length == 0) return;
         var riskAssessmentData = global.riskAssessment[year];
-        riskAssessment.append("rect")
+        var r = riskAssessment.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
             })
@@ -103,7 +153,32 @@ var OutputMap = function (options) {
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
-            .style("stroke", "#000");
+            .style("stroke", "#000")
+            .attr('year', year);
+
+        if(interactive) {
+            r.on('mouseover', function() {
+                d3.selectAll('#risk-assessment-rect-text').remove();
+
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    id = $this.attr('id');
+                d3.select('#risk-assessment-svg-' + d3.select(this).attr('year')).append('text')
+                    .text(id)
+                    .attr('x', x + cellWidth + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'risk-assessment-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#risk-assessment-rect-text').remove();
+            });
+        }
+
 
         function retColor(i) {
             if (riskAssessmentData[i] === "Very Low") return colors.risk[0];
@@ -277,37 +352,109 @@ var OutputMap = function (options) {
         }
     }
 
-    this.draw = function (years, label) {
+    this.draw = function (years, label, interactive) {
         for(var year = 1; year<=years; year++) {
-            nitrates = d3.select("#nitrate-output-map-" + year)
-                .append("svg")
-                .attr("id", "nitrate-svg")
-                .attr("width", svgWidth)
-                .attr("height", svgHeight);
 
-            erosion = d3.select("#erosion-output-map-" + year)
-                .append("svg")
-                .attr("id", "erosion-svg")
-                .attr("width", svgWidth)
-                .attr("height", svgHeight);
 
-            riskAssessment = d3.select("#risk-assessment-output-map-" + year)
-                .append("svg")
-                .attr("id", "risk-assessment-svg")
-                .attr("width", svgWidth)
-                .attr("height", svgHeight);
+            if(interactive) {
+                d3.select('#popup-container-body')
+                    .append('div')
+                    .attr('class', 'year-button')
+                    .attr('year', year)
+                    .on('mouseover', function() {
+                        var year = d3.select(this).attr('year');
+
+                        if(year == '1') {
+                            d3.select('#nitrate-svg-1').style('display', 'block');
+                            d3.select('#nitrate-svg-2').style('display', 'none');
+                            d3.select('#nitrate-svg-3').style('display', 'none');
+                            d3.select('#erosion-svg-1').style('display', 'block');
+                            d3.select('#erosion-svg-2').style('display', 'none');
+                            d3.select('#erosion-svg-3').style('display', 'none');
+                            d3.select('#risk-assessment-svg-1').style('display', 'block');
+                            d3.select('#risk-assessment-svg-2').style('display', 'none');
+                            d3.select('#risk-assessment-svg-3').style('display', 'none');
+                        } else if(year == '2') {
+                            d3.select('#nitrate-svg-1').style('display', 'none');
+                            d3.select('#nitrate-svg-2').style('display', 'block');
+                            d3.select('#nitrate-svg-3').style('display', 'none');
+                            d3.select('#erosion-svg-1').style('display', 'none');
+                            d3.select('#erosion-svg-2').style('display', 'block');
+                            d3.select('#erosion-svg-3').style('display', 'none');
+                            d3.select('#risk-assessment-svg-1').style('display', 'none');
+                            d3.select('#risk-assessment-svg-2').style('display', 'block');
+                            d3.select('#risk-assessment-svg-3').style('display', 'none');
+                        } else if(year == '3') {
+                            d3.select('#nitrate-svg-1').style('display', 'none');
+                            d3.select('#nitrate-svg-2').style('display', 'none');
+                            d3.select('#nitrate-svg-3').style('display', 'block');
+                            d3.select('#erosion-svg-1').style('display', 'none');
+                            d3.select('#erosion-svg-2').style('display', 'none');
+                            d3.select('#erosion-svg-3').style('display', 'block');
+                            d3.select('#risk-assessment-svg-1').style('display', 'none');
+                            d3.select('#risk-assessment-svg-2').style('display', 'none');
+                            d3.select('#risk-assessment-svg-3').style('display', 'block');
+                        }
+                    })
+                    .append('a')
+                    .text('Year ' + year)
+                    .style('cursor', 'default');
+
+                nitrates = d3.select("#nitrate-output-map")
+                    .append("svg")
+                    .attr("id", "nitrate-svg-" + year)
+                    .attr("width", svgWidth + 100)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
+
+                erosion = d3.select("#erosion-output-map")
+                    .append("svg")
+                    .attr("id", "erosion-svg-" + year)
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
+
+                riskAssessment = d3.select("#risk-assessment-output-map")
+                    .append("svg")
+                    .attr("id", "risk-assessment-svg-" + year)
+                    .attr("width", svgWidth + 100)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
+
+                d3.select('#nitrate-svg-1').style('display', 'block');
+                d3.select('#erosion-svg-1').style('display', 'block');
+                d3.select('#risk-assessment-svg-1').style('display', 'block');
+            } else {
+                nitrates = d3.select("#nitrate-output-map-" + year)
+                    .append("svg")
+                    .attr("id", "nitrate-svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight);
+
+                erosion = d3.select("#erosion-output-map-" + year)
+                    .append("svg")
+                    .attr("id", "erosion-svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight);
+
+                riskAssessment = d3.select("#risk-assessment-output-map-" + year)
+                    .append("svg")
+                    .attr("id", "risk-assessment-svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight);
+            }
 
             //console.log(year, nitrates);
             for (var i = 0; i < LEN; i++) {
                 if (basedata[i] != undefined) {
                     if(nitrates[0][0] !== null) {
-                        drawNitrateCell(i,year);
+                        drawNitrateCell(i,year, interactive);
                     }
                     if(erosion[0][0] != undefined) {
-                        drawErosionCell(i,year);
+                        drawErosionCell(i,year, interactive);
                     }
                     if(riskAssessment[0][0] != undefined) {
-                        drawRiskAssessmentCell(i,year);
+                        drawRiskAssessmentCell(i,year, interactive);
                     }
                 }
             }
@@ -353,7 +500,6 @@ var OutputMap = function (options) {
                     return "Year " + year;
                 });
         }
-
     }
 
     $("#nitrate-svg rect").hover(function () {
@@ -414,11 +560,48 @@ var Maps = function () {
         var svg = d3.select(options.parent)
                 .append("svg")
                 .attr("id", "watershed1")
-                .attr("width", options.width)
-                .attr("height", options.height + 20),
+                .attr("width", options.width + options.rectWidth)
+                .attr("height", options.height + options.rectHeight),
             border = false;
 
         centerElement($(window), $("#watershed1"));
+
+        var opts = {};
+        var background = new Background();
+        opts.parent = "#watershed1";
+        opts.scale = '';
+        opts.x = 0;
+        opts.y = 0;
+        opts.width = 100;
+        opts.height = 100;
+        opts.file = 'images/backgrounds/Animation_Watershed_Border-002.svg';
+        opts.transform = '';
+//        background.draw(opts);
+
+        var filter = svg.append('svg:defs')
+            .append('svg:filter')
+            .attr('id', 'f1')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', '110%')
+            .attr('height', '110%');
+
+        filter.append('svg:feOffset')
+            .attr('result', 'offOut')
+            .attr('in', 'SourceAlpha')
+            .attr('dx', 7)
+            .attr('dy', 5);
+
+        filter.append('svg:feGaussianBlur')
+            .attr('result', 'blurOut')
+            .attr('in', 'offOut')
+            .attr('stdDeviation', 7);
+
+        filter.append('svg:feBlend')
+            .attr('in', 'SourceGraphic')
+            .attr('in2', 'blurOut')
+            .attr('mode', 'normal');
+
         var w = options.rectWidth, h = options.rectHeight;
         initCalcs();
         for (var i = 0; i < options.landcover.length; i++) {
@@ -431,6 +614,7 @@ var Maps = function () {
                 setSubwatershedArea(i, true);
                 setSoiltypeFactors(i);
                 setTopographyFactors(i);
+                var rect;
                 if (options.landcover[i] != 0) {
                     var g = svg.append("g");
 
@@ -448,11 +632,11 @@ var Maps = function () {
                         .attr("width", w)
                         .attr("height", h);
 
-                    g.append("rect")
+                    rect = g.append("rect")
                         .attr("id", i)
                         .attr("class", "watershed-rect")
-                        .attr("x", options.x[i] * w)
-                        .attr("y", options.y[i] * h)
+                        .attr("x", options.x[i] * w - options.rectWidth)
+                        .attr("y", options.y[i] * h - options.rectHeight)
                         .attr("width", w)
                         .attr("height", h)
                         .style("fill", "url(#pattern" + i + ")")
@@ -460,14 +644,15 @@ var Maps = function () {
                             return landcovers[options.landcover[i]];
                         })
                         .attr("row", Math.ceil((i + 1) / 23))
-                        .attr("col", 1 + i % 23);
+                        .attr("col", 1 + i % 23)
+                        .attr('filter', 'url(#f1)');
                     //$("#" + i).attr("landcover", "blah");
                 } else {
-                    g.append("rect")
+                    rect = g.append("rect")
                         .attr("id", i)
                         .attr("class", "watershed-rect")
-                        .attr("x", options.x[i] * w)
-                        .attr("y", options.y[i] * h)
+                        .attr("x", options.x[i] * w - options.rectWidth)
+                        .attr("y", options.y[i] * h - options.rectHeight)
                         .attr("width", w)
                         .attr("height", h)
                         .style("fill", colorsForLandCoverGrid[options.landcover[i]])
@@ -475,15 +660,40 @@ var Maps = function () {
                             return landcovers[options.landcover[i]];
                         })
                         .attr("row", Math.ceil((i + 1) / 23))
-                        .attr("col", 1 + i % 23);;
+                        .attr("col", 1 + i % 23)
+                        .attr('filter', 'url(#f1)');
                     global.streamIndices[global.year].push(i);
                 }
+                var timeout;
+                rect.on('mouseover', function() {
+                    clearTimeout(timeout);
+                    d3.selectAll('#watershed-rect-text').remove();
+
+                    var $this = d3.select(this),
+                        x = parseInt($this.attr('x')),
+                        y = parseInt($this.attr('y')),
+                        col = $this.attr('col'),
+                        row = $this.attr('row');
+                    timeout = setTimeout(function() {
+                        svg.append('text')
+                            .text(col + ', ' + row)
+                            .attr('x', x + options.rectWidth + 5)
+                            .attr('y', y + 18)
+                            .style('font-size', 15)
+                            .style('fill', 'white')
+                            .style('font-family', 'arial')
+                            .style('text-shadow', '0 0 5px #000')
+                            .attr('text-anchor', 'start')
+                            .attr('id', 'watershed-rect-text');
+                    }, 750);
+                }).on('mouseleave', function() {
+                    clearTimeout(timeout);
+                    d3.selectAll('#watershed-rect-text').remove();
+                });
             }
         }
-        var opts = {
-            parent: "#watershed1",
-            scale: Math.round(SCREEN.height / 36 / 2 - 1) / 13
-        };
+        opts.scale = options.scale;
+
         global.stream = new Stream();
         global.stream.draw(opts);
 
@@ -491,7 +701,7 @@ var Maps = function () {
 			var undoData = [];
             options.singlelandcover = 1;
             for (var i = 0; i < options.landcover.length; i++) {
-                if (options.landcover[i] != undefined) {
+                if (options.landcover[i] != undefined && global.selectedPaint !== options.landcover[i]) {
 					undoData.push({location: i, previous: options.landcover[i]});
 					
                     changeBaselandcoverDataPoint(global.selectedPaint, i, false, global.year);
@@ -658,7 +868,7 @@ var Maps = function () {
                 break;
             }
         }
-        $("#" + options.id + "-minimap-container").draggable();
+        $("#" + options.id + "-minimap-container").draggable({stack: ".physical-feature-map", scroll: false});
 
         var title = container.append("div");
         title.append("img")
@@ -669,7 +879,7 @@ var Maps = function () {
             .attr("src", "images/icons/navigation/close_mini_light-gray.svg");
         title.append("a");
 
-        $("#" + options.id + "-minimap-container img").click(function () {
+        $("#" + options.id + "-minimap-container img").bind(global.selectClickType, function () {
             $(this).parent().parent().remove();
             miniMapState[options.id] = false;
             miniMapSlots[options.slot].vacant = true;
@@ -739,7 +949,7 @@ var Maps = function () {
 
         function appendRectHelper(datapoint, colors) {
             if (isNaN(columnData[i]) || isNaN(rowData[i])) return;
-            svg.append("rect")
+            var rect = svg.append("rect")
                 .attr("x", function () {
                     return columnData[i] * options.width + 100;
                 })
@@ -752,7 +962,31 @@ var Maps = function () {
                     return colors[datapoint];
                 })
                 .attr("id", options.id + "-rect-" + i)
-                .attr("class", "minimap-rect");
+                .attr("class", "minimap-rect")
+                .attr("row", Math.ceil((i + 1) / 23))
+                .attr("col", 1 + i % 23);
+
+            rect.on('mouseover', function() {
+                d3.selectAll('#pfeature-rect-text').remove();
+
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    col = $this.attr('col'),
+                    row = $this.attr('row');
+                svg.append('text')
+                    .text(col + ', ' + row)
+                    .attr('x', x + options.width + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'pfeature-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#pfeature-rect-text').remove();
+            });
         }
 
         function buildKey(id, colors, type) {
@@ -795,12 +1029,12 @@ var Maps = function () {
                 gradient.append("svg:stop")
                     .attr("offset", "0%")
                     .style("stop-color", colors[0])
-                    .style("stop-opacity", "90");
+                    .style("stop-opacity", "1");
 
                 gradient.append("svg:stop")
                     .attr("offset", "100%")
                     .style("stop-color", colors[1])
-                    .style("stop-opacity", "90");
+                    .style("stop-opacity", "1");
 
                 keyGroup.append("svg:path")
                     .attr("d", function () {

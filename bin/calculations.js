@@ -10,8 +10,8 @@ var ScoreDirector = function () {
         erosion = new Erosion(),
         landcover;
     this.update = function () {
-        console.log("Updating...");
-		console.log(global.update);
+//        console.log("Updating...");
+//		console.log(global.update);
         // Update
 		for(var year in global.update) {
             if(global.data[year] == 0 || global.data[year] == undefined) continue;
@@ -36,7 +36,7 @@ var ScoreDirector = function () {
 	}
 	
 	function updateYear(year) {
-        console.log('---------------------------- Year ' + year + ' calculations ------------------------------');
+//        console.log('---------------------------- Year ' + year + ' calculations ------------------------------');
         resetLandCoverValuesAreasFor(year);
 
 //        bio.init();
@@ -467,9 +467,10 @@ var Yield = function () {
     function getSoilTypeMultiplier(i) {
         var soiltexture = getSoilTexture(i);
         if (soiltexture == "FSL") return 1;
-        else if (soiltexture == "SL") return 0.9;
+        else if (soiltexture == "SIL") return 0.9;
         else if (soiltexture == "L") return 0.85;
-        else return 0.4;
+        else if (soiltexture == "SICL" || soiltexture == "CL" || soiltexture == "MK-SIL") return 0.4;
+        else return 1;
     }
 
     function getSoilTexture(i) {
@@ -1007,18 +1008,18 @@ var Biodiversity = function () {
     };
     var contagion = 0;
     this.calculate = function () {
-        console.log("//////////////////// BIO INDICES START ///////////////////")
+//        console.log("//////////////////// BIO INDICES START ///////////////////")
         //console.log(adjacencyGroup);
         //console.log(heterogeneityGroup);
         setAdjacencyGroupProportion();
 
-        for(var object in adjacencyGroup) {
-            console.log(adjacencyGroup[object]);
-        }
-        console.log("Heterogeneity Group Numbers");
-        for(var thing in heterogeneityGroup) {
-            console.log(heterogeneityGroup[thing]);
-        }
+//        for(var object in adjacencyGroup) {
+//            console.log(adjacencyGroup[object]);
+//        }
+//        console.log("Heterogeneity Group Numbers");
+//        for(var thing in heterogeneityGroup) {
+//            console.log(heterogeneityGroup[thing]);
+//        }
 
         //console.log(heterogeneityGroup);
         //console.log("Adjacency Subtotal: " + adjacencySubtotal);
@@ -1044,14 +1045,14 @@ var Biodiversity = function () {
         }
         //console.log(x);
         //console.log(distinctCount);
-        console.log("Numerator: ", contagion);
+//        console.log("Numerator: ", contagion);
         // If there is only one landcover, the ln of distinctCount equals 0
         // therefore, override the value such that the final contagion value
         // equals 1
         var product3 = 2 * ((Math.log(distinctCount) == 0) ? 0.5 : Math.log(distinctCount));
-        console.log("Denomimator: ", product3);
+//        console.log("Denomimator: ", product3);
         contagion = 1 + (contagion / product3);
-        console.log('Contagion: ' + contagion);
+//        console.log('Contagion: ' + contagion);
         //console.log("Contagion: " + contagion, "Product3: " + product3);
         //console.log(contagion);
         setNativePerennialsPercent();
@@ -1075,7 +1076,7 @@ var Biodiversity = function () {
 
 //        console.log('Group Adjencies [title, count, proportion]: ', adjacencyGroup);
 //        console.log('Heterogeneity Groups [title, count, proportion, !unused!]: ', heterogeneityGroup);
-        console.log("//////////////////// BIO INDICES END ///////////////////")
+//        console.log("//////////////////// BIO INDICES END ///////////////////");
         dealloc();
     };
 	
@@ -1200,26 +1201,26 @@ var Biodiversity = function () {
             forestGindex = 1;
         }
 
-        console.log("Native perennial native index: ", nativePNindex);
-        console.log("Non-native perennial native index: ", nonNativePNindex);
-        console.log("Perrennial points game index: ", pGindex);
-        console.log("Stream buffer points native index: ", streamNindex);
-        console.log("Stream bugger points game index: ", streamGindex);
-        console.log("Wetland points native index: ", wetlandNindex);
-        console.log("Wetland points game index: ", wetlandGindex);
-        console.log("Forest game index: ", forestGindex);
+//        console.log("Native perennial native index: ", nativePNindex);
+//        console.log("Non-native perennial native index: ", nonNativePNindex);
+//        console.log("Perrennial points game index: ", pGindex);
+//        console.log("Stream buffer points native index: ", streamNindex);
+//        console.log("Stream bugger points game index: ", streamGindex);
+//        console.log("Wetland points native index: ", wetlandNindex);
+//        console.log("Wetland points game index: ", wetlandGindex);
+//        console.log("Forest game index: ", forestGindex);
     }
 
     function setNativeIndex() {
         dataset[11]['Year' + year] = 10 * (getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex);
         dataset[11]['Value' + year] = getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex;
-        console.log('Native Index: ' + getContagionPointsNativeIndex());
+//        console.log('Native Index: ' + getContagionPointsNativeIndex());
     }
 
     function setGameIndex() {
         dataset[10]['Year' + year] = 10 * (getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex);
         dataset[10]['Value' + year] = getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex;
-        console.log('Game Index: ' + getContagionPointsGameIndex());
+//        console.log('Game Index: ' + getContagionPointsGameIndex());
     }
 
     function getContagionPointsNativeIndex() {
@@ -1520,18 +1521,14 @@ var Erosion = function () {
         cols = 23,
         rows = 36,
         subwatersheds = [],
-        subwatershedSubsurfaceDrainageComponent = 0,
-        subwatershedRunoffComponent = 0,
-        subwatershedErosionComponent = 0,
-        pIndex = 0, grossErosion = [], phosBufferedStreamMultiplier = [],
-        phosphorusWetlandMultiplier = [], phosphorusLoad = 0,
+        pIndex = 0,
         sedimentDeliveredMin = 0, sedimentDeliveredMax = 0,
         datapointarea,
         phosphorusLoadMax = 0, phosphorusLoadMin = 0,
         erosionMax = 0, erosionMin = 0, year = global.year;
 
     this.init = function() {
-		console.log(global.sedimentDelivered[year]);
+//		console.log(global.sedimentDelivered[year]);
         global.sedimentDelivered[year] = 0;
         global.grossErosion[year] = 0;
         global.phosphorusLoad[year] = 0;
@@ -1565,10 +1562,6 @@ var Erosion = function () {
         dataset[12]["Year" + year] = 100 * ((sedimentDeliveredMax - global.sedimentDelivered[year]) / (sedimentDeliveredMax - sedimentDeliveredMin));
         dataset[8]["Year" + year] = 100 * ((phosphorusLoadMax - global.phosphorusLoad[year]) / (phosphorusLoadMax - phosphorusLoadMin));
         dataset[13]["Year" + year] = 100 * ((erosionMax - global.grossErosion[year]) / (erosionMax - erosionMin));
-        console.log("Sediment: " + global.sedimentDelivered[year], sedimentDeliveredMax, sedimentDeliveredMin);
-        console.log("Phosphorus: " + global.phosphorusLoad[year], phosphorusLoadMax, phosphorusLoadMin);
-        console.log("Erosion: " + global.grossErosion[year], erosionMax, erosionMin);
-
         dataset[12]["Value" + year] = global.sedimentDelivered[year];
         dataset[8]["Value" + year] = global.phosphorusLoad[year];
         dataset[13]["Value" + year] = global.grossErosion[year];
@@ -1587,8 +1580,6 @@ var Erosion = function () {
     }
 
     function getSedimentDelivered(i) {
-//        console.log(rusle(i, false), ephemeralGullyErosion(i, false), bufferFactor(i, false), datapointarea[i]);
-//        console.log(phosphorusIndex(i, false));
         return (((rusle(i, global.data.precipitation[year], false) + ephemeralGullyErosion(i, false)) * sedimentDeliveryRatio(i) * bufferFactor(i, false)) * datapointarea[i]);
     }
 
@@ -1604,15 +1595,6 @@ var Erosion = function () {
     function getGrossErosion(i) {
         var eph = ephemeralGullyErosion(i, false),
             rusl = rusle(i, global.data.precipitation[year], false);
-//        console.log(coverManagementFactor(i, false));
-//        console.log(eph, rusl);
-//        if (rusl + eph >= 2) return 5;
-//        else if (rusl + eph < 2 && rusl + eph >= 0.1) return 4;
-//        else if (rusl + eph < 0.1 && rusl + eph >= 0.025) return 3;
-//        else if (rusl + eph < 0.025 && rusl + eph >= 0.001) return 2;
-//        else if (rusl + eph < 0.001) return 1;
-//        console.log("hello");
-//        console.log((rusl + eph) * datapointarea[i]);
         return (rusl + eph) * datapointarea[i];
     }
 
@@ -1621,7 +1603,6 @@ var Erosion = function () {
     }
 
     function pIndexRiskAssessment(pindex) {
-//        console.log(pindex);
         if (pindex >= 0 && pindex <= 1) return "Very Low";
         else if (pindex > 1 && pindex <= 2) return "Low";
         else if (pindex > 2 && pindex <= 5) return "Medium";
@@ -1631,12 +1612,6 @@ var Erosion = function () {
     }
 
     function phosphorusIndex(i, point, precip_override) {
-//        if(year == 3) {
-//            // Do this
-//            console.log('lhsdflk');
-//        }
-//        console.log(erosionComponent(i, point), runoffComponent(i, point), subsurfaceDrainageComponent(i));
-//        console.log(runoffFactor(i, false), runoffCurveNumber(i, false));
         return erosionComponent(i, point, precip_override) + runoffComponent(i, point, precip_override) + subsurfaceDrainageComponent(i, precip_override);
     }
 
@@ -1652,8 +1627,6 @@ var Erosion = function () {
     }
 
     function getErosionMax(i) {
-//        console.log(rusle(i, 45.10, 3), ephemeralGullyErosion(i, 3));
-//        console.log(rainfallRunoffErosivityFactor(i, 45.1), soilErodibilityFactor(i), slopeLengthSteepnessFactor(i, 3), coverManagementFactor(i, 3), supportPracticeFactor(i, 3));
         return ((rusle(i, 45.10, 3) + ephemeralGullyErosion(i, 3)) * datapointarea[i]);
     }
 
@@ -1670,11 +1643,6 @@ var Erosion = function () {
     }
 
     function getSedimentDeliveredMax(i) {
-//        console.log(rusle(i, 2));
-//        console.log(rainfallRunoffErosivityFactor(i, 45.10));
-//        console.log(soilErodibilityFactor(i));
-//        console.log(slopeLengthSteepnessFactor(i, 2));
-//        console.log(coverManagementFactor(i, 2));
         return (((rusle(i, 45.10, 3) + ephemeralGullyErosion(i, 3)) * sedimentDeliveryRatio(i) * bufferFactor(i, 3)) * datapointarea[i]);
     }
 
@@ -1684,7 +1652,6 @@ var Erosion = function () {
 		} else {
 			return (rusle(i, global.data.precipitation[year], point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryRatio(i) * bufferFactor(i, point) * enrichmentFactor(i) * soilTestPErosionFactor(i);
 		}
-        //console.log(rusle(i), ephemeralGullyErosion(i), sedimentDeliveryRatio(i), bufferFactor(i), enrichmentFactor(i), soilTestPErosionFactor(i));
     }
 
     function runoffComponent(i, point, precip_override) {
@@ -1699,8 +1666,6 @@ var Erosion = function () {
     }
 
     function rusle(i, precip, point) {
-//        console.log(rainfallRunoffErosivityFactor(i), soilErodibilityFactor(i)/*, slopeLengthSteepnessFactor(i, point), coverManagementFactor(i, point), supportPracticeFactor(i, point)*/);
-//        console.log(rainfallRunoffErosivityFactor(i, precip));
         return rainfallRunoffErosivityFactor(i, precip) * soilErodibilityFactor(i) * slopeLengthSteepnessFactor(i, point) * coverManagementFactor(i, point) * supportPracticeFactor(i, point);
     }
 
@@ -1808,7 +1773,7 @@ var Erosion = function () {
                 else if (cover == 4) return 0.055;
             } else if (temp[i] != 1 || temp[i] != 2 || temp[i] != 3 || temp[i] != 4 || temp[i] != 15) {
                 if (cover == 1) return 0.085;
-                else if (cover == 2) return 0.052;
+                else if (cover == 2) return 0.02;
                 else if (cover == 3 || cover == 15) return 0.116;
                 else if (cover == 4) return 0.031;
             }
@@ -1829,9 +1794,7 @@ var Erosion = function () {
         var slopelimit = slopeLengthLimit(i),
             slopefactor = slopeLengthFactor(i),
             cover = (point != false) ? point : landcover[i];
-        //console.log(slopelimit, slopefactor, topography[i]);
         if (slopelimit != null) {
-            //console.log(slopelimit, slopefactor, topography[i]);
             if (cover == 2 || cover == 4) {
                 if (topography[i] > 1 && slopefactor <= slopelimit) return contourSubfactor(i) * terraceSubfactor(i);
                 else if (topography[i] > 1 && slopefactor > slopelimit) return ((slopelimit * contourSubfactor(i) * terraceSubfactor(i)) + (slopelimit - slopefactor)) / slopefactor;
@@ -1939,17 +1902,10 @@ var Erosion = function () {
         var hydrogroup = getHydrologicGroup(i),
             flowfactor = getFlowFactor(i);
         if (cover == 1 || cover == 3 || cover == 15) {
-            if (topography[i] == 0 || topography[i] == 1) {
-                if (hydrogroup == 'A') return 70;
-                else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 79;
-                else if (hydrogroup == 'C' && flowfactor == 0) return 84;
-                else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 88;
-            } else if (topography[i] >= 2) {
-                if (hydrogroup == 'A') return 72;
-                else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 81;
-                else if (hydrogroup == 'C' && flowfactor == 0) return 88;
-                else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 91;
-            }
+            if (hydrogroup == 'A') return 72;
+            else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 81;
+            else if (hydrogroup == 'C' && flowfactor == 0) return 88;
+            else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 91;
         } else if (cover == 2 || cover == 4) {
             if (topography[i] == 0 || topography[i] == 1 || topography[i] == 2 || topography[i] == 3) {
                 if (hydrogroup == 'A') return 64;
@@ -1964,15 +1920,15 @@ var Erosion = function () {
             }
         } else if (cover == 5) {
             if (topography[i] == 0 || topography[i] == 1 || topography[i] == 2 || topography[i] == 3) {
+                if (hydrogroup == 'A') return 58;
+                else if (hydrogroup == 'B') return 72;
+                else if (hydrogroup == 'C') return 81;
+                else if (hydrogroup == 'D' || hydrogroup == 'B/D') return 85;
+            } else if (topography[i] == 4 || topography[i] == 5) {
                 if (hydrogroup == 'A') return 55;
                 else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 69;
                 else if (hydrogroup == 'C' && flowfactor == 0) return 78;
                 else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 83;
-            } else if (topography[i] == 4 || topography[i] == 5) {
-                if (hydrogroup == 'A') return 58;
-                else if (hydrogroup == 'B') return 72;
-                else if (hydrogroup == 'C') return 81;
-                else if (hydrogroup == 'D') return 85;
             }
         } else if (cover == 6) {
             if (hydrogroup == 'A') return 68;
@@ -2174,7 +2130,7 @@ var Erosion = function () {
             if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 34;
             else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 39;
         } else if (cover == 15) {
-            return 1.95;
+            return 14.75;
         }
         return 0;
     } // For every land cover point
