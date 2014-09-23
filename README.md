@@ -1,8 +1,10 @@
 PE/WI - People in Ecosystems / Watershed Integration
 ====
-We are accepting pull requests!
+We are accepting [pull requests](https://help.github.com/articles/using-pull-requests)!
 
 PE/WI is a simple web-based educational game designed to assist people in multidimensional land-use decision-making. Players iteratively manipulate land cover annually for three years in a virtual 6000 acre watershed to design land use that meets their perceptions and goals for a well-functioning agricultural landscape. The model computes a variety of outputs, including nutrient pollution, stream sediment delivery, level of biodiversity, and agricultural production, which assist them in landscape design.
+
+A detailed project page can be found [here](http://www.nrem.iastate.edu/landscape/content/PEWI).
 
 #Quick Start
 * Clone this repo
@@ -10,7 +12,7 @@ PE/WI is a simple web-based educational game designed to assist people in multid
 * Enjoy!
 
 #Collaboration
-The `master` branch is used for active development and where pull requests should be made against.
+The `master` branch is used for active development and where pull requests should be made against. [Github provides extensive documentation that explains how to collaborate.](https://help.github.com/categories/63/articles)
 
 #Technologies
 - [jQuery](http://jquery.com/)
