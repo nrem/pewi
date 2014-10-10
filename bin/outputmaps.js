@@ -820,11 +820,11 @@ var Maps = function () {
         var keys = {
             TOPOGRAPHY: {
                 label: "Slope Range",
-                0: "0%",
+                0: "0 - 1%",
                 1: "1 - 2%",
                 2: "2 - 5%",
                 3: "5 - 9%",
-                4: "0 - 14%",
+                4: "9 - 14%",
                 5: "14 - 18%",
                 length: 6
             },
