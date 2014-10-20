@@ -12,7 +12,7 @@ A detailed project page can be found [here](http://www.nrem.iastate.edu/landscap
 * Enjoy!
 
 #Collaboration
-The `master` branch is used for active development and where pull requests should be made against. [Github provides extensive documentation that explains how to collaborate.](https://help.github.com/categories/63/articles)
+PEWI uses the Git Flow method of code collaboration which means that the `development` branch is reserved for active development. All pull requests should be made against the `development` branch! The `master` branch is reserved for 'stable' releases and contains merges from `development`. Github provides extensive [documentation](https://help.github.com/categories/collaborating/) that explains how to collaborate, and there is also a step-by-step [guide](https://guides.github.com/introduction/flow/) on how to operate in the Git Flow.
 
 #Technologies
 - [jQuery](http://jquery.com/)
