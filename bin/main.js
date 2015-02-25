@@ -818,7 +818,7 @@ var global = [
                 global.scoreDirector = new ScoreDirector();
                 global.scoreDirector.calculateOutputMapValues();
                 var options = {
-                    title: "Identifying Areas for Improvement",
+                    title: "Ecosystem Service Indicators",
                     width: "50em"
                 };
                 global.popup = new ModalView(options);
