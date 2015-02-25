@@ -1,6 +1,6 @@
-var backgroundImages = ["Background_Drought.png",
-    "Background_Normal.png",
-    "Background_Flood.png"];
+var backgroundImages = ["Background_Buildings_Drought.png",
+    "Background_Buildings_Normal.png",
+    "Background_Buildings_Flood.png"];
 
 var colorsForLandCoverGrid = ["rgba(63, 140, 191, 0.8)",
     "#543005",
