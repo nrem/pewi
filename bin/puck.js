@@ -202,7 +202,7 @@ function togglePuk(type, coords) {
                     y: center.y + 50,
                     width: 84,
                     id: "corn-landcover",
-                    url: "images/toolbar_icons_bitmaps/Icon_Corn.png",
+                    url: "images/toolbar_icons_bitmaps/Icon_Conventional_Corn.png",
                     val: 1
                 },
                 ccorn: {
@@ -220,7 +220,7 @@ function togglePuk(type, coords) {
                     y: center.y - 20,
                     width: 150,
                     id: "soybean-landcover",
-                    url: "images/toolbar_icons_bitmaps/Icon_Soybean.png",
+                    url: "images/toolbar_icons_bitmaps/Icon_Conventional_Soybean.png",
                     val: 3
                 },
                 csoybean: {
@@ -247,7 +247,7 @@ function togglePuk(type, coords) {
                     y: center.y - 115,
                     width: 150,
                     id: "fruitveggie-landcover",
-                    url: "images/toolbar_icons_bitmaps/Icon_Mixed_Fruit_and_Vegetable.png",
+                    url: "images/toolbar_icons_bitmaps/Icon_Mixed_Fruits_and_Vegetables.png",
                     val: 6
                 },
                 hay: {
@@ -256,7 +256,7 @@ function togglePuk(type, coords) {
                     y: center.y - 145,
                     width: 150,
                     id: "hay-landcover",
-                    url: "images/toolbar_icons_bitmaps/Icon_Hay.png",
+                    url: "images/toolbar_icons_bitmaps/Icon_Grass_Hay.png",
                     val: 7
                 },
                 hbio: {
@@ -265,7 +265,7 @@ function togglePuk(type, coords) {
                     y: center.y - 115,
                     width: 150,
                     id: "herbbioenergy-landcover",
-                    url: "images/toolbar_icons_bitmaps/Icon_Herbaceous_Bioenergy.png",
+                    url: "images/toolbar_icons_bitmaps/Icon_Herbaceous_Perennial_Bioenergy.png",
                     val: 8
                 },
                 ppasture: {
