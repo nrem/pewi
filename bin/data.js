@@ -95,10 +95,10 @@ var indexColors = ["#99CC00",
     "#CC0000"];
 
 var landcovers = ["None",
-    "Corn",
+    "Conventional Corn",
     "Conservation Corn",
-    "Soybeans",
-    "Conservation Soybeans",
+    "Conventional Soybean",
+    "Conservation Soybean",
     "Alfalfa",
     "Permanent Pasture",
     "Rotational Grazing",
@@ -106,10 +106,10 @@ var landcovers = ["None",
     "Prairie",
     "Conservation Forest",
     "Conventional Forest",
-    "Herbaceous Bioenergy",
-    "Woody Bioenergy",
+    "Herbaceous Perennial Bioenergy",
+    "Short-rotation Woody Bioenergy",
     "Wetlands",
-    "Mixed Fruit & Vegetables"
+    "Mixed Fruits and Vegetables"
 ];
 
 var physicalFeatureIcons = [];
