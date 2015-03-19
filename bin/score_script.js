@@ -1,20 +1,20 @@
 var dataset = [
-    {    Metric: 'Corn Yield', Year1: 0, Year2: 0, Year3: 0, weight: 2},
-    {    Metric: 'Soybean Yield', Year1: 0, Year2: 0, Year3: 0, weight: 7},
-    {    Metric: 'Alfalfa Yield', Year1: 0, Year2: 0, Year3: 0, weight: 0},
-    {    Metric: 'Hay Yield', Year1: 0, Year2: 0, Year3: 0, weight: 3},
-    {    Metric: 'Timber Production', Year1: 0, Year2: 0, Year3: 0, weight: 8},
-    {    Metric: 'Cattle Supported', Year1: 0, Year2: 0, Year3: 0, weight: 1},
-    {    Metric: 'Mixed Fruit and Vegetable Yield', Year1: 0, Year2: 0, Year3: 0, weight: 5},
+    {    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0, weight: 15},
+    {    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0, weight: 13},
+    {    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0, weight: 14},
+    {    Metric: 'Erosion Control', resultsLabel: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0, weight: 9},//check
     {    Metric: 'Nitrate Pollution Control', resultsLabel: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0, weight: 12},
     {    Metric: 'Phosphorus Pollution Control', resultsLabel: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0, weight: 10},//check
-    {    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0, weight: 15},
-    {    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0, weight: 14},
-    {    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0, weight: 13},
     {    Metric: 'Sediment Control', resultsLabel: 'Sediment Control / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0, weight: 11},//check
-    {    Metric: 'Erosion Control', resultsLabel: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0, weight: 9},//check
-    {    Metric: 'Herbaceous Perennial Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0, weight: 4},//check
-    {    Metric: 'Short-rotation Woody Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0, weight: 6}//check
+    {    Metric: 'Alfalfa Hay', Year1: 0, Year2: 0, Year3: 0, weight: 0},
+    {    Metric: 'Cattle', Year1: 0, Year2: 0, Year3: 0, weight: 1},
+    {    Metric: 'Corn Grain', Year1: 0, Year2: 0, Year3: 0, weight: 2},
+    {    Metric: 'Grass Hay', Year1: 0, Year2: 0, Year3: 0, weight: 3},
+    {    Metric: 'Herbaceous Perennial Biomass', Year1: 0, Year2: 0, Year3: 0, weight: 4},//check
+    {    Metric: 'Mixed Fruits and Vegetables', Year1: 0, Year2: 0, Year3: 0, weight: 5}, 
+    {    Metric: 'Short-rotation Woody Biomass', Year1: 0, Year2: 0, Year3: 0, weight: 6},//check
+    {    Metric: 'Soybeans', Year1: 0, Year2: 0, Year3: 0, weight: 7},
+    {    Metric: 'Wood', Year1: 0, Year2: 0, Year3: 0, weight: 8},
 ];
 
 var units = {
