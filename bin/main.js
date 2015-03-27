@@ -624,6 +624,7 @@ var global = [
             global.popup.append('<p>For more information: <a href="http://www.nrem.iastate.edu/landscape/content/pewi" target="_newtab">Click Here</a></p>');
             global.popup.append('<p>PE/WI <a href="https://www.nrem.iastate.edu/landscape/files/Schulte%20et%20al.%20PEWI%20v2%20Exercises.pdf" target="_newtab">Lesson Plans</a></p>');
             global.popup.append('<p>PE/WI <a href="https://www.nrem.iastate.edu/landscape/files/PEWIv2%20User%20Guide.pdf" target="_newtab">User Guide</a></p>');
+            global.popup.append('<p>Want to contribute?</p><p>PE/WI is open-source and can be contributed to at <a href="https://github.com/nrem/pewi">https://github.com/nrem/pewi</a>.</p>');
             global.popup.display();
         });
 
