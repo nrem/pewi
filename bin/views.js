@@ -253,21 +253,21 @@ var PrintView = function () {
     var indexTotals = {1:0, 2:0, 3:0},
         d = [];
 
-    for (var i = 0; i < dataset.length; i++) {
+    for (var i in dataset) {
         var obj = {};
         obj.label = (dataset[i].resultsLabel) ? dataset[i].resultsLabel : dataset[i].Metric;
         obj.score1 = Math.round(dataset[i].Year1 * 10) / 10;
         obj.score2 = Math.round(dataset[i].Year2 * 10) / 10;
         obj.score3 = Math.round(dataset[i].Year3 * 10) / 10;
-        obj.val1 = (Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.dict_to_english_factor[i] * 10)) / 10);
-        obj.val2 = (Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.dict_to_english_factor[i] * 10)) / 10);
-        obj.val3 = (Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.dict_to_english_factor[i] * 10)) / 10);
-        obj.valcvt1 = (Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * units.english_to_metric_factor[i] * 10)) / 10);
-        obj.valcvt2 = (Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * units.english_to_metric_factor[i] * 10)) / 10);
-        obj.valcvt3 = (Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * units.english_to_metric_factor[i] * 10)) / 10);
+        obj.val1 = (Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * dataset[i].to_english_factor * 10)) / 10);
+        obj.val2 = (Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * dataset[i].to_english_factor * 10)) / 10);
+        obj.val3 = (Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * dataset[i].to_english_factor * 10)) / 10);
+        obj.valcvt1 = (Math.round((((dataset[i].Value1) ? dataset[i].Value1 : 0) * dataset[i].to_metric_factor * 10)) / 10);
+        obj.valcvt2 = (Math.round((((dataset[i].Value2) ? dataset[i].Value2 : 0) * dataset[i].to_metric_factor * 10)) / 10);
+        obj.valcvt3 = (Math.round((((dataset[i].Value3) ? dataset[i].Value3 : 0) * dataset[i].to_metric_factor * 10)) / 10);
         obj.weight = dataset[i].weight;
-        obj.english = units.english[i];
-        obj.metric = units.metric[i];
+        obj.english = dataset[i].units_english;
+        obj.metric = dataset[i].units_metric;
         d.push(obj);
     }
 
