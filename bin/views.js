@@ -367,16 +367,18 @@ var PrintView = function () {
     // Strategic Wetland Placement
     var strategicWetlandRow = otherMetrics.append("tr")
         .attr("class", "odd border-top");
-    strategicWetlandRow.append("td").append("a").text("Strategic Wetland out of " + global.strategicWetland[1].possible);
+    strategicWetlandRow.append("td").append("a").text("Strategic Wetland: out of " + global.strategicWetland[1].possible);
     strategicWetlandRow.append("td").attr("class", "results-cell");
     strategicWetlandRow.append("td").attr("class", "results-cell");
     strategicWetlandRow.append("td").attr("class", "results-cell");
     strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0 && global.strategicWetland[1]) ? global.strategicWetland[1].actual : 0);
     strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0 && global.strategicWetland[2]) ? global.strategicWetland[2].actual : 0);
     strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0 && global.strategicWetland[3]) ? global.strategicWetland[3].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell condensed");
     strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[1] !== 0 && global.strategicWetland[1]) ? global.strategicWetland[1].actual : 0);
     strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[2] !== 0 && global.strategicWetland[2]) ? global.strategicWetland[2].actual : 0);
     strategicWetlandRow.append("td").attr("class", "results-cell").append("a").text((global.data[3] !== 0 && global.strategicWetland[3]) ? global.strategicWetland[3].actual : 0);
+    strategicWetlandRow.append("td").attr("class", "results-cell condensed");
 
     // Precipitation
     var precipitationRow = otherMetrics.append("tr")
@@ -386,12 +388,14 @@ var PrintView = function () {
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[1]).append("a").style("opacity", 0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[2]).append("a").style("opacity", 0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[3]).append("a").style("opacity", 0.5).text(" in");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[1] * 2.54 * 10) / 10).append("a").style("opacity", 0.5).text(" cm");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[2] * 2.54 * 10) / 10).append("a").style("opacity", 0.5).text(" cm");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[3] * 2.54 * 10) / 10).append("a").style("opacity", 0.5).text(" cm");
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[1]);
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[2]);
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[3]);
+    precipitationRow.append("td").attr("class", "results-cell condensed").text('in');
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[1] * 2.54 * 10) / 10);
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[2] * 2.54 * 10) / 10);
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[3] * 2.54 * 10) / 10);
+    precipitationRow.append("td").attr("class", "results-cell condensed").text('cm');
 
     ///////////////////////////////////////////////////
     // Indicator Table ////////////////////////////////
