@@ -8,10 +8,13 @@ The application can be viewed [here](http://www.nrem.iastate.edu/pewi/app/).
 
 A detailed project page can be found [here](http://www.nrem.iastate.edu/landscape/content/PEWI).
 
-#Quick Start
-* Clone this repo
-* Open `index.html` in your favorite browser
-* Enjoy!
+#Installation
+Stop! If your goal is to simply use the application, you can do so [here](http://www.nrem.iastate.edu/pewi/app/)!
+
+If you would like to install the application onto your computer, you can do so by:
+* [Downloading this code](https://github.com/nrem/pewi/archive/master.zip)
+* Extracting to a directory of your choosing (ideally in the path of a web server)
+* Opening `index.html` in your favorite browser (or browsing to the root of the directory if using a web server)
 
 #Collaboration
 PEWI uses the Git Flow method of code collaboration which means that the `development` branch is reserved for active development. All pull requests should be made against the `development` branch! The `master` branch is reserved for 'stable' releases and contains merges from `development`. Github provides extensive [documentation](https://help.github.com/categories/collaborating/) that explains how to collaborate, and there is also a step-by-step [guide](https://guides.github.com/introduction/flow/) on how to operate in the Git Flow.
