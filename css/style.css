@@ -1057,7 +1057,19 @@ iframe {
 }
 
 .square-paint-toggle {
-	width: 1.1em;
+	width: 100%;
+}
+
+.freeform-paint-toggle {
+    display: none;
+}
+
+[selected="selected"] .square-paint-toggle {
+    display: none;
+}
+
+[selected="selected"] .freeform-paint-toggle {
+    display: block;
 }
 
 /*------ Download/Upload -----------*/
