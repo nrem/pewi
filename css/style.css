@@ -1077,3 +1077,15 @@ iframe {
     position: absolute;
     background: url("../images/icons/bg-tile.png");
 }
+
+.pull-right {
+    float:right;
+}
+
+.list-unstyled {
+    list-style: none;
+}
+
+.list-inline li {
+    display: inline-block;
+}

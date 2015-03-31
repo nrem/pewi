@@ -25,7 +25,9 @@ var ModalView = function (options) {
 
 	    $("#popup-container-head").append("<a>" + this.title + "</a>");
 
-	    $("#popup-container-head").append('<img src="' + close_button_url + '" class="popup-window-close-button" id="popup-container-head-close-button">');
+	    $("#popup-container-head").append('<ul class="popup-window-tools pull-right list-unstyled list-inline">'+
+            ((options.tools)?'<li title="Printing coming soon!"><img src="' + options.tools[0].icon + '" class="popup-window-print-button" id="'+options.tools[0].id+'"></li>':'')+
+            '<li><img src="' + close_button_url + '" class="popup-window-close-button" id="popup-container-head-close-button"></li></ul>');
 	    $container.append('<div id="popup-container-body" class="popup-window-body"></div>');
 	    $body = $("#popup-container-body");
 
@@ -114,7 +116,8 @@ var ModalView = function (options) {
 var PrintView = function () {
     var options = {
             width: "9.5in",
-            title: "PE/WI Results"
+            title: "PE/WI Results",
+            tools:[{id:'print',icon:'images/icons/Button_Print.svg'}]
         },
         modal = new ModalView(options),
         HECTARES = 0.404686;
