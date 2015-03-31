@@ -285,11 +285,10 @@ input[type="file"] {
 
 #year-transition-label {
     float:right;
-    transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    width: 5em;
-    height: 1.5em;
+    width: 40px;
+    text-align: center;
+    font-size: 12px;
+    padding: 5px 0;
 }
 
 #year-transition-label a {
