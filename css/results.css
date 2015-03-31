@@ -1,13 +1,25 @@
 .results-table {
     width: 100%;
-    font-size: 0.75em;
+    font-size: 11px;
     margin-top: 20px;
+}
+
+.results-table tbody {
+    border-bottom: 2px solid #999;
+}
+
+.results-table.hover tbody tr:hover {
+    background-color: rgba(0,0,0,0.1);
 }
 
 .results-cell {
     width: 6em;
     text-align: right;
 	font-family: arial;
+}
+
+.results-cell.condensed {
+  width: 40px;
 }
 
 .odd {

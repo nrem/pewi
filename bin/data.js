@@ -94,22 +94,23 @@ var indexColors = ["#99CC00",
     "#FF6600",
     "#CC0000"];
 
-var landcovers = ["None",
-    "Corn",
-    "Conservation Corn",
-    "Soybeans",
-    "Conservation Soybeans",
-    "Alfalfa",
-    "Permanent Pasture",
-    "Rotational Grazing",
-    "Grass Hay",
-    "Prairie",
-    "Conservation Forest",
-    "Conventional Forest",
-    "Herbaceous Bioenergy",
-    "Woody Bioenergy",
-    "Wetlands",
-    "Mixed Fruit & Vegetables"
+var landcovers = [
+    "None",                             // 0
+    "Conventional Corn",                // 1
+    "Conservation Corn",                // 2
+    "Conventional Soybean",             // 3
+    "Conservation Soybean",             // 4
+    "Alfalfa",                          // 5
+    "Permanent Pasture",                // 6
+    "Rotational Grazing",               // 7
+    "Grass Hay",                        // 8
+    "Prairie",                          // 9
+    "Conservation Forest",              // 10
+    "Conventional Forest",              // 11
+    "Herbaceous Perennial Bioenergy",   // 12
+    "Short-rotation Woody Bioenergy",   // 13
+    "Wetland",                          // 14
+    "Mixed Fruits & Vegetables"         // 15
 ];
 
 var physicalFeatureIcons = [];

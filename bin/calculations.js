@@ -198,46 +198,46 @@ var Yield = function () {
         yieldPrecipitationMultiplier = getYieldPrecipitationMultiplier(i);
         // Corn Yield
         setCornYield(i);
-        global.landcovers[year]["Corn"].area += (landcover[i] == 1) ? datapointarea[i] : 0;
-        global.landcovers[year]["Conservation Corn"].area += (landcover[i] == 2) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[1]].area += (landcover[i] == 1) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[2]].area += (landcover[i] == 2) ? datapointarea[i] : 0;
 
         // Soy Yield
         setSoyYield(i);
-        global.landcovers[year]["Soybeans"].area += (landcover[i] == 3) ? datapointarea[i] : 0;
-        global.landcovers[year]["Conservation Soybeans"].area += (landcover[i] == 4) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[3]].area += (landcover[i] == 3) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[4]].area += (landcover[i] == 4) ? datapointarea[i] : 0;
 
         // Alfalfa Yield
         setAlfalfaYield(i);
-        global.landcovers[year]["Alfalfa"].area += (landcover[i] == 5) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[5]].area += (landcover[i] == 5) ? datapointarea[i] : 0;
 
         // GrassHay Yield
         setGrassHayYield(i);
-        global.landcovers[year]["Grass Hay"].area += (landcover[i] == 8) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[8]].area += (landcover[i] == 8) ? datapointarea[i] : 0;
 
         // Timer Yield
         setTimberYield(i);
-        global.landcovers[year]["Conventional Forest"].area += (landcover[i] == 11) ? datapointarea[i] : 0;
-        global.landcovers[year]["Conservation Forest"].area += (landcover[i] == 10) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[11]].area += (landcover[i] == 11) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[10]].area += (landcover[i] == 10) ? datapointarea[i] : 0;
 
         // Cattle Yield
         setCattleYield(i);
-        global.landcovers[year]["Permanent Pasture"].area += (landcover[i] == 6) ? datapointarea[i] : 0;
-        global.landcovers[year]["Rotational Grazing"].area += (landcover[i] == 7) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[6]].area += (landcover[i] == 6) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[7]].area += (landcover[i] == 7) ? datapointarea[i] : 0;
 
         // Herbaceous Bioenergy Yield
         setHerbaceousBioenergyYield(i);
-        global.landcovers[year]["Herbaceous Bioenergy"].area += (landcover[i] == 12) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[12]].area += (landcover[i] == 12) ? datapointarea[i] : 0;
 
         // Woody Bioenergy Yield
         setWoodyBioenergyYield(i);
-        global.landcovers[year]["Woody Bioenergy"].area += (landcover[i] == 13) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[13]].area += (landcover[i] == 13) ? datapointarea[i] : 0;
 
         // Wetland Yield
-        global.landcovers[year]["Wetlands"].area += (landcover[i] == 14) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[14]].area += (landcover[i] == 14) ? datapointarea[i] : 0;
 
         // FruitVeggie Yield
         setFruitVeggieYield(i);
-        global.landcovers[year]["Mixed Fruit & Vegetables"].area += (landcover[i] == 15) ? datapointarea[i] : 0;
+        global.landcovers[year][landcovers[15]].area += (landcover[i] == 15) ? datapointarea[i] : 0;
         // Results calculations
 //        global.results[year].yield.corn_percent += (data[i] == 1) ? area
     };
@@ -245,56 +245,56 @@ var Yield = function () {
         // Corn Yield
         dataset['corn']["Value" + year] = yieldVals[year].corn.val;
         dataset['corn']["Year" + year] = 100 * (yieldVals[year].corn.val / yieldVals[year].corn.max);
-        global.landcovers[year]["Corn"].percent = global.landcovers[year]["Corn"].area / watershedArea * 100;
-        global.landcovers[year]["Conservation Corn"].percent = global.landcovers[year]["Conservation Corn"].area / watershedArea * 100;
+        global.landcovers[year][landcovers[1]].percent = global.landcovers[year][landcovers[1]].area / watershedArea * 100;
+        global.landcovers[year][landcovers[2]].percent = global.landcovers[year][landcovers[2]].area / watershedArea * 100;
 
         // Soy Yield
         dataset['soybean']["Value" + year] = yieldVals[year].soybean.val;
         yieldVals[year].soybean.index = 100 * (yieldVals[year].soybean.val / yieldVals[year].soybean.max);
         dataset['soybean']["Year" + year] = yieldVals[year].soybean.index;
-        global.landcovers[year]["Soybeans"].percent = global.landcovers[year]["Soybeans"].area / watershedArea * 100;
-        global.landcovers[year]["Conservation Soybeans"].percent = global.landcovers[year]["Conservation Soybeans"].area / watershedArea * 100;
+        global.landcovers[year][landcovers[3]].percent = global.landcovers[year][landcovers[3]].area / watershedArea * 100;
+        global.landcovers[year][landcovers[4]].percent = global.landcovers[year][landcovers[4]].area / watershedArea * 100;
 
         // Alfalfa Yield
         dataset['alfalfa']["Value" + year] = yieldVals[year].alfalfa.val;
         yieldVals[year].alfalfa.index = 100 * (yieldVals[year].alfalfa.val / yieldVals[year].alfalfa.max);
         dataset['alfalfa']["Year" + year] = yieldVals[year].alfalfa.index;
-        global.landcovers[year]["Alfalfa"].percent = global.landcovers[year]["Alfalfa"].area / watershedArea * 100;
+        global.landcovers[year][landcovers[5]].percent = global.landcovers[year][landcovers[5]].area / watershedArea * 100;
 
         // GrassHay Yield
         dataset['hay']["Value" + year] = yieldVals[year].grass.val;
         yieldVals[year].grass.index = 100 * (yieldVals[year].grass.val / yieldVals[year].grass.max);
         dataset['hay']["Year" + year] = yieldVals[year].grass.index;
-        global.landcovers[year]["Grass Hay"].percent = global.landcovers[year]["Grass Hay"].area / watershedArea * 100;
+        global.landcovers[year][landcovers[8]].percent = global.landcovers[year][landcovers[8]].area / watershedArea * 100;
 
         // Timer Yield
         dataset['timber']["Value" + year] = yieldVals[year].timber.val;
         yieldVals[year].timber.index = 100 * (yieldVals[year].timber.val / yieldVals[year].timber.max);
         dataset['timber']["Year" + year] = yieldVals[year].timber.index;
-        global.landcovers[year]["Conventional Forest"].percent = global.landcovers[year]["Conventional Forest"].area / watershedArea * 100;
-        global.landcovers[year]["Conservation Forest"].percent = global.landcovers[year]["Conservation Forest"].area / watershedArea * 100;
+        global.landcovers[year][landcovers[11]].percent = global.landcovers[year][landcovers[11]].area / watershedArea * 100;
+        global.landcovers[year][landcovers[10]].percent = global.landcovers[year][landcovers[10]].area / watershedArea * 100;
 
         // Cattle
         dataset['cattle']["Value" + year] = yieldVals[year].cattle.val;
         yieldVals[year].cattle.index = 100 * (yieldVals[year].cattle.val / yieldVals[year].cattle.max);
         dataset['cattle']["Year" + year] = yieldVals[year].cattle.index;
-        global.landcovers[year]["Permanent Pasture"].percent = global.landcovers[year]["Permanent Pasture"].area / watershedArea * 100;
-        global.landcovers[year]["Rotational Grazing"].percent = global.landcovers[year]["Rotational Grazing"].area / watershedArea * 100;
+        global.landcovers[year][landcovers[6]].percent = global.landcovers[year][landcovers[6]].area / watershedArea * 100;
+        global.landcovers[year][landcovers[7]].percent = global.landcovers[year][landcovers[7]].area / watershedArea * 100;
 
         // Herbaceous Bioenergy Yield
         dataset['herbaceous']["Value" + year] = yieldVals[year].herb.val;
         dataset['herbaceous']["Year" + year] = 100 * (yieldVals[year].herb.val / yieldVals[year].herb.max);
-        global.landcovers[year]["Herbaceous Bioenergy"].percent = global.landcovers[year]["Herbaceous Bioenergy"].area / watershedArea * 100;
+        global.landcovers[year][landcovers[12]].percent = global.landcovers[year][landcovers[12]].area / watershedArea * 100;
 
         // Woody Bioenergy Yield
         dataset['woody']["Value" + year] = yieldVals[year].woody.val;
         dataset['woody']["Year" + year] = 100 * (yieldVals[year].woody.val / yieldVals[year].woody.max);
-        global.landcovers[year]["Woody Bioenergy"].percent = global.landcovers[year]["Woody Bioenergy"].area / watershedArea * 100;
+        global.landcovers[year][landcovers[13]].percent = global.landcovers[year][landcovers[13]].area / watershedArea * 100;
 
         // FruitVeggie Yield
         dataset['mixed']["Value" + year] = yieldVals[year].fruitveggie.val;
         dataset['mixed']["Year" + year] = 100 * (yieldVals[year].fruitveggie.val / yieldVals[year].fruitveggie.max);
-        global.landcovers[year]["Mixed Fruit & Vegetables"].percent = global.landcovers[year]["Mixed Fruit & Vegetables"].area / watershedArea * 100;
+        global.landcovers[year][landcovers[15]].percent = global.landcovers[year][landcovers[15]].area / watershedArea * 100;
 
     };
 

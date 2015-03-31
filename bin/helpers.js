@@ -253,20 +253,20 @@ function log10(x) {
  * @param year
  */
 function resetLandCoverValuesAreasFor(year) {
-    global.landcovers[year]["Corn"].area = 0;
-    global.landcovers[year]["Conservation Corn"].area = 0;
-    global.landcovers[year]["Soybeans"].area = 0;
-    global.landcovers[year]["Conservation Soybeans"].area = 0;
-    global.landcovers[year]["Alfalfa"].area = 0;
-    global.landcovers[year]["Grass Hay"].area = 0;
-    global.landcovers[year]["Conventional Forest"].area = 0;
-    global.landcovers[year]["Conservation Forest"].area = 0;
-    global.landcovers[year]["Permanent Pasture"].area = 0;
-    global.landcovers[year]["Rotational Grazing"].area = 0;
-    global.landcovers[year]["Herbaceous Bioenergy"].area = 0;
-    global.landcovers[year]["Woody Bioenergy"].area = 0;
-    global.landcovers[year]["Wetlands"].area = 0;
-    global.landcovers[year]["Mixed Fruit & Vegetables"].area = 0;
+    global.landcovers[year][landcovers[1]].area = 0;
+    global.landcovers[year][landcovers[2]].area = 0;
+    global.landcovers[year][landcovers[3]].area = 0;
+    global.landcovers[year][landcovers[4]].area = 0;
+    global.landcovers[year][landcovers[5]].area = 0;
+    global.landcovers[year][landcovers[8]].area = 0;
+    global.landcovers[year][landcovers[11]].area = 0;
+    global.landcovers[year][landcovers[10]].area = 0;
+    global.landcovers[year][landcovers[6]].area = 0;
+    global.landcovers[year][landcovers[7]].area = 0;
+    global.landcovers[year][landcovers[12]].area = 0;
+    global.landcovers[year][landcovers[13]].area = 0;
+    global.landcovers[year][landcovers[14]].area = 0;
+    global.landcovers[year][landcovers[15]].area = 0;
 }
 
 function closeAllRemovableDisplays() {
