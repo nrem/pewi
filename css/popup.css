@@ -33,17 +33,22 @@
     font-size: 1.7em;
 }
 
+.popup-window-tools {
+    margin:0;
+}
+
 .popup-window-close-button {
-    width: 2.5em;
     height: 2.5em;
-    position: absolute;
-    right: 0;
-    top: 0;
 }
 
 .popup-window-teaser-close-button {
 	width: 1em;
 	height: 1em;
+}
+
+.popup-window-print-button {
+    opacity: 0.5;
+    cursor: no-drop;
 }
 
 .popup-window-close-button:hover {
