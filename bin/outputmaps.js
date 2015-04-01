@@ -38,7 +38,7 @@ var OutputMap = function (options) {
                 return retColor(i);
             })
             .attr("id", function () {
-                return wp[subwatershed[i]];
+                return wp[subwatershed[i]] * 100;
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
@@ -54,7 +54,7 @@ var OutputMap = function (options) {
                     y = parseInt($this.attr('y')),
                     id = parseFloat($this.attr('id'));
                 d3.select('#nitrate-svg-' + d3.select(this).attr('year')).append('text')
-                    .text(Math.round(id * 1000) / 1000)
+                    .text((Math.round(id * 1000) / 1000) + '%')
                     .attr('x', x + cellWidth + 5)
                     .attr('y', y + 18)
                     .style('font-size', 15)
