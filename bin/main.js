@@ -417,8 +417,8 @@ var global = [
 
                 global.hud = new HUDManager();
                 var $main = $('#main');
-                global.hud.addHUDItem($main, '<div class="menu-button-container" id="credits-container" title="About PE/WI"><img src="images/icons/navigation/credits_button.svg" class="credits-button-img menu-item" alt="i"></div>', {visible: true});
-                global.hud.addHUDItem($main, '<section id="infobox-container"><div id="info"><a>PE/WI</a><a id="version-tag">BETA</a></div></section>');
+                global.hud.addHUDItem($main, '<div class="menu-button-container" id="credits-container" title="About PEWI"><img src="images/icons/navigation/credits_button.svg" class="credits-button-img menu-item" alt="i"></div>', {visible: true});
+                global.hud.addHUDItem($main, '<section id="infobox-container"><div id="info"><a>PEWI</a><a id="version-tag">BETA</a></div></section>');
                 if(!global.compatibility.istouchable()) {
                     global.hud.addHUDItem($('#square-paint'), '<div class="menu-button-container" id="paint-selection-tool-container" title="Rectangular Selection Tool"><img src="images/icons/Button_Rectangular_Selection_Tool.svg" class="square-paint-toggle menu-item" alt="sqr"><img src="images/icons/Button_Brush_Tool.svg" class="freeform-paint-toggle menu-item" alt="sqr"></div>');
                 }
@@ -447,7 +447,7 @@ var global = [
         function addDownloadUploadButton($container) {
             if (!global.compatibility.file_api) return;
 
-            global.hud.addHUDItem($('#main'), '<div class="menu-button-container" id="download-upload-container" title="Download/Upload PE/WI datasets"><a id="download-upload-button" class="menu-item">&#8595;</a></div>');
+            global.hud.addHUDItem($('#main'), '<div class="menu-button-container" id="download-upload-container" title="Download/Upload PEWI datasets"><a id="download-upload-button" class="menu-item">&#8595;</a></div>');
 
             $("#download-upload-button").bind(global.selectClickType, function () {
                 global.sm.consumeEvent(global.sm.goto.POPUP);
@@ -613,18 +613,18 @@ var global = [
             var options = {
                 width: SCREEN.width / 2,
                 height: SCREEN.height / 2,
-                title: "About PE/WI"
+                title: "About PEWI"
             };
             global.popup = new ModalView(options);
-            global.popup.append('<p>People in Ecosystems/Watershed Integration (PE/WI) is a simple learning tool designed to provide a scientific platform for teaching, discussing, and evaluating the trade-offs associated with agricultural land-use and management.</p>');
+            global.popup.append('<p>People in Ecosystems/Watershed Integration (PEWI) is a simple learning tool designed to provide a scientific platform for teaching, discussing, and evaluating the trade-offs associated with agricultural land-use and management.</p>');
             global.popup.append('<p><strong>Project Team</strong></p>');
             global.popup.append('<p>Lisa Schulte Moore, Carrie Chennault, Ryan Frahm, Laura Roy, John Tyndall, & John VanDyk<br />Iowa State University, Department of Natural Resource Ecology & Management</p>');
             global.popup.append('<p><strong>Acknowledgements</strong></p>');
-            global.popup.append('<p>The development of PE/WI was supported by grants from the McKnight Foundation and US Forest Service Northern Research Station.  We would also like to thank Cindy Cambardella, Justin Choe, Diane Debinski, Emily Heaton, Matt Helmers, Tom Isenhart, Matt Liebman, John VanDyk, members of the ISU Landscape Ecology & Sustainable Ecosystem Management lab,  and the Natural Capital Project for contributions to PE/WIs development and review.</p>');
+            global.popup.append('<p>The development of PEWI was supported by grants from the McKnight Foundation and US Forest Service Northern Research Station.  We would also like to thank Cindy Cambardella, Justin Choe, Diane Debinski, Emily Heaton, Matt Helmers, Tom Isenhart, Matt Liebman, John VanDyk, members of the ISU Landscape Ecology & Sustainable Ecosystem Management lab,  and the Natural Capital Project for contributions to PEWIs development and review.</p>');
             global.popup.append('<p>For more information: <a href="http://www.nrem.iastate.edu/landscape/content/pewi" target="_newtab">Click Here</a></p>');
-            global.popup.append('<p>PE/WI <a href="https://www.nrem.iastate.edu/landscape/files/Schulte%20et%20al.%20PEWI%20v2%20Exercises.pdf" target="_newtab">Lesson Plans</a></p>');
-            global.popup.append('<p>PE/WI <a href="https://www.nrem.iastate.edu/landscape/files/PEWIv2%20User%20Guide.pdf" target="_newtab">User Guide</a></p>');
-            global.popup.append('<p>Want to contribute?</p><p>PE/WI is open-source and can be contributed to at <a href="https://github.com/nrem/pewi">https://github.com/nrem/pewi</a>.</p>');
+            global.popup.append('<p>PEWI <a href="https://www.nrem.iastate.edu/landscape/files/Schulte%20et%20al.%20PEWI%20v2%20Exercises.pdf" target="_newtab">Lesson Plans</a></p>');
+            global.popup.append('<p>PEWI <a href="https://www.nrem.iastate.edu/landscape/files/PEWIv2%20User%20Guide.pdf" target="_newtab">User Guide</a></p>');
+            global.popup.append('<p>Want to contribute?</p><p>PEWI is open-source and can be contributed to at <a href="https://github.com/nrem/pewi">https://github.com/nrem/pewi</a>.</p>');
             global.popup.display();
         });
 

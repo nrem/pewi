@@ -116,7 +116,7 @@ var ModalView = function (options) {
 var PrintView = function () {
     var options = {
             width: "9.5in",
-            title: "PE/WI Results",
+            title: "PEWI Results",
             tools:[{id:'print',icon:'images/icons/Button_Print.svg'}]
         },
         modal = new ModalView(options),
