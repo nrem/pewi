@@ -97,7 +97,7 @@ var OutputMap = function (options) {
                 return retColor(i);
             })
             .attr("id", function () {
-                return grossErosionData[i];
+                return global.erosion[year][i];
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
@@ -113,7 +113,7 @@ var OutputMap = function (options) {
                     y = parseInt($this.attr('y')),
                     id = parseFloat($this.attr('id'));
                 d3.select('#erosion-svg-' + d3.select(this).attr('year')).append('text')
-                    .text(Math.round(id * 1000) / 1000)
+                    .text((Math.round(id * 1000) / 1000) + ' tons/ac')
                     .attr('x', x + cellWidth + 5)
                     .attr('y', y + 18)
                     .style('font-size', 15)
@@ -136,6 +136,7 @@ var OutputMap = function (options) {
     function drawRiskAssessmentCell(i, year, interactive) {
         if(global.riskAssessment[year].length == 0) return;
         var riskAssessmentData = global.riskAssessment[year];
+        console.log(global);
         var r = riskAssessment.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
@@ -149,7 +150,7 @@ var OutputMap = function (options) {
                 return retColor(i);
             })
             .attr("id", function () {
-                return riskAssessmentData[i];
+                return (Math.round(global.pindex[year][i] * 100) / 100);
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
@@ -165,7 +166,7 @@ var OutputMap = function (options) {
                     y = parseInt($this.attr('y')),
                     id = $this.attr('id');
                 d3.select('#risk-assessment-svg-' + d3.select(this).attr('year')).append('text')
-                    .text(id)
+                    .text(id + ' lb/ac')
                     .attr('x', x + cellWidth + 5)
                     .attr('y', y + 18)
                     .style('font-size', 15)

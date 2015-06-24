@@ -1539,8 +1539,10 @@ var Erosion = function () {
         var val = getGrossErosion(i);
         global.grossErosionSeverity[year][i] = getGrossErosionSeverity(i, val);
         global.grossErosion[year] += val;
+        global.erosion[year][i] = val;
         val = phosphorusIndex(i, false, global.data.precipitation[year]);
         pIndex += val;
+        global.pindex[year][i] = val;
         global.riskAssessment[year][i] = pIndexRiskAssessment(val);
         global.phosphorusLoad[year] += val * datapointarea[i] / 2000;
 //		console.log(val*datapointarea[i]/2000);

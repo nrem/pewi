@@ -385,6 +385,12 @@ var global = [
                     3: []
                 };
 
+                global.erosion = {
+                    1: [],
+                    2: [],
+                    3: []
+                };
+
                 global.grossErosionSeverity = {
                     1: [],
                     2: [],
@@ -392,6 +398,12 @@ var global = [
                 };
 
                 global.riskAssessment = {
+                    1: [],
+                    2: [],
+                    3: []
+                };
+
+                global.pindex = {
                     1: [],
                     2: [],
                     3: []
