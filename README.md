@@ -2,11 +2,11 @@ PEWI - People in Ecosystems / Watershed Integration
 =======
 We are accepting [pull requests](https://help.github.com/articles/using-pull-requests)!
 
-[PEWI](http://www.nrem.iastate.edu/landscape/content/PEWI) is a simple web-based educational game designed to assist people in multidimensional land-use decision-making. Players iteratively manipulate land cover annually for three years in a virtual 6000 acre watershed to design land use that meets their perceptions and goals for a well-functioning agricultural landscape. The model computes a variety of outputs, including nutrient pollution, stream sediment delivery, level of biodiversity, and agricultural production, which assist them in landscape design.
+[PEWI](http://www.nrem.iastate.edu/pewi) is a simple web-based educational game designed to assist people in multidimensional land-use decision-making. Players iteratively manipulate land cover annually for three years in a virtual 6000 acre watershed to design land use that meets their perceptions and goals for a well-functioning agricultural landscape. The model computes a variety of outputs, including nutrient pollution, stream sediment delivery, level of biodiversity, and agricultural production, which assist them in landscape design.
 
 The application can be viewed [here](http://www.nrem.iastate.edu/pewi/app/).
 
-A detailed project page can be found [here](http://www.nrem.iastate.edu/landscape/content/PEWI).
+A detailed project page can be found [here](http://www.nrem.iastate.edu/pewi).
 
 #Installation
 Stop! If your goal is to simply use the application, you can do so [here](http://www.nrem.iastate.edu/pewi/app/)!
