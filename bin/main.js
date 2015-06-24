@@ -407,6 +407,11 @@ var global = [
 
                 global.years = 3;
 
+                global.PAINTTYPE = {
+                    _FREEFORM: 'freeform',
+                    _SELECTBOX: 'selectbox'
+                };
+
                 for (var year in global.data.precipitation) {
                     setPrecipitation(year);
                 }
@@ -419,18 +424,10 @@ var global = [
                 var $main = $('#main');
                 global.hud.addHUDItem($main, '<div class="menu-button-container" id="credits-container" title="About PEWI"><img src="images/icons/navigation/credits_button.svg" class="credits-button-img menu-item" alt="i"></div>', {visible: true});
                 global.hud.addHUDItem($main, '<section id="infobox-container"><div id="info"><a>PEWI</a><a id="version-tag">BETA</a></div></section>');
-                if(!global.compatibility.istouchable()) {
-                    global.hud.addHUDItem($('#square-paint'), '<div class="menu-button-container" id="paint-selection-tool-container" title="Rectangular Selection Tool"><img src="images/icons/Button_Rectangular_Selection_Tool.svg" class="square-paint-toggle menu-item" alt="sqr"><img src="images/icons/Button_Brush_Tool.svg" class="freeform-paint-toggle menu-item" alt="sqr"></div>');
-                }
 
                 bindSquarePaintSelectionClick();
 
                 addDownloadUploadButton($main);
-
-                global.PAINTTYPE = {
-                    _FREEFORM: 'freeform',
-                    _SELECTBOX: 'selectbox'
-                };
 
                 global.paintingType = global.PAINTTYPE._FREEFORM;
 
@@ -706,17 +703,22 @@ var global = [
 // ---------------- Click Events --------------------------
 
         function bindSquarePaintSelectionClick() {
-            $('#paint-selection-tool-container').bind(global.selectClickType, function () {
-                if ($(this).attr('selected')) {
-                    global.paintingType = global.PAINTTYPE._FREEFORM;
-//	        		$("#watershed1").selectable('option', 'disabled', true);
-                    $(this).attr('selected', false).css('border-right', '').attr('title','Rectangular Selection Tool');
-                } else {
+            $('#square-paint').bind(global.selectClickType, function() {
+                if (!$(this).attr('selected')) {
                     global.paintingType = global.PAINTTYPE._SELECTBOX;
-//	        		$("#watershed1").selectable('option', 'disabled', false);
-                    $(this).attr('selected', true).css('border-right', '2px solid #cccc00').attr('title','Paintbrush Tool');
+//                  $("#watershed1").selectable('option', 'disabled', true);
+                    $(this).attr('selected', true).css('border-right', '2px solid #cccc00');
+                    $('#freeform-paint').attr('selected', false).css('border-right', '');
                 }
             });
+            $('#freeform-paint').bind(global.selectClickType, function() {
+                if (!$(this).attr('selected')) {
+                    global.paintingType = global.PAINTTYPE._FREEFORM;
+//                  $("#watershed1").selectable('option', 'disabled', true);
+                    $(this).attr('selected', true).css('border-right', '2px solid #cccc00');
+                    $('#square-paint').attr('selected', false).css('border-right', '');
+                }
+            }).click();
         }
 
         var oldi;
