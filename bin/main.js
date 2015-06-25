@@ -821,7 +821,7 @@ var global = [
                 global.scoreDirector = new ScoreDirector();
                 global.scoreDirector.calculateOutputMapValues();
                 var options = {
-                    title: "Ecosystem Service Indicators",
+                    title: "Ecosystem Service Maps",
                     width: "50em"
                 };
                 global.popup = new ModalView(options);
