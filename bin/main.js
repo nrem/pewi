@@ -811,7 +811,7 @@ var global = [
                 }
                 global.plot.rounds = global.year;
                 var options = {
-                    title: "Land Use Outputs",
+                    title: "Ecosystem Service Scores",
                     width: 880
                 };
                 global.popup = new ModalView(options);
