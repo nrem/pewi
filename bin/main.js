@@ -631,7 +631,7 @@ var global = [
             global.popup.append('<p><strong>Acknowledgements</strong></p>');
             global.popup.append('<p>The development of PEWI was supported by grants from the McKnight Foundation and US Forest Service Northern Research Station.  We would also like to thank Cindy Cambardella, Justin Choe, Diane Debinski, Emily Heaton, Matt Helmers, Tom Isenhart, Matt Liebman, John VanDyk, members of the ISU Landscape Ecology & Sustainable Ecosystem Management lab,  and the Natural Capital Project for contributions to PEWIs development and review.</p>');
             global.popup.append('<p>For more information: <a href="http://www.nrem.iastate.edu/pewi" target="_newtab">Click Here</a></p>');
-            global.popup.append('<p>PEWI <a href="https://www.nrem.iastate.edu/landscape/files/Schulte%20et%20al.%20PEWI%20v2%20Exercises.pdf" target="_newtab">Lesson Plans</a></p>');
+            global.popup.append('<p>PEWI <a href="http://www.nrem.iastate.edu/pewi/search/site?f%5B0%5D=im_field_category%3A139" target="_newtab">Lesson Plans</a></p>');
             global.popup.append('<p>PEWI <a href="https://www.nrem.iastate.edu/landscape/files/PEWIv2%20User%20Guide.pdf" target="_newtab">User Guide</a></p>');
             global.popup.append('<p>Want to contribute?</p><p>PEWI is open-source and can be contributed to at <a href="https://github.com/nrem/pewi" target="_blank">https://github.com/nrem/pewi</a>.</p>');
             global.popup.display();
