@@ -136,7 +136,6 @@ var OutputMap = function (options) {
     function drawRiskAssessmentCell(i, year, interactive) {
         if(global.riskAssessment[year].length == 0) return;
         var riskAssessmentData = global.riskAssessment[year];
-        console.log(global);
         var r = riskAssessment.append("rect")
             .attr("x", function () {
                 return coldata[i] * cellWidth;
