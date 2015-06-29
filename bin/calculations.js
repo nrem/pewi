@@ -1536,9 +1536,10 @@ var Erosion = function () {
 
     this.update = function (i) {
         global.sedimentDelivered[year] += getSedimentDelivered(i);
-        var val = getGrossErosion(i);
+        var index = getGrossErosionPerUnitArea(i);
+        var val = getGrossErosion(i, index);
         global.grossErosionSeverity[year][i] = getGrossErosionSeverity(i, val);
-        global.grossErosion[year] += val;
+        global.grossErosion[year] += index;
         global.erosion[year][i] = val;
         val = phosphorusIndex(i, false, global.data.precipitation[year]);
         pIndex += val;
@@ -1594,10 +1595,12 @@ var Erosion = function () {
         else if (erosion <= 0.5) return 1;
     }
 
-    function getGrossErosion(i) {
-        var eph = ephemeralGullyErosion(i, false),
-            rusl = rusle(i, global.data.precipitation[year], false);
-        return (rusl + eph) * datapointarea[i];
+    function getGrossErosionPerUnitArea(i) {
+        return ephemeralGullyErosion(i, false) + rusle(i, global.data.precipitation[year], false);
+    }
+
+    function getGrossErosion(i, grossErosionPerUnitArea) {
+        return grossErosionPerUnitArea * datapointarea[i];
     }
 
     function grossErosionIndex(i) {
