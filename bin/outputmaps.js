@@ -224,27 +224,27 @@ var OutputMap = function (options) {
                 0: {
                     x: cellWidth * offsetx,
                     y: cellHeight * 36 * 0.9,
-                    text: "< 0.5"
+                    text: "< 0.5 tons/ac"
                 },
                 1: {
                     x: cellWidth * offsetx,
                     y: cellHeight * 36 * 0.95,
-                    text: "0.5 - 2"
+                    text: "0.5 - 2 tons/ac"
                 },
                 2: {
                     x: cellWidth * offsetx,
                     y: cellHeight * 36,
-                    text: "2 - 3.5"
+                    text: "2 - 3.5 tons/ac"
                 },
                 3: {
                     x: cellWidth * offsetx,
                     y: cellHeight * 36 * 1.05,
-                    text: "3.5 - 5"
+                    text: "3.5 - 5 tons/ac"
                 },
                 4: {
                     x: cellWidth * offsetx,
                     y: cellHeight * 36 * 1.1,
-                    text: "> 5"
+                    text: "> 5 tons/ac"
                 }
             },
             risk: {
