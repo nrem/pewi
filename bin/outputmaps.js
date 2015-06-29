@@ -411,7 +411,7 @@ var OutputMap = function (options) {
                 erosion = d3.select("#erosion-output-map")
                     .append("svg")
                     .attr("id", "erosion-svg-" + year)
-                    .attr("width", svgWidth)
+                    .attr("width", svgWidth + 100)
                     .attr("height", svgHeight)
                     .style('display', 'none');
 
