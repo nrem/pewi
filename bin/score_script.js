@@ -1,21 +1,21 @@
-var dataset = [
-    {    Metric: 'Corn Yield', Year1: 0, Year2: 0, Year3: 0, weight: 2},
-    {    Metric: 'Soybean Yield', Year1: 0, Year2: 0, Year3: 0, weight: 7},
-    {    Metric: 'Alfalfa Yield', Year1: 0, Year2: 0, Year3: 0, weight: 0},
-    {    Metric: 'Hay Yield', Year1: 0, Year2: 0, Year3: 0, weight: 3},
-    {    Metric: 'Timber Production', Year1: 0, Year2: 0, Year3: 0, weight: 8},
-    {    Metric: 'Cattle Supported', Year1: 0, Year2: 0, Year3: 0, weight: 1},
-    {    Metric: 'Mixed Fruit and Vegetable Yield', Year1: 0, Year2: 0, Year3: 0, weight: 5},
-    {    Metric: 'Nitrate Pollution Control', resultsLabel: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0, weight: 12},
-    {    Metric: 'Phosphorus Pollution Control', resultsLabel: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0, weight: 10},//check
-    {    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0, weight: 15},
-    {    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0, weight: 14},
-    {    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0, weight: 13},
-    {    Metric: 'Sediment Control', resultsLabel: 'Sediment Control / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0, weight: 11},//check
-    {    Metric: 'Erosion Control', resultsLabel: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0, weight: 9},//check
-    {    Metric: 'Herbaceous Perennial Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0, weight: 4},//check
-    {    Metric: 'Short-rotation Woody Bioenergy Yield', Year1: 0, Year2: 0, Year3: 0, weight: 6}//check
-];
+var dataset = {
+    carbon:{    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0, weight: 15,units_english:'tons',to_english_factor:0.0011,units_metric:'Mg',to_metric_factor:0.001},
+    biodiversity:{    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0, weight: 13,units_english:'tons',to_english_factor:1,units_metric:'pts',to_metric_factor:1},
+    game:{    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0, weight: 14,units_english:'pts',to_english_factor:1,units_metric:'pts',to_metric_factor:1},
+    erosion:{    Metric: 'Erosion Control', resultsLabel: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0, weight: 9,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
+    nitrate:{    Metric: 'Nitrate Pollution Control', resultsLabel: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0, weight: 12,units_english:'ppm',to_english_factor:1,units_metric:'mg/L',to_metric_factor:1},
+    phosphorus:{    Metric: 'Phosphorus Pollution Control', resultsLabel: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0, weight: 10,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
+    sediment:{    Metric: 'Sediment Control', resultsLabel: 'Sediment Control / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0, weight: 11,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
+    alfalfa:{    Metric: 'Alfalfa Hay', Year1: 0, Year2: 0, Year3: 0, weight: 0,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},
+    cattle:{    Metric: 'Cattle', Year1: 0, Year2: 0, Year3: 0, weight: 1,units_english:'cows',to_english_factor:1,units_metric:'cows',to_metric_factor:1},
+    corn:{    Metric: 'Corn Grain', Year1: 0, Year2: 0, Year3: 0, weight: 2,units_english:'bu',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.0254},
+    hay:{    Metric: 'Grass Hay', Year1: 0, Year2: 0, Year3: 0, weight: 3,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},
+    herbaceous:{    Metric: 'Herbaceous Perennial Biomass', Year1: 0, Year2: 0, Year3: 0, weight: 4,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
+    mixed:{    Metric: 'Mixed Fruits and Vegetables', Year1: 0, Year2: 0, Year3: 0, weight: 5,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},
+    woody:{    Metric: 'Short-rotation Woody Biomass', Year1: 0, Year2: 0, Year3: 0, weight: 6,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
+    soybean:{    Metric: 'Soybeans', Year1: 0, Year2: 0, Year3: 0, weight: 7,units_english:'bu',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.0272},
+    timber:{    Metric: 'Wood', Year1: 0, Year2: 0, Year3: 0, weight: 8,units_english:'board-ft',to_english_factor:1,units_metric:'m^3',to_metric_factor:0.0024}
+};
 
 var units = {
     english: ["bu", "bu", "tons", "tons", "board-ft", "cows", "tons", "ppm", "tons", "tons", "pts", "pts", "tons", "tons", "tons", "tons"],
@@ -72,8 +72,16 @@ var Plot = function () {
 
         var node = plot
             .selectAll("circle")
-            .data(dataset)
+            .data(toArray(dataset))
             .enter();
+
+        function toArray(obj) {
+            arr = [];
+            for(var k in obj) {
+                arr.push(obj[k]);
+            }
+            return arr;
+        }
 
         var coords = {
             0: -80,
@@ -162,17 +170,16 @@ var Plot = function () {
                 return i * 27 + 50
             })
             .attr("text-anchor", "middle")
-            .text(function (d) {
+            .text(function (d) {  
                 return d.Metric
             });
-
+      
         var legendrectvals = [];
-        dataset.forEach(function (d, i) {
-            //legendrectvals.push(d["Year1"]);
+        for(var k in dataset) {
             var numerator = 0,
                 denominator = 1,
                 value;
-            numerator = d.Year1 + d.Year2 + d.Year3;
+            numerator = dataset[k].Year1 + dataset[k].Year2 + dataset[k].Year3;
             denominator += (global.data[2] !== 0) ? 1 : 0;
             denominator += (global.data[3] !== 0) ? 1 : 0;
             value = numerator / denominator;
@@ -184,7 +191,7 @@ var Plot = function () {
             else {
                 legendrectvals.push(0)
             }
-        }); // NEEDS FIXED
+        }
         node.append("rect")
             .attr("fill", "gray")
             .attr("x", "700")
@@ -285,9 +292,9 @@ var Plot = function () {
         plot.selectAll(".rule3")
             .on("click", function (d) {
                 legendrectvals = [];
-                dataset.forEach(function (e) {
-                    legendrectvals.push(e[d.replace(/ /g, '')]);
-                });
+                for(var k in dataset) {
+                    legendrectvals.push(e[dataset[k].replace(/ /g, '')]);
+                }
                 updateMetrics(MetricStack);
             });
 
@@ -365,14 +372,14 @@ var Plot = function () {
             .attr("y2", 500)
             .style("stroke", "#ccc");
 
-        dataset.forEach(function (d, i) {
+        for(var k in dataset) {
             histogram.append("rect")
                 .attr("y", "500")
                 .attr("x", i * barWidth)
                 .attr("width", barWidth)
-                .attr("height", d["Year" + year])
+                .attr("height", dataset[k]["Year" + year])
                 .style("fill", "#333");
-        });
+        }
     }
 
     var updateMetrics = function (MetricStack) {

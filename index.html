@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
 <head>
     <meta http-equiv=”X-UA-Compatible” content=”chrome=1;IE=edge”>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0" />
-    <title>PE/WI Work Space</title>
+    <title>PEWI Work Space</title>
     <meta name="description" content="A dynamic watershed.">
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="stylesheet" href="css/broken.css"/>
@@ -55,7 +55,7 @@
         <canvas id="3d-container"></canvas>
     </section>
     <section id="rounds" class="rounds">
-        <!--<div id="year-transition-label" class="menu-background"><a>Years</a></div>-->
+        <div id="year-transition-label" class="menu-background"><a>Years</a></div>
         <ul>
             <li id="r1" title="Transition to year 1">
                 <input type="radio" id="round1" name="round" value="1"/><label
@@ -83,8 +83,8 @@
                 <li>
                     <div><input value="1" type="radio" id="cover1"
                                 name="landcover"/><img
-                            src="images/toolbar_icons_bitmaps/Icon_Corn.png"
-                            alt="Corn" title="Corn"></div>
+                            src="images/toolbar_icons_bitmaps/Icon_Conventional_Corn.png"
+                            alt="Conventional Corn" title="Conventional Corn"></div>
                     <div><input value="2" type="radio" id="cover2"
                                 name="landcover"/><img
                             src="images/toolbar_icons_bitmaps/Icon_Conservation_Corn.png"
@@ -94,13 +94,13 @@
                 <li>
                     <div><input value="3" type="radio" id="cover3"
                                 name="landcover"/><img
-                            src="images/toolbar_icons_bitmaps/Icon_Soybean.png"
-                            alt="Soybeans" title="Soybeans"></div>
+                            src="images/toolbar_icons_bitmaps/Icon_Conventional_Soybean.png"
+                            alt="Conventional Soybean" title="Conventional Soybean"></div>
                     <div><input value="4" type="radio" id="cover4"
                                 name="landcover"/><img
                             src="images/toolbar_icons_bitmaps/Icon_Conservation_Soybean.png"
-                            alt="Conservation Soybeans"
-                            title="Conservation Soybeans"></div>
+                            alt="Conservation Soybean"
+                            title="Conservation Soybean"></div>
                 </li>
                 <li>
                     <div><input value="5" type="radio" id="cover5"
@@ -109,20 +109,20 @@
                             alt="Alfalfa" title="Alfalfa"></div>
                     <div><input value="15" type="radio" id="cover15"
                                 name="landcover"/><img
-                            src="images/toolbar_icons_bitmaps/Icon_Mixed_Fruit_and_Vegetable.png"
-                            alt="Mixed Fruit & Veggies"
+                            src="images/toolbar_icons_bitmaps/Icon_Mixed_Fruits_and_Vegetables.png"
+                            alt="Mixed Fruit & Vegetables"
                             title="Mixed Fruit & Veggies"></div>
                 </li>
                 <li>
                     <div><input value="8" type="radio" id="cover8"
                                 name="landcover"/><img
-                            src="images/toolbar_icons_bitmaps/Icon_Hay.png"
-                            alt="Hay" title="Hay"></div>
+                            src="images/toolbar_icons_bitmaps/Icon_Grass_Hay.png"
+                            alt="Grass Hay" title="Grass Hay"></div>
                     <div><input value="12" type="radio" id="cover12"
                                 name="landcover"/><img
-                            src="images/toolbar_icons_bitmaps/Icon_Herbaceous_Bioenergy.png"
-                            alt="Herbaceous Bioenergy"
-                            title="Herbaceous Bioenergy"></div>
+                            src="images/toolbar_icons_bitmaps/Icon_Herbaceous_Perennial_Bioenergy.png"
+                            alt="Herbaceous Perennial Bioenergy"
+                            title="Herbaceous Perennial Bioenergy"></div>
                 </li>
                 <li>
                     <div><input value="6" type="radio" id="cover6"
@@ -140,7 +140,7 @@
                     <div><input value="14" type="radio" id="cover14"
                                 name="landcover"/><img
                             src="images/toolbar_icons_bitmaps/Icon_Wetland.png"
-                            alt="Wetlands" title="Wetlands"></div>
+                            alt="Wetland" title="Wetland"></div>
                     <div><input value="9" type="radio" id="cover9"
                                 name="landcover"/><img
                             src="images/toolbar_icons_bitmaps/Icon_Prairie.png"
@@ -162,7 +162,7 @@
                     <div><input value="13" type="radio" id="cover13"
                                 name="landcover"/><img
                             src="images/toolbar_icons_bitmaps/Icon_Woody_Bioenergy.png"
-                            alt="Woody Bioenergy" title="Woody Bioenergy"></div>
+                            alt="Short-rotation Woody Bioenergy" title="Short-rotation Woody Bioenergy"></div>
                 </li>
             </ul>
         </section>
@@ -185,10 +185,10 @@
                 </li>
             </ul>
         </section>
-        <ul class="list-vertical">
+        <ul class="list-vertical" style="margin-top:0">
             <li class="rotated menu-background" id="landcover">
                 <div>
-                    <div><a>Land&nbsp;Covers</a></div>
+                    <div><a>Land&nbsp;Use</a></div>
                     <!--<img src="images/icons/white-l.png" alt="" title="" width="10px">-->
                 </div>
             </li>
@@ -198,10 +198,11 @@
                     <!--<img src="images/icons/white-l.png" alt="" title="" width="10px">-->
                 </div>
             </li>
+            <li class="rotated menu-background" id="freeform-paint">
+                <img src="images/icons/Button_Brush_Tool.svg" class="freeform-paint-toggle menu-item" alt="sqr">
+            </li>
 			<li class="rotated menu-background" id="square-paint">
-                <div>
-					
-                </div>
+                <img src="images/icons/Button_Rectangular_Selection_Tool.svg" class="square-paint-toggle menu-item" alt="sqr">
 			</li>
         </ul>
     </section>

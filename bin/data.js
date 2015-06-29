@@ -21,38 +21,38 @@ var colorsForLandCoverGrid = ["rgba(63, 140, 191, 0.8)",
 
 
 var picsForLandCoverGrid = ["",
-    "Landcover_Corn.png",
-    "Landcover_Conservation_Corn.png",
-    "Landcover_Soybean.png",
-    "Landcover_Conservation_Soybean.png",
-    "Landcover_Alfalfa.png",
-    ["Landcover_Permanent_Pasture.png", "Landcover_Permanent_Pasture_No_Cattle.png"],
-    ["Landcover_Rotational_Grazing.png", "Landcover_Rotational_Grazing_No_Cattle.png"],
-    ["Landcover_Hay.png", "Landcover_Grass_Hay_No_Bales.png"],
-    "Landcover_Prairie.png",
-    "Landcover_Conservation_Forest.png",
-    "Landcover_Conventional_Forest.png",
-    "Landcover_Herbaceous_Bioenergy.png",
-    "Landcover_Woody_Bioenergy.png",
-    "Landcover_Wetland.png",
-    "Landcover_Mixed_Fruit_and_Vegetable.png"];
+    "LandUse_Conventional_Corn.png",
+    "LandUse_Conservation_Corn.png",
+    "LandUse_Conventional_Soybean.png",
+    "LandUse_Conservation_Soybean.png",
+    "LandUse_Alfalfa.png",
+    ["LandUse_Permanent_Pasture.png", "LandUse_Permanent_Pasture_No_Cattle.png"],
+    ["LandUse_Rotational_Grazing.png", "LandUse_Rotational_Grazing_No_Cattle.png"],
+    ["LandUse_Hay.png", "LandUse_Grass_Hay_No_Bales.png"],
+    "LandUse_Prairie.png",
+    "LandUse_Conservation_Forest.png",
+    "LandUse_Conventional_Forest.png",
+    "LandUse_Herbaceous_Perennial_Bioene.png",
+    "LandUse_Woody_Bioenergy.png",
+    "LandUse_Wetland.png",
+    "LandUse_Mixed_Fruits_and_Vegetables.png"];
 
 var picsForLandCoverTab = ["none.jpg",
-    "Icon_Corn.png",
+    "Icon_Conventional_Corn.png",
     "Icon_Conservation_Corn.png",
-    "Icon_Soybean.png",
+    "Icon_Conventional_Soybean.png",
     "Icon_Conservation_Soybean.png",
     "Icon_Alfalfa.png",
     "Icon_Permanent_Pasture.png",
     "Icon_Rotational_Grazing.png",
-    "Icon_Hay.png",
+    "Icon_Grass_Hay.png",
     "Icon_Prairie.png",
     "Icon_Conservation_Forest.png",
     "Icon_Conventional_Forest.png",
-    "Icon_Herbaceous_Biomass.png",
+    "Icon_Herbaceous_Perennial_Bioenergy.png",
     "Icon_Woody_Bioenergy.png",
-    "Icon_Wetlands.png",
-    "Icon_Mixed_Fruit_and_Vegetable.png"];
+    "Icon_Wetland.png",
+    "Icon_Mixed_Fruits_and_Vegetables.png"];
 
 
 var slopeColors = ["#f0f9e8",
@@ -94,22 +94,23 @@ var indexColors = ["#99CC00",
     "#FF6600",
     "#CC0000"];
 
-var landcovers = ["None",
-    "Corn",
-    "Conservation Corn",
-    "Soybeans",
-    "Conservation Soybeans",
-    "Alfalfa",
-    "Permanent Pasture",
-    "Rotational Grazing",
-    "Grass Hay",
-    "Prairie",
-    "Conservation Forest",
-    "Conventional Forest",
-    "Herbaceous Bioenergy",
-    "Woody Bioenergy",
-    "Wetlands",
-    "Mixed Fruit & Vegetables"
+var landcovers = [
+    "None",                             // 0
+    "Conventional Corn",                // 1
+    "Conservation Corn",                // 2
+    "Conventional Soybean",             // 3
+    "Conservation Soybean",             // 4
+    "Alfalfa",                          // 5
+    "Permanent Pasture",                // 6
+    "Rotational Grazing",               // 7
+    "Grass Hay",                        // 8
+    "Prairie",                          // 9
+    "Conservation Forest",              // 10
+    "Conventional Forest",              // 11
+    "Herbaceous Perennial Bioenergy",   // 12
+    "Short-rotation Woody Bioenergy",   // 13
+    "Wetland",                          // 14
+    "Mixed Fruits & Vegetables"         // 15
 ];
 
 var physicalFeatureIcons = [];

@@ -285,11 +285,10 @@ input[type="file"] {
 
 #year-transition-label {
     float:right;
-    transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    width: 5em;
-    height: 1.5em;
+    width: 40px;
+    text-align: center;
+    font-size: 12px;
+    padding: 5px 0;
 }
 
 #year-transition-label a {
@@ -449,7 +448,7 @@ input[type="file"] {
 }
 
 #landcover {
-    height: 120px;
+    height: 90px;
 }
 
 #landcover div {
@@ -1057,11 +1056,23 @@ iframe {
 }
 
 .square-paint-toggle {
-	width: 1.1em;
+	width: 100%;
 }
 
 /*------ Download/Upload -----------*/
 .pfeature-puk-item-container {
     position: absolute;
     background: url("../images/icons/bg-tile.png");
+}
+
+.pull-right {
+    float:right;
+}
+
+.list-unstyled {
+    list-style: none;
+}
+
+.list-inline li {
+    display: inline-block;
 }

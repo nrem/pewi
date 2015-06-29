@@ -38,7 +38,7 @@ var OutputMap = function (options) {
                 return retColor(i);
             })
             .attr("id", function () {
-                return wp[subwatershed[i]];
+                return wp[subwatershed[i]] * 100;
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
@@ -54,7 +54,7 @@ var OutputMap = function (options) {
                     y = parseInt($this.attr('y')),
                     id = parseFloat($this.attr('id'));
                 d3.select('#nitrate-svg-' + d3.select(this).attr('year')).append('text')
-                    .text(Math.round(id * 1000) / 1000)
+                    .text((Math.round(id * 1000) / 1000) + '%')
                     .attr('x', x + cellWidth + 5)
                     .attr('y', y + 18)
                     .style('font-size', 15)
@@ -97,7 +97,7 @@ var OutputMap = function (options) {
                 return retColor(i);
             })
             .attr("id", function () {
-                return grossErosionData[i];
+                return global.erosion[year][i];
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
@@ -113,7 +113,7 @@ var OutputMap = function (options) {
                     y = parseInt($this.attr('y')),
                     id = parseFloat($this.attr('id'));
                 d3.select('#erosion-svg-' + d3.select(this).attr('year')).append('text')
-                    .text(Math.round(id * 1000) / 1000)
+                    .text((Math.round(id * 1000) / 1000) + ' tons/ac')
                     .attr('x', x + cellWidth + 5)
                     .attr('y', y + 18)
                     .style('font-size', 15)
@@ -149,7 +149,7 @@ var OutputMap = function (options) {
                 return retColor(i);
             })
             .attr("id", function () {
-                return riskAssessmentData[i];
+                return (Math.round(global.pindex[year][i] * 100) / 100);
             })
             .attr("class", "output-map-rect")
             .style("stroke-width", 0.01)
@@ -165,7 +165,7 @@ var OutputMap = function (options) {
                     y = parseInt($this.attr('y')),
                     id = $this.attr('id');
                 d3.select('#risk-assessment-svg-' + d3.select(this).attr('year')).append('text')
-                    .text(id)
+                    .text(id + ' lb/ac')
                     .attr('x', x + cellWidth + 5)
                     .attr('y', y + 18)
                     .style('font-size', 15)
@@ -223,27 +223,27 @@ var OutputMap = function (options) {
                 0: {
                     x: cellWidth * offsetx,
                     y: cellHeight * 36 * 0.9,
-                    text: "< 0.5"
+                    text: "< 0.5 tons/ac"
                 },
                 1: {
                     x: cellWidth * offsetx,
                     y: cellHeight * 36 * 0.95,
-                    text: "0.5 - 2"
+                    text: "0.5 - 2 tons/ac"
                 },
                 2: {
                     x: cellWidth * offsetx,
                     y: cellHeight * 36,
-                    text: "2 - 3.5"
+                    text: "2 - 3.5 tons/ac"
                 },
                 3: {
                     x: cellWidth * offsetx,
                     y: cellHeight * 36 * 1.05,
-                    text: "3.5 - 5"
+                    text: "3.5 - 5 tons/ac"
                 },
                 4: {
                     x: cellWidth * offsetx,
                     y: cellHeight * 36 * 1.1,
-                    text: "> 5"
+                    text: "> 5 tons/ac"
                 }
             },
             risk: {
@@ -410,7 +410,7 @@ var OutputMap = function (options) {
                 erosion = d3.select("#erosion-output-map")
                     .append("svg")
                     .attr("id", "erosion-svg-" + year)
-                    .attr("width", svgWidth)
+                    .attr("width", svgWidth + 100)
                     .attr("height", svgHeight)
                     .style('display', 'none');
 
