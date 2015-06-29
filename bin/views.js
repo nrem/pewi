@@ -270,7 +270,7 @@ var PrintView = function () {
         .attr("class", "results-table-header-row");
     measure.append("th")
         .attr("class", "results-table-header-row-cell");
-    headerMeasureCellFactory(measure, {1: "Score(out of 100)", 2: "Value: English", 3: "Value: Metric"});
+    headerMeasureCellFactory(measure, {1: "Score(out of 100)", 2: "Measurement: English", 3: "Measurement: Metric"});
 
     titles = tableScoreIndicatorHead.append("tr")
         .attr("class", "results-table-header-row border-bottom");
