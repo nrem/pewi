@@ -22,11 +22,11 @@ var ScoreDirector = function () {
 			}
 		}
 	}
-	
+
 	function setLandcover(year) {
 		landcover = global.data[year].baselandcover.data;
 	}
-	
+
 	function setYear(year) {
 		yieldVals.year(year);
 		nitrates.year(year);
@@ -34,7 +34,7 @@ var ScoreDirector = function () {
 		bio.year(year);
 		erosion.year(year);
 	}
-	
+
 	function updateYear(year) {
 //        console.log('---------------------------- Year ' + year + ' calculations ------------------------------');
         resetLandCoverValuesAreasFor(year);
@@ -83,7 +83,7 @@ var ScoreDirector = function () {
 			if(global.update[year] == true) {
 				setLandcover(year);
 				setYear(year);
-				
+
 		        for (var i = 0; i <= landcover.length; i++) {
 		            if (landcover[i] > 0) {
 		                nitrates.update(i);
@@ -97,7 +97,7 @@ var ScoreDirector = function () {
 		        erosion.calculateStepThree();
 			}
 		}
-        
+
     }
 };
 
@@ -832,7 +832,7 @@ var Biodiversity = function () {
         streamBufferArea = 0, streamBufferPercent,
         wetlandArea = 0, wetlandPercent,
         strategicWetlandArea = {1:0, 2:0, 3:0}, strategicWetlandPercent,
-        forestArea = 0, forestPercent,
+        forestArea = 0, conservationForestPercent,
         nativePNindex = 0, nonNativePNindex = 0, pGindex = 0, streamNindex = 0,
         streamGindex = 0, wetlandNindex = 0, wetlandGindex = 0, forestGindex = 0,
         heterogeneityGroup = [// Group ID,Count,proportion,percent of watershed
@@ -1060,7 +1060,7 @@ var Biodiversity = function () {
         setStreamBufferPercent();
         setWetlandPercent();
         setStrategicWetlandPercent();
-        setForestPercent();
+        setConservationForestPercent();
         setTheIndexes();
         setNativeIndex();
         setGameIndex();
@@ -1079,7 +1079,7 @@ var Biodiversity = function () {
 //        console.log("//////////////////// BIO INDICES END ///////////////////");
         dealloc();
     };
-	
+
 	function dealloc() {
 		strategicWetlandArea[year] = 0;
         contagion = 0;
@@ -1094,7 +1094,7 @@ var Biodiversity = function () {
         wetlandPercent = 0;
         strategicWetlandPercent = 0;
         forestArea = 0;
-        forestPercent = 0;
+        conservationForestPercent = 0;
         nativePNindex = 0;
         nonNativePNindex = 0;
         pGindex = 0;
@@ -1196,9 +1196,12 @@ var Biodiversity = function () {
             wetlandGindex = 1;
         }
 
-        // Forest Points Game Index
-        if (forestPercent >= 0.2) {
+        // Conservation Forest Points
+        if (conservationForestPercent >= 0.05) {
             forestGindex = 1;
+        }
+        else {
+          forestGindex = 0;
         }
 
 //        console.log("Native perennial native index: ", nativePNindex);
@@ -1474,8 +1477,8 @@ var Biodiversity = function () {
         }
     }
 
-    function setForestPercent() {
-        forestPercent = forestArea / watershedArea;
+    function setConservationForestPercent() {
+        conservationForestPercent = forestArea / watershedArea;
     }
 };
 
@@ -1494,11 +1497,11 @@ var Erosion = function () {
 		subwatershed = getSubdataValueWithName("subwatershed", year);
 		wetland = getSubdataValueWithName("wetland", year);
 		datapointarea = getSubdataValueWithName("area", year);
-		
+
 	    global.sedimentDelivered[year] = 0;
 	    global.grossErosion[year] = 0;
 	    global.phosphorusLoad[year] = 0;
-		
+
 	    for (var i = 0; i < subwatershedArea.length; i++) {
 	        var arr = {
 	            erosion: 0,
@@ -1750,10 +1753,10 @@ var Erosion = function () {
 	        if (point == 3) return 0.3;
 	        else if (point == 9) return 0.001;
 	    }
-		
+
         var temp = getSubdataValueWithName("baselandcover", year - 1),
             cover = (point !== false) ? point : landcover[i];
-		
+
         if (temp != undefined) {
             if (temp[i] == 1) {
                 if (cover == 1) return 0.15;
@@ -2016,7 +2019,7 @@ var Erosion = function () {
 		} else {
 			return override / 4.415;
 		}
-        
+
     } // Once
     function getSoilTestPRunoffFactor(i) {
         if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 0.2;
