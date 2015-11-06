@@ -1465,7 +1465,7 @@ var Biodiversity = function () {
     }
 
     function setStrategicWetlandPercent() {
-        strategicWetlandPercent = strategicWetlandArea[year] / strategicArea;
+        strategicWetlandPercent = 100*strategicWetlandArea[year] / strategicArea;
     }
 
     function setForestArea(i) {
