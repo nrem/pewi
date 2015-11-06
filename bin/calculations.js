@@ -833,6 +833,7 @@ var Biodiversity = function () {
         wetlandArea = 0, wetlandPercent,
         strategicWetlandArea = {1:0, 2:0, 3:0}, strategicWetlandPercent,
         forestArea = 0, conservationForestPercent,
+        conservationForestArea = 0,
         nativePNindex = 0, nonNativePNindex = 0, pGindex = 0, streamNindex = 0,
         streamGindex = 0, wetlandNindex = 0, wetlandGindex = 0, forestGindex = 0,
         heterogeneityGroup = [// Group ID,Count,proportion,percent of watershed
@@ -994,6 +995,7 @@ var Biodiversity = function () {
         setStrategicWetlandArea(i);
 		// console.log(strategicWetlandArea, year);
         setForestArea(i);
+        setConservationForestArea(i);
     };
     var x = 0;
     this.updateAdj = function (i) {
@@ -1094,6 +1096,7 @@ var Biodiversity = function () {
         wetlandPercent = 0;
         strategicWetlandPercent = 0;
         forestArea = 0;
+        conservationForestArea = 0;
         conservationForestPercent = 0;
         nativePNindex = 0;
         nonNativePNindex = 0;
@@ -1197,13 +1200,13 @@ var Biodiversity = function () {
         }
 
         // Conservation Forest Points
-        if (conservationForestPercent >= 0.05) {
+        if (conservationForestPercent >= 5) {
             forestGindex = 1;
         }
         else {
           forestGindex = 0;
         }
-
+//        console.log("conservationForestPercent: ", conservationForestPercent);
 //        console.log("Native perennial native index: ", nativePNindex);
 //        console.log("Non-native perennial native index: ", nonNativePNindex);
 //        console.log("Perrennial points game index: ", pGindex);
@@ -1477,8 +1480,14 @@ var Biodiversity = function () {
         }
     }
 
+    function setConservationForestArea(i) {
+      if (global.data[year].baselandcover.data[i] == 10) {
+        conservationForestArea += dataPointArea[i];
+      }
+    }
+
     function setConservationForestPercent() {
-        conservationForestPercent = forestArea / watershedArea;
+        conservationForestPercent = 100*conservationForestArea / watershedArea;
     }
 };
 
