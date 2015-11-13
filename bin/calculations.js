@@ -829,6 +829,7 @@ var Biodiversity = function () {
         adjacencySubtotal = 0,
         nativePerennialsArea = 0, nativePerennialsPercent,
         nonNativePerennialsArea = 0, nonNativePerennialsPercent,
+        otherHighDiversityArea = 0, otherHighDiversityPercent,
         streamBufferArea = 0, streamBufferPercent,
         wetlandArea = 0, wetlandPercent,
         strategicWetlandArea = {1:0, 2:0, 3:0}, strategicWetlandPercent,
@@ -990,6 +991,7 @@ var Biodiversity = function () {
 
         setNativePerennialsArea(i);
         setNonNativePerennialsArea(i);
+        setOtherHighDiversityArea(i);
         setStreamBufferArea(i);
         setWetlandArea(i);
         setStrategicWetlandArea(i);
@@ -1059,6 +1061,7 @@ var Biodiversity = function () {
         //console.log(contagion);
         setNativePerennialsPercent();
         setNonNativePerennialsPercent();
+        setOtherHighDiversityPercent();
         setStreamBufferPercent();
         setWetlandPercent();
         setStrategicWetlandPercent();
@@ -1090,6 +1093,8 @@ var Biodiversity = function () {
         nativePerennialsPercent = 0;
         nonNativePerennialsArea = 0;
         nonNativePerennialsPercent = 0;
+        otherHighDiversityArea = 0;
+        otherHighDiversityPercent = 0;
         streamBufferArea = 0;
         streamBufferPercent = 0;
         wetlandArea = 0;
@@ -1180,8 +1185,8 @@ var Biodiversity = function () {
         else if (streamBufferPercent == 1) {
             streamNindex = 2;
         }
-
-        // Stream Buffer Points Game Index
+        
+                // Stream Buffer Points Game Index
         if (streamBufferPercent >= 0.3 && streamBufferPercent < 0.7) {
             streamGindex = 1;
         } else if (streamBufferPercent >= 0.7) {
@@ -1436,6 +1441,16 @@ var Biodiversity = function () {
 
     function setNonNativePerennialsPercent() {
         nonNativePerennialsPercent = nonNativePerennialsArea / watershedArea;
+    }
+
+    function setOtherHighDiversityArea(i) {
+      if (global.data[year].baselandcover.data[i] == 7 || global.data[year].baselandcover.data[i] == 11 || global.data[year].baselandcover.data[i] == 15) {
+        otherHighDiversityArea += dataPointArea[i];
+      }
+    }
+
+    function setOtherHighDiversityPercent() {
+      otherHighDiversityPercent = 100 * otherHighDiversityArea / watershedArea;
     }
 
     function setStreamBufferArea(i) {
