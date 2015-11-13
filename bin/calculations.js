@@ -1128,7 +1128,7 @@ var Biodiversity = function () {
      * -Native Perennials Native Index
      * -Non-native Perennials Native Index
      * -Perennials Points Game Index
-     * -Stream Buffer Points
+     * -Stream Buffer Points Native Index
      * -Stream Buffer Points Game Index
      * -Wetland Points Native Index
      * -Wetland Points Game Index
@@ -1173,18 +1173,12 @@ var Biodiversity = function () {
             pGindex = 0;
         }
 
-        // Steam Buffer Points
-        if (streamBufferPercent >= 0 && streamBufferPercent < 10) {
-            streamNindex = 0;
+        // Steam Buffer Points Native Index
+        if (streamBufferPercent >= 0.50 && streamBufferPercent < 1) {
+            streamNindex = 1;
         }
-        else if (streamBufferPercent >= 10 && streamBufferPercent < 50) {
-            streamNindex = 0.5;
-        }
-        else if (streamBufferPercent >= 50 && streamBufferPercent < 100) {
-            streamNindex = 1.0;
-        }
-        else if (streamBufferPercent == 100) {
-            streamNindex = 1.5;
+        else if (streamBufferPercent == 1) {
+            streamNindex = 2;
         }
 
         // Stream Buffer Points Game Index
@@ -1216,7 +1210,7 @@ var Biodiversity = function () {
 //        console.log("Native perennial native index: ", nativePNindex);
 //        console.log("Non-native perennial native index: ", nonNativePNindex);
 //        console.log("Perrennial points game index: ", pGindex);
-//        console.log("Stream buffer points: ", streamNindex);
+//        console.log("Stream buffer points native index: ", streamNindex);
 //        console.log("Stream bugger points game index: ", streamGindex);
 //        console.log("Wetland points native index: ", wetlandNindex);
 //        console.log("Wetland points game index: ", wetlandGindex);
@@ -1446,7 +1440,7 @@ var Biodiversity = function () {
 
     function setStreamBufferArea(i) {
         if (global.data[year].streamnetwork.data[i] == 1) {
-            if (global.data[year].baselandcover.data[i] == 2 || global.data[year].baselandcover.data[i] == 4 || global.data[year].baselandcover.data[i] == 7 || global.data[year].baselandcover.data[i] == 9 || global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 11 || global.data[year].baselandcover.data[i] == 14) {
+            if (global.data[year].baselandcover.data[i] == 2 || global.data[year].baselandcover.data[i] == 4 || global.data[year].baselandcover.data[i] == 7 || global.data[year].baselandcover.data[i] == 8 ||           global.data[year].baselandcover.data[i] == 9 || global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 11 || global.data[year].baselandcover.data[i] == 12 || global.data[year].baselandcover.data[i] == 13 || global.data[year].baselandcover.data[i] == 14 || global.data[year].baselandcover.data[i] == 15) {
                 streamBufferArea += dataPointArea[i];
             }
         }
@@ -1455,7 +1449,7 @@ var Biodiversity = function () {
     function setStreamBufferPercent() {
         //console.log("Stream Buffer Area: " + streamBufferArea);
         //console.log("Stream Area: " + streamArea);
-        streamBufferPercent = streamBufferArea / streamArea;
+        streamBufferPercent = 100*streamBufferArea / streamArea;
     }
 
     function setWetlandArea(i) {
