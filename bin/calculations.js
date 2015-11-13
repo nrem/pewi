@@ -1189,8 +1189,19 @@ var Biodiversity = function () {
         } else streamGindex = 0;
 
         // Wetland Points Native Index
-        if (wetlandPercent >= 0.05 && strategicWetlandPercent >= 0.50) {
-            wetlandNindex = 2;
+        if (wetlandPercent >= 5) {
+          if (strategicWetlandPercent >= 0 && strategicWetlandPercent < 50) {
+            wetlandGindex = 0;
+          }
+          else if (strategicWetlandPercent >= 50 && strategicWetlandPercent < 75) {
+            wetlandGindex = 0.5;
+          }
+          else if (strategicWetlandPercent >= 75 && strategicWetlandPercent < 100) {
+            wetlandGindex = 1;
+          }
+          else if (strategicWetlandPercent == 100) {
+            wetlandGindex = 1.5;
+          }
         }
 
 
