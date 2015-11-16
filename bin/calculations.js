@@ -22,11 +22,11 @@ var ScoreDirector = function () {
 			}
 		}
 	}
-	
+
 	function setLandcover(year) {
 		landcover = global.data[year].baselandcover.data;
 	}
-	
+
 	function setYear(year) {
 		yieldVals.year(year);
 		nitrates.year(year);
@@ -34,7 +34,7 @@ var ScoreDirector = function () {
 		bio.year(year);
 		erosion.year(year);
 	}
-	
+
 	function updateYear(year) {
 //        console.log('---------------------------- Year ' + year + ' calculations ------------------------------');
         resetLandCoverValuesAreasFor(year);
@@ -83,7 +83,7 @@ var ScoreDirector = function () {
 			if(global.update[year] == true) {
 				setLandcover(year);
 				setYear(year);
-				
+
 		        for (var i = 0; i <= landcover.length; i++) {
 		            if (landcover[i] > 0) {
 		                nitrates.update(i);
@@ -97,7 +97,7 @@ var ScoreDirector = function () {
 		        erosion.calculateStepThree();
 			}
 		}
-        
+
     }
 };
 
@@ -827,12 +827,13 @@ var Biodiversity = function () {
             10: 0
         },
         adjacencySubtotal = 0,
-        nativePerennialsArea = 0, nativePerennialsPercent,
+        nativeVegetationArea = 0, nativeVegetationPercent,
         nonNativePerennialsArea = 0, nonNativePerennialsPercent,
         streamBufferArea = 0, streamBufferPercent,
         wetlandArea = 0, wetlandPercent,
         strategicWetlandArea = {1:0, 2:0, 3:0}, strategicWetlandPercent,
-        forestArea = 0, forestPercent,
+        forestArea = 0, conservationForestPercent,
+        conservationForestArea = 0,
         nativePNindex = 0, nonNativePNindex = 0, pGindex = 0, streamNindex = 0,
         streamGindex = 0, wetlandNindex = 0, wetlandGindex = 0, forestGindex = 0,
         heterogeneityGroup = [// Group ID,Count,proportion,percent of watershed
@@ -987,13 +988,14 @@ var Biodiversity = function () {
 
         setHeterogeneityGroup(i);
 
-        setNativePerennialsArea(i);
+        setNativeVegetationArea(i);
         setNonNativePerennialsArea(i);
         setStreamBufferArea(i);
         setWetlandArea(i);
         setStrategicWetlandArea(i);
 		// console.log(strategicWetlandArea, year);
         setForestArea(i);
+        setConservationForestArea(i);
     };
     var x = 0;
     this.updateAdj = function (i) {
@@ -1055,12 +1057,12 @@ var Biodiversity = function () {
 //        console.log('Contagion: ' + contagion);
         //console.log("Contagion: " + contagion, "Product3: " + product3);
         //console.log(contagion);
-        setNativePerennialsPercent();
+        setNativeVegetationPercent();
         setNonNativePerennialsPercent();
         setStreamBufferPercent();
         setWetlandPercent();
         setStrategicWetlandPercent();
-        setForestPercent();
+        setConservationForestPercent();
         setTheIndexes();
         setNativeIndex();
         setGameIndex();
@@ -1079,13 +1081,13 @@ var Biodiversity = function () {
 //        console.log("//////////////////// BIO INDICES END ///////////////////");
         dealloc();
     };
-	
+
 	function dealloc() {
 		strategicWetlandArea[year] = 0;
         contagion = 0;
         adjacencySubtotal = 0;
-        nativePerennialsArea = 0;
-        nativePerennialsPercent = 0;
+        nativeVegetationArea = 0;
+        nativeVegetationPercent = 0;
         nonNativePerennialsArea = 0;
         nonNativePerennialsPercent = 0;
         streamBufferArea = 0;
@@ -1094,7 +1096,8 @@ var Biodiversity = function () {
         wetlandPercent = 0;
         strategicWetlandPercent = 0;
         forestArea = 0;
-        forestPercent = 0;
+        conservationForestArea = 0;
+        conservationForestPercent = 0;
         nativePNindex = 0;
         nonNativePNindex = 0;
         pGindex = 0;
@@ -1133,13 +1136,13 @@ var Biodiversity = function () {
      */
     function setTheIndexes() {
         // Native Perennials Native Index
-        if (nativePerennialsPercent >= 0.05 && nativePerennialsPercent < 0.25) {
+        if (nativeVegetationPercent >= 0.05 && nativeVegetationPercent < 0.25) {
             nativePNindex = 1;
         }
-        else if (nativePerennialsPercent >= 0.25 && nativePerennialsPercent < 0.50) {
+        else if (nativeVegetationPercent >= 0.25 && nativeVegetationPercent < 0.50) {
             nativePNindex = 2;
         }
-        else if (nativePerennialsPercent >= 0.499) {
+        else if (nativeVegetationPercent >= 0.499) {
             nativePNindex = 3;
         } else {
             nativePNindex = 0;
@@ -1158,13 +1161,13 @@ var Biodiversity = function () {
         }
 
         // Perennials Points Game Index
-        if (nativePerennialsPercent + nonNativePerennialsPercent >= 0.05 && nativePerennialsPercent + nonNativePerennialsPercent < 0.25) {
+        if (nativeVegetationPercent + nonNativePerennialsPercent >= 0.05 && nativeVegetationPercent + nonNativePerennialsPercent < 0.25) {
             pGindex = 1;
         }
-        else if (nativePerennialsPercent + nonNativePerennialsPercent >= 0.25 && nativePerennialsPercent + nonNativePerennialsPercent < 0.50) {
+        else if (nativeVegetationPercent + nonNativePerennialsPercent >= 0.25 && nativeVegetationPercent + nonNativePerennialsPercent < 0.50) {
             pGindex = 2;
         }
-        else if (nativePerennialsPercent + nonNativePerennialsPercent >= 0.50) {
+        else if (nativeVegetationPercent + nonNativePerennialsPercent >= 0.50) {
             pGindex = 3;
         } else {
             pGindex = 0;
@@ -1191,16 +1194,19 @@ var Biodiversity = function () {
         }
 
 
-        // Wetland Points Game Index
-        if (wetlandPercent >= 0.05 && strategicWetlandPercent >= 0.5) {
+        // Wetland Game Wildlife Points
+        if (wetlandPercent >= 5) {
             wetlandGindex = 1;
         }
 
-        // Forest Points Game Index
-        if (forestPercent >= 0.2) {
+        // Conservation Forest Points
+        if (conservationForestPercent >= 5) {
             forestGindex = 1;
         }
-
+        else {
+          forestGindex = 0;
+        }
+//        console.log("conservationForestPercent: ", conservationForestPercent);
 //        console.log("Native perennial native index: ", nativePNindex);
 //        console.log("Non-native perennial native index: ", nonNativePNindex);
 //        console.log("Perrennial points game index: ", pGindex);
@@ -1412,14 +1418,14 @@ var Biodiversity = function () {
         }
     }
 
-    function setNativePerennialsArea(i) {
+    function setNativeVegetationArea(i) {
         if (global.data[year].baselandcover.data[i] == 9 || global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 14) {
-            nativePerennialsArea += dataPointArea[i];
+            nativeVegetationArea += dataPointArea[i];
         }
     }
 
-    function setNativePerennialsPercent() {
-        nativePerennialsPercent = nativePerennialsArea / watershedArea;
+    function setNativeVegetationPercent() {
+        nativeVegetationPercent = 100*nativeVegetationArea / watershedArea;
     }
 
     function setNonNativePerennialsArea(i) {
@@ -1474,8 +1480,14 @@ var Biodiversity = function () {
         }
     }
 
-    function setForestPercent() {
-        forestPercent = forestArea / watershedArea;
+    function setConservationForestArea(i) {
+      if (global.data[year].baselandcover.data[i] == 10) {
+        conservationForestArea += dataPointArea[i];
+      }
+    }
+
+    function setConservationForestPercent() {
+        conservationForestPercent = 100*conservationForestArea / watershedArea;
     }
 };
 
@@ -1494,11 +1506,11 @@ var Erosion = function () {
 		subwatershed = getSubdataValueWithName("subwatershed", year);
 		wetland = getSubdataValueWithName("wetland", year);
 		datapointarea = getSubdataValueWithName("area", year);
-		
+
 	    global.sedimentDelivered[year] = 0;
 	    global.grossErosion[year] = 0;
 	    global.phosphorusLoad[year] = 0;
-		
+
 	    for (var i = 0; i < subwatershedArea.length; i++) {
 	        var arr = {
 	            erosion: 0,
@@ -1750,10 +1762,10 @@ var Erosion = function () {
 	        if (point == 3) return 0.3;
 	        else if (point == 9) return 0.001;
 	    }
-		
+
         var temp = getSubdataValueWithName("baselandcover", year - 1),
             cover = (point !== false) ? point : landcover[i];
-		
+
         if (temp != undefined) {
             if (temp[i] == 1) {
                 if (cover == 1) return 0.15;
@@ -2016,7 +2028,7 @@ var Erosion = function () {
 		} else {
 			return override / 4.415;
 		}
-        
+
     } // Once
     function getSoilTestPRunoffFactor(i) {
         if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 0.2;
