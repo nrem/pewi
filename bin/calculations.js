@@ -828,7 +828,7 @@ var Biodiversity = function () {
         },
         adjacencySubtotal = 0,
         nativePerennialsArea = 0, nativePerennialsPercent,
-        nonNativePerennialsArea = 0, nonNativePerennialsPercent,
+        otherHighDiversityArea = 0, otherHighDiversityPercent,
         streamBufferArea = 0, streamBufferPercent,
         wetlandArea = 0, wetlandPercent,
         strategicWetlandArea = {1:0, 2:0, 3:0}, strategicWetlandPercent,
@@ -989,7 +989,7 @@ var Biodiversity = function () {
         setHeterogeneityGroup(i);
 
         setNativePerennialsArea(i);
-        setNonNativePerennialsArea(i);
+        setOtherHighDiversityArea(i);
         setStreamBufferArea(i);
         setWetlandArea(i);
         setStrategicWetlandArea(i);
@@ -1058,7 +1058,7 @@ var Biodiversity = function () {
         //console.log("Contagion: " + contagion, "Product3: " + product3);
         //console.log(contagion);
         setNativePerennialsPercent();
-        setNonNativePerennialsPercent();
+        setOtherHighDiversityPercent();
         setStreamBufferPercent();
         setWetlandPercent();
         setStrategicWetlandPercent();
@@ -1088,8 +1088,8 @@ var Biodiversity = function () {
         adjacencySubtotal = 0;
         nativePerennialsArea = 0;
         nativePerennialsPercent = 0;
-        nonNativePerennialsArea = 0;
-        nonNativePerennialsPercent = 0;
+        otherHighDiversityArea = 0;
+        otherHighDiversityPercent = 0;
         streamBufferArea = 0;
         streamBufferPercent = 0;
         wetlandArea = 0;
@@ -1148,26 +1148,26 @@ var Biodiversity = function () {
             nativePNindex = 0;
         }
         // Non-Native Perennials Native Index
-        if (nonNativePerennialsPercent >= 0.05 && nonNativePerennialsPercent < 0.25) {
+        if (otherHighDiversityPercent >= 5 && otherHighDiversityPercent < 25) {
             nonNativePNindex = 0.5;
         }
-        else if (nonNativePerennialsPercent >= 0.25 && nonNativePerennialsPercent < 0.50) {
+        else if (otherHighDiversityPercent >= 25 && otherHighDiversityPercent < 50) {
             nonNativePNindex = 1;
         }
-        else if (nonNativePerennialsPercent >= 0.499) {
+        else if (otherHighDiversityPercent >= 50) {
             nonNativePNindex = 1.5;
         } else {
             nonNativePNindex = 0;
         }
 
         // Perennials Points Game Index
-        if (nativePerennialsPercent + nonNativePerennialsPercent >= 0.05 && nativePerennialsPercent + nonNativePerennialsPercent < 0.25) {
+        if (nativePerennialsPercent + otherHighDiversityPercent >= 5 && nativePerennialsPercent + otherHighDiversityPercent < 25) {
             pGindex = 1;
         }
-        else if (nativePerennialsPercent + nonNativePerennialsPercent >= 0.25 && nativePerennialsPercent + nonNativePerennialsPercent < 0.50) {
+        else if (nativePerennialsPercent + otherHighDiversityPercent >= 25 && nativePerennialsPercent + otherHighDiversityPercent < 50) {
             pGindex = 2;
         }
-        else if (nativePerennialsPercent + nonNativePerennialsPercent >= 0.50) {
+        else if (nativePerennialsPercent + otherHighDiversityPercent >= 50) {
             pGindex = 3;
         } else {
             pGindex = 0;
@@ -1428,14 +1428,14 @@ var Biodiversity = function () {
         nativePerennialsPercent = nativePerennialsArea / watershedArea;
     }
 
-    function setNonNativePerennialsArea(i) {
-        if (global.data[year].baselandcover.data[i] == 2 || global.data[year].baselandcover.data[i] == 4 || global.data[year].baselandcover.data[i] == 7 || global.data[year].baselandcover.data[i] == 11 || global.data[year].baselandcover.data[i] == 12) {
-            nonNativePerennialsArea += dataPointArea[i];
+    function setOtherHighDiversityArea(i) {
+        if (global.data[year].baselandcover.data[i] == 7 || global.data[year].baselandcover.data[i] == 11 || global.data[year].baselandcover.data[i] == 15) {
+            otherHighDiversityArea += dataPointArea[i];
         }
     }
 
-    function setNonNativePerennialsPercent() {
-        nonNativePerennialsPercent = nonNativePerennialsArea / watershedArea;
+    function setOtherHighDiversityPercent() {
+        otherHighDiversityPercent = 100 * otherHighDiversityArea / watershedArea;
     }
 
     function setStreamBufferArea(i) {
