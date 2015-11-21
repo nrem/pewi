@@ -1189,7 +1189,7 @@ var Biodiversity = function () {
         } else streamGindex = 0;
 
         // Wetland Points Native Index
-        if (wetlandPercent >= 0.05 && strategicWetlandPercent >= 0.50) {
+        if (wetlandPercent >= 5 && strategicWetlandPercent >= 50) {
             wetlandNindex = 2;
         }
 
@@ -1459,7 +1459,7 @@ var Biodiversity = function () {
     }
 
     function setWetlandPercent() {
-        wetlandPercent = wetlandArea / watershedArea;
+        wetlandPercent = 100 * wetlandArea / watershedArea;
     }
 
     function setStrategicWetlandArea(i) {
@@ -1471,7 +1471,7 @@ var Biodiversity = function () {
     }
 
     function setStrategicWetlandPercent() {
-        strategicWetlandPercent = strategicWetlandArea[year] / strategicArea;
+        strategicWetlandPercent = 100 * strategicWetlandArea[year] / strategicArea;
     }
 
     function setForestArea(i) {
