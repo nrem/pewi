@@ -1136,13 +1136,13 @@ var Biodiversity = function () {
      */
     function setTheIndexes() {
         // Native Perennials Native Index
-        if (nativeVegetationPercent >= 0.05 && nativeVegetationPercent < 0.25) {
+        if (nativeVegetationPercent >= 5 && nativeVegetationPercent < 25) {
             nativePNindex = 1;
         }
-        else if (nativeVegetationPercent >= 0.25 && nativeVegetationPercent < 0.50) {
+        else if (nativeVegetationPercent >= 25 && nativeVegetationPercent < 50) {
             nativePNindex = 2;
         }
-        else if (nativeVegetationPercent >= 0.499) {
+        else if (nativeVegetationPercent >= 50) {
             nativePNindex = 3;
         } else {
             nativePNindex = 0;
