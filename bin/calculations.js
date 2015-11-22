@@ -829,6 +829,7 @@ var Biodiversity = function () {
         adjacencySubtotal = 0,
         nativePerennialsArea = 0, nativePerennialsPercent,
         nonNativePerennialsArea = 0, nonNativePerennialsPercent,
+        comparativelyHighDiversityOrLowInputArea = 0, comparativelyHighDiversityOrLowInputPercent,
         streamBufferArea = 0, streamBufferPercent,
         wetlandArea = 0, wetlandPercent,
         strategicWetlandArea = {1:0, 2:0, 3:0}, strategicWetlandPercent,
@@ -990,6 +991,7 @@ var Biodiversity = function () {
 
         setNativePerennialsArea(i);
         setNonNativePerennialsArea(i);
+        setComparativelyHighDiversityOrLowInputArea(i);
         setStreamBufferArea(i);
         setWetlandArea(i);
         setStrategicWetlandArea(i);
@@ -1059,6 +1061,7 @@ var Biodiversity = function () {
         //console.log(contagion);
         setNativePerennialsPercent();
         setNonNativePerennialsPercent();
+        setComparativelyHighDiversityOrLowInputPercent();
         setStreamBufferPercent();
         setWetlandPercent();
         setStrategicWetlandPercent();
@@ -1090,6 +1093,8 @@ var Biodiversity = function () {
         nativePerennialsPercent = 0;
         nonNativePerennialsArea = 0;
         nonNativePerennialsPercent = 0;
+        comparativelyHighDiversityOrLowInputArea = 0;
+        comparativelyHighDiversityOrLowInputPercent = 0;
         streamBufferArea = 0;
         streamBufferPercent = 0;
         wetlandArea = 0;
@@ -1436,6 +1441,17 @@ var Biodiversity = function () {
 
     function setNonNativePerennialsPercent() {
         nonNativePerennialsPercent = nonNativePerennialsArea / watershedArea;
+    }
+
+    function setComparativelyHighDiversityOrLowInputArea(i) {
+      if (global.data[year].baselandcover.data[i] == 2 || global.data[year].baselandcover.data[i] == 4 ||
+      global.data[year].baselandcover.data[i] == 8 || global.data[year].baselandcover.data[i] == 12 || global.data[year].baselandcover.data[i] == 13) {
+        comparativelyHighDiversityOrLowInputArea += dataPointArea[i];
+      }
+    }
+
+    function setComparativelyHighDiversityOrLowInputPercent() {
+      comparativelyHighDiversityOrLowInputPercent = 100 * comparativelyHighDiversityOrLowInputArea / watershedArea;
     }
 
     function setStreamBufferArea(i) {
