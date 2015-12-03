@@ -1451,7 +1451,7 @@ var Biodiversity = function () {
 
     function setStreamBufferArea(i) {
         if (global.data[year].streamnetwork.data[i] == 1) {
-            if (global.data[year].baselandcover.data[i] == 2 || global.data[year].baselandcover.data[i] == 4 || global.data[year].baselandcover.data[i] == 7 || global.data[year].baselandcover.data[i] == 9 || global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 11 || global.data[year].baselandcover.data[i] == 14) {
+            if (global.data[year].baselandcover.data[i] == 2 || global.data[year].baselandcover.data[i] == 4 || global.data[year].baselandcover.data[i] == 7 || global.data[year].baselandcover.data[i] == 8 ||           global.data[year].baselandcover.data[i] == 9 || global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 11 || global.data[year].baselandcover.data[i] == 12 || global.data[year].baselandcover.data[i] == 13 || global.data[year].baselandcover.data[i] == 14 || global.data[year].baselandcover.data[i] == 15) {
                 streamBufferArea += dataPointArea[i];
             }
         }
@@ -1460,7 +1460,7 @@ var Biodiversity = function () {
     function setStreamBufferPercent() {
         //console.log("Stream Buffer Area: " + streamBufferArea);
         //console.log("Stream Area: " + streamArea);
-        streamBufferPercent = streamBufferArea / streamArea;
+        streamBufferPercent = 100*streamBufferArea / streamArea;
     }
 
     function setWetlandArea(i) {
