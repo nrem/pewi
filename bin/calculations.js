@@ -1005,7 +1005,6 @@ var Biodiversity = function () {
         }
         x++;
         setAdjacencyGroup(i);
-        //setAdjacencyGroupCount(i);
 //        setAdjacencyGroupSubtotal(i);
     };
     var contagion = 0;
@@ -1371,11 +1370,6 @@ var Biodiversity = function () {
         } catch (error) {
             console.warn(error + " in setAdjacencyGroup");
         }
-    }
-
-    function setAdjacencyGroupCount(i) {
-        // Calculates for each point in the watershed
-        adjacencyGroup[global.data[year].group.data[i]][1]++;
     }
 
     function setAdjacencyGroupSubtotal(i) {
