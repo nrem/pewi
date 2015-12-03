@@ -1187,13 +1187,6 @@ var Biodiversity = function () {
             streamNindex = 1.5;
         }
 
-        // Stream Buffer Points Game Index
-        if (streamBufferPercent >= 0.3 && streamBufferPercent < 0.7) {
-            streamGindex = 1;
-        } else if (streamBufferPercent >= 0.7) {
-            streamGindex = 2;
-        } else streamGindex = 0;
-
         // Wetland Points Native Index
         if (wetlandPercent >= 5) {
           if (strategicWetlandPercent >= 0 && strategicWetlandPercent < 50) {
