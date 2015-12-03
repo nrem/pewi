@@ -834,8 +834,10 @@ var Biodiversity = function () {
         strategicWetlandArea = {1:0, 2:0, 3:0}, strategicWetlandPercent,
         forestArea = 0, conservationForestPercent,
         conservationForestArea = 0,
+        grasslandPercent, grasslandArea = 0,
         nativePNindex = 0, nonNativePNindex = 0, pGindex = 0, streamNindex = 0,
         streamGindex = 0, wetlandNindex = 0, wetlandGindex = 0, forestGindex = 0,
+        grasslandGindex = 0,
         heterogeneityGroup = [// Group ID,Count,proportion,percent of watershed
             ["Low Spatial Low Temporal", 0, 0, 0],
             ["Low Spatial Medium Temporal", 0, 0, 0], 		// 1
@@ -996,6 +998,7 @@ var Biodiversity = function () {
 		// console.log(strategicWetlandArea, year);
         setForestArea(i);
         setConservationForestArea(i);
+        setGrasslandArea(i);
     };
     var x = 0;
     this.updateAdj = function (i) {
@@ -1061,6 +1064,7 @@ var Biodiversity = function () {
         setWetlandPercent();
         setStrategicWetlandPercent();
         setConservationForestPercent();
+        setGrasslandPercent();
         setTheIndexes();
         setNativeIndex();
         setGameIndex();
@@ -1095,7 +1099,9 @@ var Biodiversity = function () {
         strategicWetlandPercent = 0;
         forestArea = 0;
         conservationForestArea = 0;
+        grasslandArea = 0;
         conservationForestPercent = 0;
+        grasslandPercent = 0;
         nativePNindex = 0;
         nonNativePNindex = 0;
         pGindex = 0;
@@ -1104,6 +1110,7 @@ var Biodiversity = function () {
         wetlandNindex = 0;
         wetlandGindex = 0;
         forestGindex = 0;
+        grasslandGindex = 0;
         distinctCount = 0;
         x = 0;
 
@@ -1214,6 +1221,16 @@ var Biodiversity = function () {
         else {
           forestGindex = 0;
         }
+
+        //Grassland Points
+        if (grasslandPercent >= 5) {
+          grasslandGindex = 1;
+        }
+        else {
+          grasslandGindex = 0;
+        }
+
+
 //        console.log("conservationForestPercent: ", conservationForestPercent);
 //        console.log("Native perennial native index: ", nativePNindex);
 //        console.log("Non-native perennial native index: ", nonNativePNindex);
@@ -1223,6 +1240,7 @@ var Biodiversity = function () {
 //        console.log("Wetland points native index: ", wetlandNindex);
 //        console.log("Wetland points game index: ", wetlandGindex);
 //        console.log("Forest game index: ", forestGindex);
+//        console.log("Grassland point index: ", grasslandGindex);
     }
 
     function setNativeIndex() {
@@ -1479,6 +1497,17 @@ var Biodiversity = function () {
 
     function setConservationForestPercent() {
         conservationForestPercent = 100*conservationForestArea / watershedArea;
+    }
+
+    function setGrasslandArea(i) {
+      if (global.data[year].baselandcover.data[i] == 7 || global.data[year].baselandcover.data[i] == 9 ||
+          global.data[year].baselandcover.data[i] == 12) {
+        grasslandArea += dataPointArea[i];
+      }
+    }
+
+    function setGrasslandPercent() {
+      grasslandPercent = 100*grasslandArea / watershedArea;
     }
 };
 
