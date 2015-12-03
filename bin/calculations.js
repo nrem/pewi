@@ -1128,7 +1128,7 @@ var Biodiversity = function () {
      * -Native Perennials Native Index
      * -Non-native Perennials Native Index
      * -Perennials Points Game Index
-     * -Stream Buffer Points Native Index
+     * -Stream Buffer Points
      * -Stream Buffer Points Game Index
      * -Wetland Points Native Index
      * -Wetland Points Game Index
@@ -1173,12 +1173,18 @@ var Biodiversity = function () {
             pGindex = 0;
         }
 
-        // Steam Buffer Points Native Index
-        if (streamBufferPercent >= 0.50 && streamBufferPercent < 1) {
-            streamNindex = 1;
+        // Steam Buffer Points
+        if (streamBufferPercent >= 0 && streamBufferPercent < 10) {
+            streamNindex = 0;
         }
-        else if (streamBufferPercent == 1) {
-            streamNindex = 2;
+        else if (streamBufferPercent >= 10 && streamBufferPercent < 50) {
+            streamNindex = 0.5;
+        }
+        else if (streamBufferPercent >= 50 && streamBufferPercent < 100) {
+            streamNindex = 1.0;
+        }
+        else if (streamBufferPercent == 100) {
+            streamNindex = 1.5;
         }
 
         // Stream Buffer Points Game Index
@@ -1221,7 +1227,7 @@ var Biodiversity = function () {
 //        console.log("Native perennial native index: ", nativePNindex);
 //        console.log("Non-native perennial native index: ", nonNativePNindex);
 //        console.log("Perrennial points game index: ", pGindex);
-//        console.log("Stream buffer points native index: ", streamNindex);
+//        console.log("Stream buffer points: ", streamNindex);
 //        console.log("Stream bugger points game index: ", streamGindex);
 //        console.log("Wetland points native index: ", wetlandNindex);
 //        console.log("Wetland points game index: ", wetlandGindex);
