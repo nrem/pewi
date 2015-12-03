@@ -1013,7 +1013,6 @@ var Biodiversity = function () {
 //        console.log("//////////////////// BIO INDICES START ///////////////////")
         //console.log(adjacencyGroup);
         //console.log(heterogeneityGroup);
-        setAdjacencyGroupProportion();
 
 //        for(var object in adjacencyGroup) {
 //            console.log(adjacencyGroup[object]);
@@ -1415,19 +1414,7 @@ var Biodiversity = function () {
             adjacencySubtotal++;
         }
     } // Needs deleted
-    function setAdjacencyGroupProportion() {
-        var x = 0;
-        //console.log(adjSubtotal);
-        for (var i = 0; i < 11; i++) {
-            for (var j = 0; j < 11; j++) {
-                if (adjSubtotal[i] != 0) {
-                    adjacencyGroup[x][2] = adjacencyGroup[x][1] / adjSubtotal[i];
-                }
-                x++;
-            }
-        }
-    }
-
+    
     function setNativePerennialsArea(i) {
         if (global.data[year].baselandcover.data[i] == 9 || global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 14) {
             nativePerennialsArea += dataPointArea[i];
