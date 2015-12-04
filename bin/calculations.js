@@ -828,6 +828,7 @@ var Biodiversity = function () {
         },
         adjacencySubtotal = 0,
         nativePerennialsArea = 0, nativePerennialsPercent,
+        comparativelyHighDiversityOrLowInputArea = 0, comparativelyHighDiversityOrLowInputPercent,
         otherHighDiversityArea = 0, otherHighDiversityPercent,
         streamBufferArea = 0, streamBufferPercent,
         wetlandArea = 0, wetlandPercent,
@@ -991,6 +992,7 @@ var Biodiversity = function () {
         setHeterogeneityGroup(i);
 
         setNativePerennialsArea(i);
+        setComparativelyHighDiversityOrLowInputArea(i);
         setOtherHighDiversityArea(i);
         setStreamBufferArea(i);
         setWetlandArea(i);
@@ -1059,6 +1061,7 @@ var Biodiversity = function () {
         //console.log("Contagion: " + contagion, "Product3: " + product3);
         //console.log(contagion);
         setNativePerennialsPercent();
+        setComparativelyHighDiversityOrLowInputPercent();
         setOtherHighDiversityPercent();
         setStreamBufferPercent();
         setWetlandPercent();
@@ -1090,6 +1093,8 @@ var Biodiversity = function () {
         adjacencySubtotal = 0;
         nativePerennialsArea = 0;
         nativePerennialsPercent = 0;
+        comparativelyHighDiversityOrLowInputArea = 0;
+        comparativelyHighDiversityOrLowInputPercent = 0;
         otherHighDiversityArea = 0;
         otherHighDiversityPercent = 0;
         streamBufferArea = 0;
@@ -1446,6 +1451,17 @@ var Biodiversity = function () {
     function setOtherHighDiversityPercent() {
         otherHighDiversityPercent = 100 * otherHighDiversityArea / watershedArea;
     }
+
+    function setComparativelyHighDiversityOrLowInputArea(i) {
+          if (global.data[year].baselandcover.data[i] == 2 || global.data[year].baselandcover.data[i] == 4 ||
+          global.data[year].baselandcover.data[i] == 8 || global.data[year].baselandcover.data[i] == 12 || global.data[year].baselandcover.data[i] == 13) {
+            comparativelyHighDiversityOrLowInputArea += dataPointArea[i];
+          }
+        }
+
+        function setComparativelyHighDiversityOrLowInputPercent() {
+          comparativelyHighDiversityOrLowInputPercent = 100 * comparativelyHighDiversityOrLowInputArea / watershedArea;
+        }
 
     function setStreamBufferArea(i) {
         if (global.data[year].streamnetwork.data[i] == 1) {
