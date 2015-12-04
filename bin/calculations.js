@@ -1426,7 +1426,7 @@ var Biodiversity = function () {
             adjacencySubtotal++;
         }
     } // Needs deleted
-    
+
     function setNativePerennialsArea(i) {
         if (global.data[year].baselandcover.data[i] == 9 || global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 14) {
             nativePerennialsArea += dataPointArea[i];
@@ -1468,7 +1468,7 @@ var Biodiversity = function () {
     }
 
     function setWetlandPercent() {
-        wetlandPercent = wetlandArea / watershedArea;
+        wetlandPercent = 100 * wetlandArea / watershedArea;
     }
 
     function setStrategicWetlandArea(i) {
@@ -1480,7 +1480,7 @@ var Biodiversity = function () {
     }
 
     function setStrategicWetlandPercent() {
-        strategicWetlandPercent = strategicWetlandArea[year] / strategicArea;
+        strategicWetlandPercent = 100 * strategicWetlandArea[year] / strategicArea;
     }
 
     function setForestArea(i) {
