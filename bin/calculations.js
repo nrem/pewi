@@ -826,7 +826,7 @@ var Biodiversity = function () {
             9: 0,
             10: 0
         },
-        nativePerennialsArea = 0, nativePerennialsPercent,
+        nativeVegetationArea = 0, nativePerennialsPercent,
         comparativelyHighDiversityOrLowInputArea = 0, comparativelyHighDiversityOrLowInputPercent,
         otherHighDiversityArea = 0, otherHighDiversityPercent,
         streamBufferArea = 0, streamBufferPercent,
@@ -990,7 +990,7 @@ var Biodiversity = function () {
 
         setHeterogeneityGroup(i);
 
-        setNativePerennialsArea(i);
+        setNativeVegetationArea(i);
         setComparativelyHighDiversityOrLowInputArea(i);
         setOtherHighDiversityArea(i);
         setStreamBufferArea(i);
@@ -1058,7 +1058,7 @@ var Biodiversity = function () {
 //        console.log('Contagion: ' + contagion);
         //console.log("Contagion: " + contagion, "Product3: " + product3);
         //console.log(contagion);
-        setNativePerennialsPercent();
+        setNativeVegetationPercent();
         setComparativelyHighDiversityOrLowInputPercent();
         setOtherHighDiversityPercent();
         setStreamBufferPercent();
@@ -1088,8 +1088,8 @@ var Biodiversity = function () {
 	function dealloc() {
 		strategicWetlandArea[year] = 0;
         contagion = 0;
-        nativePerennialsArea = 0;
-        nativePerennialsPercent = 0;
+        nativeVegetationArea = 0;
+        nativeVegetationPercent = 0;
         comparativelyHighDiversityOrLowInputArea = 0;
         comparativelyHighDiversityOrLowInputPercent = 0;
         otherHighDiversityArea = 0;
@@ -1143,13 +1143,13 @@ var Biodiversity = function () {
      */
     function setTheIndexes() {
         // Native Perennials Native Index
-        if (nativePerennialsPercent >= 0.05 && nativePerennialsPercent < 0.25) {
+        if (nativeVegetationPercent >= 0.05 && nativeVegetationPercent < 0.25) {
             nativePNindex = 1;
         }
-        else if (nativePerennialsPercent >= 0.25 && nativePerennialsPercent < 0.50) {
+        else if (nativeVegetationPercent >= 0.25 && nativeVegetationPercent < 0.50) {
             nativePNindex = 2;
         }
-        else if (nativePerennialsPercent >= 0.499) {
+        else if (nativeVegetationPercent >= 0.499) {
             nativePNindex = 3;
         } else {
             nativePNindex = 0;
@@ -1168,13 +1168,13 @@ var Biodiversity = function () {
         }
 
         // Perennials Points Game Index
-        if (nativePerennialsPercent + otherHighDiversityPercent >= 5 && nativePerennialsPercent + otherHighDiversityPercent < 25) {
+        if (nativeVegetationPercent + otherHighDiversityPercent >= 5 && nativeVegetationPercent + otherHighDiversityPercent < 25) {
             pGindex = 1;
         }
-        else if (nativePerennialsPercent + otherHighDiversityPercent >= 25 && nativePerennialsPercent + otherHighDiversityPercent < 50) {
+        else if (nativeVegetationPercent + otherHighDiversityPercent >= 25 && nativeVegetationPercent + otherHighDiversityPercent < 50) {
             pGindex = 2;
         }
-        else if (nativePerennialsPercent + otherHighDiversityPercent >= 50) {
+        else if (nativeVegetationPercent + otherHighDiversityPercent >= 50) {
             pGindex = 3;
         } else {
             pGindex = 0;
@@ -1401,14 +1401,14 @@ var Biodiversity = function () {
         }
     }
 
-    function setNativePerennialsArea(i) {
+    function setNativeVegetationArea(i) {
         if (global.data[year].baselandcover.data[i] == 9 || global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 14) {
-            nativePerennialsArea += dataPointArea[i];
+            nativeVegetationArea += dataPointArea[i];
         }
     }
 
-    function setNativePerennialsPercent() {
-        nativePerennialsPercent = nativePerennialsArea / watershedArea;
+    function setNativeVegetationPercent() {
+        nativeVegetationPercent = 100 * nativeVegetationArea / watershedArea;
     }
 
     function setOtherHighDiversityArea(i) {
