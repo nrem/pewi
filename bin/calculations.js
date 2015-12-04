@@ -826,7 +826,6 @@ var Biodiversity = function () {
             9: 0,
             10: 0
         },
-        adjacencySubtotal = 0,
         nativePerennialsArea = 0, nativePerennialsPercent,
         comparativelyHighDiversityOrLowInputArea = 0, comparativelyHighDiversityOrLowInputPercent,
         otherHighDiversityArea = 0, otherHighDiversityPercent,
@@ -1027,7 +1026,6 @@ var Biodiversity = function () {
 //        }
 
         //console.log(heterogeneityGroup);
-        //console.log("Adjacency Subtotal: " + adjacencySubtotal);
         //console.log(adjacencyGroup);
         var y = 0;
         x = 0;
@@ -1090,7 +1088,6 @@ var Biodiversity = function () {
 	function dealloc() {
 		strategicWetlandArea[year] = 0;
         contagion = 0;
-        adjacencySubtotal = 0;
         nativePerennialsArea = 0;
         nativePerennialsPercent = 0;
         comparativelyHighDiversityOrLowInputArea = 0;
@@ -1403,34 +1400,6 @@ var Biodiversity = function () {
             console.warn(error + " in setAdjacencyGroup");
         }
     }
-
-    function setAdjacencyGroupSubtotal(i) {
-        // Calculates for each point in the watershed
-        if (global.data[year].group.data[i - (cols + 1)] == global.data[year].group.data[i]) {
-            adjacencySubtotal++;
-        }
-        if (global.data[year].group.data[i - (cols)] == global.data[year].group.data[i]) {
-            adjacencySubtotal++;
-        }
-        if (global.data[year].group.data[i - (cols - 1)] == global.data[year].group.data[i]) {
-            adjacencySubtotal++;
-        }
-        if (global.data[year].group.data[i - 1] == global.data[year].group.data[i]) {
-            adjacencySubtotal++;
-        }
-        if (global.data[year].group.data[i + 1] == global.data[year].group.data[i]) {
-            adjacencySubtotal++;
-        }
-        if (global.data[year].group.data[i + (cols - 1)] == global.data[year].group.data[i]) {
-            adjacencySubtotal++;
-        }
-        if (global.data[year].group.data[i + (cols)] == global.data[year].group.data[i]) {
-            adjacencySubtotal++;
-        }
-        if (global.data[year].group.data[i + (cols + 1)] == global.data[year].group.data[i]) {
-            adjacencySubtotal++;
-        }
-    } // Needs deleted
 
     function setNativePerennialsArea(i) {
         if (global.data[year].baselandcover.data[i] == 9 || global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 14) {
