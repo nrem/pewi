@@ -400,6 +400,7 @@ var OutputMap = function (options) {
                     .text('Year ' + year)
                     .style('cursor', 'default');
 
+                //Subwatershed Nitrate-N Percent Contribution
                 nitrates = d3.select("#nitrate-output-map")
                     .append("svg")
                     .attr("id", "nitrate-svg-" + year)
@@ -425,6 +426,7 @@ var OutputMap = function (options) {
                 d3.select('#erosion-svg-1').style('display', 'block');
                 d3.select('#risk-assessment-svg-1').style('display', 'block');
             } else {
+                //Subwatershed Nitrate-N Percent Contribution
                 nitrates = d3.select("#nitrate-output-map-" + year)
                     .append("svg")
                     .attr("id", "nitrate-svg")
@@ -703,7 +705,7 @@ var Maps = function () {
             for (var i = 0; i < options.landcover.length; i++) {
                 if (options.landcover[i] != undefined && global.selectedPaint !== options.landcover[i]) {
 					undoData.push({location: i, previous: options.landcover[i]});
-					
+
                     changeBaselandcoverDataPoint(global.selectedPaint, i, false, global.year);
 
                     if (options.landcover[i] != 0) {
@@ -747,7 +749,7 @@ var Maps = function () {
 
     this.updateWatershed = function (options) {
         if (options.singlelandcover == undefined) {
-			// watershedArea[options.year] = 0; 
+			// watershedArea[options.year] = 0;
             for (var i = 0; i < options.landcover.length; i++) {
                 if (options.landcover[i] != undefined) {
                     changeBaselandcoverDataPoint(options.landcover[i], i, false, options.year);
