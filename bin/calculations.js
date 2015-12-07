@@ -826,7 +826,7 @@ var Biodiversity = function () {
             9: 0,
             10: 0
         },
-        nativeVegetationArea = 0, nativePerennialsPercent,
+        nativeVegetationArea = 0, nativeVegetationPercent,
         comparativelyHighDiversityOrLowInputArea = 0, comparativelyHighDiversityOrLowInputPercent,
         otherHighDiversityArea = 0, otherHighDiversityPercent,
         streamBufferArea = 0, streamBufferPercent,
@@ -835,6 +835,7 @@ var Biodiversity = function () {
         forestArea = 0, conservationForestPercent,
         conservationForestArea = 0,
         grasslandPercent, grasslandArea = 0,
+        comparativelyHighDiversityOrLowInputindex = 0,
         nativePNindex = 0, nonNativePNindex = 0, pGindex = 0, streamNindex = 0,
         streamGindex = 0, wetlandNindex = 0, wetlandGindex = 0, forestGindex = 0,
         grasslandGindex = 0,
@@ -1104,6 +1105,7 @@ var Biodiversity = function () {
         grasslandArea = 0;
         conservationForestPercent = 0;
         grasslandPercent = 0;
+        comparativelyHighDiversityOrLowInputindex = 0;
         nativePNindex = 0;
         nonNativePNindex = 0;
         pGindex = 0;
@@ -1132,9 +1134,9 @@ var Biodiversity = function () {
 
     /**
      * Sets the following Biodiversity indices:
-     * -Native Perennials Native Index
-     * -Non-native Perennials Native Index
-     * -Perennials Points Game Index
+     * -Native Vegetation Points
+     * -High Diversity Biodiversity Points
+     * -High Diversity Game Wildlife Points
      * -Stream Buffer Points
      * -Stream Buffer Points Game Index
      * -Wetland Points Native Index
@@ -1142,42 +1144,49 @@ var Biodiversity = function () {
      * -Forest Points Game Index
      */
     function setTheIndexes() {
-        // Native Perennials Native Index
-        if (nativeVegetationPercent >= 0.05 && nativeVegetationPercent < 0.25) {
-            nativePNindex = 1;
+        // Native Vegetation Points
+        if (nativeVegetationPercent >= 100) {
+          nativePNindex = 4;
         }
-        else if (nativeVegetationPercent >= 0.25 && nativeVegetationPercent < 0.50) {
-            nativePNindex = 2;
+        else if (nativeVegetationPercent >= 50) {
+          nativePNindex = 3;
         }
-        else if (nativeVegetationPercent >= 0.499) {
-            nativePNindex = 3;
-        } else {
-            nativePNindex = 0;
+        else if (nativeVegetationPercent >= 25) {
+          nativePNindex = 2;
         }
-        // Non-Native Perennials Native Index
-        if (otherHighDiversityPercent >= 5 && otherHighDiversityPercent < 25) {
-            nonNativePNindex = 0.5;
+        else if (nativeVegetationPercent >= 10) {
+          nativePNindex = 1;
         }
-        else if (otherHighDiversityPercent >= 25 && otherHighDiversityPercent < 50) {
-            nonNativePNindex = 1;
-        }
-        else if (otherHighDiversityPercent >= 50) {
-            nonNativePNindex = 1.5;
-        } else {
-            nonNativePNindex = 0;
+        else {
+          nativePNindex = 0;
         }
 
-        // Perennials Points Game Index
-        if (nativeVegetationPercent + otherHighDiversityPercent >= 5 && nativeVegetationPercent + otherHighDiversityPercent < 25) {
-            pGindex = 1;
+        // High Diversity Biodiversity Points
+        if (otherHighDiversityPercent + otherHighDiversityPercent >= 100) {
+            nonNativePNindex = 1.5;
         }
-        else if (nativeVegetationPercent + otherHighDiversityPercent >= 25 && nativeVegetationPercent + otherHighDiversityPercent < 50) {
-            pGindex = 2;
+        else if (otherHighDiversityPercent + otherHighDiversityPercent >= 50) {
+          nonNativePNindex = 1;
+        }
+        else if (otherHighDiversityPercent + otherHighDiversityPercent >= 10) {
+          nonNativePNindex = 0.5;
+        }
+        else {
+          nonNativePNindex = 0;
+        }
+
+        // High Diversity Game Wildlife Points
+        if (nativeVegetationPercent + otherHighDiversityPercent >= 100) {
+          pGindex = 4;
         }
         else if (nativeVegetationPercent + otherHighDiversityPercent >= 50) {
-            pGindex = 3;
-        } else {
-            pGindex = 0;
+          pGindex = 3;
+        }
+        else if (nativeVegetationPercent + otherHighDiversityPercent >= 25) {
+          pGindex = 2;
+        }
+        else if (nativeVegetationPercent + otherHighDiversityPercent >= 10) {
+          pGindex = 1;
         }
 
         // Steam Buffer Points
@@ -1232,11 +1241,25 @@ var Biodiversity = function () {
           grasslandGindex = 0;
         }
 
+        //Comparatively High Diversity Or Low Input Points
+        if (nativeVegetationPercent + otherHighDiversityPercent + comparativelyHighDiversityOrLowInputPercent >= 100) {
+          comparativelyHighDiversityOrLowInputindex = 1.5;
+        }
+        else if (nativeVegetationPercent + otherHighDiversityPercent + comparativelyHighDiversityOrLowInputPercent >= 50) {
+          comparativelyHighDiversityOrLowInputindex = 1;
+        }
+        else if (nativeVegetationPercent + otherHighDiversityPercent + comparativelyHighDiversityOrLowInputPercent >= 10) {
+          comparativelyHighDiversityOrLowInputindex = 0.5;
+        }
+        else {
+          comparativelyHighDiversityOrLowInputindex = 0;
+        }
+
 
 //        console.log("conservationForestPercent: ", conservationForestPercent);
-//        console.log("Native perennial native index: ", nativePNindex);
-//        console.log("Non-native perennial native index: ", nonNativePNindex);
-//        console.log("Perrennial points game index: ", pGindex);
+//        console.log("Native Vegetation Points: ", nativePNindex);
+//        console.log("High Diversity Biodiversity Points: ", nonNativePNindex);
+//        console.log("High Diversity Game Wildlife Points: ", pGindex);
 //        console.log("Stream buffer points: ", streamNindex);
 //        console.log("Stream bugger points game index: ", streamGindex);
 //        console.log("Wetland points native index: ", wetlandNindex);
@@ -1246,14 +1269,14 @@ var Biodiversity = function () {
     }
 
     function setNativeIndex() {
-        dataset['biodiversity']['Year' + year] = 10 * (getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex);
-        dataset['biodiversity']['Value' + year] = getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex;
+        dataset['biodiversity']['Year' + year] = 10 * (nativePNindex + nonNativePNindex + comparativelyHighDiversityOrLowInputindex + wetlandNindex + streamNindex);
+        dataset['biodiversity']['Value' + year] = nativePNindex + nonNativePNindex + comparativelyHighDiversityOrLowInputindex + wetlandNindex + streamNindex;
 //        console.log('Native Index: ' + getContagionPointsNativeIndex());
     }
 
     function setGameIndex() {
-        dataset['game']['Year' + year] = 10 * (getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex);
-        dataset['game']['Value' + year] = getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex;
+        dataset['game']['Year' + year] = 10 * (pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamGindex);
+        dataset['game']['Value' + year] = pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamGindex;
 //        console.log('Game Index: ' + getContagionPointsGameIndex());
     }
 
