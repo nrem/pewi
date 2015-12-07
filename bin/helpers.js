@@ -56,7 +56,7 @@ function setSoiltypeFactors(i) {
             permeabilityCode[i] = 50;
             break;
         case "G":
-            subsoilGroup[i] = 1;
+            subsoilGroup[i] = 3;
             permeabilityCode[i] = 80;
             break;
         case "K":
