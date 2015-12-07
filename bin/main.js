@@ -838,7 +838,7 @@ var global = [
                 };
                 global.popup = new ModalView(options);
                 var years = 0, body;
-                body = '<section class="output-map-container"><div><a>Nitrate Watershed Percent Contribution</a></div>';
+                body = '<section class="output-map-container"><div><a>Subwatershed Nitrate-N Percent Contribution</a></div>';
                 body += '<div id="nitrate-output-map" class="output-map"></div>';
                 for (var i = 1; i < 4; i++) {
                     if (global.data[i] !== 0) {
@@ -1432,10 +1432,10 @@ var global = [
 //                     left = left + diffx;
 //                     top = top + diffy;
 //                 }
-// 
+//
 //                 $("#watershed1").css("marginLeft", left);
 //                 $("#watershed1").css("marginTop", top);
-// 
+//
 //                 oldmousex = newmousex;
 //                 oldmousey = newmousey;
 //             }
@@ -1443,7 +1443,7 @@ var global = [
 //                 $("#workspace").css("cursor", "default");
 //                 $("#watershed-rect").css("cursor", "pointer");
 //             }
-// 
+//
 //         });
 
         // --------------------------------------------------------
