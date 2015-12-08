@@ -54,11 +54,7 @@ var ScoreDirector = function () {
                 erosion.update(i);
             }
         }
-        for (var i = 0; i <= landcover.length; i++) {
-            if (landcover[i] > 0) {
-                bio.updateAdj(i);
-            }
-        }
+
         yieldVals.calculate();
         nitrates.calculate();
         carbon.calculate();
@@ -812,21 +808,8 @@ var Biodiversity = function () {
         cols,
         rows,
         dataPointArea,
-        distinctCount = 0,
-        adjSubtotal = {
-            0: 0,
-            1: 0,
-            2: 0,
-            3: 0,
-            4: 0,
-            5: 0,
-            6: 0,
-            7: 0,
-            8: 0,
-            9: 0,
-            10: 0
-        },
-        nativeVegetationArea = 0, nativePerennialsPercent,
+
+        nativeVegetationArea = 0, nativeVegetationPercent,
         comparativelyHighDiversityOrLowInputArea = 0, comparativelyHighDiversityOrLowInputPercent,
         otherHighDiversityArea = 0, otherHighDiversityPercent,
         streamBufferArea = 0, streamBufferPercent,
@@ -835,160 +818,15 @@ var Biodiversity = function () {
         forestArea = 0, conservationForestPercent,
         conservationForestArea = 0,
         grasslandPercent, grasslandArea = 0,
+        comparativelyHighDiversityOrLowInputindex = 0,
         nativePNindex = 0, nonNativePNindex = 0, pGindex = 0, streamNindex = 0,
         streamGindex = 0, wetlandNindex = 0, wetlandGindex = 0, forestGindex = 0,
-        grasslandGindex = 0,
-        heterogeneityGroup = [// Group ID,Count,proportion,percent of watershed
-            ["Low Spatial Low Temporal", 0, 0, 0],
-            ["Low Spatial Medium Temporal", 0, 0, 0], 		// 1
-            ["Low Spatial Medium Temporal 2", 0, 0, 0],
-            ["Low Spatial High Temporal", 0, 0, 0],		// 3
-            ["Medium Spatial Low Temporal", 0, 0, 0],
-            ["Medium Spatial Medium Temporal", 0, 0, 0],	// 5
-            ["Medium Spatial Medium Temporal 2", 0, 0, 0],
-            ["High Spatial High Temporal", 0, 0, 0],		// 7
-            ["High Spatial High Temporal 2", 0, 0, 0],
-            ["High Spatial High Temporal 3", 0, 0, 0], 	// 9
-            ["High Spatial High Temporal 4", 0, 0, 0]
-        ],
-        adjacencyGroup = [
-            ["low-low -> low-low", 0, 0],
-            ["low-low -> low-medium", 0, 0],
-            ["low-low -> low-medium 2", 0, 0],
-            ["low-low -> low-high", 0, 0],
-            ["low-low -> medium-low", 0, 0],
-            ["low-low -> medium-medium", 0, 0],
-            ["low-low -> medium-medium 2", 0, 0],
-            ["low-low -> high-high", 0, 0],
-            ["low-low -> high-high 2", 0, 0],
-            ["low-low -> high-high 3", 0, 0],
-            ["low-low -> high-high 4", 0, 0],
-            ["low-medium -> low-low", 0, 0],
-            ["low-medium -> low-medium", 0, 0],
-            ["low-medium -> low-medium 2", 0, 0],
-            ["low-medium -> low-high", 0, 0],
-            ["low-medium -> medium-low", 0, 0],
-            ["low-medium -> medium-medium", 0, 0],
-            ["low-medium -> medium-medium 2", 0, 0],
-            ["low-medium -> high-high", 0, 0],
-            ["low-medium -> high-high 2", 0, 0],
-            ["low-medium -> high-high 3", 0, 0],
-            ["low-medium -> high-high 4", 0, 0],
-            ["low-medium 2 -> low-low", 0, 0],
-            ["low-medium 2 -> low-medium", 0, 0],
-            ["low-medium 2 -> low-medium 2", 0, 0],
-            ["low-medium 2 -> low-high", 0, 0],
-            ["low-medium 2 -> medium-low", 0, 0],
-            ["low-medium 2 -> medium-medium", 0, 0],
-            ["low-medium 2 -> medium-medium 2", 0, 0],
-            ["low-medium 2 -> high-high", 0, 0],
-            ["low-medium 2 -> high-high 2", 0, 0],
-            ["low-medium 2 -> high-high 3", 0, 0],
-            ["low-medium 2 -> high-high 4", 0, 0],
-            ["low-high -> low-low", 0, 0],
-            ["low-high -> low-medium", 0, 0],
-            ["low-high -> low-medium 2", 0, 0],
-            ["low-high -> low-high", 0, 0],
-            ["low-high -> medium-low", 0, 0],
-            ["low-high -> medium-medium", 0, 0],
-            ["low-high -> medium-medium 2", 0, 0],
-            ["low-high -> high-high", 0, 0],
-            ["low-high -> high-high 2", 0, 0],
-            ["low-high -> high-high 3", 0, 0],
-            ["low-high -> high-high 4", 0, 0],
-            ["medium-low -> low-low", 0, 0],
-            ["medium-low -> low-medium", 0, 0],
-            ["medium-low -> low-medium 2", 0, 0],
-            ["medium-low -> low-high", 0, 0],
-            ["medium-low -> medium-low", 0, 0],
-            ["medium-low -> medium-medium", 0, 0],
-            ["medium-low -> medium-medium 2", 0, 0],
-            ["medium-low -> high-high", 0, 0],
-            ["medium-low -> high-high 2", 0, 0],
-            ["medium-low -> high-high 3", 0, 0],
-            ["medium-low -> high-high 4", 0, 0],
-            ["medium-medium -> low-low", 0, 0],
-            ["medium-medium -> low-medium", 0, 0],
-            ["medium-medium -> low-medium 2", 0, 0],
-            ["medium-medium -> low-high", 0, 0],
-            ["medium-medium -> medium-low", 0, 0],
-            ["medium-medium -> medium-medium", 0, 0],
-            ["medium-medium -> medium-medium 2", 0, 0],
-            ["medium-medium -> high-high", 0, 0],
-            ["medium-medium -> high-high 2", 0, 0],
-            ["medium-medium -> high-high 3", 0, 0],
-            ["medium-medium -> high-high 4", 0, 0],
-            ["medium-medium 2 -> low-low", 0, 0],
-            ["medium-medium 2 -> low-medium", 0, 0],
-            ["medium-medium 2 -> low-medium 2", 0, 0],
-            ["medium-medium 2 -> low-high", 0, 0],
-            ["medium-medium 2 -> medium-low", 0, 0],
-            ["medium-medium 2 -> medium-medium", 0, 0],
-            ["medium-medium 2 -> medium-medium 2", 0, 0],
-            ["medium-medium 2 -> high-high", 0, 0],
-            ["medium-medium 2 -> high-high 2", 0, 0],
-            ["medium-medium 2 -> high-high 3", 0, 0],
-            ["medium-medium 2 -> high-high 4", 0, 0],
-            ["high-high -> low-low", 0, 0],
-            ["high-high -> low-medium", 0, 0],
-            ["high-high -> low-medium 2", 0, 0],
-            ["high-high -> low-high", 0, 0],
-            ["high-high -> medium-low", 0, 0],
-            ["high-high -> medium-medium", 0, 0],
-            ["high-high -> medium-medium 2", 0, 0],
-            ["high-high -> high-high", 0, 0],
-            ["high-high -> high-high 2", 0, 0],
-            ["high-high -> high-high 3", 0, 0],
-            ["high-high -> high-high 4", 0, 0],
-            ["high-high 2 -> low-low", 0, 0],
-            ["high-high 2 -> low-medium", 0, 0],
-            ["high-high 2 -> low-medium 2", 0, 0],
-            ["high-high 2 -> low-high", 0, 0],
-            ["high-high 2 -> medium-low", 0, 0],
-            ["high-high 2 -> medium-medium", 0, 0],
-            ["high-high 2 -> medium-medium 2", 0, 0],
-            ["high-high 2 -> high-high", 0, 0],
-            ["high-high 2 -> high-high 2", 0, 0],
-            ["high-high 2 -> high-high 3", 0, 0],
-            ["high-high 2 -> high-high 4", 0, 0],
-            ["high-high 3 -> low-low", 0, 0],
-            ["high-high 3 -> low-medium", 0, 0],
-            ["high-high 3 -> low-medium 2", 0, 0],
-            ["high-high 3 -> low-high", 0, 0],
-            ["high-high 3 -> medium-low", 0, 0],
-            ["high-high 3 -> medium-medium", 0, 0],
-            ["high-high 3 -> medium-medium 2", 0, 0],
-            ["high-high 3 -> high-high", 0, 0],
-            ["high-high 3 -> high-high 2", 0, 0],
-            ["high-high 3 -> high-high 3", 0, 0],
-            ["high-high 3 -> high-high 4", 0, 0],
-            ["high-high 4 -> low-low", 0, 0],
-            ["high-high 4 -> low-medium", 0, 0],
-            ["high-high 4 -> low-medium 2", 0, 0],
-            ["high-high 4 -> low-high", 0, 0],
-            ["high-high 4 -> medium-low", 0, 0],
-            ["high-high 4 -> medium-medium", 0, 0],
-            ["high-high 4 -> medium-medium 2", 0, 0],
-            ["high-high 4 -> high-high", 0, 0],
-            ["high-high 4 -> high-high 2", 0, 0],
-            ["high-high 4 -> high-high 3", 0, 0],
-            ["high-high 4 -> high-high 4", 0, 0]
-        ];
-
-//    this.init = function() {
-//        for(var i=1; i<4; i++) {
-//
-//
-//        }
-//        console.log(heterogeneityGroup);
-//    };
+        grasslandGindex = 0;
 
     this.update = function (i) {
         if(year == 2) {
             console.log(year);
         }
-
-        setHeterogeneityGroup(i);
 
         setNativeVegetationArea(i);
         setComparativelyHighDiversityOrLowInputArea(i);
@@ -1002,62 +840,15 @@ var Biodiversity = function () {
         setGrasslandArea(i);
     };
     var x = 0;
-    this.updateAdj = function (i) {
-        if (x < heterogeneityGroup.length) {
-            setHeterogeneityGroupProportions(x);
-            setHeterogeneityGroupDistinctCount(x);
-        }
-        x++;
-        setAdjacencyGroup(i);
-//        setAdjacencyGroupSubtotal(i);
-    };
-    var contagion = 0;
+
     this.calculate = function () {
 //        console.log("//////////////////// BIO INDICES START ///////////////////")
-        //console.log(adjacencyGroup);
-        //console.log(heterogeneityGroup);
 
-//        for(var object in adjacencyGroup) {
-//            console.log(adjacencyGroup[object]);
-//        }
-//        console.log("Heterogeneity Group Numbers");
-//        for(var thing in heterogeneityGroup) {
-//            console.log(heterogeneityGroup[thing]);
-//        }
-
-        //console.log(heterogeneityGroup);
-        //console.log(adjacencyGroup);
         var y = 0;
         x = 0;
-        for (var i = 0; i < heterogeneityGroup.length; i++) {
-            for (var j = 0; j < 11; j++) {
-                if (adjacencyGroup[y][2] != 0 && heterogeneityGroup[i][2] != 0) {
-                    var product1 = heterogeneityGroup[i][2] * adjacencyGroup[y][2];
-                    var product2 = Math.log(heterogeneityGroup[i][2] * adjacencyGroup[y][2]);
 
-                    //console.log(product2, "Het: " + heterogeneityGroup[i][2], "Adj: " + adjacencyGroup[j][2]);
-                    x += adjacencyGroup[y][2];
-                    contagion += (product1 * product2);
-//                    console.log("Heterogeneity: " + heterogeneityGroup[i][2], "Adj: " + adjacencyGroup[y][2]);
-//                    console.log("Product1: " + product1, "Product2: " + product2);
-//                    console.log("Numerator: " + (product1 * product2));
-                    //console.log(j);
-                }
-                y++;
-            }
-        }
         //console.log(x);
-        //console.log(distinctCount);
-//        console.log("Numerator: ", contagion);
-        // If there is only one landcover, the ln of distinctCount equals 0
-        // therefore, override the value such that the final contagion value
-        // equals 1
-        var product3 = 2 * ((Math.log(distinctCount) == 0) ? 0.5 : Math.log(distinctCount));
-//        console.log("Denomimator: ", product3);
-        contagion = 1 + (contagion / product3);
-//        console.log('Contagion: ' + contagion);
-        //console.log("Contagion: " + contagion, "Product3: " + product3);
-        //console.log(contagion);
+
         setNativeVegetationPercent();
         setComparativelyHighDiversityOrLowInputPercent();
         setOtherHighDiversityPercent();
@@ -1079,15 +870,12 @@ var Biodiversity = function () {
         // dataset[x]["Year"+year] = setGameIndex();
         // dataset[x]["Year"+year] = setNativeIndex();
 
-//        console.log('Group Adjencies [title, count, proportion]: ', adjacencyGroup);
-//        console.log('Heterogeneity Groups [title, count, proportion, !unused!]: ', heterogeneityGroup);
 //        console.log("//////////////////// BIO INDICES END ///////////////////");
         dealloc();
     };
 
 	function dealloc() {
 		strategicWetlandArea[year] = 0;
-        contagion = 0;
         nativeVegetationArea = 0;
         nativeVegetationPercent = 0;
         comparativelyHighDiversityOrLowInputArea = 0;
@@ -1104,6 +892,7 @@ var Biodiversity = function () {
         grasslandArea = 0;
         conservationForestPercent = 0;
         grasslandPercent = 0;
+        comparativelyHighDiversityOrLowInputindex = 0;
         nativePNindex = 0;
         nonNativePNindex = 0;
         pGindex = 0;
@@ -1113,28 +902,17 @@ var Biodiversity = function () {
         wetlandGindex = 0;
         forestGindex = 0;
         grasslandGindex = 0;
-        distinctCount = 0;
         x = 0;
 
-        for(var key in adjacencyGroup) {
-            adjacencyGroup[key][1] = 0;
-            adjacencyGroup[key][2] = 0;
 
-            if(key < heterogeneityGroup.length) {
-                heterogeneityGroup[key][1] = 0;
-                heterogeneityGroup[key][2] = 0;
-            }
-        }
-        for(var key in adjSubtotal) {
-            adjSubtotal[key] = 0;
-        }
+
 	}
 
     /**
      * Sets the following Biodiversity indices:
-     * -Native Perennials Native Index
-     * -Non-native Perennials Native Index
-     * -Perennials Points Game Index
+     * -Native Vegetation Points
+     * -High Diversity Biodiversity Points
+     * -High Diversity Game Wildlife Points
      * -Stream Buffer Points
      * -Stream Buffer Points Game Index
      * -Wetland Points Native Index
@@ -1142,42 +920,49 @@ var Biodiversity = function () {
      * -Forest Points Game Index
      */
     function setTheIndexes() {
-        // Native Perennials Native Index
-        if (nativeVegetationPercent >= 0.05 && nativeVegetationPercent < 0.25) {
-            nativePNindex = 1;
+        // Native Vegetation Points
+        if (nativeVegetationPercent >= 100) {
+          nativePNindex = 4;
         }
-        else if (nativeVegetationPercent >= 0.25 && nativeVegetationPercent < 0.50) {
-            nativePNindex = 2;
+        else if (nativeVegetationPercent >= 50) {
+          nativePNindex = 3;
         }
-        else if (nativeVegetationPercent >= 0.499) {
-            nativePNindex = 3;
-        } else {
-            nativePNindex = 0;
+        else if (nativeVegetationPercent >= 25) {
+          nativePNindex = 2;
         }
-        // Non-Native Perennials Native Index
-        if (otherHighDiversityPercent >= 5 && otherHighDiversityPercent < 25) {
-            nonNativePNindex = 0.5;
+        else if (nativeVegetationPercent >= 10) {
+          nativePNindex = 1;
         }
-        else if (otherHighDiversityPercent >= 25 && otherHighDiversityPercent < 50) {
-            nonNativePNindex = 1;
-        }
-        else if (otherHighDiversityPercent >= 50) {
-            nonNativePNindex = 1.5;
-        } else {
-            nonNativePNindex = 0;
+        else {
+          nativePNindex = 0;
         }
 
-        // Perennials Points Game Index
-        if (nativeVegetationPercent + otherHighDiversityPercent >= 5 && nativeVegetationPercent + otherHighDiversityPercent < 25) {
-            pGindex = 1;
+        // High Diversity Biodiversity Points
+        if (otherHighDiversityPercent + otherHighDiversityPercent >= 100) {
+            nonNativePNindex = 1.5;
         }
-        else if (nativeVegetationPercent + otherHighDiversityPercent >= 25 && nativeVegetationPercent + otherHighDiversityPercent < 50) {
-            pGindex = 2;
+        else if (otherHighDiversityPercent + otherHighDiversityPercent >= 50) {
+          nonNativePNindex = 1;
+        }
+        else if (otherHighDiversityPercent + otherHighDiversityPercent >= 10) {
+          nonNativePNindex = 0.5;
+        }
+        else {
+          nonNativePNindex = 0;
+        }
+
+        // High Diversity Game Wildlife Points
+        if (nativeVegetationPercent + otherHighDiversityPercent >= 100) {
+          pGindex = 4;
         }
         else if (nativeVegetationPercent + otherHighDiversityPercent >= 50) {
-            pGindex = 3;
-        } else {
-            pGindex = 0;
+          pGindex = 3;
+        }
+        else if (nativeVegetationPercent + otherHighDiversityPercent >= 25) {
+          pGindex = 2;
+        }
+        else if (nativeVegetationPercent + otherHighDiversityPercent >= 10) {
+          pGindex = 1;
         }
 
         // Steam Buffer Points
@@ -1232,11 +1017,25 @@ var Biodiversity = function () {
           grasslandGindex = 0;
         }
 
+        //Comparatively High Diversity Or Low Input Points
+        if (nativeVegetationPercent + otherHighDiversityPercent + comparativelyHighDiversityOrLowInputPercent >= 100) {
+          comparativelyHighDiversityOrLowInputindex = 1.5;
+        }
+        else if (nativeVegetationPercent + otherHighDiversityPercent + comparativelyHighDiversityOrLowInputPercent >= 50) {
+          comparativelyHighDiversityOrLowInputindex = 1;
+        }
+        else if (nativeVegetationPercent + otherHighDiversityPercent + comparativelyHighDiversityOrLowInputPercent >= 10) {
+          comparativelyHighDiversityOrLowInputindex = 0.5;
+        }
+        else {
+          comparativelyHighDiversityOrLowInputindex = 0;
+        }
+
 
 //        console.log("conservationForestPercent: ", conservationForestPercent);
-//        console.log("Native perennial native index: ", nativePNindex);
-//        console.log("Non-native perennial native index: ", nonNativePNindex);
-//        console.log("Perrennial points game index: ", pGindex);
+//        console.log("Native Vegetation Points: ", nativePNindex);
+//        console.log("High Diversity Biodiversity Points: ", nonNativePNindex);
+//        console.log("High Diversity Game Wildlife Points: ", pGindex);
 //        console.log("Stream buffer points: ", streamNindex);
 //        console.log("Stream bugger points game index: ", streamGindex);
 //        console.log("Wetland points native index: ", wetlandNindex);
@@ -1246,159 +1045,13 @@ var Biodiversity = function () {
     }
 
     function setNativeIndex() {
-        dataset['biodiversity']['Year' + year] = 10 * (getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex);
-        dataset['biodiversity']['Value' + year] = getContagionPointsNativeIndex() + nativePNindex + nonNativePNindex + streamNindex + wetlandNindex;
-//        console.log('Native Index: ' + getContagionPointsNativeIndex());
+        dataset['biodiversity']['Year' + year] = 10 * (nativePNindex + nonNativePNindex + comparativelyHighDiversityOrLowInputindex + wetlandNindex + streamNindex);
+        dataset['biodiversity']['Value' + year] = nativePNindex + nonNativePNindex + comparativelyHighDiversityOrLowInputindex + wetlandNindex + streamNindex;
     }
 
     function setGameIndex() {
-        dataset['game']['Year' + year] = 10 * (getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex);
-        dataset['game']['Value' + year] = getContagionPointsGameIndex() + pGindex + streamGindex + wetlandGindex + forestGindex;
-//        console.log('Game Index: ' + getContagionPointsGameIndex());
-    }
-
-    function getContagionPointsNativeIndex() {
-        // Calculated once per watershed
-        if (contagion >= 0 && contagion < 0.15) return 1.5;
-        else if (contagion >= 0.15 && contagion < 0.35) return 1;
-        else if (contagion >= 0.35 && contagion < 1) return 0.5;
-        else return 0;
-    }
-
-    function getContagionPointsGameIndex() {
-        // Calculated once per watershed
-        if (contagion >= 0 && contagion < 0.15) return 3;
-        else if (contagion >= 0.15 && contagion < 0.35) return 2;
-        else if (contagion >= 0.55 && contagion < 1) return 1;
-        else return 0;
-    }
-
-    function setHeterogeneityGroup(j) {
-        // Calculates for each point in the watershed (attached to main loop)
-        // Heterogeneity group setter
-        // Heterogeneity group count setter
-        switch (parseInt(global.data[year].baselandcover.data[j])) {
-            case 1:
-                global.data[year].group.data[j] = 0;        // Set Hetero Group in pewiData to identified group
-                heterogeneityGroup[0][1]++; // Add 1 to count for Low Spatial Low Temporal
-                break;
-            case 2:
-                global.data[year].group.data[j] = 4;
-                heterogeneityGroup[4][1]++;
-                break;
-            case 3:
-                global.data[year].group.data[j] = 0;
-                heterogeneityGroup[0][1]++;
-                break;
-            case 4:
-                global.data[year].group.data[j] = 4;
-                heterogeneityGroup[4][1]++;
-                break;
-            case 5:
-                global.data[year].group.data[j] = 1;
-                heterogeneityGroup[1][1]++;
-                break;
-            case 6:
-                global.data[year].group.data[j] = 0;
-                heterogeneityGroup[0][1]++;
-                break;
-            case 7:
-                global.data[year].group.data[j] = 5;
-                heterogeneityGroup[5][1]++;
-                break;
-            case 8:
-                global.data[year].group.data[j] = 2;
-                heterogeneityGroup[2][1]++;
-                break;
-            case 9:
-                global.data[year].group.data[j] = 7;
-                heterogeneityGroup[7][1]++;
-                break;
-            case 10:
-                global.data[year].group.data[j] = 8;
-                heterogeneityGroup[8][1]++;
-                break;
-            case 11:
-                global.data[year].group.data[j] = 6;
-                heterogeneityGroup[6][1]++;
-                break;
-            case 12:
-                global.data[year].group.data[j] = 2;
-                heterogeneityGroup[2][1]++;
-                break;
-            case 13:
-                global.data[year].group.data[j] = 3;
-                heterogeneityGroup[3][1]++;
-                break;
-            case 14:
-                global.data[year].group.data[j] = 9;
-                heterogeneityGroup[9][1]++;
-                break;
-            case 15:
-                global.data[year].group.data[j] = 10;
-        }
-    }
-
-    function setHeterogeneityGroupProportions(i) {
-        // Calculates for each hetero group (attached to secondary loop)
-        // Heterogeneity group proportion setter
-        //console.log(heterogeneityGroup[i][1], watershedArea);
-        heterogeneityGroup[i][2] = heterogeneityGroup[i][1] / $('.watershed-rect').length;
-    }
-
-    function setHeterogeneityGroupDistinctCount(i) {
-        // Calculates for each hetero group (attached to secondary loop)
-        if (heterogeneityGroup[i][1] > 0)
-            distinctCount++;
-    }
-
-    function setAdjacencyGroup(i) {
-        try {
-            // Calculates for each point in the watershed
-            if (i > cols + 1 + 1 && data[i - (cols + 1)] != undefined) {
-                //console.log(i);
-                //console.log(global.data[year].group.data[i]);
-                //console.log(global.data[year].group.data[i-(cols+1)]);
-                //console.log(((global.data[year].group.data[i]*10) + global.data[year].group.data[i-1]));
-
-                adjacencyGroup[((data[i] * 11) + data[i - (cols + 1)])][1]++;
-                adjSubtotal[data[i - (cols + 1)]]++;
-
-//            console.assert(data[i] == undefined, adjacencyGroup);
-            }
-            //global.data[year].group.data[i-(cols)] != undefined && parseInt(global.data[year].group.data[i-(cols)]) >= 0
-            if (i > cols + 1 && data[i - (cols)] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i - (cols)])][1]++;
-                adjSubtotal[data[i - (cols)]]++;
-            }
-            if (i > cols && data[i - (cols - 1)] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i - (cols - 1)])][1]++;
-                adjSubtotal[data[i - (cols - 1)]]++;
-            }
-            if (i > 1 && data[i - 1] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i - 1])][1]++;
-                adjSubtotal[data[i - 1]]++;
-            }
-            if (data[i + 1] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i + 1])][1]++;
-                adjSubtotal[data[i + 1]]++;
-            }
-            if (data[i + (cols - 1)] != undefined) {
-                //console.log(global.data[year].group.data[i+(cols-1)]);
-                adjacencyGroup[((data[i] * 11) + data[i + (cols - 1)])][1]++;
-                adjSubtotal[data[i + (cols - 1)]]++;
-            }
-            if (data[i + (cols)] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i + (cols)])][1]++;
-                adjSubtotal[data[i + (cols)]]++;
-            }
-            if (data[i + (cols + 1)] != undefined) {
-                adjacencyGroup[((data[i] * 11) + data[i + (cols + 1)])][1]++;
-                adjSubtotal[data[i + (cols + 1)]]++;
-            }
-        } catch (error) {
-            console.warn(error + " in setAdjacencyGroup");
-        }
+        dataset['game']['Year' + year] = 10 * (pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamGindex);
+        dataset['game']['Value' + year] = pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamGindex;
     }
 
     function setNativeVegetationArea(i) {
