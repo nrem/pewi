@@ -603,12 +603,17 @@ var Nitrates = function () {
         }
     }
 
+    //Nitrate Variables
     var landcover,
         wetland,
         watershedPercent = [],
-        max = 100 * 0.14 * 2.11, min = 2,
+        //Nitrate-N Concentration Max
+        max = 100 * 0.14 * 2.11,
+        //Nitrate-N Concentration Min
+        min = 2,
         soilType,
         dataPointArea;
+
 
     this.update = function (i) {
         var f = subwatershedData[i];
@@ -631,6 +636,7 @@ var Nitrates = function () {
         }
     }
 
+    //Wetland Multiplier
     function setWetlandMultiplier(i) {
         if (wetland[i] == 1 && landcover[i] == 14) {
             return 1;
@@ -678,14 +684,20 @@ var Nitrates = function () {
             return console.alert("The subwatersheds are not defined. Try Nitrates.update() before calling this function.");
         }
 		//console.log(ppmsubwatershed[year]);
+
+        //Nitrate-N Concentration
         for (var i = 0; i < subwatershed[year].length; i++) {
             nitratesPPM[year] += (subwatershedArea[i] * ppmSubwatershed[year][i]) / watershedArea;
         }
 //        console.log("NITRATESPPM ******************", nitratesPPM[year]);
+
+        //
         for (var i = 0; i < subwatershed[year].length; i++) {
             watershedPercent[i] = ppmSubwatershed[year][i] * (subwatershedArea[i] / watershedArea) / nitratesPPM[year];
             global.watershedPercent[year][i] = watershedPercent[i];
         }
+        //        console.log("WATERSHEDPERCENT ********************", watershedPercent[i]);
+        //        console.log("GLOBAL.watershedPercent[year][i]   **********************************", global.watershedPercent[year][i]);
     }
 
     this.calculate = function () {
@@ -698,8 +710,10 @@ var Nitrates = function () {
                 } else {
                     row = 0;
                 }
+
+                //Nitrate Wetland Multiplier
                 if (subwatershed[year][i].wetland != 0 && subwatershed[year][i].wetland != null) {
-                    wet = 0.6;
+                    wet = 0.48;
                 } else {
                     wet = 1;
                 }
@@ -721,11 +735,14 @@ var Nitrates = function () {
                 precip = setPrecipitationMultiplier(i);
                 // console.log(row, wet, cons, precip);
             }
+
+            //Nitrate-N Concentration Subwatershed
             if ((100 * row * wet * cons * precip) < 2) {
                 ppmSubwatershed[year][i] = 2;
             } else {
                 ppmSubwatershed[year][i] = 100 * row * wet * cons * precip;
             }
+
 //            console.log(ppmSubwatershed[year][i]);
 //            console.log("Crop: " + row);
 //            console.log("Wetland: " + wet);
@@ -736,6 +753,8 @@ var Nitrates = function () {
         }
         mapIt();
         // console.log("Nitrates PPM: " + nitratesPPM[year], max, min);
+
+        //Nitrates Pollution Control Index 
         dataset['nitrate']['Year' + year] = 100 * ((max - nitratesPPM[year]) / (max - min));
         dataset['nitrate']['Value' + year] = nitratesPPM[year];
         dealloc();

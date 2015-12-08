@@ -7,7 +7,7 @@ var ModalView = function (options) {
 
     // Make sure to close all open displays
     closeAllRemovableDisplays();
-	
+
     this.width = (options.width !== undefined) ? options.width : $(window).width() / 2;
     this.height = (options.height !== undefined) ? options.height : $(window).height() / 1.1;
     this.title = (options.title !== undefined) ? options.title : "Default";
@@ -40,19 +40,19 @@ var ModalView = function (options) {
         centerize();
 //        $container.show("slide", {direction: "right"}, 500);
         $container.fadeIn();
-		
+
 	    $(".popup-window-close-button").bind(global.selectClickType, function () {
 	        $("#popup-container").remove();
 	        global.sm.consumeEvent("goto-mainevent");
 	    });
 //        $container.draggable({scroll: false});
     };
-	
+
 	this.teaser = function(options) {
 		// var width = (options.width !== undefined) ? options.width : '150px',
 			// height = (options.height !== undefined) ? options.width : '100px';
 		var message = (options.message !== undefined) ? options.message : 'Click Here for more information';
-		
+
 		$('#main').append('<div id="popup-container-teaser" class="popup-window removable-displays-container"></div>');
 		$container = $('#popup-container-teaser');
 		$container.append('<div id="popup-container-teaser-body" class="popup-window-teaser-body">' + message + '</div>');
@@ -74,32 +74,32 @@ var ModalView = function (options) {
 			global.sm.consumeEvent(global.sm.goto.POPUP);
 			thisview.display({title: options.title, description: options.description});
 		});
-		
+
    	 	$(".popup-window-close-button").bind(global.selectClickType, function () {
         	$("#popup-container-teaser").remove();
         	// global.sm.consumeEvent("goto-mainevent");
     	});
 	};
-	
+
     this.dispose = function () {
         $("#main").remove("#popup-container");
     }
-	
+
     this.append = function ($element) {
 		if($container !== undefined && $container.is(':visible')) {
 			$body.append($element);
 			centerize();
 		} else {
 			$addons = $addons + $element;
-		} 
+		}
     }
 
     this.remove = function ($element) {
         $element.remove();
     }
-	
+
 	function bindCloseButtonInteraction() {
-	    
+
 	}
 
     function centerize() {
@@ -122,7 +122,7 @@ var PrintView = function () {
         modal = new ModalView(options),
         HECTARES = 0.404686;
     modal.append('<div id="results-container"></div>');
-//    modal.append('<section class="output-map-container"><div><a>Nitrate Watershed Percent Contribution</a></div><div id="nitrate-output-map" class="output-map"><div id="watershed-percent-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Gross Erosion</a></div><div id="erosion-output-map" class="output-map"><div id="erosion-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Phosphorus Index Risk Assessment</a></div><div id="risk-assessment-output-map" class="output-map"><div id="risk-assessment-stat"><a></a></div></div></section>');
+//    modal.append('<section class="output-map-container"><div><a>Subwatershed Nitrate-N Percent Contribution</a></div><div id="nitrate-output-map" class="output-map"><div id="watershed-percent-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Gross Erosion</a></div><div id="erosion-output-map" class="output-map"><div id="erosion-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Phosphorus Index Risk Assessment</a></div><div id="risk-assessment-output-map" class="output-map"><div id="risk-assessment-stat"><a></a></div></div></section>');
 //    modal.append('<section id="left-col"><section id=""><div id="precipitation-placeholder"></div></section><section id="landuse-outputs"></section><br /><div id="stats">Stats</div></section>');
 //    modal.append('<section id="right-col"><div id="landcover-values"><div id="percent-landcover"></div></div></section>');
     modal.display();
@@ -433,7 +433,7 @@ var PrintView = function () {
     var nitrateRow = indicatorTable.append("tr")
         .attr("class", "odd");
 
-    nitrateRow.append("td").append("a").text("Nitrate Watershed Percent Contribution");
+    nitrateRow.append("td").append("a").text("Subwatershed Nitrate-N Percent Contribution");
     nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-1");
     nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-2");
     nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-3");
