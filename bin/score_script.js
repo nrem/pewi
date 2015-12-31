@@ -7,7 +7,7 @@ var dataset = {
     phosphorus:{    Metric: 'Phosphorus Pollution Control', resultsLabel: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0, weight: 10,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
     sediment:{    Metric: 'Sediment Control', resultsLabel: 'Sediment Control / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0, weight: 11,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
     alfalfa:{    Metric: 'Alfalfa Hay', Year1: 0, Year2: 0, Year3: 0, weight: 0,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},
-    cattle:{    Metric: 'Cattle', Year1: 0, Year2: 0, Year3: 0, weight: 1,units_english:'cows',to_english_factor:1,units_metric:'cows',to_metric_factor:1},
+    cattle:{    Metric: 'Cattle', Year1: 0, Year2: 0, Year3: 0, weight: 1,units_english:'animals',to_english_factor:1,units_metric:'animals',to_metric_factor:1},
     corn:{    Metric: 'Corn Grain', Year1: 0, Year2: 0, Year3: 0, weight: 2,units_english:'bu',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.0254},
     hay:{    Metric: 'Grass Hay', Year1: 0, Year2: 0, Year3: 0, weight: 3,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},
     herbaceous:{    Metric: 'Herbaceous Perennial Biomass', Year1: 0, Year2: 0, Year3: 0, weight: 4,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
@@ -18,9 +18,9 @@ var dataset = {
 };
 
 var units = {
-    english: ["bu", "bu", "tons", "tons", "board-ft", "cows", "tons", "ppm", "tons", "tons", "pts", "pts", "tons", "tons", "tons", "tons"],
+    english: ["bu", "bu", "tons", "tons", "board-ft", "animals", "tons", "ppm", "tons", "tons", "pts", "pts", "tons", "tons", "tons", "tons"],
     dict_to_english_factor: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0.0011, 1, 1, 1, 1, 1, 1],
-    metric: ["Mg", "Mg", "Mg", "Mg", "m^3", "cows", "Mg", "mg/L", "Mg", "Mg", "pts", "pts", "Mg", "Mg", "Mg", "Mg"],
+    metric: ["Mg", "Mg", "Mg", "Mg", "m^3", "animals", "Mg", "mg/L", "Mg", "Mg", "pts", "pts", "Mg", "Mg", "Mg", "Mg"],
     english_to_metric_factor: [0.0254, 0.0272, 0.9072, 0.9072, 0.0024, 1, 0.9072, 1, 0.9072, 0.001, 1, 1, 0.9072, 0.9072, 0.9072, 0.9072]
 };
 
@@ -170,10 +170,10 @@ var Plot = function () {
                 return i * 27 + 50
             })
             .attr("text-anchor", "middle")
-            .text(function (d) {  
+            .text(function (d) {
                 return d.Metric
             });
-      
+
         var legendrectvals = [];
         for(var k in dataset) {
             var numerator = 0,
