@@ -363,8 +363,8 @@ var global = [
                     2: [],
                     3: []
                 };
-                global.aveSedimentDelivered = {};
-                global.sedimentDelivered = {};
+
+                global.sedimentDeliveryToStream = {};
                 global.grossErosion = {};
                 global.phosphorusLoad = {};
                 global.results = {
