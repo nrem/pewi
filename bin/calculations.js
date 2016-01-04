@@ -134,7 +134,6 @@ var Yield = function () {
             [1.04, 0, 1, 0.96, 0, 0.93, 0.98, 1.03, 1.06, 0.83, 1.09, 1.12, 0.97],
             [2.4426229508, 0, 2.1475409836, 1.8852459016, 0, 1.6885245902, 2.0163934426, 2.3770491803, 2.606557377, 1, 2.8360655738, 3, 1.9836065574] //herb
         ],
-        conservationYieldFactor = [0.945, 0.975, 0.975, 0.975, 0.9, 0.9, 0.9, 0.975, 0.9, 0.975, 0.975, 0.9, 0.9, 0.9],
         yieldVals = {1:0, 2:0, 3:0},
         soiltype, year = global.year;
 
@@ -315,11 +314,11 @@ var Yield = function () {
 
     //////////////Soy Yield///////////////////
     function setSoyYield(i) {
-        yieldVals[year].soybean.val += yieldPrecipitationMultiplier * getBaseSoyYield(i);
+        yieldVals[year].soybean.val += yieldPrecipitationMultiplier * getSoyYield(i);
         setSoyMax(i);
     }
 
-    function getBaseSoyYield(i) {
+    function getSoyYield(i) {
         if (landcover[i] == 3 || landcover[i] == 4) {
             return unitYield[1][soiltype] * datapointarea[i];
         } else {
@@ -754,7 +753,7 @@ var Nitrates = function () {
         mapIt();
         // console.log("Nitrates PPM: " + nitratesPPM[year], max, min);
 
-        //Nitrates Pollution Control Index 
+        //Nitrates Pollution Control Index
         dataset['nitrate']['Year' + year] = 100 * ((max - nitratesPPM[year]) / (max - min));
         dataset['nitrate']['Value' + year] = nitratesPPM[year];
         dealloc();
@@ -784,29 +783,36 @@ var Carbon = function () {
 	}
 	var year = global.year;
     var landCover;
+
+    //Carbon Sequestration Multiplier
     var carbonMultiplier = [0, 161.87, 0, 161.87, 202.34, 117.36, 117.36, 117.36, 433.01, 1485.20, 1485.20, 485.62, 1897.98, 1234.29, 0];
-    var carbon = {1:0, 2:0, 3:0};
-    var max = 1897.98 * watershedArea;
-    var min = 0,
+    var carbonSequestration = {1:0, 2:0, 3:0};
+
+    //Carbon Sequestration Mins and Max per cell/unit
+    var carbonMax = 1897.98 * watershedArea;
+    var carbonMin = 0,
+
         dataPointArea;
-    //console.log(max);
+    //console.log(carbonMax);
     this.update = function (i) {
         setCarbon(i);
     };
 
     function setCarbon(i) {
         //console.log("j");
-        carbon[year] += carbonMultiplier[landCover[i] - 1] * dataPointArea[i];
-        //console.log(carbon);
+        carbonSequestration[year] += carbonMultiplier[landCover[i] - 1] * dataPointArea[i];
+        //console.log(carbonSequestration);
         //console.log(landCoverArea[landCover[i]]);
         //pewiData[21][i] = carbonMultiplier[i-1]*10;
     }
 
     this.calculate = function () {
-        // Needs a look-see
-        dataset['carbon']["Year" + year] = 100 * (carbon[year] - min) / (max - min);
-        dataset['carbon']["Value" + year] = carbon[year];
-        carbon[year] = 0;
+        //Carbon Sequestration Index Output
+        dataset['carbon']["Year" + year] = 100 * (carbonSequestration[year] - carbonMin) / (carbonMax - carbonMin);
+
+        //Carbon Sequestration Output
+        dataset['carbon']["Value" + year] = carbonSequestration[year];
+        carbonSequestration[year] = 0;
     }
 };
 
@@ -1199,8 +1205,7 @@ var Erosion = function () {
 	        subwatersheds.push(arr);
 	    }
 	}
-    var SOILTESTPDRAINAGEFACTOR = 0.1,
-        drainageclass,
+    var drainageclass,
         landcover,
         soiltype,
         topography,
@@ -1309,13 +1314,6 @@ var Erosion = function () {
         return erosionComponent(i, point, precip_override) + runoffComponent(i, point, precip_override) + subsurfaceDrainageComponent(i, precip_override);
     }
 
-    function pWetlandMultiplier(i) {
-        if (wetland[i] == 1 && landcover[i] == 14) {
-            return 1;
-        }
-        return 0;
-    }
-
     function getErosionMin(i) {
         return ((rusle(i, 24.58, 9) + ephemeralGullyErosion(i, 9)) * datapointarea[i]);
     }
@@ -1356,7 +1354,7 @@ var Erosion = function () {
     }
 
     function subsurfaceDrainageComponent(i, precip_override) {
-        return precipitationFactor(precip_override) * getFlowFactor(i) * SOILTESTPDRAINAGEFACTOR;
+        return precipitationFactor(precip_override) * getFlowFactor(i) * getSoilTestPDrainageFactor(i);
     }
 
     function rusle(i, precip, point) {
@@ -1435,67 +1433,136 @@ var Erosion = function () {
     }
 
     function coverManagementFactor(i, point) {
+
+      //not sure what first if-then does......
 	    if (point != false) {
 	        if (point == 3) return 0.3;
 	        else if (point == 9) return 0.001;
 	    }
 
-        var temp = getSubdataValueWithName("baselandcover", year - 1),
-            cover = (point !== false) ? point : landcover[i];
+      //coverManagementFactor based on previous year's landcover/landuse
+      var temp = getSubdataValueWithName("baselandcover", year - 1),
+          cover = (point !== false) ? point : landcover[i],
+          base5Return = 0.005,
+          base6Return = 0.03,
+          base7Return = 0.02,
+          base8Return = 0.005,
+          base9Return = 0.001,
+          base10Return = 0.004,
+          base11Return = 0.004,
+          base12Return = 0.001,
+          base13Return = 0.004,
+          base14Return = 0.005;
 
-        if (temp != undefined) {
-            if (temp[i] == 1) {
-                if (cover == 1) return 0.15;
-                else if (cover == 2) return 0.085;
-                else if (cover == 3 || cover == 15) return 0.2;
-                else if (cover == 4) return 0.116;
-            }
-            if (temp[i] == 2) {
-                if (cover == 1) return 0.085;
-                else if (cover == 2) return 0.02;
-                else if (cover == 3 || cover == 15) return 0.116;
-                else if (cover == 4) return 0.031;
-            } else if (temp[i] == 3 || temp[i] == 15) {
-                if (cover == 1) return 0.26;
-                else if (cover == 2) return 0.156;
-                else if (cover == 3 || cover == 15) return 0.3;
-                else if (cover == 4) return 0.178;
-            } else if (temp[i] == 4) {
-                if (cover == 1) return 0.156;
-                else if (cover == 2) return 0.052;
-                else if (cover == 3 || cover == 15) return 0.178;
-                else if (cover == 4) return 0.055;
-            } else if (temp[i] != 1 || temp[i] != 2 || temp[i] != 3 || temp[i] != 4 || temp[i] != 15) {
-                if (cover == 1) return 0.085;
-                else if (cover == 2) return 0.02;
-                else if (cover == 3 || cover == 15) return 0.116;
-                else if (cover == 4) return 0.031;
-            }
+      if (temp != undefined) {
+        if (temp[i] == 1) {
+          if (cover == 1) return 0.15;
+          else if (cover == 2) return 0.085;
+          else if (cover == 3 || cover == 15) return 0.2;
+          else if (cover == 4) return 0.116;
+          else if (cover == 5) return base5Return;
+          else if (cover == 6) return base6Return;
+          else if (cover == 7) return base7Return;
+          else if (cover == 8) return base8Return;
+          else if (cover == 9) return base9Return;
+          else if (cover == 10) return base10Return;
+          else if (cover == 11) return base11Return;
+          else if (cover == 12) return base12Return;
+          else if (cover == 13) return base13Return;
+          else if (cover == 14) return base14Return;
+        }
+        else if (temp[i] == 2) {
+          if (cover == 1) return 0.085;
+          else if (cover == 2) return 0.02;
+          else if (cover == 3 || cover == 15) return 0.116;
+          else if (cover == 4) return 0.031;
+          else if (cover == 5) return base5Return;
+          else if (cover == 6) return base6Return;
+          else if (cover == 7) return base7Return;
+          else if (cover == 8) return base8Return;
+          else if (cover == 9) return base9Return;
+          else if (cover == 10) return base10Return;
+          else if (cover == 11) return base11Return;
+          else if (cover == 12) return base12Return;
+          else if (cover == 13) return base13Return;
+          else if (cover == 14) return base14Return;
+        }
+        else if (temp[i] == 3 || temp[i] == 15) {
+          if (cover == 1) return 0.26;
+          else if (cover == 2) return 0.156;
+          else if (cover == 3 || cover == 15) return 0.3;
+          else if (cover == 4) return 0.178;
+          else if (cover == 5) return base5Return;
+          else if (cover == 6) return base6Return;
+          else if (cover == 7) return base7Return;
+          else if (cover == 8) return base8Return;
+          else if (cover == 9) return base9Return;
+          else if (cover == 10) return base10Return;
+          else if (cover == 11) return base11Return;
+          else if (cover == 12) return base12Return;
+          else if (cover == 13) return base13Return;
+          else if (cover == 14) return base14Return;
+        }
+        else if (temp[i] == 4) {
+          if (cover == 1) return 0.156;
+          else if (cover == 2) return 0.052;
+          else if (cover == 3 || cover == 15) return 0.178;
+          else if (cover == 4) return 0.055;
+          else if (cover == 5) return base5Return;
+          else if (cover == 6) return base6Return;
+          else if (cover == 7) return base7Return;
+          else if (cover == 8) return base8Return;
+          else if (cover == 9) return base9Return;
+          else if (cover == 10) return base10Return;
+          else if (cover == 11) return base11Return;
+          else if (cover == 12) return base12Return;
+          else if (cover == 13) return base13Return;
+          else if (cover == 14) return base14Return;
+        }
+        else if (temp[i] != 1 && temp[i] != 2 && temp[i] != 3 && temp[i] != 4 && temp[i] != 15) {
+          if (cover == 1) return 0.085;
+          else if (cover == 2) return 0.02;
+          else if (cover == 3 || cover == 15) return 0.116;
+          else if (cover == 4) return 0.031;
+          else if (cover == 5) return base5Return;
+          else if (cover == 6) return base6Return;
+          else if (cover == 7) return base7Return;
+          else if (cover == 8) return base8Return;
+          else if (cover == 9) return base9Return;
+          else if (cover == 10) return base10Return;
+          else if (cover == 11) return base11Return;
+          else if (cover == 12) return base12Return;
+          else if (cover == 13) return base13Return;
+          else if (cover == 14) return base14Return;
         }
 
-        if (cover == 1) return 0.085;
-        else if (cover == 2) return 0.052;
-        else if (cover == 3 || cover == 15) return 0.116;
-        else if (cover == 4) return 0.031;
-        else if (cover == 5 || cover == 8 || cover == 14) return 0.005;
-        else if (cover == 6) return 0.03;
-        else if (cover == 7) return 0.02;
-        else if (cover == 9 || cover == 12) return 0.001;
-        else if (cover == 10 || cover == 11 || cover == 13) return 0.004;
+        //Previous code had the replaced calculations for this portion where it
+        //currently is. That is, the CONTENTS of those lines were in 1490-1495.
+        //For the time being, I have left them however. However, the logic as to
+        //why this code is there and not within the prior if-then loop (at lines
+        // 1485-1490) is still unknown to me. Future investigation required.
+
+        else return 0.03;
+      }//
+
+      else if (cover == 5 || cover == 8) return 0.005;
+      else if (cover == 6) return 0.03;
+      else if (cover == 7) return 0.02;
+      else if (cover == 9 || cover == 12) return 0.001;
+      else if (cover == 10 || cover == 11 || cover == 13) return 0.004;
+      else if (cover == 14) return 0.005;
+
+      else return 0.3;
     }
 
     function supportPracticeFactor(i, point) {
-        var slopelimit = slopeLengthLimit(i),
-            slopefactor = slopeLengthFactor(i),
-            cover = (point != false) ? point : landcover[i];
-        if (slopelimit != null) {
-            if (cover == 2 || cover == 4) {
-                if (topography[i] > 1 && slopefactor <= slopelimit) return contourSubfactor(i) * terraceSubfactor(i);
-                else if (topography[i] > 1 && slopefactor > slopelimit) return ((slopelimit * contourSubfactor(i) * terraceSubfactor(i)) + (slopelimit - slopefactor)) / slopefactor;
-                return 1;
-            }
+      cover = (point != false) ? point : landcover[i];
+      if (cover == 2 || cover == 4) {
+        if (topography[i] > 1) {
+          return contourSubfactor(i) * terraceSubfactor(i);
         }
-        return 1;
+      }
+      return 1;
     }
 
     function slopeLengthFactor(i) {
@@ -1559,8 +1626,8 @@ var Erosion = function () {
     function ephemeralGullyErosion(i, point) {
         var cover = (point != false) ? point : landcover[i]
         if (cover == 1 || cover == 3 || cover == 15) return 4.5;
-        else if (cover == 2 || cover == 4) return 1.5;
-        return 0;
+        else if (cover == 2 || cover == 4 || cover == 5) return 1.5;
+        else return 0;
     }
 
     function sedimentDeliveryRatio(i) {
@@ -1571,27 +1638,37 @@ var Erosion = function () {
     function row(x) {
         return x % rows;
     } // As needed
+
     function column(x) {
         return x % cols;
     } // As needed
+
     function bufferFactor(i, point) {
         var cover = (point != false) ? point : landcover[i];
         if (cover == 2 || cover == 4 || (cover > 7 && cover < 15)) return 0.5;
         return 1;
     } // For every land cover point
+
     function enrichmentFactor(i, point) {
 		var cover = (point != false) ? point : landcover[i];
         if (cover == 1 || cover == 3 || cover == 15) return 1.1;
         return 1.3;
     } // For every land cover point
+
     function soilTestPErosionFactor(i) {
-        if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 0.83;
-        else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 0.82;
+      return 0.7 * (500 + soilTestP(i)) * 2000/1000000;
     } // For every land cover point
+
+    function soilTestP(i) {
+      if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 30;
+      else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 27;
+    } //Based on definition, should be for every land type. As of this moment, however, there should be no in-calculation uses of it
+
     function runoffFactor(i, cover) {
         var temp = runoffCurveNumber(i, cover);
         return (0.000000799 * Math.pow(temp, 3)) - (0.0000484 * Math.pow(temp, 2)) + (0.00265 * temp - 0.085)
     } // For every land cover point
+
     function runoffCurveNumber(i, cover) {
         var hydrogroup = getHydrologicGroup(i),
             flowfactor = getFlowFactor(i);
@@ -1708,16 +1785,21 @@ var Erosion = function () {
 
     } // Once
     function getSoilTestPRunoffFactor(i) {
-        if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 0.2;
-        else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 0.19;
+      return 0.05 + (0.005 * soilTestP(i));
+        //if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 0.2;
+        //else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 0.19;
     }
 
     function getPApplicationFactor(i, cover) {
         var papprate = getPApplicationRate(i, cover);
         if (cover == 2 || cover == 4 || cover == 6 || cover == 7 || cover == 8) {
-            return papprate * 0.00054585152838;
-        } else if (cover == 1 || cover == 3 || cover == 5 || cover == 15) {
-            return papprate * 0.00043668122271;
+            return (papprate / 4.58) * 0.5 * 1 * 0.005;
+        }
+        else if (cover == 5) {
+          return (papprate / 4.58) * 0.5 * 0.9 * 0.005;
+        }
+        else if (cover == 1 || cover == 3 || cover == 15) {
+            return (papprate / 4.58) * ((0.6 + 1.0) / 2) * 0.005;
         }
         return 0;
     } // For every land cover point
@@ -1735,7 +1817,7 @@ var Erosion = function () {
                     retvar = 6.3;
                     break;
                 case 'B':
-                    retvar = 0;
+                    retvar = 3.6;
                     break;
                 case 'C':
                     retvar = 4.3;
@@ -1744,7 +1826,7 @@ var Erosion = function () {
                     retvar = 5.6;
                     break;
                 case 'G':
-                    retvar = 0;
+                    retvar = 3.6;
                     break;
                 case 'K':
                     retvar = 4.1;
@@ -1781,7 +1863,7 @@ var Erosion = function () {
                     retvar = 6.3;
                     break;
                 case 'B':
-                    retvar = 0;
+                    retvar = 3.6;
                     break;
                 case 'C':
                     retvar = 4.3;
@@ -1790,7 +1872,7 @@ var Erosion = function () {
                     retvar = 5.6;
                     break;
                 case 'G':
-                    retvar = 0;
+                    retvar = 3.6;
                     break;
                 case 'K':
                     retvar = 4.1;
@@ -1820,14 +1902,17 @@ var Erosion = function () {
                     break;
             }
             return retvar * 0.053 * 2.2 * 2.29 * (getSeasonalUtilizationRate(i, cover) / (getCattleAverageDailyIntake() / 2000));
-        } else if (cover == 8) {
+        }
+        else if (cover == 8) {
             if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return 34;
             else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return 39;
-        } else if (cover == 15) {
-            return 14.75;
+        }
+        else if (cover == 15) {
+            return (3 * 5 * 0.25) + (15 * 2.8 * 0.25);
         }
         return 0;
     } // For every land cover point
+
     function getSeasonalUtilizationRate(i, cover) {
         return (cover == 6 || cover == 7) ? 0.35 : 0;
     }
@@ -1848,4 +1933,9 @@ var Erosion = function () {
             return 0;
         }
     } // For every land cover point
+
+    function getSoilTestPDrainageFactor(i) {
+      if (soilTestP(i) <= 100) return 0.1;
+      else if (soilTestP >100) return 0.2;
+    }
 };
