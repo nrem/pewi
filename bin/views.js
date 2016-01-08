@@ -280,12 +280,11 @@ var PrintView = function () {
         ecodata = [];
 
     var layout = [
-        {label:'Climate Adaptation and Mitigation'},
-        'carbon',
         {label:'Habitat'},
         'biodiversity',
         'game',
         {label:'Soil Quality'},
+        'carbon',
         'erosion',
         {label:'Water Quality'},
         'nitrate',
