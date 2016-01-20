@@ -1803,7 +1803,7 @@ var Erosion = function () {
           return (papprate / 4.58) * 0.5 * 0.9 * 0.005;
         }
         else if (cover == 1 || cover == 3 || cover == 15) {
-            return (papprate / 4.58) * ((0.6 + 1.0) / 2) * 0.005;
+            return (papprate / 4.58) * 0.5 * ((0.6 + 1.0) / 2) * 0.005;
         }
         return 0;
     } // For every land cover point
