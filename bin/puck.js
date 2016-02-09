@@ -197,7 +197,7 @@ function togglePuk(type, coords) {
         var offset = 0,
             features = {
                 corn: {
-                    name: "Corn",
+                    name: "Conventional Corn",
                     x: center.x - 100,
                     y: center.y + 50,
                     width: 84,
@@ -215,7 +215,7 @@ function togglePuk(type, coords) {
                     val: 2
                 },
                 soybean: {
-                    name: "Soybean",
+                    name: "Conventional Soybean",
                     x: center.x - 100,
                     y: center.y - 20,
                     width: 150,
@@ -242,7 +242,7 @@ function togglePuk(type, coords) {
                     val: 5
                 },
                 mfnv: {
-                    name: "Mixed Fruit & Veggies",
+                    name: "Mixed Fruits & Vegetables",
                     x: center.x - 25,
                     y: center.y - 115,
                     width: 150,
@@ -251,7 +251,7 @@ function togglePuk(type, coords) {
                     val: 6
                 },
                 hay: {
-                    name: "Hay",
+                    name: "Grass Hay",
                     x: center.x,
                     y: center.y - 145,
                     width: 150,
@@ -260,7 +260,7 @@ function togglePuk(type, coords) {
                     val: 7
                 },
                 hbio: {
-                    name: "Herbaceous Bioenergy",
+                    name: "Herbaceous Perennial Bioenergy",
                     x: center.x + 25,
                     y: center.y - 115,
                     width: 150,
@@ -278,7 +278,7 @@ function togglePuk(type, coords) {
                     val: 9
                 },
                 rotgrazing: {
-                    name: "Rotational_Grazing",
+                    name: "Rotational Grazing",
                     x: center.x + 75,
                     y: center.y - 55,
                     width: 150,
@@ -323,7 +323,7 @@ function togglePuk(type, coords) {
                     val: 14
                 },
                 wbio: {
-                    name: "Woody Bioenergy",
+                    name: "Short-Rotation Woody Bioenergy",
                     x: center.x + 50,
                     y: center.y + 100,
                     width: 150,
@@ -461,5 +461,3 @@ function togglePuk(type, coords) {
 
 
 }
-
-
