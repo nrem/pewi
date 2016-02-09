@@ -123,13 +123,13 @@ function setTopographyFactors(i) {
  * @param i - index that the landcover occurs
  * @param firstpass - true if we are building the watershed from scratch, false if we are updating already existing data points
  */
-function changeBaselandcoverDataPoint(value, i, firstpass, year) {
-    if (global.data[year].baselandcover.data[i] !== 0 && !firstpass) {
-        setLandCoverArea(value, i, year, global.data[year].baselandcover.data[i]);
+function changeBaseLandUseTypeDataPoint(value, i, firstpass, year) {
+    if (global.data[year].baseLandUseType.data[i] !== 0 && !firstpass) {
+        setLandCoverArea(value, i, year, global.data[year].baseLandUseType.data[i]);
     } else {
         setLandCoverArea(value, i, year);
     }
-    global.data[year].baselandcover.data[i] = value;
+    global.data[year].baseLandUseType.data[i] = value;
     if(!global.update[year]) {
         flagUpdateToTrue(year);
 		if(year + 1 < 4 && global.data[year + 1] !== 0) {
@@ -168,7 +168,7 @@ function setLandCoverArea(newIdx, i, year, oldIdx) {
  * @returns {{}}
  */
 function copy(obj) {
-//    console.log(obj.baselandcover.data[0]);
+//    console.log(obj.baseLandUseType.data[0]);
     var returnObj = {};
     for (var property in obj) {
 //        console.log(property);
@@ -298,7 +298,7 @@ function undoLastDatasetChanges() {
 function updateDataPoint(i, options) {
 	//setStrategicWetland(i);
 	//setStreamNetworkArea(i);
-    changeBaselandcoverDataPoint(options.landcover, i, true, options.year);
+    changeBaseLandUseTypeDataPoint(options.landcover, i, true, options.year);
 	//setSubwatershedArea(i, false);
 	//setSoiltypeFactors(i);
 	//setTopographyFactors(i);
@@ -311,13 +311,13 @@ function reinitialize() {
 			if(dataset[index]['Value' + year] !== 0) dataset[index]['Value' + year] = 0;
 		}
 	}
-	
+
     global.landuse = {
         1: [],
         2: [],
         3: []
     };
-	
+
     global.watershedPercent = {
         1: [],
         2: [],
@@ -335,7 +335,7 @@ function reinitialize() {
         2: [],
         3: []
     };
-	
+
 	global.strategicWetland = {};
 
     landCoverArea = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
