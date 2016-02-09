@@ -24,7 +24,7 @@ var ScoreDirector = function () {
 	}
 
 	function setLandcover(year) {
-		landcover = global.data[year].baselandcover.data;
+		landcover = global.data[year].baseLandUseType.data;
 	}
 
 	function setYear(year) {
@@ -104,7 +104,7 @@ var ScoreDirector = function () {
 var Yield = function () {
 	this.year = function(y) {
 		year = y;
-		landcover = global.data[year].baselandcover.data;
+		landcover = global.data[year].baseLandUseType.data;
 		soilType = getSubdataValueWithName("soiltype", year);
 		datapointarea = getSubdataValueWithName("area", year);
 	    for (var i = 1; i < landcovers.length; i++) {
@@ -604,7 +604,7 @@ var Nitrates = function () {
 	this.year = function(y) {
 		year = y;
 		subwatershedData = global.data[year].subwatershed.data;
-		landcover = global.data[year].baselandcover.data;
+		landcover = global.data[year].baseLandUseType.data;
 		wetland = global.data[year].wetland.data;
 		soilType = global.data[year].soiltype.data;
 		dataPointArea = global.data[year].area.data;
@@ -814,7 +814,7 @@ var Nitrates = function () {
 var Carbon = function () {
 	this.year = function(y) {
 		year = y;
-		landCover = global.data[year].baselandcover.data;
+		landCover = global.data[year].baseLandUseType.data;
 		dataPointArea = global.data[year].area.data;
 	}
 	var year = global.year;
@@ -1116,7 +1116,7 @@ var Biodiversity = function () {
     }
 
     function setNativeVegetationArea(i) {
-        if (global.data[year].baselandcover.data[i] == 9 || global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 14) {
+        if (global.data[year].baseLandUseType.data[i] == 9 || global.data[year].baseLandUseType.data[i] == 10 || global.data[year].baseLandUseType.data[i] == 14) {
             nativeVegetationArea += dataPointArea[i];
         }
     }
@@ -1126,7 +1126,7 @@ var Biodiversity = function () {
     }
 
     function setOtherHighDiversityArea(i) {
-        if (global.data[year].baselandcover.data[i] == 7 || global.data[year].baselandcover.data[i] == 11 || global.data[year].baselandcover.data[i] == 15) {
+        if (global.data[year].baseLandUseType.data[i] == 7 || global.data[year].baseLandUseType.data[i] == 11 || global.data[year].baseLandUseType.data[i] == 15) {
             otherHighDiversityArea += dataPointArea[i];
         }
     }
@@ -1136,8 +1136,8 @@ var Biodiversity = function () {
     }
 
     function setComparativelyHighDiversityOrLowInputArea(i) {
-          if (global.data[year].baselandcover.data[i] == 2 || global.data[year].baselandcover.data[i] == 4 ||
-          global.data[year].baselandcover.data[i] == 8 || global.data[year].baselandcover.data[i] == 12 || global.data[year].baselandcover.data[i] == 13) {
+          if (global.data[year].baseLandUseType.data[i] == 2 || global.data[year].baseLandUseType.data[i] == 4 ||
+          global.data[year].baseLandUseType.data[i] == 8 || global.data[year].baseLandUseType.data[i] == 12 || global.data[year].baseLandUseType.data[i] == 13) {
             comparativelyHighDiversityOrLowInputArea += dataPointArea[i];
           }
         }
@@ -1148,7 +1148,7 @@ var Biodiversity = function () {
 
     function setStreamBufferArea(i) {
         if (global.data[year].streamnetwork.data[i] == 1) {
-            if (global.data[year].baselandcover.data[i] == 2 || global.data[year].baselandcover.data[i] == 4 || global.data[year].baselandcover.data[i] == 7 || global.data[year].baselandcover.data[i] == 8 ||           global.data[year].baselandcover.data[i] == 9 || global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 11 || global.data[year].baselandcover.data[i] == 12 || global.data[year].baselandcover.data[i] == 13 || global.data[year].baselandcover.data[i] == 14 || global.data[year].baselandcover.data[i] == 15) {
+            if (global.data[year].baseLandUseType.data[i] == 2 || global.data[year].baseLandUseType.data[i] == 4 || global.data[year].baseLandUseType.data[i] == 7 || global.data[year].baseLandUseType.data[i] == 8 ||           global.data[year].baseLandUseType.data[i] == 9 || global.data[year].baseLandUseType.data[i] == 10 || global.data[year].baseLandUseType.data[i] == 11 || global.data[year].baseLandUseType.data[i] == 12 || global.data[year].baseLandUseType.data[i] == 13 || global.data[year].baseLandUseType.data[i] == 14 || global.data[year].baseLandUseType.data[i] == 15) {
                 streamBufferArea += dataPointArea[i];
             }
         }
@@ -1161,7 +1161,7 @@ var Biodiversity = function () {
     }
 
     function setWetlandArea(i) {
-        if (global.data[year].baselandcover.data[i] == 14) {
+        if (global.data[year].baseLandUseType.data[i] == 14) {
             wetlandArea += dataPointArea[i];
         }
     }
@@ -1172,7 +1172,7 @@ var Biodiversity = function () {
 
     function setStrategicWetlandArea(i) {
         if (global.data[year].wetland.data[i] == 1) {
-            if (global.data[year].baselandcover.data[i] == 14) {
+            if (global.data[year].baseLandUseType.data[i] == 14) {
                 strategicWetlandArea[year]++;
             }
         }
@@ -1183,13 +1183,13 @@ var Biodiversity = function () {
     }
 
     function setForestArea(i) {
-        if (global.data[year].baselandcover.data[i] == 10 || global.data[year].baselandcover.data[i] == 11) {
+        if (global.data[year].baseLandUseType.data[i] == 10 || global.data[year].baseLandUseType.data[i] == 11) {
             forestArea += dataPointArea[i];
         }
     }
 
     function setConservationForestArea(i) {
-      if (global.data[year].baselandcover.data[i] == 10) {
+      if (global.data[year].baseLandUseType.data[i] == 10) {
         conservationForestArea += dataPointArea[i];
       }
     }
@@ -1199,8 +1199,8 @@ var Biodiversity = function () {
     }
 
     function setGrasslandArea(i) {
-      if (global.data[year].baselandcover.data[i] == 7 || global.data[year].baselandcover.data[i] == 9 ||
-          global.data[year].baselandcover.data[i] == 12) {
+      if (global.data[year].baseLandUseType.data[i] == 7 || global.data[year].baseLandUseType.data[i] == 9 ||
+          global.data[year].baseLandUseType.data[i] == 12) {
         grasslandArea += dataPointArea[i];
       }
     }
@@ -1218,7 +1218,7 @@ var Erosion = function () {
 	this.year = function(y) {
 		year = y;
 		drainageclass = getSubdataValueWithName("drainageclass", year);
-		landcover = getSubdataValueWithName("baselandcover", year);
+		landcover = getSubdataValueWithName("baseLandUseType", year);
 		soiltype = getSubdataValueWithName("soiltype", year);
 		topography = getSubdataValueWithName("topography", year);
 		streamnetwork = getSubdataValueWithName("streamnetwork", year);
@@ -1483,7 +1483,7 @@ var Erosion = function () {
 	    }
 
       //coverManagementFactor based on previous year's landcover/landuse
-      var temp = getSubdataValueWithName("baselandcover", year - 1),
+      var temp = getSubdataValueWithName("baseLandUseType", year - 1),
           cover = (point !== false) ? point : landcover[i],
           base5Return = 0.005,
           base6Return = 0.03,
