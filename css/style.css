@@ -299,7 +299,7 @@ input[type="file"] {
  *
  */
 
-#indicated-landcover {
+#indicated-landusetype {
     width: 30px;
     float: left;
     padding-right: 3px;
@@ -442,16 +442,16 @@ input[type="file"] {
     padding: 2px;
 }
 
-#landcover img {
+#landusetype img {
     margin-top: 93px;
     padding-right: 7px;
 }
 
-#landcover {
+#landusetype {
     height: 90px;
 }
 
-#landcover div {
+#landusetype div {
     padding-top: 3px;
 }
 
@@ -802,7 +802,7 @@ input[type="file"] {
     margin-right: 50px;
 }
 
-#tbl-header-landcover {
+#tbl-header-landusetype {
     font-size: .8em;
 }
 
