@@ -189,7 +189,7 @@ var global = [
                     resizeBackgroundImage();
                     centerElement($(window), $("#watershed"));
 
-                    $('#sidebar-left #landcover').css('border-right', '2px solid #cccc00');
+                    $('#sidebar-left #landusetype').css('border-right', '2px solid #cccc00');
 
                     global.sm.consumeEvent(global.sm.goto.MAIN);
                 }
@@ -910,18 +910,18 @@ var global = [
 //            snap: '#main'
         });
 
-        $("#sidebar-left #landcover").bind(global.selectClickType, function () {
+        $("#sidebar-left #landusetype").bind(global.selectClickType, function () {
             if ($("#landusetype-toolbar").is(":visible")) {
                 $("#landusetype-toolbar").hide();
                 $(this).css('border-right', '');
-//                $("#sidebar-left #landcover img").attr("src", "images/icons/white-r.png");
+//                $("#sidebar-left #landusetype img").attr("src", "images/icons/white-r.png");
 //                $("#sidebar-left #layer img").attr("src", "images/icons/white-r.png");
             } else {
                 $("#landusetype-toolbar").show();
                 $(this).css('border-right', '2px solid #cccc00');
                 $("#pfeature-toolbar").hide();
                 $('#layer').css('border-right', '');
-//                $("#sidebar-left #landcover img").attr("src", "images/icons/white-l.png");
+//                $("#sidebar-left #landusetype img").attr("src", "images/icons/white-l.png");
             }
         });
 
@@ -938,10 +938,10 @@ var global = [
                 $("#pfeature-toolbar").hide();
                 $(this).css('border-right', '');
 //                $("#sidebar-left #layer img").attr("src", "images/icons/white-r.png");
-//                $("#sidebar-left #landcover img").attr("src", "images/icons/white-r.png");
+//                $("#sidebar-left #landusetype img").attr("src", "images/icons/white-r.png");
             } else {
                 $("#landusetype-toolbar").hide();
-                $('#landcover').css('border-right', '');
+                $('#landusetype').css('border-right', '');
                 $("#pfeature-toolbar").show();
                 $(this).css('border-right', '2px solid #cccc00');
 //                $("#sidebar-left #layer img").attr("src", "images/icons/white-l.png");
@@ -1104,7 +1104,7 @@ var global = [
         $("#fact-sheet #close").bind(global.selectClickType, function () {
             $("#fact-sheet").hide("slide", {direction: "right"}, 500);
             $("#popup-overlay").hide();
-            d3.select("#percent-landcover>div").remove();
+            d3.select("#percent-landUseType>div").remove();
             d3.select("#precipitation-placeholder>div").remove();
             d3.select("#landuse-outputs>div").remove();
             d3.select("#stats>div").remove();
