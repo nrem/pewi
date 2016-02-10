@@ -642,13 +642,13 @@ var Maps = function () {
                         .attr("width", w)
                         .attr("height", h)
                         .style("fill", "url(#pattern" + i + ")")
-                        .attr("landcover", function () {
+                        .attr("landusetype", function () {
                             return landUseTypes[options.landUseType[i]];
                         })
                         .attr("row", Math.ceil((i + 1) / 23))
                         .attr("col", 1 + i % 23)
                         .attr('filter', 'url(#f1)');
-                    //$("#" + i).attr("landcover", "blah");
+                    //$("#" + i).attr("landusetype", "blah");
                 } else {
                     rect = g.append("rect")
                         .attr("id", i)
@@ -658,7 +658,7 @@ var Maps = function () {
                         .attr("width", w)
                         .attr("height", h)
                         .style("fill", colorsForLandUseTypeGrid[options.landUseType[i]])
-                        .attr("landcover", function () {
+                        .attr("landusetype", function () {
                             return landUseTypes[options.landUseType[i]];
                         })
                         .attr("row", Math.ceil((i + 1) / 23))
@@ -716,7 +716,7 @@ var Maps = function () {
 			addDatasetChangesToUndoLog(undoData);
             // $(".watershed-rect").hover(
 //                 function() {
-//                     $("#hover-selection-hud a").text($(this).attr("landcover"));
+//                     $("#hover-selection-hud a").text($(this).attr("landusetype"));
 //                 },
 //                 function() {
 //                     $("#hover-selection-hud a").text("");
@@ -726,7 +726,7 @@ var Maps = function () {
 
         $('.watershed-rect').hover(
             function () {
-                $("#hover-selection-hud a").text($(this).attr("landcover"));
+                $("#hover-selection-hud a").text($(this).attr("landusetype"));
             },
             function () {
                 $("#hover-selection-hud a").text("");
@@ -739,7 +739,7 @@ var Maps = function () {
         $rect.unbind('mouseenter mouseleave');
         $rect.hover(
             function () {
-                $("#hover-selection-hud a").text($(this).attr("landcover"));
+                $("#hover-selection-hud a").text($(this).attr("landusetype"));
             },
             function () {
                 $("#hover-selection-hud a").text("");
@@ -783,7 +783,7 @@ var Maps = function () {
 
     this.changeWatershedRectImage = function(location, landUseType) {
         $("#image" + location).attr("href", "images/cell_images_bitmaps/" + getIcon(landUseType));
-        $("#watershed1 #" + location).attr("landcover", landUseTypes[landUseType]);
+        $("#watershed1 #" + location).attr("landusetype", landUseTypes[landUseType]);
     }
 
     function getIcon(landUseType) {
