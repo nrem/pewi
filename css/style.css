@@ -402,42 +402,42 @@ input[type="file"] {
     -moz-box-shadow: 2px 2px 2px #999, 2px 2px 4px #777, 2px 2px 6px #333, 2px 2px 8px #111, -1px -1px 10px #222, -1px -1px 13px #111, -1px -1px 16px #000;
 }
 
-#landcover-toolbar {
+#landusetype-toolbar {
     height: 486px;
     top: 0;
     float: left;
 }
 
-#landcover-toolbar ul {
+#landusetype-toolbar ul {
     list-style-type: none;
     padding: 0;
 }
 
-#landcover-toolbar ul li {
+#landusetype-toolbar ul li {
     text-indent: 0;
     padding: 1px;
     height: 53px;
     width: 110px;
 }
 
-#landcover-toolbar ul li:last-child {
+#landusetype-toolbar ul li:last-child {
     width: 70px;
 }
 
-#landcover-toolbar ul li img:hover {
+#landusetype-toolbar ul li img:hover {
     box-shadow: 2px 2px 2px #999, 2px 2px 4px #777, 2px 2px 6px #333, 2px 2px 8px #111, -1px -1px 10px #222, -1px -1px 13px #111, -1px -1px 16px #000;
     -moz-box-shadow: 2px 2px 2px #999, 2px 2px 4px #777, 2px 2px 6px #333, 2px 2px 8px #111, -1px -1px 10px #222, -1px -1px 13px #111, -1px -1px 16px #000;
 }
 
-#landcover-toolbar ul li img {
+#landusetype-toolbar ul li img {
     cursor: pointer;
 }
 
-#landcover-toolbar ul li input[type="radio"] {
+#landusetype-toolbar ul li input[type="radio"] {
     display: none;
 }
 
-#landcover-toolbar ul li div {
+#landusetype-toolbar ul li div {
     float: left;
     padding: 2px;
 }
