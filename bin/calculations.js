@@ -8,7 +8,7 @@ var ScoreDirector = function () {
         carbon = new Carbon(),
         bio = new Biodiversity(),
         erosion = new Erosion(),
-        landcover;
+        landUseType;
     this.update = function () {
 //        console.log("Updating...");
 //		console.log(global.update);
@@ -24,7 +24,7 @@ var ScoreDirector = function () {
 	}
 
 	function setLandUseType(year) {
-		landcover = global.data[year].baseLandUseType.data;
+		landUseType = global.data[year].baseLandUseType.data;
 	}
 
 	function setYear(year) {
@@ -42,8 +42,8 @@ var ScoreDirector = function () {
 //        bio.init();
         erosion.init();
 
-        for (var i = 0; i <= landcover.length; i++) {
-            if (landcover[i] > 0) {
+        for (var i = 0; i <= landUseType.length; i++) {
+            if (landUseType[i] > 0) {
                 yieldVals.update(i);
                 nitrates.update(i);
                 //phos.update(i);
@@ -80,13 +80,13 @@ var ScoreDirector = function () {
 				setLandUseType(year);
 				setYear(year);
 
-		        for (var i = 0; i <= landcover.length; i++) {
-		            if (landcover[i] > 0) {
+		        for (var i = 0; i <= landUseType.length; i++) {
+		            if (landUseType[i] > 0) {
 		                nitrates.update(i);
 		                erosion.update(i);
 		            }
 		        }
-		        for (i = 0; i < landcover.length; i++) {
+		        for (i = 0; i < landUseType.length; i++) {
 		            erosion.calculateStepOne(i);
 		        }
 		        nitrates.calculate();
@@ -104,7 +104,7 @@ var ScoreDirector = function () {
 var Yield = function () {
 	this.year = function(y) {
 		year = y;
-		landcover = global.data[year].baseLandUseType.data;
+		landUseType = global.data[year].baseLandUseType.data;
 		soilType = getSubdataValueWithName("soiltype", year);
 		datapointarea = getSubdataValueWithName("area", year);
 	    for (var i = 1; i < landUseTypes.length; i++) {
@@ -116,7 +116,7 @@ var Yield = function () {
 	        };
 	    }
 	}
-    var landcover,
+    var landUseType,
         soilType,
         datapointarea,
         soilTypeId = ["A", "B", "C", "D", "G", "K", "L", "M", "N", "O", "Q", "T", "Y"],
@@ -191,65 +191,65 @@ var Yield = function () {
     }
 
     this.update = function (i) {
-        //landCover(i);
+        //landUseType(i);
         soiltype = getSoilType(i);
         yieldPrecipitationMultiplier = getYieldPrecipitationMultiplier(i);
         // Corn Grain Yield
         setCornGrainYield(i);
         // Conventional Corn Area
-        global.landUseTypes[year][landUseTypes[1]].area += (landcover[i] == 1) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[1]].area += (landUseType[i] == 1) ? datapointarea[i] : 0;
         // Conservation Corn Area
-        global.landUseTypes[year][landUseTypes[2]].area += (landcover[i] == 2) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[2]].area += (landUseType[i] == 2) ? datapointarea[i] : 0;
 
         // Soybean Yield
         setSoybeanYield(i);
         // Conventional Soybean Area
-        global.landUseTypes[year][landUseTypes[3]].area += (landcover[i] == 3) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[3]].area += (landUseType[i] == 3) ? datapointarea[i] : 0;
         // Conservation Soybean Area
-        global.landUseTypes[year][landUseTypes[4]].area += (landcover[i] == 4) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[4]].area += (landUseType[i] == 4) ? datapointarea[i] : 0;
 
         // Alfalfa Hay Yield
         setAlfalfaHayYield(i);
         // Alfalfa Hay Area
-        global.landUseTypes[year][landUseTypes[5]].area += (landcover[i] == 5) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[5]].area += (landUseType[i] == 5) ? datapointarea[i] : 0;
 
         // Grass Hay Yield
         setGrassHayYield(i);
         // Grass Hay Area
-        global.landUseTypes[year][landUseTypes[8]].area += (landcover[i] == 8) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[8]].area += (landUseType[i] == 8) ? datapointarea[i] : 0;
 
         // Wood Yield
         setWoodYield(i);
         // Wood Conventional Forest Area
-        global.landUseTypes[year][landUseTypes[11]].area += (landcover[i] == 11) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[11]].area += (landUseType[i] == 11) ? datapointarea[i] : 0;
         // Wood Conservation Forest Area
-        global.landUseTypes[year][landUseTypes[10]].area += (landcover[i] == 10) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[10]].area += (landUseType[i] == 10) ? datapointarea[i] : 0;
 
         // Cattle Yield
         setCattleYield(i);
         // Cattle Permanent Pasture Area
-        global.landUseTypes[year][landUseTypes[6]].area += (landcover[i] == 6) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[6]].area += (landUseType[i] == 6) ? datapointarea[i] : 0;
         // Cattle Rotational Grazing Area
-        global.landUseTypes[year][landUseTypes[7]].area += (landcover[i] == 7) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[7]].area += (landUseType[i] == 7) ? datapointarea[i] : 0;
 
         // Herbaceous Perennial Biomass Yield
         setHerbaceousPerennialBiomassYield(i);
         // Herbaceous Perennial Bioenergy Area
-        global.landUseTypes[year][landUseTypes[12]].area += (landcover[i] == 12) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[12]].area += (landUseType[i] == 12) ? datapointarea[i] : 0;
 
         // Short-Rotation Woody Biomass Yield
         setShortRotationWoodyBiomassYield(i);
         // Short-Rotation Woody Bioenergy Area
-        global.landUseTypes[year][landUseTypes[13]].area += (landcover[i] == 13) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[13]].area += (landUseType[i] == 13) ? datapointarea[i] : 0;
 
         // Wetland Yield
         // Wetland Area
-        global.landUseTypes[year][landUseTypes[14]].area += (landcover[i] == 14) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[14]].area += (landUseType[i] == 14) ? datapointarea[i] : 0;
 
         // Mixed Fruits And Vegetables Yield
         setMixedFruitsAndVegetablesYield(i);
         // Mixed Fruits And Vegetables Area
-        global.landUseTypes[year][landUseTypes[15]].area += (landcover[i] == 15) ? datapointarea[i] : 0;
+        global.landUseTypes[year][landUseTypes[15]].area += (landUseType[i] == 15) ? datapointarea[i] : 0;
         // Results calculations
 //        global.results[year].yield.corn_percent += (data[i] == 1) ? area
         //
@@ -335,7 +335,7 @@ var Yield = function () {
     }
 
     function getCornGrainYield(i) {
-        if (landcover[i] == 1 || landcover[i] == 2) {
+        if (landUseType[i] == 1 || landUseType[i] == 2) {
 
             return unitYield[0][soiltype] * datapointarea[i];
         } else {
@@ -354,7 +354,7 @@ var Yield = function () {
     }
 
     function getSoybeanYield(i) {
-        if (landcover[i] == 3 || landcover[i] == 4) {
+        if (landUseType[i] == 3 || landUseType[i] == 4) {
             return unitYield[1][soiltype] * datapointarea[i];
         } else {
             return 0;
@@ -372,7 +372,7 @@ var Yield = function () {
     }
 
     function getAlfalfaHayYield(i) {
-        if (landcover[i] == 5) return unitYield[2][soiltype] * datapointarea[i];
+        if (landUseType[i] == 5) return unitYield[2][soiltype] * datapointarea[i];
         else return 0;
     }
 
@@ -387,7 +387,7 @@ var Yield = function () {
     }
 
     function getGrassHayYield(i) {
-        if (landcover[i] == 8) return unitYield[2][soiltype] * datapointarea[i];
+        if (landUseType[i] == 8) return unitYield[2][soiltype] * datapointarea[i];
         else return 0;
     }
 
@@ -402,8 +402,8 @@ var Yield = function () {
     }
 
     function getWoodYield(i) {
-        if (landcover[i] == 10) return (0.7 * (unitYield[3][soiltype] * datapointarea[i]));
-        else if (landcover[i] == 11) return (unitYield[3][soiltype] * datapointarea[i]);
+        if (landUseType[i] == 10) return (0.7 * (unitYield[3][soiltype] * datapointarea[i]));
+        else if (landUseType[i] == 11) return (unitYield[3][soiltype] * datapointarea[i]);
         else return 0;
     }
 
@@ -418,7 +418,7 @@ var Yield = function () {
     }
 
     function getCattleSupported(i) {
-        if (landcover[i] == 6 || landcover[i] == 7) {
+        if (landUseType[i] == 6 || landUseType[i] == 7) {
 //            console.log(getSeasonalUtilizationRate(i), cattleAverageDailyIntake, GRAZING_SEASON_LENGTH, unitYield[4][soiltype], datapointarea[i]);
             return (getSeasonalUtilizationRate(i) / ((cattleAverageDailyIntake / 2000) * GRAZING_SEASON_LENGTH) * unitYield[4][soiltype] * datapointarea[i]);
         }
@@ -426,8 +426,8 @@ var Yield = function () {
     }
 
     function getSeasonalUtilizationRate(i) {
-        if (landcover[i] == 6) return 0.35;
-        else if (landcover[i] == 7) return 0.55;
+        if (landUseType[i] == 6) return 0.35;
+        else if (landUseType[i] == 7) return 0.55;
         else return 0;
     }
 
@@ -442,7 +442,7 @@ var Yield = function () {
     }
 
     function getHerbaceousPerennialBiomassYield(i) {
-        if (landcover[i] == 12) return unitYield[6][soiltype] * datapointarea[i];
+        if (landUseType[i] == 12) return unitYield[6][soiltype] * datapointarea[i];
         else return 0;
     }
 
@@ -457,7 +457,7 @@ var Yield = function () {
     }
 
     function getShortRotationWoodyBiomassYield(i) {
-        return (landcover[i] == 13) ? 60.8608 * datapointarea[i] : 0;
+        return (landUseType[i] == 13) ? 60.8608 * datapointarea[i] : 0;
     }
 
     function setShortRotationWoodyBiomassMax(i) {
@@ -471,7 +471,7 @@ var Yield = function () {
     }
 
     function getMixedFruitsAndVegetablesYield(i) {
-        if (landcover[i] == 15) return getYieldPrecipitationMultiplier(i) * 7.34 * datapointarea[i] * getSoilTypeMultiplier(i);
+        if (landUseType[i] == 15) return getYieldPrecipitationMultiplier(i) * 7.34 * datapointarea[i] * getSoilTypeMultiplier(i);
         else return 0;
     }
 
@@ -480,14 +480,14 @@ var Yield = function () {
     }
 
     function getYieldPrecipitationMultiplier(i) {
-        if (landcover[i] > 0 && landcover[i] < 5) {
+        if (landUseType[i] > 0 && landUseType[i] < 5) {
             if (global.data.precipitation[year] == 24.58 || global.data.precipitation[year] == 45.10) return 0.75;
             else if (global.data.precipitation[year] == 28.18 || global.data.precipitation[year] == 36.47) return 0.9;
             else if (global.data.precipitation[year] == 30.39 || global.data.precipitation[year] == 32.16 || global.data.precipitation[year] == 34.34) return 1;
-        } else if ((landcover[i] > 4 && landcover[i] < 9) || landcover[i] == 12) {
+        } else if ((landUseType[i] > 4 && landUseType[i] < 9) || landUseType[i] == 12) {
             if (global.data.precipitation[year] > 24.58 && global.data.precipitation[year] < 45.10) return 1;
             else return 0.95;
-        } else if (landcover[i] == 15) {
+        } else if (landUseType[i] == 15) {
             if (global.data.precipitation[year] < 36.47) return 1;
             else if (global.data.precipitation[year] == 36.47) return 0.9
             else return 0.75;
@@ -604,7 +604,7 @@ var Nitrates = function () {
 	this.year = function(y) {
 		year = y;
 		subwatershedData = global.data[year].subwatershed.data;
-		landcover = global.data[year].baseLandUseType.data;
+		landUseType = global.data[year].baseLandUseType.data;
 		wetland = global.data[year].wetland.data;
 		soilType = global.data[year].soiltype.data;
 		dataPointArea = global.data[year].area.data;
@@ -639,7 +639,7 @@ var Nitrates = function () {
     }
 
     //Nitrate Variables
-    var landcover,
+    var landUseType,
         wetland,
         watershedPercent = [],
         //Nitrate-N Concentration Max
@@ -664,7 +664,7 @@ var Nitrates = function () {
     };
 
     function setRowCropMultiplier(i) {
-        if ((landcover[i] > 0 && landcover[i] < 6) || landcover[i] == 15) {
+        if ((landUseType[i] > 0 && landUseType[i] < 6) || landUseType[i] == 15) {
             return dataPointArea[i];
         } else {
             return 0;
@@ -673,7 +673,7 @@ var Nitrates = function () {
 
     //Wetland Multiplier
     function setWetlandMultiplier(i) {
-        if (wetland[i] == 1 && landcover[i] == 14) {
+        if (wetland[i] == 1 && landUseType[i] == 14) {
             return 1;
         } else {
             return 0;
@@ -681,7 +681,7 @@ var Nitrates = function () {
     }
 
     function setConservationMultiplier(i) {
-        if (landcover[i] == 2 || landcover[i] == 4) {
+        if (landUseType[i] == 2 || landUseType[i] == 4) {
             if (soilType[i] == "A" || soilType[i] == "B" || soilType[i] == "C" || soilType[i] == "L" || soilType[i] == "N" || soilType[i] == "O") {
                 return dataPointArea[i] * 0.69;
             } else {
@@ -814,11 +814,11 @@ var Nitrates = function () {
 var Carbon = function () {
 	this.year = function(y) {
 		year = y;
-		landCover = global.data[year].baseLandUseType.data;
+		landUseType = global.data[year].baseLandUseType.data;
 		dataPointArea = global.data[year].area.data;
 	}
 	var year = global.year;
-    var landCover;
+    var landUseType;
 
     //Carbon Sequestration Multiplier
     var carbonMultiplier = [0, 161.87, 0, 161.87, 202.34, 117.36, 117.36, 117.36, 433.01, 1485.20, 1485.20, 485.62, 1897.98, 1234.29, 0];
@@ -836,9 +836,9 @@ var Carbon = function () {
 
     function setCarbon(i) {
         //console.log("j");
-        carbonSequestration[year] += carbonMultiplier[landCover[i] - 1] * dataPointArea[i];
+        carbonSequestration[year] += carbonMultiplier[landUseType[i] - 1] * dataPointArea[i];
         //console.log(carbonSequestration);
-        //console.log(landUseTypeArea[landCover[i]]);
+        //console.log(landUseTypeArea[landUseType[i]]);
         //pewiData[21][i] = carbonMultiplier[i-1]*10;
     }
 
@@ -1218,7 +1218,7 @@ var Erosion = function () {
 	this.year = function(y) {
 		year = y;
 		drainageclass = getSubdataValueWithName("drainageclass", year);
-		landcover = getSubdataValueWithName("baseLandUseType", year);
+		landUseType = getSubdataValueWithName("baseLandUseType", year);
 		soiltype = getSubdataValueWithName("soiltype", year);
 		topography = getSubdataValueWithName("topography", year);
 		streamnetwork = getSubdataValueWithName("streamnetwork", year);
@@ -1242,7 +1242,7 @@ var Erosion = function () {
 	    }
 	}
     var drainageclass,
-        landcover,
+        landUseType,
         soiltype,
         topography,
         streamnetwork,
@@ -1390,7 +1390,7 @@ var Erosion = function () {
 
     function runoffComponent(i, point, precip_override) {
 
-        var cover = (point != false) ? point : landcover[i];
+        var cover = (point != false) ? point : landUseType[i];
 
         return runoffFactor(i, cover) * precipitationFactor(precip_override) * (getSoilTestPRunoffFactor(i) + getPApplicationFactor(i, cover));
     }
@@ -1455,7 +1455,7 @@ var Erosion = function () {
     }
 
     function slopeLengthSteepnessFactor(i, point) {
-        var cover = (point != false) ? point : landcover[i];
+        var cover = (point != false) ? point : landUseType[i];
         if ((cover > 0 && cover < 6) || cover == 15) {
             if (topography[i] == 0) return 0.05;
             else if (topography[i] == 1) return 0.31;
@@ -1482,9 +1482,9 @@ var Erosion = function () {
 	        else if (point == 9) return 0.001;
 	    }
 
-      //coverManagementFactor based on previous year's landcover/landuse
+      //coverManagementFactor based on previous year's landUseType/landuse
       var temp = getSubdataValueWithName("baseLandUseType", year - 1),
-          cover = (point !== false) ? point : landcover[i],
+          cover = (point !== false) ? point : landUseType[i],
           base5Return = 0.005,
           base6Return = 0.03,
           base7Return = 0.02,
@@ -1598,7 +1598,7 @@ var Erosion = function () {
     }
 
     function supportPracticeFactor(i, point) {
-      cover = (point != false) ? point : landcover[i];
+      cover = (point != false) ? point : landUseType[i];
       if (cover == 2 || cover == 4) {
         if (topography[i] > 1) {
           return contourSubfactor(i) * terraceSubfactor(i);
@@ -1647,7 +1647,7 @@ var Erosion = function () {
 
     function contourSubfactor(i) {
         var temp = slopeSteepnessFactor(i);
-        if (landcover[i] == 2 || landcover[i] == 4) {
+        if (landUseType[i] == 2 || landUseType[i] == 4) {
             if (temp == 0.04) return (0.9 + 0.95) / 2;
             else if (temp == 0.08) return (0.85 + 0.9) / 2;
             else if (temp == 0.12) return 0.9;
@@ -1666,7 +1666,7 @@ var Erosion = function () {
     }
 
     function ephemeralGullyErosion(i, point) {
-        var cover = (point != false) ? point : landcover[i]
+        var cover = (point != false) ? point : landUseType[i]
         if (cover == 1 || cover == 3 || cover == 15) return 4.5;
         else if (cover == 2 || cover == 4 || cover == 5) return 1.5;
         else return 0;
@@ -1686,13 +1686,13 @@ var Erosion = function () {
     } // As needed
 
     function bufferFactor(i, point) {
-        var cover = (point != false) ? point : landcover[i];
+        var cover = (point != false) ? point : landUseType[i];
         if (cover == 2 || cover == 4 || (cover > 7 && cover < 15)) return 0.5;
         return 1;
     } // For every land cover point
 
     function enrichmentFactor(i, point) {
-		var cover = (point != false) ? point : landcover[i];
+		var cover = (point != false) ? point : landUseType[i];
         if (cover == 1 || cover == 3 || cover == 15) return 1.1;
         return 1.3;
     } // For every land cover point
