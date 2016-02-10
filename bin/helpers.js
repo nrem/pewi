@@ -119,8 +119,8 @@ function setTopographyFactors(i) {
 
 /**
  *
- * @param value - landcover type
- * @param i - index that the landcover occurs
+ * @param value - landUseType type
+ * @param i - index that the landUseType occurs
  * @param firstpass - true if we are building the watershed from scratch, false if we are updating already existing data points
  */
 function changeBaseLandUseTypeDataPoint(value, i, firstpass, year) {
@@ -143,8 +143,8 @@ function changeBaseLandUseTypeDataPoint(value, i, firstpass, year) {
 
 /**
  *
- * @param newIdx - the old landcover type
- * @param oldIdx - the new landcover type
+ * @param newIdx - the old landUseType type
+ * @param oldIdx - the new landUseType type
  */
 function setLandUseTypeArea(newIdx, i, year, oldIdx) {
     var dataPointArea = global.data[year].area.data[i];
@@ -152,7 +152,7 @@ function setLandUseTypeArea(newIdx, i, year, oldIdx) {
     if(!global.landuse[year][newIdx]) global.landuse[year][newIdx] = 0;
     global.landuse[year][newIdx] += dataPointArea;
     if (oldIdx) {
-        // We need to subtract this area from it's respective landcover
+        // We need to subtract this area from it's respective landUseType
         landUseTypeArea[oldIdx] -= dataPointArea;
         if(!global.landuse[year][oldIdx]) global.landuse[year][newIdx] = 0;
         global.landuse[year][oldIdx] -= dataPointArea;
@@ -287,7 +287,7 @@ function undoLastDatasetChanges() {
     for(var i = 0; i<lastaction.length; i++) {
         var opts = {
             singleLandUseType: true,
-            landcover: lastaction[i].previous,
+            landUseType: lastaction[i].previous,
             location: lastaction[i].location,
 			year: global.year
         };
@@ -298,7 +298,7 @@ function undoLastDatasetChanges() {
 function updateDataPoint(i, options) {
 	//setStrategicWetland(i);
 	//setStreamNetworkArea(i);
-    changeBaseLandUseTypeDataPoint(options.landcover, i, true, options.year);
+    changeBaseLandUseTypeDataPoint(options.landUseType, i, true, options.year);
 	//setSubwatershedArea(i, false);
 	//setSoiltypeFactors(i);
 	//setTopographyFactors(i);
