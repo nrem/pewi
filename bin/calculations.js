@@ -1616,15 +1616,6 @@ var Erosion = function () {
         else if (topography[i] == 5) return 75;
     }
 
-    function slopeLengthLimit(i) {
-        if (topography[i] == 0) return null;
-        else if (topography[i] == 1) return 400;
-        else if (topography[i] == 2) return 300;
-        else if (topography[i] == 3) return 200;
-        else if (topography[i] == 4) return 120;
-        else if (topography[i] == 5) return 80;
-    }
-
     function terraceSubfactor(i) {
         var temp = terraceInterval(i);
         if (temp < 100) return 0.5;
@@ -1698,7 +1689,7 @@ var Erosion = function () {
     } // For every land cover point
 
     function soilTestPErosionFactor(i) {
-      return 0.7 * (500 + soilTestP(i)) * 2000/1000000;
+      return 0.7 * (500 + 3 * soilTestP(i)) * 2000/1000000;
     } // For every land cover point
 
     function soilTestP(i) {
