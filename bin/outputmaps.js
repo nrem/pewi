@@ -8,7 +8,7 @@ var OutputMap = function (options) {
         SCALE = (options.scale !== undefined) ? options.scale : 1,
         cellWidth = SCALE * 3,
         cellHeight = SCALE * 2,
-        basedata = global.data[global.year].baselandcover.data,
+        basedata = global.data[global.year].baseLandUseType.data,
         LEN = basedata.length,
         svgWidth = (options.width !== undefined) ? options.width : 25 * cellWidth,
         svgHeight = (options.height !== undefined) ? options.height : 250,
@@ -611,7 +611,7 @@ var Maps = function () {
 				setWatershedArea(i);
                 setStrategicWetland(i);
                 setStreamNetworkArea(i);
-                changeBaselandcoverDataPoint(options.landcover[i], i, true, options.year);
+                changeBaseLandUseTypeDataPoint(options.landcover[i], i, true, options.year);
                 //setLandUseTypeArea(options.landcover[i]);
                 setSubwatershedArea(i, true);
                 setSoiltypeFactors(i);
@@ -706,7 +706,7 @@ var Maps = function () {
                 if (options.landcover[i] != undefined && global.selectedPaint !== options.landcover[i]) {
 					undoData.push({location: i, previous: options.landcover[i]});
 
-                    changeBaselandcoverDataPoint(global.selectedPaint, i, false, global.year);
+                    changeBaseLandUseTypeDataPoint(global.selectedPaint, i, false, global.year);
 
                     if (options.landcover[i] != 0) {
                         watershed.changeWatershedRectImage(i, global.selectedPaint);
@@ -752,7 +752,7 @@ var Maps = function () {
 			// watershedArea[options.year] = 0;
             for (var i = 0; i < options.landcover.length; i++) {
                 if (options.landcover[i] != undefined) {
-                    changeBaselandcoverDataPoint(options.landcover[i], i, false, options.year);
+                    changeBaseLandUseTypeDataPoint(options.landcover[i], i, false, options.year);
 
                     if (options.landcover[i] != 0) {
                         this.changeWatershedRectImage(i, options.landcover[i]);
@@ -764,7 +764,7 @@ var Maps = function () {
             if(options.location == undefined) return;
 //            setStrategicWetland(options.location);
 //            setStreamNetworkArea(options.location);
-            changeBaselandcoverDataPoint(options.landcover, options.location, false, options.year);
+            changeBaseLandUseTypeDataPoint(options.landcover, options.location, false, options.year);
 //            setSoiltypeFactors(options.location);
 //            setTopographyFactors(options.location);
 
