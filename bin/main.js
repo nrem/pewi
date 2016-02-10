@@ -144,7 +144,7 @@ var global = [
                     var scale = Math.round(Math.min(SCREEN.height, SCREEN.width) / 36 / 2 - 1);
                     var options = {
                         parent: "#divcontainer",
-                        landcover: global.data[global.year].baseLandUseType.data,
+                        landcover: global.data[global.year].baselandcover.data,
                         y: global.data[global.year].row.data,
                         x: global.data[global.year].column.data,
                         width: 23 * 3 * scale + 3 * scale,
@@ -164,16 +164,16 @@ var global = [
                         for (var i = 1; i <= global.years; i++) {
                             if (global.data[i] !== 0) {
                                 options.year = i;
-                                for (var j = 0; j < global.data[i].baseLandUseType.data.length; j++) {
-                                    updateDataPoint(j, { landcover: global.data[i].baseLandUseType.data[j], year: i });
+                                for (var j = 0; j < global.data[i].baselandcover.data.length; j++) {
+                                    updateDataPoint(j, { landcover: global.data[i].baselandcover.data[j], year: i });
 
                                     if (i == 1) {
 //										setWatershedArea(j);
-                                        options.landcover = global.data[i].baseLandUseType.data[j];
+                                        options.landcover = global.data[i].baselandcover.data[j];
                                         options.location = j;
                                         y = global.data[i].row.data;
                                         x = global.data[i].column.data;
-                                        options.singlelandcover = true;
+                                        options.singleLandUseType = true;
                                         global.maps.updateWatershed(options);
                                     }
                                 }
@@ -181,10 +181,10 @@ var global = [
                         }
                     }
 
-                    //updateTable(global.data[global.year].baseLandUseType,$("#watershed td"));
+                    //updateTable(global.data[global.year].baselandcover,$("#watershed td"));
                     //$("#toolbar").show();
                     $(".rounds").show();
-                    //$("#landcover-toolbar").show();
+                    //$("#landusetype-toolbar").show();
                     $("#info").show();
                     resizeBackgroundImage();
                     centerElement($(window), $("#watershed"));
@@ -261,9 +261,9 @@ var global = [
 
                     // Start preloading PEWI
                     copyBackgroundImage($("body"));
-//                    updateTable(global.data[global.year].baseLandUseType, $("#watershed td"));
+//                    updateTable(global.data[global.year].baselandcover, $("#watershed td"));
                     var options = {
-                        landcover: global.data[global.year].baseLandUseType.data,
+                        landcover: global.data[global.year].baselandcover.data,
                         year: global.year
                     };
                     global.maps.switchYear(options);
@@ -373,7 +373,7 @@ var global = [
                     3: {}
                 };
 
-                global.landcovers = {
+                global.landUseTypes = {
                     1: {},
                     2: {},
                     3: {}
@@ -734,17 +734,17 @@ var global = [
         }
 
         var oldi;
-        $("#landcover-toolbar ul li img").bind(global.selectClickType, function () {
+        $("#landusetype-toolbar ul li img").bind(global.selectClickType, function () {
             //$(this).toggleClass("highlighted");
-            var i = $("#landcover-toolbar ul li img").index(this);
+            var i = $("#landusetype-toolbar ul li img").index(this);
             //console.log(this);
-            $("#landcover-toolbar input").eq(i).attr("checked", true);
-            $("#landcover-toolbar ul li img").eq(i).toggleClass("highlighted");
-            selectedPaint = parseInt($("#landcover-toolbar ul li input").eq(i).attr("value"));
+            $("#landusetype-toolbar input").eq(i).attr("checked", true);
+            $("#landusetype-toolbar ul li img").eq(i).toggleClass("highlighted");
+            selectedPaint = parseInt($("#landusetype-toolbar ul li input").eq(i).attr("value"));
             global.selectedPaint = selectedPaint;
             if (oldi != undefined) {
-                $("#landcover-toolbar input").eq(oldi).attr("checked", false);
-                $("#landcover-toolbar ul li img").eq(oldi).toggleClass("highlighted");
+                $("#landusetype-toolbar input").eq(oldi).attr("checked", false);
+                $("#landusetype-toolbar ul li img").eq(oldi).toggleClass("highlighted");
             }
             oldi = i;
             updatePaintSelection();
@@ -869,7 +869,7 @@ var global = [
                 global.sm.consumeEvent(global.sm.goto.MAIN);
             } else {
                 //global.sm.consumeEvent('goto-print');
-                //global.landuse[global.year] = landCoverArea;
+                //global.landuse[global.year] = landUseTypeArea;
                 clearOtherPopups(6);
                 global.scoreDirector = new ScoreDirector();
                 global.scoreDirector.update();
@@ -911,13 +911,13 @@ var global = [
         });
 
         $("#sidebar-left #landcover").bind(global.selectClickType, function () {
-            if ($("#landcover-toolbar").is(":visible")) {
-                $("#landcover-toolbar").hide();
+            if ($("#landusetype-toolbar").is(":visible")) {
+                $("#landusetype-toolbar").hide();
                 $(this).css('border-right', '');
 //                $("#sidebar-left #landcover img").attr("src", "images/icons/white-r.png");
 //                $("#sidebar-left #layer img").attr("src", "images/icons/white-r.png");
             } else {
-                $("#landcover-toolbar").show();
+                $("#landusetype-toolbar").show();
                 $(this).css('border-right', '2px solid #cccc00');
                 $("#pfeature-toolbar").hide();
                 $('#layer').css('border-right', '');
@@ -940,7 +940,7 @@ var global = [
 //                $("#sidebar-left #layer img").attr("src", "images/icons/white-r.png");
 //                $("#sidebar-left #landcover img").attr("src", "images/icons/white-r.png");
             } else {
-                $("#landcover-toolbar").hide();
+                $("#landusetype-toolbar").hide();
                 $('#landcover').css('border-right', '');
                 $("#pfeature-toolbar").show();
                 $(this).css('border-right', '2px solid #cccc00');
@@ -1004,7 +1004,7 @@ var global = [
                 }
                 if (keys[82] == true) {
                     var undoData = [];
-                    data = global.data[global.year].baseLandUseType.data;
+                    data = global.data[global.year].baselandcover.data;
                     for (var i = 0; i < data.length; i++) {
                         if (data[i] != undefined && data[i] != 0) {
                             undoData.push({previous: data[i], location: i});
@@ -1014,7 +1014,7 @@ var global = [
                             var options = {
                                 landcover: r,
                                 location: i,
-                                singlelandcover: true,
+                                singleLandUseType: true,
                                 year: global.year
                             };
 
@@ -1148,15 +1148,15 @@ var global = [
 
                 if (global.paintingType == global.PAINTTYPE._FREEFORM) {
                     var id = parseInt($(this).attr('id'));
-                    if (global.data[global.year].baseLandUseType.data[id] == global.selectedPaint) {
+                    if (global.data[global.year].baselandcover.data[id] == global.selectedPaint) {
                         return;
                     }
 
                     global.maps.changeWatershedRectImage(id, global.selectedPaint);
 
-                    datasetUndoLog.push({previous: global.data[global.year].baseLandUseType.data[id], location: id});
+                    datasetUndoLog.push({previous: global.data[global.year].baselandcover.data[id], location: id});
 
-                    changeBaseLandUseTypeDataPoint(global.selectedPaint, id, false, global.year);
+                    changeBaselandcoverDataPoint(global.selectedPaint, id, false, global.year);
 
                     bindFreeformMouseover();
                 } else if (global.paintingType == global.PAINTTYPE._SELECTBOX) {
@@ -1201,12 +1201,12 @@ var global = [
                                     if (tbottom < bottom + 1) {
                                         var id = parseInt($(this).attr('id'));
 
-                                        if (global.data[global.year].baseLandUseType.data[id] !== global.selectedPaint) {
+                                        if (global.data[global.year].baselandcover.data[id] !== global.selectedPaint) {
                                             global.maps.changeWatershedRectImage(id, global.selectedPaint);
 
-                                            datasetUndoLog.push({previous: global.data[global.year].baseLandUseType.data[id], location: id});
+                                            datasetUndoLog.push({previous: global.data[global.year].baselandcover.data[id], location: id});
 
-                                            changeBaseLandUseTypeDataPoint(global.selectedPaint, id, false, global.year);
+                                            changeBaselandcoverDataPoint(global.selectedPaint, id, false, global.year);
                                         }
                                     }
                                 }
@@ -1233,15 +1233,15 @@ var global = [
             function bindFreeformMouseover() {
                 $(".watershed-rect").bind("mouseover.painting", function () {
                     var id = parseInt($(this).attr('id'));
-                    if (global.data[global.year].baseLandUseType.data[id] == global.selectedPaint) {
+                    if (global.data[global.year].baselandcover.data[id] == global.selectedPaint) {
                         return;
                     }
 
                     global.maps.changeWatershedRectImage(id, global.selectedPaint);
 
-                    datasetUndoLog.push({previous: global.data[global.year].baseLandUseType.data[id], location: id});
+                    datasetUndoLog.push({previous: global.data[global.year].baselandcover.data[id], location: id});
 
-                    changeBaseLandUseTypeDataPoint(global.selectedPaint, id, false, global.year);
+                    changeBaselandcoverDataPoint(global.selectedPaint, id, false, global.year);
                 });
             }
 
@@ -1310,10 +1310,10 @@ var global = [
                     global.maps.changeWatershedRectImage(index, global.selectedPaint);
 
                     var undoData = [
-                        {previous: global.data[global.year].baseLandUseType.data[index], location: index}
+                        {previous: global.data[global.year].baselandcover.data[index], location: index}
                     ];
 
-                    changeBaseLandUseTypeDataPoint(global.selectedPaint, index, false, global.year);
+                    changeBaselandcoverDataPoint(global.selectedPaint, index, false, global.year);
 
                     addDatasetChangesToUndoLog(undoData);
                 }
@@ -1522,12 +1522,12 @@ var global = [
         SCREEN.height = $(window).height();
         resizeBackgroundImage();
     });
-    var landCoverPicsObject = [, , , , , , , , , , , , , , , ];
+    var landUseTypePicsObject = [, , , , , , , , , , , , , , , ];
 
-    function loadLandCoverPics() {
-        for (var i = 1; i < landCoverPicsObject.length; i++) {
-            landCoverPicsObject[i] = new Image();
-            landCoverPicsObject[i].src = "images/cell_images/" + picsForLandCoverGrid[i];
+    function loadLandUseTypePics() {
+        for (var i = 1; i < landUseTypePicsObject.length; i++) {
+            landUseTypePicsObject[i] = new Image();
+            landUseTypePicsObject[i].src = "images/cell_images/" + picsForLandUseTypeGrid[i];
         }
     }
 
@@ -1631,6 +1631,6 @@ function getCurrentSelection() {
     if (global.selectedPaint == undefined) {
         return "None";
     } else {
-        return landcovers[global.selectedPaint];
+        return landUseTypes[global.selectedPaint];
     }
 }
