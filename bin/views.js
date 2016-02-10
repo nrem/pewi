@@ -124,11 +124,11 @@ var PrintView = function () {
     modal.append('<div id="results-container"></div>');
 //    modal.append('<section class="output-map-container"><div><a>Subwatershed Nitrate-N Percent Contribution</a></div><div id="nitrate-output-map" class="output-map"><div id="watershed-percent-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Gross Erosion</a></div><div id="erosion-output-map" class="output-map"><div id="erosion-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Phosphorus Index Risk Assessment</a></div><div id="risk-assessment-output-map" class="output-map"><div id="risk-assessment-stat"><a></a></div></div></section>');
 //    modal.append('<section id="left-col"><section id=""><div id="precipitation-placeholder"></div></section><section id="landuse-outputs"></section><br /><div id="stats">Stats</div></section>');
-//    modal.append('<section id="right-col"><div id="landcover-values"><div id="percent-landcover"></div></div></section>');
+//    modal.append('<section id="right-col"><div id="landusetype-values"><div id="percent-landusetype"></div></div></section>');
     modal.display();
 
     ///////////////////////////////////////////////////
-    // Landcover Table ////////////////////////////////
+    // landusetype Table ////////////////////////////////
     ///////////////////////////////////////////////////
 
     var tableLandUseType = d3.select("#results-container")
@@ -136,7 +136,7 @@ var PrintView = function () {
         .attr("class", "results-table hover");
     var tableLandUseTypeHead = tableLandUseType.append("thead");
 
-//    var headLandcover = tableLandUseType.append("th")
+//    var headlandusetype = tableLandUseType.append("th")
 //    .attr("class", "results-table-header");
 
     // Header
@@ -231,17 +231,17 @@ var PrintView = function () {
             d3.select(this).append('strong').text(d.label);
         }
     });
-    rows.append("td").attr("class", "results-cell landcover-percent-y1").append("a").text(function(d){return d.score1});
-    rows.append("td").attr("class", "results-cell landcover-percent-y2").append("a").text(function(d){return d.score2});
-    rows.append("td").attr("class", "results-cell landcover-percent-y3").append("a").text(function(d){return d.score3});
-    rows.append("td").attr("class", "results-cell landcover-acres-y1").append("a").text(function(d){return d.val1});
-    rows.append("td").attr("class", "results-cell landcover-acres-y2").append("a").text(function(d){return d.val2});
-    rows.append("td").attr("class", "results-cell landcover-acres-y3").append("a").text(function(d){return d.val3});
-    rows.append("td").attr("class", "results-cell landcover-acres-units").append("a").text(function(d){ return (d.hasOwnProperty('score1'))?'acres':''});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y1").append("a").text(function(d){return d.valcvt1});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y2").append("a").text(function(d){return d.valcvt2});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y3").append("a").text(function(d){return d.valcvt3});
-    rows.append("td").attr("class", "results-cell landcover-hectares-units").append("a").text(function(d){ return (d.hasOwnProperty('score1'))?'hectares':''});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y1").append("a").text(function(d){return d.score1});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y2").append("a").text(function(d){return d.score2});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y3").append("a").text(function(d){return d.score3});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y1").append("a").text(function(d){return d.val1});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y2").append("a").text(function(d){return d.val2});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y3").append("a").text(function(d){return d.val3});
+    rows.append("td").attr("class", "results-cell landusetype-acres-units").append("a").text(function(d){ return (d.hasOwnProperty('score1'))?'acres':''});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y1").append("a").text(function(d){return d.valcvt1});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y2").append("a").text(function(d){return d.valcvt2});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y3").append("a").text(function(d){return d.valcvt3});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-units").append("a").text(function(d){ return (d.hasOwnProperty('score1'))?'hectares':''});
 
     // Footer
 
@@ -331,17 +331,17 @@ var PrintView = function () {
             d3.select(this).append('strong').text(d.label);
         }
     });
-    rows.append("td").attr("class", "results-cell landcover-percent-y1").append("a").text(function(d){return d.score1});
-    rows.append("td").attr("class", "results-cell landcover-percent-y2").append("a").text(function(d){return d.score2});
-    rows.append("td").attr("class", "results-cell landcover-percent-y3").append("a").text(function(d){return d.score3});
-    rows.append("td").attr("class", "results-cell landcover-acres-y1").append("a").text(function(d){return d.val1});
-    rows.append("td").attr("class", "results-cell landcover-acres-y2").append("a").text(function(d){return d.val2});
-    rows.append("td").attr("class", "results-cell landcover-acres-y3").append("a").text(function(d){return d.val3});
-    rows.append("td").attr("class", "results-cell landcover-acres-units condensed").append("a").text(function(d){ return (d.english)?" " + d.english:''});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y1").append("a").text(function(d){return d.valcvt1});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y2").append("a").text(function(d){return d.valcvt2});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y3").append("a").text(function(d){return d.valcvt3});
-    rows.append("td").attr("class", "results-cell landcover-hectares-units condensed").append("a").text(function(d){ return (d.english)?" " + d.metric:''});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y1").append("a").text(function(d){return d.score1});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y2").append("a").text(function(d){return d.score2});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y3").append("a").text(function(d){return d.score3});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y1").append("a").text(function(d){return d.val1});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y2").append("a").text(function(d){return d.val2});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y3").append("a").text(function(d){return d.val3});
+    rows.append("td").attr("class", "results-cell landusetype-acres-units condensed").append("a").text(function(d){ return (d.english)?" " + d.english:''});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y1").append("a").text(function(d){return d.valcvt1});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y2").append("a").text(function(d){return d.valcvt2});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y3").append("a").text(function(d){return d.valcvt3});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-units condensed").append("a").text(function(d){ return (d.english)?" " + d.metric:''});
     // Body
     for (var key in ecodata) {
         var o = ecodata[key];
