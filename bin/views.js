@@ -131,16 +131,16 @@ var PrintView = function () {
     // Landcover Table ////////////////////////////////
     ///////////////////////////////////////////////////
 
-    var tableLandcover = d3.select("#results-container")
+    var tableLandUseType = d3.select("#results-container")
         .append("table")
         .attr("class", "results-table hover");
-    var tableLandcoverHead = tableLandcover.append("thead");
+    var tableLandUseTypeHead = tableLandUseType.append("thead");
 
-//    var headLandcover = tableLandcover.append("th")
+//    var headLandcover = tableLandUseType.append("th")
 //    .attr("class", "results-table-header");
 
     // Header
-    tableLandcoverHead.append("tr")
+    tableLandUseTypeHead.append("tr")
         .attr("class", "results-table-header-row")
         .append("th")
         .attr("class", "results-table-header-row-cell")
@@ -151,13 +151,13 @@ var PrintView = function () {
 //        .append("a").text("Display Options")
 //        .attr("class", "display-options-dropdown");
 
-    var measure = tableLandcoverHead.append("tr")
+    var measure = tableLandUseTypeHead.append("tr")
         .attr("class", "results-table-header-row");
     measure.append("th")
         .attr("class", "results-table-header-row-cell");
     headerMeasureCellFactory(measure, {1: "Percent", 2: "Area: English", 3: "Area: Metric"});
 
-    var titles = tableLandcoverHead.append("tr")
+    var titles = tableLandUseTypeHead.append("tr")
         .attr("class", "results-table-header-row border-bottom");
     headerTitleCellFactory(titles, {1: "Land-Use Category and Cover", 2: "Y1", 3: "Y2", 4: "Y3", 5: "Y1", 6: "Y2", 7: "Y3",8: "Units", 9: "Y1", 10: "Y2", 11: "Y3", 12: "Units"});
 
@@ -183,7 +183,7 @@ var PrintView = function () {
     // Defines the layout for the Land-User Category and Cover results table
     var layout = [
         {label:'Annual Grain'},
-        1, // Corresponds to the landcovers array index
+        1, // Corresponds to the landUseTypes array index
         2,
         {label:'Annual Legume'},
         3,
@@ -210,7 +210,7 @@ var PrintView = function () {
             landusedata.push(layout[i]);
         } else {
             var obj = {};
-            obj.label = landcovers[layout[i]];
+            obj.label = landUseTypes[layout[i]];
             obj.score1 = (global.landuse[1][layout[i]]) ? Math.round((100 * global.landuse[1][layout[i]] / watershedArea) * 10) / 10 : 0;
             obj.score2 = (global.landuse[2][layout[i]]) ? Math.round((100 * global.landuse[2][layout[i]] / watershedArea) * 10) / 10 : 0;
             obj.score3 = (global.landuse[3][layout[i]]) ? Math.round((100 * global.landuse[3][layout[i]] / watershedArea) * 10) / 10 : 0;
@@ -223,7 +223,7 @@ var PrintView = function () {
             landusedata.push(obj);
         }
     }
-    var rows = tableLandcover.append('tbody').selectAll('tr').data(landusedata).enter().append('tr').attr('id',function(d){return d.label}).attr("class", function(d,i){ return (parseInt(i) % 2 !== 0) ? "even" : "odd"});
+    var rows = tableLandUseType.append('tbody').selectAll('tr').data(landusedata).enter().append('tr').attr('id',function(d){return d.label}).attr("class", function(d,i){ return (parseInt(i) % 2 !== 0) ? "even" : "odd"});
     rows.append("td").each(function(d) {
         if(d.hasOwnProperty('score1')) {
             d3.select(this).style('padding-left','20px').append('span').text(d.label);
