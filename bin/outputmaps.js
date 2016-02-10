@@ -1,463 +1,1065 @@
 /**
- * Created by rlfrahm on 11/19/13.
+ * Created by rlfrahm on 11/26/13.
  */
+var OutputMap = function (options) {
+    var rowdata = global.data[global.year].row.data,
+        coldata = global.data[global.year].column.data,
+        subwatershed = global.data[global.year].subwatershed.data,
+        SCALE = (options.scale !== undefined) ? options.scale : 1,
+        cellWidth = SCALE * 3,
+        cellHeight = SCALE * 2,
+        basedata = global.data[global.year].baseLandUseType.data,
+        LEN = basedata.length,
+        svgWidth = (options.width !== undefined) ? options.width : 25 * cellWidth,
+        svgHeight = (options.height !== undefined) ? options.height : 250,
+        nitrates,
+        erosion,
+        riskAssessment;
 
-function togglePuk(type, coords) {
-    if (type == "layer") {
-        if (!$(".pfeature-puk-item-container").is(":visible")) {
-            initLayerPuk();
-        } else {
-            d3.selectAll(".pfeature-puk-item-container").remove();
-        }
-    }
-    else if (type == "rclick") {
-        if (!$("#rclick-puk-container").is(":visible")) {
-            $("#rclick-puk-container").show();
-            initRclickPuk();
-        } else {
-            $("#rclick-puk-container").hide();
-            d3.select("#rclick").remove();
-        }
-    }
+    var colors = {
+        nitrates: ["#fed98e", "#f4b350", "#fe9929", "#d95f0e", "#993404"],
+        erosion: ["#fed98e", "#f4b350", "#fe9929", "#d95f0e", "#993404"],
+        risk: ["#fed98e", "#f4b350", "#fe9929", "#d95f0e", "#993404"]
+    };
 
-    function initLayerPuk() {
-        var pfeatureButtonPos = $("#sidebar-left #layer").position(),
-            radius = 4;
-        pfeatureButtonPos.height = $("#sidebar-left #layer").height();
-//        var puck = d3.select("#layer-puck-container")
-//            .append("svg")
-//            .attr("width", "100%")
-//            .attr("height", "100%")
-//            .attr("id", "pfeature")
-//            .attr("class", "removable-displays-container");
-        var puck = d3.select("#main");
+    function drawNitrateCell(i, year, interactive) {
+        if(global.watershedPercent[year].length == 0) return;
+        var wp = global.watershedPercent[year];
+        var r =nitrates.append("rect")
+            .attr("x", function () {
+                return coldata[i] * cellWidth;
+            })
+            .attr("y", function () {
+                return rowdata[i] * cellHeight;
+            })
+            .attr("width", cellWidth)
+            .attr("height", cellHeight)
+            .style("fill", function () {
+                return retColor(i);
+            })
+            .attr("id", function () {
+                return wp[subwatershed[i]] * 100;
+            })
+            .attr("class", "output-map-rect")
+            .style("stroke-width", 0.01)
+            .style("stroke", "#000")
+            .attr('year', year);
 
-        var center = centerOfElement($("#pfeature"));
+        if(interactive) {
+            r.on('mouseover', function() {
+                d3.selectAll('#nitrate-rect-text').remove();
 
-        var offsetx = 30,
-            offsety = 50,
-            features = {
-                topo: {
-                    name: "Topographic Relief",
-                    x: offsetx,
-                    y: -offsety,
-                    width: 100,
-                    id: "topo",
-                    file: "Icon_Topography.svg"
-                },
-                flood: {
-                    name: "Flood Frequency",
-                    x: offsetx,
-                    y: 0,
-                    width: 130,
-                    id: "flood",
-                    file: "Icon_Flood_Frequency.svg"
-                },
-                wetland: {
-                    name: "Strategic Wetland Areas",
-                    x: offsetx,
-                    y: offsety,
-                    width: 300,
-                    id: "wetland",
-                    file: "Icon_Strategic_Wetlands.svg"
-                },
-                sub: {
-                    name: "Subwatershed Boundaries",
-                    x: offsetx,
-                    y: offsety * 2,
-                    width: 210,
-                    id: "sub",
-                    file: "Icon_Subwatershed_Boundaries.svg"
-                },
-                drain: {
-                    name: "Drainage Class",
-                    x: offsetx,
-                    y: offsety * 3,
-                    width: 130,
-                    id: "drainage",
-                    key: {
-                        label: "Drainage Class",
-                        topLabel: "Excessive"
-
-                    },
-                    file: "Icon_Drainage_Class.svg"
-                }
-            };
-
-
-        console.log(pfeatureButtonPos);
-        for (var key in features) {
-            var id = "pfeature-" + key,
-                containerWidth = 4;
-            var node = d3.select('#main').append('div')
-                .attr("class", "pfeature-puk-item-container removable-displays")
-                .style("left", pfeatureButtonPos.left + "px")
-                .style("top", (pfeatureButtonPos.top + (pfeatureButtonPos.height / 2)) + "px")
-                .attr("id", id)
-                .style("width", containerWidth + "em")
-                .style("text-align", "center")
-                .style("padding-top", function () {
-                    return containerWidth * 0.07 + "em";
-                })
-                .style("border-radius", 5 + "em");
-
-            var img = node.append("img")
-                .attr("src", "images/icons/navigation/" + features[key].file)
-                .style("width", "86%")
-                .attr("class", "selectable-feature")
-                .attr("id", function () {
-                    return features[key].id
-                })
-                .attr("title", function () {
-                    return features[key].name
-                });
-
-
-            $("#" + id).animate({
-                left: features[key].x + pfeatureButtonPos.left + "px",
-                top: features[key].y + pfeatureButtonPos.top + "px"
-            }, 100, "linear");
-//            var node = puck.append("rect")
-//                .attr("x", function () {
-//                    return features[key].x
-//                })
-//                .attr("y", function () {
-//                    return features[key].y
-//                })
-//                .attr("width", function () {
-//                    return features[key].width
-//                })
-//                .attr("height", 20)
-//                .attr("id", function () {
-//                    return features[key].name + "-rect"
-//                })
-//                .attr("class", "puk-rect")
-//                .style("fill", "#333")
-//                .style("opacity", "0.8")
-//                .style("border", "2px solid #cccc00");
-//
-//            puck.append("text")
-//                .style("fill", "white")
-//                .attr("id", function () {
-//                    return features[key].id
-//                })
-//                .attr("x", function () {
-//                    return features[key].x
-//                })
-//                .attr("y", function () {
-//                    return features[key].y + 16
-//                })
-//                .attr("text-anchor", "start")
-//                .text(function () {
-//                    return features[key].name
-//                })
-//                .attr("class", "selectable-feature");
-        }
-
-//        $("#pfeature").mousemove(function (e) {
-//            puck.select("line").remove();
-//            var offset = $("#pfeature").offset();
-//            var mouse = {
-//                x: e.pageX - offset.left,
-//                y: e.pageY - offset.top
-//            };
-//            puck.append("line")
-//                .attr("x1", coords.x)
-//                .attr("y1", coords.y)
-//                .attr("x2", mouse.x - 2)
-//                .attr("y2", mouse.y)
-//                .style("stroke", "#cccc00")
-//                .style("stroke-width", "3")
-//                .attr("id", "pfeature-indicator-line");
-//        })/*.mouseout(function(){puck.select("line").remove();})*/;
-
-        $(".selectable-pfeature")
-            .bind(global.selectClickType, function () {
-                var id = $(this).attr("id");
-                console.log(id);
-                displayMiniMap(id);
-                $("#layer-puck-container").hide();
-                puck.select("#pfeature-indicator-line").remove();
-                d3.select("#pfeature").remove();
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    id = parseFloat($this.attr('id'));
+                d3.select('#nitrate-svg-' + d3.select(this).attr('year')).append('text')
+                    .text((Math.round(id * 1000) / 1000) + '%')
+                    .attr('x', x + cellWidth + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'nitrate-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#nitrate-rect-text').remove();
             });
-        //*/
+        }
 
 
+        function retColor(i) {
+            if (basedata[i] === 0) return "#999";
+            if (wp[subwatershed[i]] != undefined) {
+                if (wp[subwatershed[i]] >= 0 && wp[subwatershed[i]] <= 0.05) return colors.nitrates[0];
+                else if (wp[subwatershed[i]] > 0.05 && wp[subwatershed[i]] <= 0.1) return colors.nitrates[1];
+                else if (wp[subwatershed[i]] > 0.1 && wp[subwatershed[i]] <= 0.2) return colors.nitrates[2];
+                else if (wp[subwatershed[i]] > 0.2 && wp[subwatershed[i]] <= 0.25) return colors.nitrates[3];
+                else if (wp[subwatershed[i]] > 0.25) return colors.nitrates[4];
+            }
+        }
     }
 
-    function initRclickPuk() {
-        var puck = d3.select("#rclick-puk-container")
-            .append("svg")
-            .attr("width", "100%")
-            .attr("height", "100%")
-            .attr("id", "rclick");
+    function drawErosionCell(i, year, interactive) {
+        if(global.grossErosionSeverity[year].length == 0) return;
+        var grossErosionData = global.grossErosionSeverity[year];
+        var r = erosion.append("rect")
+            .attr("x", function () {
+                return coldata[i] * cellWidth;
+            })
+            .attr("y", function () {
+                return rowdata[i] * cellHeight;
+            })
+            .attr("width", cellWidth)
+            .attr("height", cellHeight)
+            .style("fill", function () {
+                return retColor(i);
+            })
+            .attr("id", function () {
+                return global.erosion[year][i];
+            })
+            .attr("class", "output-map-rect")
+            .style("stroke-width", 0.01)
+            .style("stroke", "#000")
+            .attr('year', year);
 
-        var center = centerOfElement($("#rclick"));
+        if(interactive) {
+            r.on('mouseover', function() {
+                d3.selectAll('#erosion-rect-text').remove();
 
-        var offset = 0,
-            features = {
-                corn: {
-                    name: "Conventional Corn",
-                    x: center.x - 100,
-                    y: center.y + 50,
-                    width: 84,
-                    id: "corn-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Conventional_Corn.png",
-                    val: 1
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    id = parseFloat($this.attr('id'));
+                d3.select('#erosion-svg-' + d3.select(this).attr('year')).append('text')
+                    .text((Math.round(id * 1000) / 1000) + ' tons/ac')
+                    .attr('x', x + cellWidth + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'erosion-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#erosion-rect-text').remove();
+            });
+        }
+
+
+        function retColor(i) {
+            return colors.erosion[grossErosionData[i] - 1];
+        }
+    }
+
+    function drawRiskAssessmentCell(i, year, interactive) {
+        if(global.riskAssessment[year].length == 0) return;
+        var riskAssessmentData = global.riskAssessment[year];
+        var r = riskAssessment.append("rect")
+            .attr("x", function () {
+                return coldata[i] * cellWidth;
+            })
+            .attr("y", function () {
+                return rowdata[i] * cellHeight;
+            })
+            .attr("width", cellWidth)
+            .attr("height", cellHeight)
+            .style("fill", function () {
+                return retColor(i);
+            })
+            .attr("id", function () {
+                return (Math.round(global.pindex[year][i] * 100) / 100);
+            })
+            .attr("class", "output-map-rect")
+            .style("stroke-width", 0.01)
+            .style("stroke", "#000")
+            .attr('year', year);
+
+        if(interactive) {
+            r.on('mouseover', function() {
+                d3.selectAll('#risk-assessment-rect-text').remove();
+
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    id = $this.attr('id');
+                d3.select('#risk-assessment-svg-' + d3.select(this).attr('year')).append('text')
+                    .text(id + ' lb/ac')
+                    .attr('x', x + cellWidth + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'risk-assessment-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#risk-assessment-rect-text').remove();
+            });
+        }
+
+
+        function retColor(i) {
+            if (riskAssessmentData[i] === "Very Low") return colors.risk[0];
+            else if (riskAssessmentData[i] === "Low") return colors.risk[1];
+            else if (riskAssessmentData[i] === "Medium") return colors.risk[2];
+            else if (riskAssessmentData[i] === "High") return colors.risk[3];
+            else if (riskAssessmentData[i] === "Very High") return colors.risk[4];
+        }
+    }
+
+    function drawKeys(year) {
+        var offsetx = 1;
+        var key = {
+            nitrates: {
+                0: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.9,
+                    text: "0 - 5%"
                 },
-                ccorn: {
-                    name: "Conservation Corn",
-                    x: center.x - 125,
-                    y: center.y + 15,
-                    width: 150,
-                    id: "ccorn-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Conservation_Corn.png",
-                    val: 2
+                1: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.95,
+                    text: "5 - 10%"
                 },
-                soybean: {
-                    name: "Conventional Soybean",
-                    x: center.x - 100,
-                    y: center.y - 20,
-                    width: 150,
-                    id: "soybean-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Conventional_Soybean.png",
-                    val: 3
+                2: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1,
+                    text: "10 - 20%"
                 },
-                csoybean: {
-                    name: "Conservation Soybean",
-                    x: center.x - 75,
-                    y: center.y - 55,
-                    width: 150,
-                    id: "csoybean-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Conservation_Soybean.png",
-                    val: 4
+                3: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.05,
+                    text: "20 - 15%"
                 },
-                alfalfa: {
-                    name: "Alfalfa",
-                    x: center.x - 50,
-                    y: center.y - 80,
-                    width: 150,
-                    id: "alfalfa-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Alfalfa.png",
-                    val: 5
-                },
-                ppasture: {
-                    name: "Permanent Pasture",
-                    x: center.x + 50,
-                    y: center.y - 80,
-                    width: 150,
-                    id: "permpasture-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Permanent_Pasture.png",
-                    val: 6
-                },
-                rotgrazing: {
-                    name: "Rotational Grazing",
-                    x: center.x + 75,
-                    y: center.y - 55,
-                    width: 150,
-                    id: "rotgrazing-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Rotational_Grazing.png",
-                    val: 7
-                },
-                hay: {
-                    name: "Grass Hay",
-                    x: center.x,
-                    y: center.y - 145,
-                    width: 150,
-                    id: "hay-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Grass_Hay.png",
-                    val: 8
-                },
-                prairie: {
-                    name: "Prairie",
-                    x: center.x + 115,
-                    y: center.y + 15,
-                    width: 150,
-                    id: "prairie-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Prairie.png",
-                    val: 9
-                },
-                forest: {
-                    name: "Conventional Forest",
-                    x: center.x + 100,
-                    y: center.y + 40,
-                    width: 150,
-                    id: "forest-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Conventional_Forest.png",
-                    val: 10
-                },
-                cforest: {
-                    name: "Conservation Forest",
-                    x: center.x + 75,
-                    y: center.y + 75,
-                    width: 150,
-                    id: "cforest-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Conservation_Forest.png",
-                    val: 11
-                },
-                hbio: {
-                    name: "Herbaceous Perennial Bioenergy",
-                    x: center.x + 25,
-                    y: center.y - 115,
-                    width: 150,
-                    id: "herbbioenergy-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Herbaceous_Perennial_Bioenergy.png",
-                    val: 12
-                },
-                wbio: {
-                    name: "Short-Rotation Woody Bioenergy",
-                    x: center.x + 50,
-                    y: center.y + 100,
-                    width: 150,
-                    id: "woodybioenergy-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Woody_Bioenergy.png",
-                    val: 13
-                },
-                wetland: {
-                    name: "Wetland",
-                    x: center.x + 100,
-                    y: center.y - 20,
-                    width: 150,
-                    id: "wetland-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Wetland.png",
-                    val: 14
-                },
-                mfnv: {
-                    name: "Mixed Fruits & Vegetables",
-                    x: center.x - 25,
-                    y: center.y - 115,
-                    width: 150,
-                    id: "fruitveggie-landusetype",
-                    url: "images/toolbar_icons_bitmaps/Icon_Mixed_Fruits_and_Vegetables.png",
-                    val: 15
+                4: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.1,
+                    text: "> 25%"
                 }
-            };
-
-        for (var key in features) {
-            //console.log(features[key].name);
-            var g = puck.append("g");
-
-            g.append("svg:defs")
-                .append("svg:pattern")
-                .attr("id", "landUseType-image")
-                .attr("patternUnits", "userSpaceOnUse")
-                .attr("height", "40")
-                .attr("width", "40")
+            },
+            erosion: {
+                0: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.9,
+                    text: "< 0.5 tons/ac"
+                },
+                1: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.95,
+                    text: "0.5 - 2 tons/ac"
+                },
+                2: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36,
+                    text: "2 - 3.5 tons/ac"
+                },
+                3: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.05,
+                    text: "3.5 - 5 tons/ac"
+                },
+                4: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.1,
+                    text: "> 5 tons/ac"
+                }
+            },
+            risk: {
+                0: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.9,
+                    text: "Very Low"
+                },
+                1: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 0.95,
+                    text: "Low"
+                },
+                2: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36,
+                    text: "Medium"
+                },
+                3: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.05,
+                    text: "High"
+                },
+                4: {
+                    x: cellWidth * offsetx,
+                    y: cellHeight * 36 * 1.1,
+                    text: "Very High"
+                }
+            }
+        };
+        for (var i = 0; i < colors.nitrates.length; i++) {
+            nitrates.append("rect")
                 .attr("x", function () {
-                    return features[key].x + 20;
+                    return key.nitrates[i].x;
                 })
                 .attr("y", function () {
-                    return features[key].y + 20;
+                    return key.nitrates[i].y;
                 })
-                .append("svg:image")
-                .attr("x", "0")
-                .attr("y", "0")
-                .attr("xlink:href", function () {
-                    return features[key].url;
+                .attr("width", 10)
+                .attr("height", 10)
+                .style("fill", function () {
+                    return colors.nitrates[i];
+                });
+            nitrates.append("text")
+                .attr("x", function () {
+                    return key.nitrates[i].x + 15;
                 })
-                .attr("width", "40")
-                .attr("height", "40");
-
-            g.append("circle")
-                .attr("id", "quick-puk-circle")
-                .attr("cx", function () {
-                    return features[key].x;
+                .attr("y", function () {
+                    return key.nitrates[i].y + 10;
                 })
-                .attr("cy", function () {
-                    return features[key].y;
-                })
-                .attr("r", "20")
-                .attr("fill", "url(#landUseType-image)")
-                .attr("data", function () {
-                    return features[key].val;
+                .attr("text-anchor", "start")
+                .style("font-size", "10")
+                .text(function () {
+                    return key.nitrates[i].text;
                 });
 
-            /*var node = puck.append("rect")
-             .attr("x", function() {return features[key].x})
-             .attr("y", function() {return features[key].y})
-             .attr("width", function() {return features[key].width})
-             .attr("height", 20)
-             .attr("id", function() {return features[key].name + "-rect"})
-             .attr("class", "puk-rect")
-             .style("fill", "#333")
-             .style("opacity", "0.8")
-             .style("border", "2px solid #cccc00");
+            erosion.append("rect")
+                .attr("x", function () {
+                    return key.erosion[i].x;
+                })
+                .attr("y", function () {
+                    return key.erosion[i].y;
+                })
+                .attr("width", 10)
+                .attr("height", 10)
+                .style("fill", function () {
+                    return colors.erosion[i];
+                });
+            erosion.append("text")
+                .attr("x", function () {
+                    return key.erosion[i].x + 15;
+                })
+                .attr("y", function () {
+                    return key.erosion[i].y + 10;
+                })
+                .attr("text-anchor", "start")
+                .style("font-size", "10")
+                .text(function () {
+                    return key.erosion[i].text;
+                });
 
-             puck.append("text")
-             .style("fill", "white")
-             .attr("id", function() {return features[key].id})
-             .attr("x", function() {return features[key].x})
-             .attr("y", function() {return features[key].y + 16})
-             .attr("text-anchor", "start")
-             .text(function() {return features[key].name})
-             .attr("class", "selectable-feature");
-             */
+            riskAssessment.append("rect")
+                .attr("x", function () {
+                    return key.risk[i].x;
+                })
+                .attr("y", function () {
+                    return key.risk[i].y;
+                })
+                .attr("width", 10)
+                .attr("height", 10)
+                .style("fill", function () {
+                    return colors.risk[i];
+                });
+            riskAssessment.append("text")
+                .attr("x", function () {
+                    return key.risk[i].x + 15;
+                })
+                .attr("y", function () {
+                    return key.risk[i].y + 10;
+                })
+                .attr("text-anchor", "start")
+                .style("font-size", "10")
+                .text(function () {
+                    return key.risk[i].text;
+                });
+        }
+    }
+
+    this.draw = function (years, label, interactive) {
+        for(var year = 1; year<=years; year++) {
+
+
+            if(interactive) {
+                d3.select('#popup-container-body')
+                    .append('div')
+                    .attr('class', 'year-button')
+                    .attr('year', year)
+                    .on('mouseover', function() {
+                        var year = d3.select(this).attr('year');
+
+                        if(year == '1') {
+                            d3.select('#nitrate-svg-1').style('display', 'block');
+                            d3.select('#nitrate-svg-2').style('display', 'none');
+                            d3.select('#nitrate-svg-3').style('display', 'none');
+                            d3.select('#erosion-svg-1').style('display', 'block');
+                            d3.select('#erosion-svg-2').style('display', 'none');
+                            d3.select('#erosion-svg-3').style('display', 'none');
+                            d3.select('#risk-assessment-svg-1').style('display', 'block');
+                            d3.select('#risk-assessment-svg-2').style('display', 'none');
+                            d3.select('#risk-assessment-svg-3').style('display', 'none');
+                        } else if(year == '2') {
+                            d3.select('#nitrate-svg-1').style('display', 'none');
+                            d3.select('#nitrate-svg-2').style('display', 'block');
+                            d3.select('#nitrate-svg-3').style('display', 'none');
+                            d3.select('#erosion-svg-1').style('display', 'none');
+                            d3.select('#erosion-svg-2').style('display', 'block');
+                            d3.select('#erosion-svg-3').style('display', 'none');
+                            d3.select('#risk-assessment-svg-1').style('display', 'none');
+                            d3.select('#risk-assessment-svg-2').style('display', 'block');
+                            d3.select('#risk-assessment-svg-3').style('display', 'none');
+                        } else if(year == '3') {
+                            d3.select('#nitrate-svg-1').style('display', 'none');
+                            d3.select('#nitrate-svg-2').style('display', 'none');
+                            d3.select('#nitrate-svg-3').style('display', 'block');
+                            d3.select('#erosion-svg-1').style('display', 'none');
+                            d3.select('#erosion-svg-2').style('display', 'none');
+                            d3.select('#erosion-svg-3').style('display', 'block');
+                            d3.select('#risk-assessment-svg-1').style('display', 'none');
+                            d3.select('#risk-assessment-svg-2').style('display', 'none');
+                            d3.select('#risk-assessment-svg-3').style('display', 'block');
+                        }
+                    })
+                    .append('a')
+                    .text('Year ' + year)
+                    .style('cursor', 'default');
+
+                //Subwatershed Nitrate-N Percent Contribution
+                nitrates = d3.select("#nitrate-output-map")
+                    .append("svg")
+                    .attr("id", "nitrate-svg-" + year)
+                    .attr("width", svgWidth + 100)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
+
+                erosion = d3.select("#erosion-output-map")
+                    .append("svg")
+                    .attr("id", "erosion-svg-" + year)
+                    .attr("width", svgWidth + 100)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
+
+                riskAssessment = d3.select("#risk-assessment-output-map")
+                    .append("svg")
+                    .attr("id", "risk-assessment-svg-" + year)
+                    .attr("width", svgWidth + 100)
+                    .attr("height", svgHeight)
+                    .style('display', 'none');
+
+                d3.select('#nitrate-svg-1').style('display', 'block');
+                d3.select('#erosion-svg-1').style('display', 'block');
+                d3.select('#risk-assessment-svg-1').style('display', 'block');
+            } else {
+                //Subwatershed Nitrate-N Percent Contribution
+                nitrates = d3.select("#nitrate-output-map-" + year)
+                    .append("svg")
+                    .attr("id", "nitrate-svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight);
+
+                erosion = d3.select("#erosion-output-map-" + year)
+                    .append("svg")
+                    .attr("id", "erosion-svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight);
+
+                riskAssessment = d3.select("#risk-assessment-output-map-" + year)
+                    .append("svg")
+                    .attr("id", "risk-assessment-svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight);
+            }
+
+            //console.log(year, nitrates);
+            for (var i = 0; i < LEN; i++) {
+                if (basedata[i] != undefined) {
+                    if(nitrates[0][0] !== null) {
+                        drawNitrateCell(i,year, interactive);
+                    }
+                    if(erosion[0][0] != undefined) {
+                        drawErosionCell(i,year, interactive);
+                    }
+                    if(riskAssessment[0][0] != undefined) {
+                        drawRiskAssessmentCell(i,year, interactive);
+                    }
+                }
+            }
+            if(global.data[year] == 0) continue;
+            drawKeys(year);
+            if(!label) continue;
+            nitrates.append("text")
+                .attr("x", function () {
+                    return cellWidth;
+                })
+                .attr("y", function () {
+                    return cellHeight * 36 * 0.85;
+                })
+                .attr("text-anchor", "start")
+                .style("font-size", "15")
+                .text(function () {
+                    return "Year " + year;
+                });
+
+            erosion.append("text")
+                .attr("x", function () {
+                    return cellWidth;
+                })
+                .attr("y", function () {
+                    return cellHeight * 36 * 0.85;
+                })
+                .attr("text-anchor", "start")
+                .style("font-size", "15")
+                .text(function () {
+                    return "Year " + year;
+                });
+
+            riskAssessment.append("text")
+                .attr("x", function () {
+                    return cellWidth;
+                })
+                .attr("y", function () {
+                    return cellHeight * 36 * 0.85;
+                })
+                .attr("text-anchor", "start")
+                .style("font-size", "15")
+                .text(function () {
+                    return "Year " + year;
+                });
+        }
+    }
+
+    $("#nitrate-svg rect").hover(function () {
+            var i = $("#nitrate-svg rect").index(this);
+            var value = parseFloat($("#nitrate-svg rect").eq(i).attr("id"));
+            var v = value.toFixed(3);
+            if (v != undefined && !isNaN(v)) {
+                $("#watershed-percent-stat a").text(v + "%");
+            }
+
+        },
+        function () {
+
+        });
+
+    this.dealloc = function () {
+        nitrates.remove();
+        erosion.remove();
+        riskAssessment.remove();
+    }
+}
+var Maps = function () {
+    var miniMapState = {
+        topo: false,
+        flood: false,
+        sub: false,
+        wetland: false,
+        drainage: false
+    }, miniMapSlots = [
+        {
+            vacant: true,
+            left: 0,
+            bottom: 20
+        },
+        {
+            vacant: true,
+            left: 0,
+            bottom: 0
+        },
+        {
+            vacant: true,
+            left: 20,
+            bottom: 0
+        },
+        {
+            vacant: true,
+            left: 40,
+            bottom: 0
+        },
+        {
+            vacant: true,
+            left: 60,
+            bottom: 0
+        }
+    ],
+        watershed = this;
+    this.watershed = function (options) {
+        var svg = d3.select(options.parent)
+                .append("svg")
+                .attr("id", "watershed1")
+                .attr("width", options.width + options.rectWidth)
+                .attr("height", options.height + options.rectHeight),
+            border = false;
+
+        centerElement($(window), $("#watershed1"));
+
+        var opts = {};
+        var background = new Background();
+        opts.parent = "#watershed1";
+        opts.scale = '';
+        opts.x = 0;
+        opts.y = 0;
+        opts.width = 100;
+        opts.height = 100;
+        opts.file = 'images/backgrounds/Animation_Watershed_Border-002.svg';
+        opts.transform = '';
+//        background.draw(opts);
+
+        var filter = svg.append('svg:defs')
+            .append('svg:filter')
+            .attr('id', 'f1')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', '110%')
+            .attr('height', '110%');
+
+        filter.append('svg:feOffset')
+            .attr('result', 'offOut')
+            .attr('in', 'SourceAlpha')
+            .attr('dx', 7)
+            .attr('dy', 5);
+
+        filter.append('svg:feGaussianBlur')
+            .attr('result', 'blurOut')
+            .attr('in', 'offOut')
+            .attr('stdDeviation', 7);
+
+        filter.append('svg:feBlend')
+            .attr('in', 'SourceGraphic')
+            .attr('in2', 'blurOut')
+            .attr('mode', 'normal');
+
+        var w = options.rectWidth, h = options.rectHeight;
+        initCalcs();
+        for (var i = 0; i < options.landUseType.length; i++) {
+            if (options.landUseType[i] != undefined) {
+				setWatershedArea(i);
+                setStrategicWetland(i);
+                setStreamNetworkArea(i);
+                changeBaseLandUseTypeDataPoint(options.landUseType[i], i, true, options.year);
+                //setLandUseTypeArea(options.landUseType[i]);
+                setSubwatershedArea(i, true);
+                setSoiltypeFactors(i);
+                setTopographyFactors(i);
+                var rect;
+                if (options.landUseType[i] != 0) {
+                    var g = svg.append("g");
+
+                    g.append("svg:defs")
+                        .append("svg:pattern")
+                        .attr("id", "pattern" + i)
+                        .attr("patternUnits", "userSpaceOnUse")
+                        .attr("height", h)
+                        .attr("width", w)
+                        .attr("x", options.x[i] * w)
+                        .attr("y", options.y[i] * h)
+                        .append("svg:image")
+                        .attr("id", "image" + i)
+                        .attr("xlink:href", "images/cell_images_bitmaps/" + this.setIcon(options.landUseType[i]))
+                        .attr("width", w)
+                        .attr("height", h);
+
+                    rect = g.append("rect")
+                        .attr("id", i)
+                        .attr("class", "watershed-rect")
+                        .attr("x", options.x[i] * w - options.rectWidth)
+                        .attr("y", options.y[i] * h - options.rectHeight)
+                        .attr("width", w)
+                        .attr("height", h)
+                        .style("fill", "url(#pattern" + i + ")")
+                        .attr("landusetype", function () {
+                            return landUseTypes[options.landUseType[i]];
+                        })
+                        .attr("row", Math.ceil((i + 1) / 23))
+                        .attr("col", 1 + i % 23)
+                        .attr('filter', 'url(#f1)');
+                    //$("#" + i).attr("landusetype", "blah");
+                } else {
+                    rect = g.append("rect")
+                        .attr("id", i)
+                        .attr("class", "watershed-rect")
+                        .attr("x", options.x[i] * w - options.rectWidth)
+                        .attr("y", options.y[i] * h - options.rectHeight)
+                        .attr("width", w)
+                        .attr("height", h)
+                        .style("fill", colorsForLandUseTypeGrid[options.landUseType[i]])
+                        .attr("landusetype", function () {
+                            return landUseTypes[options.landUseType[i]];
+                        })
+                        .attr("row", Math.ceil((i + 1) / 23))
+                        .attr("col", 1 + i % 23)
+                        .attr('filter', 'url(#f1)');
+                    global.streamIndices[global.year].push(i);
+                }
+                var timeout;
+                rect.on('mouseover', function() {
+                    clearTimeout(timeout);
+                    d3.selectAll('#watershed-rect-text').remove();
+
+                    var $this = d3.select(this),
+                        x = parseInt($this.attr('x')),
+                        y = parseInt($this.attr('y')),
+                        col = $this.attr('col'),
+                        row = $this.attr('row');
+                    timeout = setTimeout(function() {
+                        svg.append('text')
+                            .text(col + ', ' + row)
+                            .attr('x', x + options.rectWidth + 5)
+                            .attr('y', y + 18)
+                            .style('font-size', 15)
+                            .style('fill', 'white')
+                            .style('font-family', 'arial')
+                            .style('text-shadow', '0 0 5px #000')
+                            .attr('text-anchor', 'start')
+                            .attr('id', 'watershed-rect-text');
+                    }, 750);
+                }).on('mouseleave', function() {
+                    clearTimeout(timeout);
+                    d3.selectAll('#watershed-rect-text').remove();
+                });
+            }
+        }
+        opts.scale = options.scale;
+
+        global.stream = new Stream();
+        global.stream.draw(opts);
+
+        $("#watershed1 #0").dblclick(function () {
+			var undoData = [];
+            options.singleLandUseType = 1;
+            for (var i = 0; i < options.landUseType.length; i++) {
+                if (options.landUseType[i] != undefined && global.selectedPaint !== options.landUseType[i]) {
+					undoData.push({location: i, previous: options.landUseType[i]});
+
+                    changeBaseLandUseTypeDataPoint(global.selectedPaint, i, false, global.year);
+
+                    if (options.landUseType[i] != 0) {
+                        watershed.changeWatershedRectImage(i, global.selectedPaint);
+                    }
+                }
+            }
+			addDatasetChangesToUndoLog(undoData);
+            // $(".watershed-rect").hover(
+//                 function() {
+//                     $("#hover-selection-hud a").text($(this).attr("landusetype"));
+//                 },
+//                 function() {
+//                     $("#hover-selection-hud a").text("");
+//                 }
+//             );
+        });
+
+        $('.watershed-rect').hover(
+            function () {
+                $("#hover-selection-hud a").text($(this).attr("landusetype"));
+            },
+            function () {
+                $("#hover-selection-hud a").text("");
+            }
+        );
+    }
+
+    function rebindWatershedHover() {
+        var $rect = $('.watershed-rect');
+        $rect.unbind('mouseenter mouseleave');
+        $rect.hover(
+            function () {
+                $("#hover-selection-hud a").text($(this).attr("landusetype"));
+            },
+            function () {
+                $("#hover-selection-hud a").text("");
+            }
+        );
+    }
+
+    this.updateWatershed = function (options) {
+        if (options.singleLandUseType == undefined) {
+			// watershedArea[options.year] = 0;
+            for (var i = 0; i < options.landUseType.length; i++) {
+                if (options.landUseType[i] != undefined) {
+                    changeBaseLandUseTypeDataPoint(options.landUseType[i], i, false, options.year);
+
+                    if (options.landUseType[i] != 0) {
+                        this.changeWatershedRectImage(i, options.landUseType[i]);
+                    }
+                }
+            }
+        } else if(options.singleLandUseType) {
+            if(options.landUseType == undefined) return;
+            if(options.location == undefined) return;
+//            setStrategicWetland(options.location);
+//            setStreamNetworkArea(options.location);
+            changeBaseLandUseTypeDataPoint(options.landUseType, options.location, false, options.year);
+//            setSoiltypeFactors(options.location);
+//            setTopographyFactors(options.location);
+
+            this.changeWatershedRectImage(options.location, options.landUseType);
+        }
+    }
+
+    this.switchYear = function (options) {
+        console.log("switching year");
+        for(var i=0; i<options.landUseType.length; i++) {
+            if (options.landUseType[i] != 0) {
+                this.changeWatershedRectImage(i, options.landUseType[i]);
+            }
+        }
+    }
+
+    this.changeWatershedRectImage = function(location, landUseType) {
+        $("#image" + location).attr("href", "images/cell_images_bitmaps/" + getIcon(landUseType));
+        $("#watershed1 #" + location).attr("landusetype", landUseTypes[landUseType]);
+    }
+
+    function getIcon(landUseType) {
+        if (landUseType > 5 && landUseType < 9) {
+            var r = Math.floor(Math.random() * 2);
+            return picsForLandUseTypeGrid[landUseType][r];
+        } else {
+            return picsForLandUseTypeGrid[landUseType];
+        }
+    }
+
+    this.setIcon = function (landUseType) {
+        return getIcon(landUseType);
+    }
+
+    this.minimap = function (options) {
+        if (miniMapState[options.id]) return;
+        var rowData = global.data[global.year].row.data,
+            columnData = global.data[global.year].column.data,
+            SCALE = 3;
+        if (options.width == undefined) {
+            options.width = global.mapCellWidth;
+        }
+        if (options.height == undefined) {
+            options.height = global.mapCellHeight;
         }
 
-        $("#rclick").mousemove(function (e) {
-            puck.select("line").remove();
-            var offset = $("#rclick").offset();
-            var mouse = {
-                x: e.pageX - offset.left,
-                y: e.pageY - offset.top
-            };
-            //console.log(e.pageX, e.pageY);
-            //console.log(offset.left, offset.top);
-            /*puck.append("line")
-             .attr("x1", coords.x - offset.left)
-             .attr("y1", coords.y - offset.top)
-             .attr("x2", mouse.x - 5)
-             .attr("y2", mouse.y)
-             .style("stroke", "#cccc00")
-             .style("stroke-width", "3");
-             */
-        });
-
-        $(".selectable-feature")
-            .bind(global.selectClickType, function () {
-                var id = $(this).attr("id");
-                displayPuk(id);
-                $("#rclick-puk-container").hide();
-                puck.select("line").remove();
-                d3.select("svg").remove();
-            });
-
-        var quickpuk = -1;
-        $("#quick-puk-circle").bind(global.selectClickType, function (e) {
-            if (e.which == 3) {
-                //$(this).toggleClass("highlighted");
-                var i = $("#quick-puk-circle").index(this);
-                //console.log(this);
-                selectedPaint = $("#quick-puk-circle").eq(i).attr("value");
-                alert(selectedPaint);
-                global.selectedPaint = selectedPaint;
-                updatePaintSelection();
-            }
-        }).mouseenter(function () {
-            console.log("lkjansd");
-            var i = $("#quick-puk-circle").index(this);
-            quickpuk = parseInt($("#quick-puk-circle").eq(i).attr("value"));
-            console.log(quickpuk);
-        }).mouseleave(function () {
-            quickpuk = -1;
-        });
-    }
-
-    function centerOfElement(element) {
-        var $this = element;
-        var offset = $this.offset();
-        var width = $this.width();
-        var height = $this.height();
-        var arr = {
-            x: width / 2,
-            y: height / 2
+        var Maps = {
+            TOPOGRAPHY: "topo",
+            FLOOD_FREQUENCY: "flood",
+            DRAINAGE_CLASS: "drainage",
+            WETLAND: "wetland",
+            SUBWATERSHED: "sub"
         };
-        return arr;
+
+        var keys = {
+            TOPOGRAPHY: {
+                label: "Slope Range",
+                0: "0 - 1%",
+                1: "1 - 2%",
+                2: "2 - 5%",
+                3: "5 - 9%",
+                4: "9 - 14%",
+                5: "14 - 18%",
+                length: 6
+            },
+            DRAINAGE_CLASS: {
+                label: "Drainage Class",
+                0: "Excessive",
+                1: "Very Poor",
+                topColor: "",
+                bottomColor: "",
+                length: 2
+            },
+            FLOOD_FREQUENCY: {
+                label: "Flood Frequency",
+                0: "None",
+                1: "Rare",
+                2: "Occasionally",
+                3: "Frequently",
+                4: "Ponded",
+                length: 5
+            }
+        }
+
+        var keyTypes = {
+            RECTS: "rects",
+            HORN: "horn"
+        }
+
+        options.width *= SCALE;
+        options.height *= SCALE;
+        var container = d3.select("#workspace")
+            .append("div")
+            .attr("id", options.id + "-minimap-container")
+            .attr("class", "physical-feature-map")
+            .style("width", options.width * global.data[global.year].rows + "px")
+            .style("height", options.height * 2 * global.data[global.year].columns + "px");
+        for (var i = 0; i < miniMapSlots.length; i++) {
+            if (miniMapSlots[i].vacant) {
+                $("#" + options.id + "-minimap-container").css("marginLeft", miniMapSlots[i].left + "%").css("marginBottom", miniMapSlots[i].bottom + "%");
+                miniMapSlots[i].vacant = false;
+                options.slot = i;
+                break;
+            }
+        }
+        $("#" + options.id + "-minimap-container").draggable({stack: ".physical-feature-map", scroll: false});
+
+        var title = container.append("div");
+        title.append("img")
+            .attr("class", "physical-feature-map-close-button")
+            .attr("id", "topo")
+            .style("width", "1.5em")
+            .style("+filter", "grayscale(1%)")
+            .attr("src", "images/icons/navigation/close_mini_light-gray.svg");
+        title.append("a");
+
+        $("#" + options.id + "-minimap-container img").bind(global.selectClickType, function () {
+            $(this).parent().parent().remove();
+            miniMapState[options.id] = false;
+            miniMapSlots[options.slot].vacant = true;
+        });
+
+        var svg = container.append("svg")
+            .attr("class", "minimap-svg")
+            .attr("width", options.width * global.data[global.year].rows)
+            .attr("height", options.height * 2 * global.data[global.year].columns);
+        miniMapState[options.id] = true;
+        switch (options.id) {
+            case Maps.TOPOGRAPHY:
+                $("#" + options.id + "-minimap-container div>a").text("Topographic Relief");
+                var topography = global.data[global.year].topography.data,
+                    colors = colorbrewer.YlGnBu[6];
+//                console.log(colors, topography);
+                for (var i = 0; i < topography.length; i++) {
+                    if (topography[i] != undefined && !isNaN(topography[i])) {
+                        appendRectHelper(topography[i], colors);
+                    }
+                }
+                buildKey("TOPOGRAPHY", colors, keyTypes.RECTS);
+                break;
+            case Maps.FLOOD_FREQUENCY:
+                $("#" + options.id + "-minimap-container div>a").text("Flood Frequency");
+                var flood = global.data[global.year].floodfrequency.data,
+                    colors = colorbrewer.YlGnBu[6];
+                for (var i = 0; i < flood.length; i++) {
+                    if (flood[i] != undefined && !isNaN(flood[i] / 10)) {
+                        appendRectHelper(flood[i] / 10, colors);
+                    }
+                }
+                buildKey("FLOOD_FREQUENCY", colors, keyTypes.RECTS);
+                break;
+            case Maps.SUBWATERSHED:
+                $("#" + options.id + "-minimap-container div>a").text("Subwatershed Boundaries");
+                var subwatershed = global.data[global.year].subwatershed.data,
+                    colors = boundaryColors;
+                for (var i = 0; i < subwatershed.length; i++) {
+                    if (subwatershed[i] != undefined && !isNaN(subwatershed[i])) {
+                        appendRectHelper(subwatershed[i], colors);
+                    }
+                }
+                break;
+            case Maps.WETLAND:
+                $("#" + options.id + "-minimap-container div>a").text("Strategic Wetland Areas");
+                var wetland = global.data[global.year].wetland.data,
+                    colors = colorbrewer.PuBuGn[3];
+                for (var i = 0; i < wetland.length; i++) {
+                    if (wetland[i] != undefined && !isNaN(wetland[i])) {
+                        appendRectHelper(wetland[i], colors);
+                    }
+                }
+                break;
+            case Maps.DRAINAGE_CLASS:
+                $("#" + options.id + "-minimap-container div>a").text("Drainage Class");
+                var drainage = global.data[global.year].drainageclass.data,
+                    colors = colorbrewer.BrBG[8];
+                for (var i = 0; i < drainage.length; i++) {
+                    if (drainage[i] != undefined && !isNaN(drainage[i])) {
+                        appendRectHelper(drainage[i] / 10, colors);
+                    }
+                }
+                buildKey("DRAINAGE_CLASS", ["#8c510a", "#01665e"], keyTypes.HORN);
+                break;
+        }
+
+        function appendRectHelper(datapoint, colors) {
+            if (isNaN(columnData[i]) || isNaN(rowData[i])) return;
+            var rect = svg.append("rect")
+                .attr("x", function () {
+                    return columnData[i] * options.width + 100;
+                })
+                .attr("y", function () {
+                    return rowData[i] * options.height;
+                })
+                .attr("width", options.width)
+                .attr("height", options.height)
+                .style("fill", function () {
+                    return colors[datapoint];
+                })
+                .attr("id", options.id + "-rect-" + i)
+                .attr("class", "minimap-rect")
+                .attr("row", Math.ceil((i + 1) / 23))
+                .attr("col", 1 + i % 23);
+
+            rect.on('mouseover', function() {
+                d3.selectAll('#pfeature-rect-text').remove();
+
+                var $this = d3.select(this),
+                    x = parseInt($this.attr('x')),
+                    y = parseInt($this.attr('y')),
+                    col = $this.attr('col'),
+                    row = $this.attr('row');
+                svg.append('text')
+                    .text(col + ', ' + row)
+                    .attr('x', x + options.width + 5)
+                    .attr('y', y + 18)
+                    .style('font-size', 15)
+                    .style('fill', 'white')
+                    .style('font-family', 'arial')
+                    .style('text-shadow', '0 0 5px #000')
+                    .attr('text-anchor', 'start')
+                    .attr('id', 'pfeature-rect-text');
+            }).on('mouseleave', function() {
+                d3.selectAll('#pfeature-rect-text').remove();
+            });
+        }
+
+        function buildKey(id, colors, type) {
+            var w = options.width * 2,
+                h = options.height * 2,
+                ystart = parseFloat(svg.attr("height")) - (keys[id].length * 15 * 1.25);
+
+            var keyGroup = svg.append("g");
+            if (type == "rects") {
+                for (var i = 0; i < keys[id].length; i++) {
+                    keyGroup.append("rect")
+                        .attr("x", 10)
+                        .attr("y", ystart + (i * 15))
+                        .attr("width", w)
+                        .attr("height", h)
+                        .style("fill", colors[i])
+                        .attr("id", id + "-" + "key-" + i)
+                        .attr("class", "pfeature-key-rect");
+
+                    keyGroup.append("text")
+                        .attr("x", (10 + w) * 1.25)
+                        .attr("y", ystart + (i * 14 + h))
+                        .text(keys[id][i])
+                        .style("fill", "#fff")
+                        .style("font-size", "0.5em");
+
+                }
+            } else if (type == "horn") {
+                //var path = "M6 0L12 5L8 5L8 50L12 50L6 55L0 50L4 50L4 5L0 5z";
+                var path = "M0,0L15,0C15,0 0,40 15,80L0,80C0,80 15,40 0,0z";
+
+                var gradient = keyGroup.append("svg:defs")
+                    .append("svg:linearGradient")
+                    .attr("id", "pfeature-key-color-gradient")
+                    .attr("x1", "0%")
+                    .attr("y1", "0%")
+                    .attr("x2", "0%")
+                    .attr("y2", "100%");
+
+                gradient.append("svg:stop")
+                    .attr("offset", "0%")
+                    .style("stop-color", colors[0])
+                    .style("stop-opacity", "1");
+
+                gradient.append("svg:stop")
+                    .attr("offset", "100%")
+                    .style("stop-color", colors[1])
+                    .style("stop-opacity", "1");
+
+                keyGroup.append("svg:path")
+                    .attr("d", function () {
+                        return path;
+                    })
+                    .style("fill", "url(#pfeature-key-color-gradient)");
+
+                keyGroup.append("text")
+                    .attr("x", 20)
+                    .attr("y", 7)
+                    .text("Excessive")
+                    .style("fill", "#fff")
+                    .style("font-size", "0.5em");
+
+                keyGroup.append("text")
+                    .attr("x", 20)
+                    .attr("y", 80)
+                    .text("Very Poor")
+                    .style("fill", "#fff")
+                    .style("font-size", "0.5em");
+
+                keyGroup.attr("transform", "translate(10, " + (ystart - (90)) + ") scale(1.25)");
+            }
+        }
     }
-
-    function displayPuk(id) {
-        alert("Display" + id);
-    }
-
-
 }
