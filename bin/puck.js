@@ -197,11 +197,11 @@ function togglePuk(type, coords) {
         var offset = 0,
             features = {
                 corn: {
-                    name: "Corn",
+                    name: "Conventional Corn",
                     x: center.x - 100,
                     y: center.y + 50,
                     width: 84,
-                    id: "corn-landcover",
+                    id: "corn-landusetype",
                     url: "images/toolbar_icons_bitmaps/Icon_Conventional_Corn.png",
                     val: 1
                 },
@@ -210,16 +210,16 @@ function togglePuk(type, coords) {
                     x: center.x - 125,
                     y: center.y + 15,
                     width: 150,
-                    id: "ccorn-landcover",
+                    id: "ccorn-landusetype",
                     url: "images/toolbar_icons_bitmaps/Icon_Conservation_Corn.png",
                     val: 2
                 },
                 soybean: {
-                    name: "Soybean",
+                    name: "Conventional Soybean",
                     x: center.x - 100,
                     y: center.y - 20,
                     width: 150,
-                    id: "soybean-landcover",
+                    id: "soybean-landusetype",
                     url: "images/toolbar_icons_bitmaps/Icon_Conventional_Soybean.png",
                     val: 3
                 },
@@ -228,7 +228,7 @@ function togglePuk(type, coords) {
                     x: center.x - 75,
                     y: center.y - 55,
                     width: 150,
-                    id: "csoybean-landcover",
+                    id: "csoybean-landusetype",
                     url: "images/toolbar_icons_bitmaps/Icon_Conservation_Soybean.png",
                     val: 4
                 },
@@ -237,100 +237,100 @@ function togglePuk(type, coords) {
                     x: center.x - 50,
                     y: center.y - 80,
                     width: 150,
-                    id: "alfalfa-landcover",
+                    id: "alfalfa-landusetype",
                     url: "images/toolbar_icons_bitmaps/Icon_Alfalfa.png",
                     val: 5
-                },
-                mfnv: {
-                    name: "Mixed Fruit & Veggies",
-                    x: center.x - 25,
-                    y: center.y - 115,
-                    width: 150,
-                    id: "fruitveggie-landcover",
-                    url: "images/toolbar_icons_bitmaps/Icon_Mixed_Fruits_and_Vegetables.png",
-                    val: 6
-                },
-                hay: {
-                    name: "Hay",
-                    x: center.x,
-                    y: center.y - 145,
-                    width: 150,
-                    id: "hay-landcover",
-                    url: "images/toolbar_icons_bitmaps/Icon_Grass_Hay.png",
-                    val: 7
-                },
-                hbio: {
-                    name: "Herbaceous Bioenergy",
-                    x: center.x + 25,
-                    y: center.y - 115,
-                    width: 150,
-                    id: "herbbioenergy-landcover",
-                    url: "images/toolbar_icons_bitmaps/Icon_Herbaceous_Perennial_Bioenergy.png",
-                    val: 8
                 },
                 ppasture: {
                     name: "Permanent Pasture",
                     x: center.x + 50,
                     y: center.y - 80,
                     width: 150,
-                    id: "permpasture-landcover",
+                    id: "permpasture-landusetype",
                     url: "images/toolbar_icons_bitmaps/Icon_Permanent_Pasture.png",
-                    val: 9
+                    val: 6
                 },
                 rotgrazing: {
-                    name: "Rotational_Grazing",
+                    name: "Rotational Grazing",
                     x: center.x + 75,
                     y: center.y - 55,
                     width: 150,
-                    id: "rotgrazing-landcover",
+                    id: "rotgrazing-landusetype",
                     url: "images/toolbar_icons_bitmaps/Icon_Rotational_Grazing.png",
-                    val: 10
+                    val: 7
                 },
-                wetland: {
-                    name: "Wetland",
-                    x: center.x + 100,
-                    y: center.y - 20,
+                hay: {
+                    name: "Grass Hay",
+                    x: center.x,
+                    y: center.y - 145,
                     width: 150,
-                    id: "wetland-landcover",
-                    url: "images/toolbar_icons_bitmaps/Icon_Wetland.png",
-                    val: 11
+                    id: "hay-landusetype",
+                    url: "images/toolbar_icons_bitmaps/Icon_Grass_Hay.png",
+                    val: 8
                 },
                 prairie: {
                     name: "Prairie",
                     x: center.x + 115,
                     y: center.y + 15,
                     width: 150,
-                    id: "prairie-landcover",
+                    id: "prairie-landusetype",
                     url: "images/toolbar_icons_bitmaps/Icon_Prairie.png",
-                    val: 12
+                    val: 9
                 },
                 forest: {
                     name: "Conventional Forest",
                     x: center.x + 100,
                     y: center.y + 40,
                     width: 150,
-                    id: "forest-landcover",
+                    id: "forest-landusetype",
                     url: "images/toolbar_icons_bitmaps/Icon_Conventional_Forest.png",
-                    val: 13
+                    val: 10
                 },
                 cforest: {
                     name: "Conservation Forest",
                     x: center.x + 75,
                     y: center.y + 75,
                     width: 150,
-                    id: "cforest-landcover",
+                    id: "cforest-landusetype",
                     url: "images/toolbar_icons_bitmaps/Icon_Conservation_Forest.png",
-                    val: 14
+                    val: 11
+                },
+                hbio: {
+                    name: "Herbaceous Perennial Bioenergy",
+                    x: center.x + 25,
+                    y: center.y - 115,
+                    width: 150,
+                    id: "herbbioenergy-landusetype",
+                    url: "images/toolbar_icons_bitmaps/Icon_Herbaceous_Perennial_Bioenergy.png",
+                    val: 12
                 },
                 wbio: {
-                    name: "Woody Bioenergy",
+                    name: "Short-Rotation Woody Bioenergy",
                     x: center.x + 50,
                     y: center.y + 100,
                     width: 150,
-                    id: "woodybioenergy-landcover",
+                    id: "woodybioenergy-landusetype",
                     url: "images/toolbar_icons_bitmaps/Icon_Woody_Bioenergy.png",
+                    val: 13
+                },
+                wetland: {
+                    name: "Wetland",
+                    x: center.x + 100,
+                    y: center.y - 20,
+                    width: 150,
+                    id: "wetland-landusetype",
+                    url: "images/toolbar_icons_bitmaps/Icon_Wetland.png",
+                    val: 14
+                },
+                mfnv: {
+                    name: "Mixed Fruits & Vegetables",
+                    x: center.x - 25,
+                    y: center.y - 115,
+                    width: 150,
+                    id: "fruitveggie-landusetype",
+                    url: "images/toolbar_icons_bitmaps/Icon_Mixed_Fruits_and_Vegetables.png",
                     val: 15
-                }//*/
+                }
             };
 
         for (var key in features) {
