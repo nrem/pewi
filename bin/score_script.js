@@ -1,6 +1,6 @@
 var dataset = {
     carbon:{    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0, weight: 15,units_english:'tons',to_english_factor:0.0011,units_metric:'Mg',to_metric_factor:0.001},
-    biodiversity:{    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0, weight: 13,units_english:'tons',to_english_factor:1,units_metric:'pts',to_metric_factor:1},
+    biodiversity:{    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0, weight: 13,units_english:'pts',to_english_factor:1,units_metric:'pts',to_metric_factor:1},
     game:{    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0, weight: 14,units_english:'pts',to_english_factor:1,units_metric:'pts',to_metric_factor:1},
     erosion:{    Metric: 'Erosion Control', resultsLabel: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0, weight: 9,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
     nitrate:{    Metric: 'Nitrate Pollution Control', resultsLabel: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0, weight: 12,units_english:'ppm',to_english_factor:1,units_metric:'mg/L',to_metric_factor:1},
