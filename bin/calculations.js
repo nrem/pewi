@@ -1318,7 +1318,7 @@ var Erosion = function () {
 
     // Sediment Delivery to Stream
     function getSedimentDeliveryToStream(i) {
-        return (((rusle(i, global.data.precipitation[year], false) + ephemeralGullyErosion(i, false)) * sedimentDeliveryToStreamRatio(i) * bufferFactor(i, false)) * datapointarea[i]);
+        return (((rusle(i, global.data.precipitation[year], false) + ephemeralGullyErosion(i, false)) * sedimentDeliveryRatio(i) * bufferFactor(i, false)) * datapointarea[i]);
     }
 
     function getGrossErosionSeverity(i, erosion) {
@@ -1372,19 +1372,19 @@ var Erosion = function () {
     }
 
     function getSedimentDeliveryToStreamMin(i) {
-        return (((rusle(i, 24.58, 9) + ephemeralGullyErosion(i, 9)) * sedimentDeliveryToStreamRatio(i) * bufferFactor(i, 9)) * datapointarea[i]);
+        return (((rusle(i, 24.58, 9) + ephemeralGullyErosion(i, 9)) * sedimentDeliveryRatio(i) * bufferFactor(i, 9)) * datapointarea[i]);
     }
 
     function getSedimentDeliveryToStreamMax(i) {
-        return (((rusle(i, 45.10, 3) + ephemeralGullyErosion(i, 3)) * sedimentDeliveryToStreamRatio(i) * bufferFactor(i, 3)) * datapointarea[i]);
+        return (((rusle(i, 45.10, 3) + ephemeralGullyErosion(i, 3)) * sedimentDeliveryRatio(i) * bufferFactor(i, 3)) * datapointarea[i]);
     }
 
     function erosionComponent(i, point, precip_override) {
 		    if(precip_override !== undefined) {
-          return (rusle(i, precip_override, point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryToStreamRatio(i) * bufferFactor(i, point) * enrichmentFactor(i, point) * soilTestPErosionFactor(i);
+          return (rusle(i, precip_override, point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryRatio(i) * bufferFactor(i, point) * enrichmentFactor(i, point) * soilTestPErosionFactor(i);
 		    }
         else {
-          return (rusle(i, global.data.precipitation[year], point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryToStreamRatio(i) * bufferFactor(i, point) * enrichmentFactor(i) * soilTestPErosionFactor(i);
+          return (rusle(i, global.data.precipitation[year], point) + ephemeralGullyErosion(i, point)) * sedimentDeliveryRatio(i) * bufferFactor(i, point) * enrichmentFactor(i) * soilTestPErosionFactor(i);
   	    }
     }
 
@@ -1663,7 +1663,7 @@ var Erosion = function () {
         else return 0;
     }
 
-    function sedimentDeliveryToStreamRatio(i) {
+    function sedimentDeliveryRatio(i) {
         if (soiltype[i] == 'A' || soiltype[i] == 'B' || soiltype[i] == 'C' || soiltype[i] == 'L' || soiltype[i] == 'N' || soiltype[i] == 'O') return (Math.pow(10, (log10(4 / 6) * log10(watershedArea) + (log10(4) - (4 * log10(4 / 6)))))) / 100;
         else if (soiltype[i] == 'D' || soiltype[i] == 'G' || soiltype[i] == 'K' || soiltype[i] == 'M' || soiltype[i] == 'Q' || soiltype[i] == 'T' || soiltype[i] == 'Y') return (Math.pow(10, (log10(26 / 35) * log10(watershedArea) + (log10(26) - (4 * log10(26 / 35)))))) / 100;
     }
