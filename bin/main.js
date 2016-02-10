@@ -144,7 +144,7 @@ var global = [
                     var scale = Math.round(Math.min(SCREEN.height, SCREEN.width) / 36 / 2 - 1);
                     var options = {
                         parent: "#divcontainer",
-                        landcover: global.data[global.year].baseLandUseType.data,
+                        landUseType: global.data[global.year].baseLandUseType.data,
                         y: global.data[global.year].row.data,
                         x: global.data[global.year].column.data,
                         width: 23 * 3 * scale + 3 * scale,
@@ -165,11 +165,11 @@ var global = [
                             if (global.data[i] !== 0) {
                                 options.year = i;
                                 for (var j = 0; j < global.data[i].baseLandUseType.data.length; j++) {
-                                    updateDataPoint(j, { landcover: global.data[i].baseLandUseType.data[j], year: i });
+                                    updateDataPoint(j, { landUseType: global.data[i].baseLandUseType.data[j], year: i });
 
                                     if (i == 1) {
 //										setWatershedArea(j);
-                                        options.landcover = global.data[i].baseLandUseType.data[j];
+                                        options.landUseType = global.data[i].baseLandUseType.data[j];
                                         options.location = j;
                                         y = global.data[i].row.data;
                                         x = global.data[i].column.data;
@@ -263,7 +263,7 @@ var global = [
                     copyBackgroundImage($("body"));
 //                    updateTable(global.data[global.year].baseLandUseType, $("#watershed td"));
                     var options = {
-                        landcover: global.data[global.year].baseLandUseType.data,
+                        landUseType: global.data[global.year].baseLandUseType.data,
                         year: global.year
                     };
                     global.maps.switchYear(options);
@@ -1012,7 +1012,7 @@ var global = [
                             //                        data[i] = r;
 
                             var options = {
-                                landcover: r,
+                                landUseType: r,
                                 location: i,
                                 singleLandUseType: true,
                                 year: global.year
