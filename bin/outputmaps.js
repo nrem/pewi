@@ -606,18 +606,18 @@ var Maps = function () {
 
         var w = options.rectWidth, h = options.rectHeight;
         initCalcs();
-        for (var i = 0; i < options.landcover.length; i++) {
-            if (options.landcover[i] != undefined) {
+        for (var i = 0; i < options.landUseType.length; i++) {
+            if (options.landUseType[i] != undefined) {
 				setWatershedArea(i);
                 setStrategicWetland(i);
                 setStreamNetworkArea(i);
-                changeBaseLandUseTypeDataPoint(options.landcover[i], i, true, options.year);
-                //setLandUseTypeArea(options.landcover[i]);
+                changeBaseLandUseTypeDataPoint(options.landUseType[i], i, true, options.year);
+                //setLandUseTypeArea(options.landUseType[i]);
                 setSubwatershedArea(i, true);
                 setSoiltypeFactors(i);
                 setTopographyFactors(i);
                 var rect;
-                if (options.landcover[i] != 0) {
+                if (options.landUseType[i] != 0) {
                     var g = svg.append("g");
 
                     g.append("svg:defs")
@@ -630,7 +630,7 @@ var Maps = function () {
                         .attr("y", options.y[i] * h)
                         .append("svg:image")
                         .attr("id", "image" + i)
-                        .attr("xlink:href", "images/cell_images_bitmaps/" + this.setIcon(options.landcover[i]))
+                        .attr("xlink:href", "images/cell_images_bitmaps/" + this.setIcon(options.landUseType[i]))
                         .attr("width", w)
                         .attr("height", h);
 
@@ -643,7 +643,7 @@ var Maps = function () {
                         .attr("height", h)
                         .style("fill", "url(#pattern" + i + ")")
                         .attr("landcover", function () {
-                            return landUseTypes[options.landcover[i]];
+                            return landUseTypes[options.landUseType[i]];
                         })
                         .attr("row", Math.ceil((i + 1) / 23))
                         .attr("col", 1 + i % 23)
@@ -657,9 +657,9 @@ var Maps = function () {
                         .attr("y", options.y[i] * h - options.rectHeight)
                         .attr("width", w)
                         .attr("height", h)
-                        .style("fill", colorsForLandUseTypeGrid[options.landcover[i]])
+                        .style("fill", colorsForLandUseTypeGrid[options.landUseType[i]])
                         .attr("landcover", function () {
-                            return landUseTypes[options.landcover[i]];
+                            return landUseTypes[options.landUseType[i]];
                         })
                         .attr("row", Math.ceil((i + 1) / 23))
                         .attr("col", 1 + i % 23)
@@ -702,13 +702,13 @@ var Maps = function () {
         $("#watershed1 #0").dblclick(function () {
 			var undoData = [];
             options.singleLandUseType = 1;
-            for (var i = 0; i < options.landcover.length; i++) {
-                if (options.landcover[i] != undefined && global.selectedPaint !== options.landcover[i]) {
-					undoData.push({location: i, previous: options.landcover[i]});
+            for (var i = 0; i < options.landUseType.length; i++) {
+                if (options.landUseType[i] != undefined && global.selectedPaint !== options.landUseType[i]) {
+					undoData.push({location: i, previous: options.landUseType[i]});
 
                     changeBaseLandUseTypeDataPoint(global.selectedPaint, i, false, global.year);
 
-                    if (options.landcover[i] != 0) {
+                    if (options.landUseType[i] != 0) {
                         watershed.changeWatershedRectImage(i, global.selectedPaint);
                     }
                 }
@@ -750,53 +750,53 @@ var Maps = function () {
     this.updateWatershed = function (options) {
         if (options.singleLandUseType == undefined) {
 			// watershedArea[options.year] = 0;
-            for (var i = 0; i < options.landcover.length; i++) {
-                if (options.landcover[i] != undefined) {
-                    changeBaseLandUseTypeDataPoint(options.landcover[i], i, false, options.year);
+            for (var i = 0; i < options.landUseType.length; i++) {
+                if (options.landUseType[i] != undefined) {
+                    changeBaseLandUseTypeDataPoint(options.landUseType[i], i, false, options.year);
 
-                    if (options.landcover[i] != 0) {
-                        this.changeWatershedRectImage(i, options.landcover[i]);
+                    if (options.landUseType[i] != 0) {
+                        this.changeWatershedRectImage(i, options.landUseType[i]);
                     }
                 }
             }
         } else if(options.singleLandUseType) {
-            if(options.landcover == undefined) return;
+            if(options.landUseType == undefined) return;
             if(options.location == undefined) return;
 //            setStrategicWetland(options.location);
 //            setStreamNetworkArea(options.location);
-            changeBaseLandUseTypeDataPoint(options.landcover, options.location, false, options.year);
+            changeBaseLandUseTypeDataPoint(options.landUseType, options.location, false, options.year);
 //            setSoiltypeFactors(options.location);
 //            setTopographyFactors(options.location);
 
-            this.changeWatershedRectImage(options.location, options.landcover);
+            this.changeWatershedRectImage(options.location, options.landUseType);
         }
     }
 
     this.switchYear = function (options) {
         console.log("switching year");
-        for(var i=0; i<options.landcover.length; i++) {
-            if (options.landcover[i] != 0) {
-                this.changeWatershedRectImage(i, options.landcover[i]);
+        for(var i=0; i<options.landUseType.length; i++) {
+            if (options.landUseType[i] != 0) {
+                this.changeWatershedRectImage(i, options.landUseType[i]);
             }
         }
     }
 
-    this.changeWatershedRectImage = function(location, landcover) {
-        $("#image" + location).attr("href", "images/cell_images_bitmaps/" + getIcon(landcover));
-        $("#watershed1 #" + location).attr("landcover", landUseTypes[landcover]);
+    this.changeWatershedRectImage = function(location, landUseType) {
+        $("#image" + location).attr("href", "images/cell_images_bitmaps/" + getIcon(landUseType));
+        $("#watershed1 #" + location).attr("landcover", landUseTypes[landUseType]);
     }
 
-    function getIcon(landcover) {
-        if (landcover > 5 && landcover < 9) {
+    function getIcon(landUseType) {
+        if (landUseType > 5 && landUseType < 9) {
             var r = Math.floor(Math.random() * 2);
-            return picsForLandUseTypeGrid[landcover][r];
+            return picsForLandUseTypeGrid[landUseType][r];
         } else {
-            return picsForLandUseTypeGrid[landcover];
+            return picsForLandUseTypeGrid[landUseType];
         }
     }
 
-    this.setIcon = function (landcover) {
-        return getIcon(landcover);
+    this.setIcon = function (landUseType) {
+        return getIcon(landUseType);
     }
 
     this.minimap = function (options) {
