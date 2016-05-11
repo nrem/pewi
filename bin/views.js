@@ -7,7 +7,7 @@ var ModalView = function (options) {
 
     // Make sure to close all open displays
     closeAllRemovableDisplays();
-	
+
     this.width = (options.width !== undefined) ? options.width : $(window).width() / 2;
     this.height = (options.height !== undefined) ? options.height : $(window).height() / 1.1;
     this.title = (options.title !== undefined) ? options.title : "Default";
@@ -40,19 +40,19 @@ var ModalView = function (options) {
         centerize();
 //        $container.show("slide", {direction: "right"}, 500);
         $container.fadeIn();
-		
+
 	    $(".popup-window-close-button").bind(global.selectClickType, function () {
 	        $("#popup-container").remove();
 	        global.sm.consumeEvent("goto-mainevent");
 	    });
 //        $container.draggable({scroll: false});
     };
-	
+
 	this.teaser = function(options) {
 		// var width = (options.width !== undefined) ? options.width : '150px',
 			// height = (options.height !== undefined) ? options.width : '100px';
 		var message = (options.message !== undefined) ? options.message : 'Click Here for more information';
-		
+
 		$('#main').append('<div id="popup-container-teaser" class="popup-window removable-displays-container"></div>');
 		$container = $('#popup-container-teaser');
 		$container.append('<div id="popup-container-teaser-body" class="popup-window-teaser-body">' + message + '</div>');
@@ -74,32 +74,32 @@ var ModalView = function (options) {
 			global.sm.consumeEvent(global.sm.goto.POPUP);
 			thisview.display({title: options.title, description: options.description});
 		});
-		
+
    	 	$(".popup-window-close-button").bind(global.selectClickType, function () {
         	$("#popup-container-teaser").remove();
         	// global.sm.consumeEvent("goto-mainevent");
     	});
 	};
-	
+
     this.dispose = function () {
         $("#main").remove("#popup-container");
     }
-	
+
     this.append = function ($element) {
 		if($container !== undefined && $container.is(':visible')) {
 			$body.append($element);
 			centerize();
 		} else {
 			$addons = $addons + $element;
-		} 
+		}
     }
 
     this.remove = function ($element) {
         $element.remove();
     }
-	
+
 	function bindCloseButtonInteraction() {
-	    
+
 	}
 
     function centerize() {
@@ -122,25 +122,25 @@ var PrintView = function () {
         modal = new ModalView(options),
         HECTARES = 0.404686;
     modal.append('<div id="results-container"></div>');
-//    modal.append('<section class="output-map-container"><div><a>Nitrate Watershed Percent Contribution</a></div><div id="nitrate-output-map" class="output-map"><div id="watershed-percent-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Gross Erosion</a></div><div id="erosion-output-map" class="output-map"><div id="erosion-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Phosphorus Index Risk Assessment</a></div><div id="risk-assessment-output-map" class="output-map"><div id="risk-assessment-stat"><a></a></div></div></section>');
+//    modal.append('<section class="output-map-container"><div><a>Subwatershed Nitrate-N Percent Contribution</a></div><div id="nitrate-output-map" class="output-map"><div id="watershed-percent-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Gross Erosion</a></div><div id="erosion-output-map" class="output-map"><div id="erosion-stat"><a></a></div></div></section><section class="output-map-container"><div><a>Phosphorus Index Risk Assessment</a></div><div id="risk-assessment-output-map" class="output-map"><div id="risk-assessment-stat"><a></a></div></div></section>');
 //    modal.append('<section id="left-col"><section id=""><div id="precipitation-placeholder"></div></section><section id="landuse-outputs"></section><br /><div id="stats">Stats</div></section>');
-//    modal.append('<section id="right-col"><div id="landcover-values"><div id="percent-landcover"></div></div></section>');
+//    modal.append('<section id="right-col"><div id="landusetype-values"><div id="percent-landusetype"></div></div></section>');
     modal.display();
 
     ///////////////////////////////////////////////////
-    // Landcover Table ////////////////////////////////
+    // landusetype Table ////////////////////////////////
     ///////////////////////////////////////////////////
 
-    var tableLandcover = d3.select("#results-container")
+    var tableLandUseType = d3.select("#results-container")
         .append("table")
         .attr("class", "results-table hover");
-    var tableLandcoverHead = tableLandcover.append("thead");
+    var tableLandUseTypeHead = tableLandUseType.append("thead");
 
-//    var headLandcover = tableLandcover.append("th")
+//    var headlandusetype = tableLandUseType.append("th")
 //    .attr("class", "results-table-header");
 
     // Header
-    tableLandcoverHead.append("tr")
+    tableLandUseTypeHead.append("tr")
         .attr("class", "results-table-header-row")
         .append("th")
         .attr("class", "results-table-header-row-cell")
@@ -151,13 +151,13 @@ var PrintView = function () {
 //        .append("a").text("Display Options")
 //        .attr("class", "display-options-dropdown");
 
-    var measure = tableLandcoverHead.append("tr")
+    var measure = tableLandUseTypeHead.append("tr")
         .attr("class", "results-table-header-row");
     measure.append("th")
         .attr("class", "results-table-header-row-cell");
     headerMeasureCellFactory(measure, {1: "Percent", 2: "Area: English", 3: "Area: Metric"});
 
-    var titles = tableLandcoverHead.append("tr")
+    var titles = tableLandUseTypeHead.append("tr")
         .attr("class", "results-table-header-row border-bottom");
     headerTitleCellFactory(titles, {1: "Land-Use Category and Cover", 2: "Y1", 3: "Y2", 4: "Y3", 5: "Y1", 6: "Y2", 7: "Y3",8: "Units", 9: "Y1", 10: "Y2", 11: "Y3", 12: "Units"});
 
@@ -183,7 +183,7 @@ var PrintView = function () {
     // Defines the layout for the Land-User Category and Cover results table
     var layout = [
         {label:'Annual Grain'},
-        1, // Corresponds to the landcovers array index
+        1, // Corresponds to the landUseTypes array index
         2,
         {label:'Annual Legume'},
         3,
@@ -210,7 +210,7 @@ var PrintView = function () {
             landusedata.push(layout[i]);
         } else {
             var obj = {};
-            obj.label = landcovers[layout[i]];
+            obj.label = landUseTypes[layout[i]];
             obj.score1 = (global.landuse[1][layout[i]]) ? Math.round((100 * global.landuse[1][layout[i]] / watershedArea) * 10) / 10 : 0;
             obj.score2 = (global.landuse[2][layout[i]]) ? Math.round((100 * global.landuse[2][layout[i]] / watershedArea) * 10) / 10 : 0;
             obj.score3 = (global.landuse[3][layout[i]]) ? Math.round((100 * global.landuse[3][layout[i]] / watershedArea) * 10) / 10 : 0;
@@ -223,7 +223,7 @@ var PrintView = function () {
             landusedata.push(obj);
         }
     }
-    var rows = tableLandcover.append('tbody').selectAll('tr').data(landusedata).enter().append('tr').attr('id',function(d){return d.label}).attr("class", function(d,i){ return (parseInt(i) % 2 !== 0) ? "even" : "odd"});
+    var rows = tableLandUseType.append('tbody').selectAll('tr').data(landusedata).enter().append('tr').attr('id',function(d){return d.label}).attr("class", function(d,i){ return (parseInt(i) % 2 !== 0) ? "even" : "odd"});
     rows.append("td").each(function(d) {
         if(d.hasOwnProperty('score1')) {
             d3.select(this).style('padding-left','20px').append('span').text(d.label);
@@ -231,17 +231,17 @@ var PrintView = function () {
             d3.select(this).append('strong').text(d.label);
         }
     });
-    rows.append("td").attr("class", "results-cell landcover-percent-y1").append("a").text(function(d){return d.score1});
-    rows.append("td").attr("class", "results-cell landcover-percent-y2").append("a").text(function(d){return d.score2});
-    rows.append("td").attr("class", "results-cell landcover-percent-y3").append("a").text(function(d){return d.score3});
-    rows.append("td").attr("class", "results-cell landcover-acres-y1").append("a").text(function(d){return d.val1});
-    rows.append("td").attr("class", "results-cell landcover-acres-y2").append("a").text(function(d){return d.val2});
-    rows.append("td").attr("class", "results-cell landcover-acres-y3").append("a").text(function(d){return d.val3});
-    rows.append("td").attr("class", "results-cell landcover-acres-units").append("a").text(function(d){ return (d.hasOwnProperty('score1'))?'acres':''});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y1").append("a").text(function(d){return d.valcvt1});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y2").append("a").text(function(d){return d.valcvt2});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y3").append("a").text(function(d){return d.valcvt3});
-    rows.append("td").attr("class", "results-cell landcover-hectares-units").append("a").text(function(d){ return (d.hasOwnProperty('score1'))?'hectares':''});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y1").append("a").text(function(d){return d.score1});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y2").append("a").text(function(d){return d.score2});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y3").append("a").text(function(d){return d.score3});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y1").append("a").text(function(d){return d.val1});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y2").append("a").text(function(d){return d.val2});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y3").append("a").text(function(d){return d.val3});
+    rows.append("td").attr("class", "results-cell landusetype-acres-units").append("a").text(function(d){ return (d.hasOwnProperty('score1'))?'acres':''});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y1").append("a").text(function(d){return d.valcvt1});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y2").append("a").text(function(d){return d.valcvt2});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y3").append("a").text(function(d){return d.valcvt3});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-units").append("a").text(function(d){ return (d.hasOwnProperty('score1'))?'hectares':''});
 
     // Footer
 
@@ -280,12 +280,11 @@ var PrintView = function () {
         ecodata = [];
 
     var layout = [
-        {label:'Climate Adaptation and Mitigation'},
-        'carbon',
         {label:'Habitat'},
         'biodiversity',
         'game',
         {label:'Soil Quality'},
+        'carbon',
         'erosion',
         {label:'Water Quality'},
         'nitrate',
@@ -332,17 +331,17 @@ var PrintView = function () {
             d3.select(this).append('strong').text(d.label);
         }
     });
-    rows.append("td").attr("class", "results-cell landcover-percent-y1").append("a").text(function(d){return d.score1});
-    rows.append("td").attr("class", "results-cell landcover-percent-y2").append("a").text(function(d){return d.score2});
-    rows.append("td").attr("class", "results-cell landcover-percent-y3").append("a").text(function(d){return d.score3});
-    rows.append("td").attr("class", "results-cell landcover-acres-y1").append("a").text(function(d){return d.val1});
-    rows.append("td").attr("class", "results-cell landcover-acres-y2").append("a").text(function(d){return d.val2});
-    rows.append("td").attr("class", "results-cell landcover-acres-y3").append("a").text(function(d){return d.val3});
-    rows.append("td").attr("class", "results-cell landcover-acres-units condensed").append("a").text(function(d){ return (d.english)?" " + d.english:''});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y1").append("a").text(function(d){return d.valcvt1});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y2").append("a").text(function(d){return d.valcvt2});
-    rows.append("td").attr("class", "results-cell landcover-hectares-y3").append("a").text(function(d){return d.valcvt3});
-    rows.append("td").attr("class", "results-cell landcover-hectares-units condensed").append("a").text(function(d){ return (d.english)?" " + d.metric:''});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y1").append("a").text(function(d){return d.score1});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y2").append("a").text(function(d){return d.score2});
+    rows.append("td").attr("class", "results-cell landusetype-percent-y3").append("a").text(function(d){return d.score3});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y1").append("a").text(function(d){return d.val1});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y2").append("a").text(function(d){return d.val2});
+    rows.append("td").attr("class", "results-cell landusetype-acres-y3").append("a").text(function(d){return d.val3});
+    rows.append("td").attr("class", "results-cell landusetype-acres-units condensed").append("a").text(function(d){ return (d.english)?" " + d.english:''});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y1").append("a").text(function(d){return d.valcvt1});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y2").append("a").text(function(d){return d.valcvt2});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-y3").append("a").text(function(d){return d.valcvt3});
+    rows.append("td").attr("class", "results-cell landusetype-hectares-units condensed").append("a").text(function(d){ return (d.english)?" " + d.metric:''});
     // Body
     for (var key in ecodata) {
         var o = ecodata[key];
@@ -433,7 +432,7 @@ var PrintView = function () {
     var nitrateRow = indicatorTable.append("tr")
         .attr("class", "odd");
 
-    nitrateRow.append("td").append("a").text("Nitrate Watershed Percent Contribution");
+    nitrateRow.append("td").append("a").text("Subwatershed Nitrate-N Percent Contribution");
     nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-1");
     nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-2");
     nitrateRow.append("td").attr("colspan", 3).append("div").attr("id", "nitrate-output-map-3");

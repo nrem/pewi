@@ -1,4 +1,4 @@
-var landCoverArea,
+var landUseTypeArea,
     watershedArea,
     streamArea,
     strategicArea,
@@ -8,7 +8,7 @@ var landCoverArea,
     permeabilityCode;
 
 function initCalcs() {
-    landCoverArea = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    landUseTypeArea = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     watershedArea = 0, streamArea = 0, strategicArea = 0;
     area = 1;
     subwatershedArea = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -56,7 +56,7 @@ function setSoiltypeFactors(i) {
             permeabilityCode[i] = 50;
             break;
         case "G":
-            subsoilGroup[i] = 1;
+            subsoilGroup[i] = 3;
             permeabilityCode[i] = 80;
             break;
         case "K":
@@ -119,17 +119,17 @@ function setTopographyFactors(i) {
 
 /**
  *
- * @param value - landcover type
- * @param i - index that the landcover occurs
+ * @param value - landUseType type
+ * @param i - index that the landUseType occurs
  * @param firstpass - true if we are building the watershed from scratch, false if we are updating already existing data points
  */
-function changeBaselandcoverDataPoint(value, i, firstpass, year) {
-    if (global.data[year].baselandcover.data[i] !== 0 && !firstpass) {
-        setLandCoverArea(value, i, year, global.data[year].baselandcover.data[i]);
+function changeBaseLandUseTypeDataPoint(value, i, firstpass, year) {
+    if (global.data[year].baseLandUseType.data[i] !== 0 && !firstpass) {
+        setLandUseTypeArea(value, i, year, global.data[year].baseLandUseType.data[i]);
     } else {
-        setLandCoverArea(value, i, year);
+        setLandUseTypeArea(value, i, year);
     }
-    global.data[year].baselandcover.data[i] = value;
+    global.data[year].baseLandUseType.data[i] = value;
     if(!global.update[year]) {
         flagUpdateToTrue(year);
 		if(year + 1 < 4 && global.data[year + 1] !== 0) {
@@ -143,17 +143,17 @@ function changeBaselandcoverDataPoint(value, i, firstpass, year) {
 
 /**
  *
- * @param newIdx - the old landcover type
- * @param oldIdx - the new landcover type
+ * @param newIdx - the old landUseType type
+ * @param oldIdx - the new landUseType type
  */
-function setLandCoverArea(newIdx, i, year, oldIdx) {
+function setLandUseTypeArea(newIdx, i, year, oldIdx) {
     var dataPointArea = global.data[year].area.data[i];
-    landCoverArea[newIdx] += dataPointArea;
+    landUseTypeArea[newIdx] += dataPointArea;
     if(!global.landuse[year][newIdx]) global.landuse[year][newIdx] = 0;
     global.landuse[year][newIdx] += dataPointArea;
     if (oldIdx) {
-        // We need to subtract this area from it's respective landcover
-        landCoverArea[oldIdx] -= dataPointArea;
+        // We need to subtract this area from it's respective landUseType
+        landUseTypeArea[oldIdx] -= dataPointArea;
         if(!global.landuse[year][oldIdx]) global.landuse[year][newIdx] = 0;
         global.landuse[year][oldIdx] -= dataPointArea;
     } else {
@@ -168,7 +168,7 @@ function setLandCoverArea(newIdx, i, year, oldIdx) {
  * @returns {{}}
  */
 function copy(obj) {
-//    console.log(obj.baselandcover.data[0]);
+//    console.log(obj.baseLandUseType.data[0]);
     var returnObj = {};
     for (var property in obj) {
 //        console.log(property);
@@ -252,21 +252,21 @@ function log10(x) {
  *
  * @param year
  */
-function resetLandCoverValuesAreasFor(year) {
-    global.landcovers[year][landcovers[1]].area = 0;
-    global.landcovers[year][landcovers[2]].area = 0;
-    global.landcovers[year][landcovers[3]].area = 0;
-    global.landcovers[year][landcovers[4]].area = 0;
-    global.landcovers[year][landcovers[5]].area = 0;
-    global.landcovers[year][landcovers[8]].area = 0;
-    global.landcovers[year][landcovers[11]].area = 0;
-    global.landcovers[year][landcovers[10]].area = 0;
-    global.landcovers[year][landcovers[6]].area = 0;
-    global.landcovers[year][landcovers[7]].area = 0;
-    global.landcovers[year][landcovers[12]].area = 0;
-    global.landcovers[year][landcovers[13]].area = 0;
-    global.landcovers[year][landcovers[14]].area = 0;
-    global.landcovers[year][landcovers[15]].area = 0;
+function resetLandUseTypeValuesAreasFor(year) {
+    global.landUseTypes[year][landUseTypes[1]].area = 0;
+    global.landUseTypes[year][landUseTypes[2]].area = 0;
+    global.landUseTypes[year][landUseTypes[3]].area = 0;
+    global.landUseTypes[year][landUseTypes[4]].area = 0;
+    global.landUseTypes[year][landUseTypes[5]].area = 0;
+    global.landUseTypes[year][landUseTypes[8]].area = 0;
+    global.landUseTypes[year][landUseTypes[11]].area = 0;
+    global.landUseTypes[year][landUseTypes[10]].area = 0;
+    global.landUseTypes[year][landUseTypes[6]].area = 0;
+    global.landUseTypes[year][landUseTypes[7]].area = 0;
+    global.landUseTypes[year][landUseTypes[12]].area = 0;
+    global.landUseTypes[year][landUseTypes[13]].area = 0;
+    global.landUseTypes[year][landUseTypes[14]].area = 0;
+    global.landUseTypes[year][landUseTypes[15]].area = 0;
 }
 
 function closeAllRemovableDisplays() {
@@ -286,8 +286,8 @@ function undoLastDatasetChanges() {
     var lastaction = global.undo[global.year].pop();
     for(var i = 0; i<lastaction.length; i++) {
         var opts = {
-            singlelandcover: true,
-            landcover: lastaction[i].previous,
+            singleLandUseType: true,
+            landUseType: lastaction[i].previous,
             location: lastaction[i].location,
 			year: global.year
         };
@@ -298,7 +298,7 @@ function undoLastDatasetChanges() {
 function updateDataPoint(i, options) {
 	//setStrategicWetland(i);
 	//setStreamNetworkArea(i);
-    changeBaselandcoverDataPoint(options.landcover, i, true, options.year);
+    changeBaseLandUseTypeDataPoint(options.landUseType, i, true, options.year);
 	//setSubwatershedArea(i, false);
 	//setSoiltypeFactors(i);
 	//setTopographyFactors(i);
@@ -311,13 +311,13 @@ function reinitialize() {
 			if(dataset[index]['Value' + year] !== 0) dataset[index]['Value' + year] = 0;
 		}
 	}
-	
+
     global.landuse = {
         1: [],
         2: [],
         3: []
     };
-	
+
     global.watershedPercent = {
         1: [],
         2: [],
@@ -335,10 +335,10 @@ function reinitialize() {
         2: [],
         3: []
     };
-	
+
 	global.strategicWetland = {};
 
-    landCoverArea = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    landUseTypeArea = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 }
 
 function flagUpdateToTrue(year) {
