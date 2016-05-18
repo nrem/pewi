@@ -1726,16 +1726,16 @@ var Erosion = function () {
                 else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 85;
             } else if (topography[i] == 4 || topography[i] == 5) {
                 if (hydrogroup == 'A') return 61;
-                else if (hydrogroup == 'B') return 70;
-                else if (hydrogroup == 'C') return 77;
-                else if (hydrogroup == 'D') return 80;
+                else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 70;
+                else if (hydrogroup == 'C' && flowfactor == 0) return 77;
+                else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 80;
             }
         } else if (cover == 5) {
             if (topography[i] == 0 || topography[i] == 1 || topography[i] == 2 || topography[i] == 3) {
                 if (hydrogroup == 'A') return 58;
-                else if (hydrogroup == 'B') return 72;
-                else if (hydrogroup == 'C') return 81;
-                else if (hydrogroup == 'D' || hydrogroup == 'B/D') return 85;
+                else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 72;
+                else if (hydrogroup == 'C' && flowfactor == 0) return 81;
+                else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 85;
             } else if (topography[i] == 4 || topography[i] == 5) {
                 if (hydrogroup == 'A') return 55;
                 else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 69;
