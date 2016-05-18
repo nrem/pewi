@@ -886,7 +886,7 @@ var Biodiversity = function () {
 
     this.update = function (i) {
         if(year == 2) {
-            console.log(year);
+            //console.log(year);
         }
 
         setNativeVegetationArea(i);
@@ -1726,16 +1726,16 @@ var Erosion = function () {
                 else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 85;
             } else if (topography[i] == 4 || topography[i] == 5) {
                 if (hydrogroup == 'A') return 61;
-                else if (hydrogroup == 'B') return 70;
-                else if (hydrogroup == 'C') return 77;
-                else if (hydrogroup == 'D') return 80;
+                else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 70;
+                else if (hydrogroup == 'C' && flowfactor == 0) return 77;
+                else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 80;
             }
         } else if (cover == 5) {
             if (topography[i] == 0 || topography[i] == 1 || topography[i] == 2 || topography[i] == 3) {
                 if (hydrogroup == 'A') return 58;
-                else if (hydrogroup == 'B') return 72;
-                else if (hydrogroup == 'C') return 81;
-                else if (hydrogroup == 'D' || hydrogroup == 'B/D') return 85;
+                else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 72;
+                else if (hydrogroup == 'C' && flowfactor == 0) return 81;
+                else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 85;
             } else if (topography[i] == 4 || topography[i] == 5) {
                 if (hydrogroup == 'A') return 55;
                 else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 69;
@@ -1965,14 +1965,12 @@ var Erosion = function () {
     }
 
     function getFlowFactor(i) {
-        if (topoSlopeRangeHigh[i] <= 5 && drainageclass[i] >= 60) {
-            if (subsoilGroup[i] == 1 || subsoilGroup[i] == 2) {
-                return 0.1;
-            } else if (permeabilityCode[i] <= 35 || permeabilityCode == 58 || permeabilityCode[i] == 72 || permeabilityCode[i] == 75) {
-                return 0.1;
-            }
+        if(topoSlopeRangeHigh[i] <= 5 && drainageclass[i] >= 60 && (subsoilGroup[i] == 1 || subsoilGroup[i] == 2)){
+          return 0.1;
+        } else if (permeabilityCode[i] <= 35 || permeabilityCode[i] == 58 || permeabilityCode[i] == 72 || permeabilityCode[i] == 75) {
+          return 0.1;
         } else {
-            return 0;
+          return 0;
         }
     } // For every land cover point
 
