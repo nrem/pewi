@@ -886,7 +886,7 @@ var Biodiversity = function () {
 
     this.update = function (i) {
         if(year == 2) {
-            console.log(year);
+            //console.log(year);
         }
 
         setNativeVegetationArea(i);
@@ -1965,14 +1965,12 @@ var Erosion = function () {
     }
 
     function getFlowFactor(i) {
-        if (topoSlopeRangeHigh[i] <= 5 && drainageclass[i] >= 60) {
-            if (subsoilGroup[i] == 1 || subsoilGroup[i] == 2) {
-                return 0.1;
-            } else if (permeabilityCode[i] <= 35 || permeabilityCode == 58 || permeabilityCode[i] == 72 || permeabilityCode[i] == 75) {
-                return 0.1;
-            }
+        if(topoSlopeRangeHigh[i] <= 5 && drainageclass[i] >= 60 && (subsoilGroup[i] == 1 || subsoilGroup[i] == 2)){
+          return 0.1;
+        } else if (permeabilityCode[i] <= 35 || permeabilityCode[i] == 58 || permeabilityCode[i] == 72 || permeabilityCode[i] == 75) {
+          return 0.1;
         } else {
-            return 0;
+          return 0;
         }
     } // For every land cover point
 
