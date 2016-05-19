@@ -1956,7 +1956,14 @@ var Erosion = function () {
     } // For every land cover point
 
     function getSeasonalUtilizationRate(i, cover) {
-        return (cover == 6 || cover == 7) ? 0.35 : 0;
+        switch(cover) {
+          case 6:
+            return 0.35;
+          case 7:
+            return 0.55;
+          default:
+            break;
+        }
     }
 
     function getCattleAverageDailyIntake() {
