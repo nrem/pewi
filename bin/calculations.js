@@ -1111,8 +1111,8 @@ var Biodiversity = function () {
     }
 
     function setGameIndex() {
-        dataset['game']['Year' + year] = 10 * (pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamGindex);
-        dataset['game']['Value' + year] = pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamGindex;
+        dataset['game']['Year' + year] = 10 * (pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamNindex);
+        dataset['game']['Value' + year] = pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamNindex;
     }
 
     function setNativeVegetationArea(i) {
