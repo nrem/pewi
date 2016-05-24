@@ -999,13 +999,13 @@ var Biodiversity = function () {
         }
 
         // High Diversity Biodiversity Points
-        if (otherHighDiversityPercent >= 100) {
+        if (nativeVegetationPercent + otherHighDiversityPercent >= 100) {
             nonNativePNindex = 1.5;
         }
-        else if (otherHighDiversityPercent >= 50) {
+        else if (nativeVegetationPercent + otherHighDiversityPercent >= 50) {
           nonNativePNindex = 1;
         }
-        else if (otherHighDiversityPercent >= 10) {
+        else if (nativeVegetationPercent + otherHighDiversityPercent >= 10) {
           nonNativePNindex = 0.5;
         }
         else {
