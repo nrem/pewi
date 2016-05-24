@@ -1043,16 +1043,16 @@ var Biodiversity = function () {
         // Wetland Points Native Index
         if (wetlandPercent >= 5) {
           if (strategicWetlandPercent >= 0 && strategicWetlandPercent < 50) {
-            wetlandGindex = 0;
+            wetlandNindex = 0;
           }
           else if (strategicWetlandPercent >= 50 && strategicWetlandPercent < 75) {
-            wetlandGindex = 0.5;
+            wetlandNindex = 0.5;
           }
           else if (strategicWetlandPercent >= 75 && strategicWetlandPercent < 100) {
-            wetlandGindex = 1;
+            wetlandNindex = 1;
           }
           else if (strategicWetlandPercent == 100) {
-            wetlandGindex = 1.5;
+            wetlandNindex = 1.5;
           }
         }
 
