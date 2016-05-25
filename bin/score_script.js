@@ -14,14 +14,14 @@ var dataset = {
     mixed:{    Metric: 'Mixed Fruits and Vegetables', Year1: 0, Year2: 0, Year3: 0, weight: 5,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.907185},
     woody:{    Metric: 'Short-rotation Woody Biomass', Year1: 0, Year2: 0, Year3: 0, weight: 6,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.907185},//check
     soybean:{    Metric: 'Soybeans', Year1: 0, Year2: 0, Year3: 0, weight: 7,units_english:'bu',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.0272},
-    timber:{    Metric: 'Wood', Year1: 0, Year2: 0, Year3: 0, weight: 8,units_english:'board-ft',to_english_factor:1,units_metric:'m^3',to_metric_factor:0.0024}
+    timber:{    Metric: 'Wood', Year1: 0, Year2: 0, Year3: 0, weight: 8,units_english:'board-ft',to_english_factor:1,units_metric:'m^3',to_metric_factor:0.00235974}
 };
 
 var units = {
     english: ["bu", "bu", "tons", "tons", "board-ft", "animals", "tons", "ppm", "tons", "tons", "pts", "pts", "tons", "tons", "tons", "tons"],
     dict_to_english_factor: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0.0011, 1, 1, 1, 1, 1, 1],
     metric: ["Mg", "Mg", "Mg", "Mg", "m^3", "animals", "Mg", "mg/L", "Mg", "Mg", "pts", "pts", "Mg", "Mg", "Mg", "Mg"],
-    english_to_metric_factor: [0.0254, 0.0272, 0.907185, 0.907185, 0.0024, 1, 0.907185, 1, 0.907185, 0.001, 1, 1, 0.907185, 0.907185, 0.907185, 0.907185]
+    english_to_metric_factor: [0.0254, 0.0272, 0.907185, 0.907185, 0.00235974, 1, 0.907185, 1, 0.907185, 0.001, 1, 1, 0.907185, 0.907185, 0.907185, 0.907185]
 };
 
 var Plot = function () {
