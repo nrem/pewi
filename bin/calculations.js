@@ -664,7 +664,7 @@ var Nitrates = function () {
     };
 
     function setRowCropMultiplier(i) {
-        if ((landUseType[i] > 0 && landUseType[i] < 6) || landUseType[i] == 15) {
+        if ((landUseType[i] > 0 && landUseType[i] < 5) || landUseType[i] == 15) {
             return dataPointArea[i];
         } else {
             return 0;
