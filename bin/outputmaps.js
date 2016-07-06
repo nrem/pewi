@@ -942,7 +942,7 @@ var Maps = function () {
                     colors = colorbrewer.BrBG[8];
                 for (var i = 0; i < drainage.length; i++) {
                     if (drainage[i] != undefined && !isNaN(drainage[i])) {
-                        appendRectHelper(drainage[i] / 10, colors);
+                        appendRectHelper(Math.floor(drainage[i] / 10), colors);
                     }
                 }
                 buildKey("DRAINAGE_CLASS", ["#8c510a", "#01665e"], keyTypes.HORN);
