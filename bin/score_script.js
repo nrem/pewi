@@ -2,26 +2,26 @@ var dataset = {
     carbon:{    Metric: 'Carbon Sequestration', Year1: 0, Year2: 0, Year3: 0, weight: 15,units_english:'tons',to_english_factor:0.0011,units_metric:'Mg',to_metric_factor:0.001},
     biodiversity:{    Metric: 'Biodiversity', Year1: 0, Year2: 0, Year3: 0, weight: 13,units_english:'pts',to_english_factor:1,units_metric:'pts',to_metric_factor:1},
     game:{    Metric: 'Game Wildlife', Year1: 0, Year2: 0, Year3: 0, weight: 14,units_english:'pts',to_english_factor:1,units_metric:'pts',to_metric_factor:1},
-    erosion:{    Metric: 'Erosion Control', resultsLabel: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0, weight: 9,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
+    erosion:{    Metric: 'Erosion Control', resultsLabel: 'Erosion Control / Gross Erosion', Year1: 0, Year2: 0, Year3: 0, weight: 9,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.90718474},//check
     nitrate:{    Metric: 'Nitrate Pollution Control', resultsLabel: 'Nitrate Pollution Control / In-stream Concentration', Year1: 0, Year2: 0, Year3: 0, weight: 12,units_english:'ppm',to_english_factor:1,units_metric:'mg/L',to_metric_factor:1},
-    phosphorus:{    Metric: 'Phosphorus Pollution Control', resultsLabel: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0, weight: 10,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
-    sediment:{    Metric: 'Sediment Control', resultsLabel: 'Sediment Control / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0, weight: 11,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
-    alfalfa:{    Metric: 'Alfalfa Hay', Year1: 0, Year2: 0, Year3: 0, weight: 0,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},
+    phosphorus:{    Metric: 'Phosphorus Pollution Control', resultsLabel: 'Phosphorus Pollution Control / In-stream Loading', Year1: 0, Year2: 0, Year3: 0, weight: 10,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.90718474},//check
+    sediment:{    Metric: 'Sediment Control', resultsLabel: 'Sediment Control / In-stream Delivery', Year1: 0, Year2: 0, Year3: 0, weight: 11,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.90718474},//check
+    alfalfa:{    Metric: 'Alfalfa Hay', Year1: 0, Year2: 0, Year3: 0, weight: 0,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.90718474},
     cattle:{    Metric: 'Cattle', Year1: 0, Year2: 0, Year3: 0, weight: 1,units_english:'animals',to_english_factor:1,units_metric:'animals',to_metric_factor:1},
     corn:{    Metric: 'Corn Grain', Year1: 0, Year2: 0, Year3: 0, weight: 2,units_english:'bu',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.0254},
-    hay:{    Metric: 'Grass Hay', Year1: 0, Year2: 0, Year3: 0, weight: 3,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},
-    herbaceous:{    Metric: 'Herbaceous Perennial Biomass', Year1: 0, Year2: 0, Year3: 0, weight: 4,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
-    mixed:{    Metric: 'Mixed Fruits and Vegetables', Year1: 0, Year2: 0, Year3: 0, weight: 5,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},
-    woody:{    Metric: 'Short-rotation Woody Biomass', Year1: 0, Year2: 0, Year3: 0, weight: 6,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.9072},//check
+    hay:{    Metric: 'Grass Hay', Year1: 0, Year2: 0, Year3: 0, weight: 3,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.90718474},
+    herbaceous:{    Metric: 'Herbaceous Perennial Biomass', Year1: 0, Year2: 0, Year3: 0, weight: 4,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.90718474},//check
+    mixed:{    Metric: 'Mixed Fruits and Vegetables', Year1: 0, Year2: 0, Year3: 0, weight: 5,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.90718474},
+    woody:{    Metric: 'Short-rotation Woody Biomass', Year1: 0, Year2: 0, Year3: 0, weight: 6,units_english:'tons',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.90718474},//check
     soybean:{    Metric: 'Soybeans', Year1: 0, Year2: 0, Year3: 0, weight: 7,units_english:'bu',to_english_factor:1,units_metric:'Mg',to_metric_factor:0.0272},
-    timber:{    Metric: 'Wood', Year1: 0, Year2: 0, Year3: 0, weight: 8,units_english:'board-ft',to_english_factor:1,units_metric:'m^3',to_metric_factor:0.0024}
+    timber:{    Metric: 'Wood', Year1: 0, Year2: 0, Year3: 0, weight: 8,units_english:'board-ft',to_english_factor:1,units_metric:'m^3',to_metric_factor:0.002359737}
 };
 
 var units = {
     english: ["bu", "bu", "tons", "tons", "board-ft", "animals", "tons", "ppm", "tons", "tons", "pts", "pts", "tons", "tons", "tons", "tons"],
     dict_to_english_factor: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0.0011, 1, 1, 1, 1, 1, 1],
     metric: ["Mg", "Mg", "Mg", "Mg", "m^3", "animals", "Mg", "mg/L", "Mg", "Mg", "pts", "pts", "Mg", "Mg", "Mg", "Mg"],
-    english_to_metric_factor: [0.0254, 0.0272, 0.9072, 0.9072, 0.0024, 1, 0.9072, 1, 0.9072, 0.001, 1, 1, 0.9072, 0.9072, 0.9072, 0.9072]
+    english_to_metric_factor: [0.0254, 0.0272, 0.90718474, 0.90718474, 0.002359737, 1, 0.90718474, 1, 0.90718474, 0.001, 1, 1, 0.90718474, 0.90718474, 0.90718474, 0.90718474]
 };
 
 var Plot = function () {

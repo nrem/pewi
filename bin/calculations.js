@@ -629,7 +629,7 @@ var Nitrates = function () {
 		year = global.year;
     for(var j=1; j<4; j++) {
         for (var i = 0; i < subwatershedArea.length; i++) {
-            var arr = {"row": 0,
+            var arr = {"rc": 0,
                 "wetland": 0,
                 "conservation": 0,
                 "precipitation": 0};
@@ -654,18 +654,24 @@ var Nitrates = function () {
         var f = subwatershedData[i];
         if (subwatershed[year][f] != null) {
 
-            subwatershed[year][f].row += setRowCropMultiplier(i);
+            subwatershed[year][f].rc += setRowCropTimesConservationMultiplier(i);
             subwatershed[year][f].wetland += setWetlandMultiplier(i);
-            subwatershed[year][f].conservation += setConservationMultiplier(i);
-//            console.log(setConservationMultiplier(i));
-//            console.log(subwatershed[year][f].conservation);
         }
         subwatershed[year][f].precipitation = setPrecipitationMultiplier(i);
     };
 
-    function setRowCropMultiplier(i) {
-        if ((landUseType[i] > 0 && landUseType[i] < 6) || landUseType[i] == 15) {
-            return dataPointArea[i];
+    //Combines setRowCropMultiplier(i) and setConservationMultiplier(i) functions
+    function setRowCropTimesConservationMultiplier(i) {
+        if ((landUseType[i] > 0 && landUseType[i] < 5) || landUseType[i] == 15) {
+          if (landUseType[i] == 2 || landUseType[i] == 4) {
+              if (soilType[i] == "A" || soilType[i] == "B" || soilType[i] == "C" || soilType[i] == "L" || soilType[i] == "N" || soilType[i] == "O") {
+                  return dataPointArea[i] * 0.69;
+              } else {
+                  return dataPointArea[i] * 0.62;
+              }
+          } else {
+              return dataPointArea[i];
+          }
         } else {
             return 0;
         }
@@ -677,18 +683,6 @@ var Nitrates = function () {
             return 1;
         } else {
             return 0;
-        }
-    }
-
-    function setConservationMultiplier(i) {
-        if (landUseType[i] == 2 || landUseType[i] == 4) {
-            if (soilType[i] == "A" || soilType[i] == "B" || soilType[i] == "C" || soilType[i] == "L" || soilType[i] == "N" || soilType[i] == "O") {
-                return dataPointArea[i] * 0.69;
-            } else {
-                return dataPointArea[i] * 0.62;
-            }
-        } else {
-            return dataPointArea[i];
         }
     }
 
@@ -738,12 +732,12 @@ var Nitrates = function () {
     this.calculate = function () {
         var sum = 0;
         for (var i = 0; i < subwatershedArea.length; i++) {
-            var row = 0, wet = 0, cons = 0, precip = 0;
+            var rc = 0, wet = 0, cons = 0, precip = 0;
             if (subwatershedArea[i] != null && subwatershed[year] != undefined && subwatershedArea[i] != 0) {
-                if (subwatershed[year][i].row != null) {
-                    row = 0.14 * (subwatershed[year][i].row / subwatershedArea[i]);
+                if (subwatershed[year][i].rc != null) {
+                    rc = 0.14 * (subwatershed[year][i].rc / subwatershedArea[i]);
                 } else {
-                    row = 0;
+                    rc = 0;
                 }
 
                 //Nitrate Wetland Multiplier
@@ -753,11 +747,6 @@ var Nitrates = function () {
                     wet = 1;
                 }
 
-                if (subwatershed[year][i].conservation != 0 && subwatershed[year][i].conservation != null) {
-                    cons = (subwatershed[year][i].conservation / subwatershedArea[i]);
-                } else {
-                    cons = 0;
-                }
 //                subwatershed[i].conservation = 0;
                 /*
                  if(subwatershed[i].precipitation != 0 && subwatershed[i].precipitation != null)
@@ -772,10 +761,10 @@ var Nitrates = function () {
             }
 
             //Nitrate-N Concentration Subwatershed
-            if ((100 * row * wet * cons * precip) < 2) {
+            if ((100 * rc * wet * precip) < 2) {
                 ppmSubwatershed[year][i] = 2;
             } else {
-                ppmSubwatershed[year][i] = 100 * row * wet * cons * precip;
+                ppmSubwatershed[year][i] = 100 * rc * wet * precip;
             }
 
 //            console.log(ppmSubwatershed[year][i]);
@@ -886,7 +875,7 @@ var Biodiversity = function () {
 
     this.update = function (i) {
         if(year == 2) {
-            console.log(year);
+            //console.log(year);
         }
 
         setNativeVegetationArea(i);
@@ -999,13 +988,13 @@ var Biodiversity = function () {
         }
 
         // High Diversity Biodiversity Points
-        if (otherHighDiversityPercent + otherHighDiversityPercent >= 100) {
+        if (nativeVegetationPercent + otherHighDiversityPercent >= 100) {
             nonNativePNindex = 1.5;
         }
-        else if (otherHighDiversityPercent + otherHighDiversityPercent >= 50) {
+        else if (nativeVegetationPercent + otherHighDiversityPercent >= 50) {
           nonNativePNindex = 1;
         }
-        else if (otherHighDiversityPercent + otherHighDiversityPercent >= 10) {
+        else if (nativeVegetationPercent + otherHighDiversityPercent >= 10) {
           nonNativePNindex = 0.5;
         }
         else {
@@ -1043,16 +1032,16 @@ var Biodiversity = function () {
         // Wetland Points Native Index
         if (wetlandPercent >= 5) {
           if (strategicWetlandPercent >= 0 && strategicWetlandPercent < 50) {
-            wetlandGindex = 0;
+            wetlandNindex = 0;
           }
           else if (strategicWetlandPercent >= 50 && strategicWetlandPercent < 75) {
-            wetlandGindex = 0.5;
+            wetlandNindex = 0.5;
           }
           else if (strategicWetlandPercent >= 75 && strategicWetlandPercent < 100) {
-            wetlandGindex = 1;
+            wetlandNindex = 1;
           }
           else if (strategicWetlandPercent == 100) {
-            wetlandGindex = 1.5;
+            wetlandNindex = 1.5;
           }
         }
 
@@ -1111,8 +1100,8 @@ var Biodiversity = function () {
     }
 
     function setGameIndex() {
-        dataset['game']['Year' + year] = 10 * (pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamGindex);
-        dataset['game']['Value' + year] = pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamGindex;
+        dataset['game']['Year' + year] = 10 * (pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamNindex);
+        dataset['game']['Value' + year] = pGindex + comparativelyHighDiversityOrLowInputindex + forestGindex + grasslandGindex + wetlandGindex + streamNindex;
     }
 
     function setNativeVegetationArea(i) {
@@ -1726,16 +1715,16 @@ var Erosion = function () {
                 else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 85;
             } else if (topography[i] == 4 || topography[i] == 5) {
                 if (hydrogroup == 'A') return 61;
-                else if (hydrogroup == 'B') return 70;
-                else if (hydrogroup == 'C') return 77;
-                else if (hydrogroup == 'D') return 80;
+                else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 70;
+                else if (hydrogroup == 'C' && flowfactor == 0) return 77;
+                else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 80;
             }
         } else if (cover == 5) {
             if (topography[i] == 0 || topography[i] == 1 || topography[i] == 2 || topography[i] == 3) {
                 if (hydrogroup == 'A') return 58;
-                else if (hydrogroup == 'B') return 72;
-                else if (hydrogroup == 'C') return 81;
-                else if (hydrogroup == 'D' || hydrogroup == 'B/D') return 85;
+                else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 72;
+                else if (hydrogroup == 'C' && flowfactor == 0) return 81;
+                else if ((hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor == 0) return 85;
             } else if (topography[i] == 4 || topography[i] == 5) {
                 if (hydrogroup == 'A') return 55;
                 else if (hydrogroup == 'B' || ((hydrogroup == 'C' || hydrogroup == 'D' || hydrogroup == 'B/D') && flowfactor > 0)) return 69;
@@ -1956,7 +1945,14 @@ var Erosion = function () {
     } // For every land cover point
 
     function getSeasonalUtilizationRate(i, cover) {
-        return (cover == 6 || cover == 7) ? 0.35 : 0;
+        switch(cover) {
+          case 6:
+            return 0.35;
+          case 7:
+            return 0.55;
+          default:
+            break;
+        }
     }
 
     function getCattleAverageDailyIntake() {
@@ -1965,14 +1961,12 @@ var Erosion = function () {
     }
 
     function getFlowFactor(i) {
-        if (topoSlopeRangeHigh[i] <= 5 && drainageclass[i] >= 60) {
-            if (subsoilGroup[i] == 1 || subsoilGroup[i] == 2) {
-                return 0.1;
-            } else if (permeabilityCode[i] <= 35 || permeabilityCode == 58 || permeabilityCode[i] == 72 || permeabilityCode[i] == 75) {
-                return 0.1;
-            }
+        if(topoSlopeRangeHigh[i] <= 5 && drainageclass[i] >= 60 && (subsoilGroup[i] == 1 || subsoilGroup[i] == 2)){
+          return 0.1;
+        } else if (permeabilityCode[i] <= 35 || permeabilityCode[i] == 58 || permeabilityCode[i] == 72 || permeabilityCode[i] == 75) {
+          return 0.1;
         } else {
-            return 0;
+          return 0;
         }
     } // For every land cover point
 

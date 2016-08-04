@@ -435,7 +435,7 @@ var global = [
                 global.hud = new HUDManager();
                 var $main = $('#main');
                 global.hud.addHUDItem($main, '<div class="menu-button-container" id="credits-container" title="About PEWI"><img src="images/icons/navigation/credits_button.svg" class="credits-button-img menu-item" alt="i"></div>', {visible: true});
-                global.hud.addHUDItem($main, '<section id="infobox-container"><div id="info"><a>PEWI</a><a id="version-tag">BETA</a></div></section>');
+                global.hud.addHUDItem($main, '<section id="infobox-container"><div id="info" style="margin-right:-25px; margin-top:-5px;"><a>PEWI</a></div></section>');
 
                 bindSquarePaintSelectionClick();
 
@@ -625,15 +625,11 @@ var global = [
                 title: "About PEWI"
             };
             global.popup = new ModalView(options);
-            global.popup.append('<p>People in Ecosystems/Watershed Integration (PEWI) is a simple learning tool designed to provide a scientific platform for teaching, discussing, and evaluating the trade-offs associated with agricultural land-use and management.</p>');
-            global.popup.append('<p><strong>Project Team</strong></p>');
-            global.popup.append('<p>Lisa Schulte Moore, Carrie Chennault, Ryan Frahm, Laura Roy, John Tyndall, & John VanDyk<br />Iowa State University, Department of Natural Resource Ecology & Management</p>');
-            global.popup.append('<p><strong>Acknowledgements</strong></p>');
-            global.popup.append('<p>The development of PEWI was supported by grants from the McKnight Foundation and US Forest Service Northern Research Station.  We would also like to thank Cindy Cambardella, Justin Choe, Diane Debinski, Emily Heaton, Matt Helmers, Tom Isenhart, Matt Liebman, John VanDyk, members of the ISU Landscape Ecology & Sustainable Ecosystem Management lab,  and the Natural Capital Project for contributions to PEWIs development and review.</p>');
-            global.popup.append('<p>For more information: <a href="http://www.nrem.iastate.edu/pewi" target="_newtab">Click Here</a></p>');
-            global.popup.append('<p>PEWI <a href="http://www.nrem.iastate.edu/pewi/search/site?f%5B0%5D=im_field_category%3A139" target="_newtab">Lesson Plans</a></p>');
-            global.popup.append('<p>PEWI <a href="http://www.nrem.iastate.edu/pewi/how-do-i-use-pewi" target="_newtab">User Guide</a></p>');
-            global.popup.append('<p>Want to contribute?</p><p>PEWI is open-source and can be contributed to at <a href="https://github.com/nrem/pewi" target="_blank">https://github.com/nrem/pewi</a>.</p>');
+            global.popup.append('<p>People in Ecosystems/Watershed Integration (PEWI) is a simple web-based educational game designed to provide a scientific platform for teaching, discussing, and evaluating the tradeoffs associated with agricultural land use and management. Players iteratively manipulate land use annually for three years in a virtual 6000 acre watershed to meet a variety of goals. The tool computes a variety of results, including agricultural yields, soil erosion, stream pollution, and wildlife habitat.</p>');
+            global.popup.append('<p>PEWI v2 is developed and maintained to be compatible with Google Chrome (versions 26+), Internet Explorer (versions 9+), and Mozilla Firefox (version 2+).</p>');
+            global.popup.append('<p>PEWI is a product of Iowa State University Department of Natural Resource Ecology and Management. The product license can be found here. Members of the PEWI v2 development team were Lisa Schulte Moore, Assata Caldwell, Carrie Chennault, Justin Choe, Ryan Frahm, Noah Hagen, Jake Hill, Charles Labuzzetta, Elise Miller, Laura Roy, Nancy Shryock, John Tyndall, Robert Valek, and John VanDyk.</p>');
+            global.popup.append('<p>PEWI v2 was funded through grants from the Iowa State University Department of Agronomy, McKnight Foundation, and USDA Forest Service.</p>');
+            global.popup.append('More information on PEWI, including information on tool development, learning exercises, additional acknowledgements, and how you can contribute can be found at the project website: <a href="http://www.nrem.iastate.edu/pewi>www.nrem.iastate.edu/pewi</a>. Questions can be sent to pewi@iastate.edu.'); 
             global.popup.display();
         });
 
@@ -1049,7 +1045,7 @@ var global = [
                             if (global.data.precipitation[year] == getPrecipitationValue(i)) {
                                 body += ' selected';
                             }
-                            body += '>' + getPrecipitationValue(i) + '</option>';
+                            body += '>' + ((getPrecipitationValue(i) == 45.1) ? "45.10" : getPrecipitationValue(i)) + '</option>';
                         }
                         body += '</select></div>';
                     }
@@ -1605,7 +1601,7 @@ function updateHud() {
 }
 
 function updatePrecipitationHud() {
-    $("#precipitation-hud a").text("Precipitation: " + getPrecipitationValuation(global.data.precipitation[global.year]));
+    $("#precipitation-hud a").text("Precipitation: " + getPrecipitationValuation(global.data.precipitation[global.year])  );
 }
 
 function updateYearHelperHud($selector) {
