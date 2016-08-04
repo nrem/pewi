@@ -435,7 +435,7 @@ var global = [
                 global.hud = new HUDManager();
                 var $main = $('#main');
                 global.hud.addHUDItem($main, '<div class="menu-button-container" id="credits-container" title="About PEWI"><img src="images/icons/navigation/credits_button.svg" class="credits-button-img menu-item" alt="i"></div>', {visible: true});
-                global.hud.addHUDItem($main, '<section id="infobox-container"><div id="info"><a>PEWI</a><a id="version-tag">BETA</a></div></section>');
+                global.hud.addHUDItem($main, '<section id="infobox-container"><div id="info" style="margin-right:-25px; margin-top:-5px;"><a>PEWI</a></div></section>');
 
                 bindSquarePaintSelectionClick();
 
@@ -1045,7 +1045,7 @@ var global = [
                             if (global.data.precipitation[year] == getPrecipitationValue(i)) {
                                 body += ' selected';
                             }
-                            body += '>' + getPrecipitationValue(i) + '</option>';
+                            body += '>' + ((getPrecipitationValue(i) == 45.1) ? "45.10" : getPrecipitationValue(i)) + '</option>';
                         }
                         body += '</select></div>';
                     }
@@ -1601,7 +1601,7 @@ function updateHud() {
 }
 
 function updatePrecipitationHud() {
-    $("#precipitation-hud a").text("Precipitation: " + getPrecipitationValuation(global.data.precipitation[global.year]));
+    $("#precipitation-hud a").text("Precipitation: " + getPrecipitationValuation(global.data.precipitation[global.year])  );
 }
 
 function updateYearHelperHud($selector) {
