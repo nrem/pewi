@@ -26,7 +26,7 @@ var ModalView = function (options) {
 	    $("#popup-container-head").append("<a>" + this.title + "</a>");
 
 	    $("#popup-container-head").append('<ul class="popup-window-tools pull-right list-unstyled list-inline">'+
-            ((options.tools)?'<li title="Printing coming soon!"><img src="' + options.tools[0].icon + '" class="popup-window-print-button" id="'+options.tools[0].id+'"></li>':'')+
+            ((options.tools)?'<li title="Printing coming soon!"></li>':'')+
             '<li><img src="' + close_button_url + '" class="popup-window-close-button" id="popup-container-head-close-button"></li></ul>');
 	    $container.append('<div id="popup-container-body" class="popup-window-body"></div>');
 	    $body = $("#popup-container-body");
@@ -390,9 +390,9 @@ var PrintView = function () {
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
     precipitationRow.append("td").attr("class", "results-cell");
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[1]);
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[2]);
-    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[3]);
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[1].toFixed(2));
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[2].toFixed(2));
+    precipitationRow.append("td").attr("class", "results-cell").append("a").text(global.data.precipitation[3].toFixed(2));
     precipitationRow.append("td").attr("class", "results-cell condensed").text('in');
     precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[1] * 2.54 * 10) / 10);
     precipitationRow.append("td").attr("class", "results-cell").append("a").text(Math.round(global.data.precipitation[2] * 2.54 * 10) / 10);
