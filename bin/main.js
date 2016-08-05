@@ -629,7 +629,7 @@ var global = [
             global.popup.append('<p>PEWI v2 is developed and maintained to be compatible with Google Chrome (versions 26+), Internet Explorer (versions 9+), and Mozilla Firefox (version 2+).</p>');
             global.popup.append('<p>PEWI is a product of Iowa State University Department of Natural Resource Ecology and Management. The product license can be found here. Members of the PEWI v2 development team were Lisa Schulte Moore, Assata Caldwell, Carrie Chennault, Justin Choe, Ryan Frahm, Noah Hagen, Jake Hill, Charles Labuzzetta, Elise Miller, Laura Roy, Nancy Shryock, John Tyndall, Robert Valek, and John VanDyk.</p>');
             global.popup.append('<p>PEWI v2 was funded through grants from the Iowa State University Department of Agronomy, McKnight Foundation, and USDA Forest Service.</p>');
-            global.popup.append('More information on PEWI, including information on tool development, learning exercises, additional acknowledgements, and how you can contribute can be found at the project website: <a href="http://www.nrem.iastate.edu/pewi>www.nrem.iastate.edu/pewi</a>. Questions can be sent to pewi@iastate.edu.'); 
+            global.popup.append('More information on PEWI, including information on tool development, learning exercises, additional acknowledgements, and how you can contribute can be found at the project website: <a href="http://www.nrem.iastate.edu/pewi" target="_blank">www.nrem.iastate.edu/pewi</a>. Questions can be sent to pewi@iastate.edu.'); 
             global.popup.display();
         });
 
